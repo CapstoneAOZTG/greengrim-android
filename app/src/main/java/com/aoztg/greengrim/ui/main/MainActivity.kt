@@ -1,8 +1,7 @@
-package com.aoztg.greengrim.ui
+package com.aoztg.greengrim.ui.main
 
 
 import android.os.Bundle
-import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.ActivityMainBinding
 import com.aoztg.greengrim.ui.base.BaseActivity
 
