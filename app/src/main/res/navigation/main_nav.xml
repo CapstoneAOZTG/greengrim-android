@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_nav">
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="com.aoztg.greengrim.ui.home.HomeFragment"
+        android:label="HomeFragment"/>
+
+    <fragment
+        android:id="@+id/nav_challenge"
+        android:name="com.aoztg.greengrim.ui.challenge.ChallengeFragment"
+        android:label="ChallengeFragment"/>
+
+    <fragment
+        android:id="@+id/nav_chat"
+        android:name="com.aoztg.greengrim.ui.chat.ChatFragment"
+        android:label="ChatFragment"/>
+
+    <fragment
+        android:id="@+id/nav_market"
+        android:name="com.aoztg.greengrim.ui.market.MarketFragment"
+        android:label="MarketFragment"/>
+
+    <fragment
+        android:id="@+id/nav_info"
+        android:name="com.aoztg.greengrim.ui.info.InfoFragment"
+        android:label="InfoFragment"/>
+
+
+</navigation>
