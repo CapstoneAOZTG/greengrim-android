@@ -20,14 +20,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     }
 
     private fun setBottomNavigation(){
+        binding.bnv.itemIconTintList = null
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragment_container) as NavHostFragment
         navController = navHostFragment.navController
 
         binding.bnv.apply{
             setupWithNavController(navController)
         }
-
-        binding.bnv.itemIconTintList = null
-
     }
 }
