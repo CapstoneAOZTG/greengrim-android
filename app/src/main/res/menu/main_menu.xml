@@ -7,21 +7,21 @@
 
     <item
         android:id="@+id/nav_challenge"
-        android:icon="@drawable/test_icon"
+        android:icon="@drawable/selector_challenge"
         android:title="챌린지"/>
 
     <item
         android:id="@+id/nav_chat"
-        android:icon="@drawable/test_icon"
+        android:icon="@drawable/selector_chatting"
         android:title="채팅방"/>
 
     <item
         android:id="@+id/nav_market"
-        android:icon="@drawable/test_icon"
+        android:icon="@drawable/selector_market"
         android:title="마켓"/>
 
     <item
         android:id="@+id/nav_info"
-        android:icon="@drawable/test_icon"
+        android:icon="@drawable/selector_more"
         android:title="더보기"/>
 </menu>
