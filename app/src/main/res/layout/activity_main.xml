@@ -25,6 +25,10 @@
         app:menu="@menu/main_menu"
         app:labelVisibilityMode="labeled"
         android:background="@color/gg_light_black"
+        app:itemTextColor="@color/selector_bnv_text"
+        app:itemActiveIndicatorStyle="@android:color/transparent"
+        app:itemTextAppearanceActive="@android:color/transparent"
+        app:itemTextAppearanceInactive="@android:color/transparent"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
