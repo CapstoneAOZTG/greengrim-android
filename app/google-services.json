@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "852434146096",
+    "project_id": "greengrim-5fcda",
+    "storage_bucket": "greengrim-5fcda.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:852434146096:android:e05de6d4e7b1ef5995eef5",
+        "android_client_info": {
+          "package_name": "com.aoztg.greengrim"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAuGKeZV5L-FD3up-SKVZYba7a1zKS-B5Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

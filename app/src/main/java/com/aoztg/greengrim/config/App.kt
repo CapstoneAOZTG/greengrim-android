@@ -3,7 +3,13 @@ package com.aoztg.greengrim.config
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
+import com.aoztg.greengrim.BuildConfig
 import com.aoztg.greengrim.util.Constants.BASE_URL
+import com.aoztg.greengrim.util.Constants.TAG
+import com.kakao.sdk.common.KakaoSdk
+import com.kakao.sdk.common.util.Utility
+import com.navercorp.nid.NaverIdLoginSDK
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -40,7 +46,9 @@ class App : Application() {
         sharedPreferences =
             applicationContext.getSharedPreferences("APP", MODE_PRIVATE)
         initRetrofitInstance()
+        initSocialLogin()
     }
+
 
     private fun initRetrofitInstance() {
         val client: OkHttpClient = OkHttpClient.Builder()
@@ -55,5 +63,12 @@ class App : Application() {
             .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
+    }
+
+    private fun initSocialLogin(){
+        Log.d(TAG, "keyhash : ${Utility.getKeyHash(this)}")
+
+        KakaoSdk.init(this, BuildConfig.KAKAO_API_KEY)
+        NaverIdLoginSDK.initialize(this,BuildConfig.NAVER_CLIENT_ID,BuildConfig.NAVER_CLIENT_SECRET,BuildConfig.NAVER_CLIENT_NAME)
     }
 }
