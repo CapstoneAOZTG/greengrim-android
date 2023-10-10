@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -83,4 +84,7 @@ dependencies {
 
     // kakao login
     implementation "com.kakao.sdk:v2-all:2.17.0"
+
+    // google login
+    implementation platform('com.google.firebase:firebase-bom:32.3.1')
 }
