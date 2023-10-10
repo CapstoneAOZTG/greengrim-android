@@ -91,7 +91,37 @@
         />
 
 
+    <ImageView
+        android:id="@+id/btn_terms_all"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/icon_checkbox_off"
+        app:layout_constraintBottom_toTopOf="@id/btn_next"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintStart_toStartOf="parent"/>
 
+    <TextView
+        android:id="@+id/tv_terms_all_head"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="전체동의"
+        app:layout_constraintStart_toEndOf="@id/btn_terms_all"
+        app:layout_constraintTop_toTopOf="@id/btn_terms_all"
+        app:layout_constraintBottom_toBottomOf="@id/btn_terms_all"
+        android:layout_marginStart="10dp"
+        android:textColor="@color/white"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_next"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="다음으로"
+        android:textColor="@color/white"
+        android:background="@drawable/shape_darkfill_nostroke"
+        android:layout_marginBottom="40dp"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
