@@ -30,7 +30,6 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::i
 
     private fun setListener(){
 
-
         binding.btnGoogleLogin.setOnClickListener {
             googleLogin()
         }
