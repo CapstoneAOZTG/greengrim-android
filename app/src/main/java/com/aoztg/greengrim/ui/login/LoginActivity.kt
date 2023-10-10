@@ -22,4 +22,6 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::i
             startActivity(intent)
         }
     }
+
+
 }
