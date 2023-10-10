@@ -1,6 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:paddingHorizontal="25dp">
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="9dp"
+        android:text="이용 약관"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <ImageView
+        android:id="@+id/btn_terms1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/icon_checkbox_off"
+        app:layout_constraintTop_toBottomOf="@id/tv_title"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="25dp"/>
+
+    <TextView
+        android:id="@+id/tv_terms1_head"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="[필수] 이용약관 1"
+        app:layout_constraintStart_toEndOf="@id/btn_terms1"
+        app:layout_constraintTop_toTopOf="@id/btn_terms1"
+        app:layout_constraintBottom_toBottomOf="@id/btn_terms1"
+        android:layout_marginStart="10dp"
+        android:textColor="@color/white"/>
+
+
+    <TextView
+        android:id="@+id/tv_terms1_body"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tv_terms1_head"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:padding="15dp"
+        android:layout_marginTop="18dp"
+        android:background="@drawable/shape_nofill_whitestroke"
+        android:text="회원 가입 시 이름, 생년월일, 휴대전화번호 등의 정보를 허위로 기재해서는 안 됩니다. 회원 계정에 등록된 정보는 항상 정확한 최신 정보가 유지될 수 있도록 관리해 주세요. 자신의 계정을 다른 사람에게 판매, 양도, 대여 또는 담보로 제공하거나 다른 사람에게 그 사용을 허락해서는 안 됩니다. 아울러 자신의 계정이 아닌 타인의 계정을 무단으로 사용해서는 안 됩니다. 이에 관한 상세한 내용은 계정 운영 정책을 참고해 주시기 바랍니다."
+        android:textColor="@color/white"
+        />
+
+
+    <ImageView
+        android:id="@+id/btn_terms2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/icon_checkbox_off"
+        app:layout_constraintTop_toBottomOf="@id/tv_terms1_body"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="55dp"/>
+
+    <TextView
+        android:id="@+id/tv_terms2_head"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="[필수] 이용약관 1"
+        app:layout_constraintStart_toEndOf="@id/btn_terms2"
+        app:layout_constraintTop_toTopOf="@id/btn_terms2"
+        app:layout_constraintBottom_toBottomOf="@id/btn_terms2"
+        android:layout_marginStart="10dp"
+        android:textColor="@color/white"/>
+
+
+    <TextView
+        android:id="@+id/tv_terms2_body"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tv_terms2_head"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:padding="15dp"
+        android:layout_marginTop="18dp"
+        android:background="@drawable/shape_nofill_whitestroke"
+        android:text="회원 가입 시 이름, 생년월일, 휴대전화번호 등의 정보를 허위로 기재해서는 안 됩니다. 회원 계정에 등록된 정보는 항상 정확한 최신 정보가 유지될 수 있도록 관리해 주세요. 자신의 계정을 다른 사람에게 판매, 양도, 대여 또는 담보로 제공하거나 다른 사람에게 그 사용을 허락해서는 안 됩니다. 아울러 자신의 계정이 아닌 타인의 계정을 무단으로 사용해서는 안 됩니다. 이에 관한 상세한 내용은 계정 운영 정책을 참고해 주시기 바랍니다."
+        android:textColor="@color/white"
+        />
+
+
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

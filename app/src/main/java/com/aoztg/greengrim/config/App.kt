@@ -25,7 +25,6 @@ class App : Application() {
     init{
         instance =this
     }
-
     companion object{
         lateinit var instance : App
         lateinit var sharedPreferences: SharedPreferences
@@ -36,7 +35,6 @@ class App : Application() {
         fun context() : Context {
             return instance.applicationContext
         }
-
     }
 
     override fun onCreate() {
@@ -46,7 +44,6 @@ class App : Application() {
         initRetrofitInstance()
         initSocialLogin()
     }
-
 
     private fun initRetrofitInstance() {
         val client: OkHttpClient = OkHttpClient.Builder()
