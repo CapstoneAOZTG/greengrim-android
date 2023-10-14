@@ -6,11 +6,11 @@
 
         <variable
             name="vm"
-            type="com.aoztg.greengrim.ui.login.LoginViewModel" />
+            type="com.aoztg.greengrim.ui.intro.login.LoginViewModel" />
 
         <variable
             name="view"
-            type="com.aoztg.greengrim.ui.login.LoginActivity" />
+            type="com.aoztg.greengrim.ui.intro.login.LoginActivity" />
 
     </data>
 
