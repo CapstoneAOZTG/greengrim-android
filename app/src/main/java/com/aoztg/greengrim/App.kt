@@ -30,7 +30,6 @@ class App : Application() {
     companion object{
         lateinit var instance : App
         lateinit var sharedPreferences: SharedPreferences
-        lateinit var retrofit : Retrofit
         lateinit var gso : GoogleSignInOptions
 
         // 앱의 context 를 불러오는 함수
@@ -43,23 +42,7 @@ class App : Application() {
         super.onCreate()
         sharedPreferences =
             applicationContext.getSharedPreferences("APP", MODE_PRIVATE)
-        initRetrofitInstance()
         initSocialLogin()
-    }
-
-    private fun initRetrofitInstance() {
-        val client: OkHttpClient = OkHttpClient.Builder()
-            .readTimeout(30000, TimeUnit.MILLISECONDS)
-            .connectTimeout(30000, TimeUnit.MILLISECONDS)
-            .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
-            .addNetworkInterceptor(RetrofitInterceptor(applicationContext)) // JWT 자동 헤더 전송
-            .build()
-
-        retrofit = Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .client(client)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
     }
 
     private fun initSocialLogin(){
