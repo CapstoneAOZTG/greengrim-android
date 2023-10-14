@@ -35,7 +35,8 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::i
         }
 
         binding.btnKakaoLogin.setOnClickListener {
-            kakaoLogin()
+            val intent = Intent(this, SignupActivity::class.java)
+            startActivity(intent)
         }
 
         binding.btnNaverLogin.setOnClickListener {

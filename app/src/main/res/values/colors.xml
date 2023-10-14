@@ -13,4 +13,5 @@
     <color name="gg_dark_Gray">#3F3F3F</color>
     <color name="gg_middle_gray">#AEAEAE</color>
     <color name="gg_green">#8CC63E</color>
+    <color name="gg_light_gray">#AEAEAE</color>
 </resources>
