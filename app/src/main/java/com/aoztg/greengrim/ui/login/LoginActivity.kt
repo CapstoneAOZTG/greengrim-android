@@ -1,13 +1,16 @@
 package com.aoztg.greengrim.ui.login
 
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.aoztg.greengrim.App.Companion.gso
 import com.aoztg.greengrim.databinding.ActivityLoginBinding
 import com.aoztg.greengrim.ui.base.BaseActivity
+import com.aoztg.greengrim.ui.main.MainActivity
 import com.aoztg.greengrim.util.Constants.TAG
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.common.api.ApiException
@@ -21,6 +24,7 @@ import com.navercorp.nid.oauth.OAuthLoginCallback
 import com.navercorp.nid.profile.NidProfileCallback
 import com.navercorp.nid.profile.data.NidProfileResponse
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 
 @AndroidEntryPoint
 class LoginActivity : BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::inflate) {
@@ -31,6 +35,26 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::i
         super.onCreate(savedInstanceState)
         binding.vm = viewModel
         binding.view = this
+
+        setNavigationObserver()
+    }
+
+
+
+    private fun setNavigationObserver(){
+        lifecycleScope.launchWhenStarted {
+            viewModel.navigationHandler.collectLatest {
+                when(it){
+                    is LoginNavigationAction.NavigateToMainActivity -> {
+                        startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                    }
+
+                    is LoginNavigationAction.NavigateToTermsActivity -> {
+                        startActivity(Intent(this@LoginActivity, TermsActivity::class.java))
+                    }
+                }
+            }
+        }
     }
 
     fun googleLogin() {
