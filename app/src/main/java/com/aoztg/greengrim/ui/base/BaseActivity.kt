@@ -6,10 +6,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.viewbinding.ViewBinding
+import androidx.databinding.ViewDataBinding
 import com.aoztg.greengrim.util.LoadingDialog
 
-abstract class BaseActivity<B : ViewBinding>(private val inflate: (LayoutInflater) -> B) :
+abstract class BaseActivity<B : ViewDataBinding>(private val inflate: (LayoutInflater) -> B) :
     AppCompatActivity() {
     protected lateinit var binding: B
     private lateinit var loadingDialog : LoadingDialog
