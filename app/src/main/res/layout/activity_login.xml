@@ -4,6 +4,10 @@
 
     <data>
 
+        <variable
+            name="view"
+            type="com.aoztg.greengrim.ui.login.LoginActivity" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -64,6 +68,7 @@
             android:layout_marginTop="30dp"
             android:background="@android:color/transparent"
             android:src="@drawable/button_google"
+            android:onClick="@{() -> view.googleLogin()}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintDimensionRatio="7:1"
@@ -76,6 +81,7 @@
             android:layout_marginTop="15dp"
             android:background="@android:color/transparent"
             android:src="@drawable/button_kakao"
+            android:onClick="@{() -> view.kakaoLogin()}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintDimensionRatio="7:1"
@@ -89,6 +95,7 @@
             android:background="@android:color/transparent"
             android:scaleType="fitCenter"
             android:src="@drawable/button_naver"
+            android:onClick="@{() -> view.naverLogin()}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintDimensionRatio="7:1"
