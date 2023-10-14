@@ -1,23 +1,25 @@
-package com.aoztg.greengrim.config
+package com.aoztg.greengrim
 
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
-import com.aoztg.greengrim.BuildConfig
-import com.aoztg.greengrim.R
+import com.aoztg.greengrim.config.RetrofitInterceptor
 import com.aoztg.greengrim.util.Constants.BASE_URL
 import com.aoztg.greengrim.util.Constants.TAG
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.kakao.sdk.common.KakaoSdk
 import com.kakao.sdk.common.util.Utility
 import com.navercorp.nid.NaverIdLoginSDK
+import dagger.hilt.android.HiltAndroidApp
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
+
+@HiltAndroidApp
 class App : Application() {
 
 
@@ -50,7 +52,7 @@ class App : Application() {
             .readTimeout(30000, TimeUnit.MILLISECONDS)
             .connectTimeout(30000, TimeUnit.MILLISECONDS)
             .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
-            .addNetworkInterceptor(AccessTokenInterceptor(applicationContext)) // JWT 자동 헤더 전송
+            .addNetworkInterceptor(RetrofitInterceptor(applicationContext)) // JWT 자동 헤더 전송
             .build()
 
         retrofit = Retrofit.Builder()

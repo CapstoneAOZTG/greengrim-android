@@ -5,13 +5,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
-import com.aoztg.greengrim.config.App.Companion.gso
+import com.aoztg.greengrim.App.Companion.gso
 import com.aoztg.greengrim.databinding.ActivityLoginBinding
 import com.aoztg.greengrim.ui.base.BaseActivity
-import com.aoztg.greengrim.ui.main.MainActivity
 import com.aoztg.greengrim.util.Constants.TAG
 import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
