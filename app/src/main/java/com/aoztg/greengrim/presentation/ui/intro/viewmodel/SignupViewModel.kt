@@ -22,7 +22,6 @@ class SignupViewModel @Inject constructor(private val introRepository : IntroRep
     }
     val isAllDataSet : LiveData<Boolean> = _isAllDataSet
 
-
     private val _eventFlow : MutableSharedFlow<SignupEvent> = MutableSharedFlow()
     val eventFlow : SharedFlow<SignupEvent> = _eventFlow
 
@@ -54,6 +53,7 @@ class SignupViewModel @Inject constructor(private val introRepository : IntroRep
 
             // 성공시 To MainActivity
             _eventFlow.emit(SignupEvent.NavigateToMainActivity)
+            isNicknameValid.value = true
         }
     }
 
