@@ -1,7 +1,7 @@
 package com.aoztg.greengrim.di
 
-import com.aoztg.greengrim.data.repository.LoginRepository
-import com.aoztg.greengrim.data.repository.LoginRepositoryImpl
+import com.aoztg.greengrim.data.repository.IntroRepository
+import com.aoztg.greengrim.data.repository.IntroRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -16,6 +16,6 @@ abstract class RepositoryModule {
     @Singleton
     @Binds
     abstract fun bindLoginRepository(
-        loginRepositoryImpl : LoginRepositoryImpl
-    ) : LoginRepository
+        loginRepositoryImpl : IntroRepositoryImpl
+    ) : IntroRepository
 }

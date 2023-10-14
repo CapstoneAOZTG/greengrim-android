@@ -1,10 +1,11 @@
-package com.aoztg.greengrim.ui.intro.login
+package com.aoztg.greengrim.ui.intro
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.aoztg.greengrim.data.repository.LoginRepository
-import com.aoztg.greengrim.util.Constants.TAG
+import com.aoztg.greengrim.data.repository.IntroRepository
+import com.aoztg.greengrim.ui.intro.login.LoginNavigationAction
+import com.aoztg.greengrim.util.Constants
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -12,19 +13,19 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class LoginViewModel @Inject constructor(private val loginRepository : LoginRepository)  : ViewModel() {
+class IntroViewModel @Inject constructor(private val introRepository : IntroRepository)  : ViewModel() {
 
 
     private var email = ""
 
-    private val _navigationHandler : MutableSharedFlow<LoginNavigationAction> = MutableSharedFlow<LoginNavigationAction>()
+    private val _navigationHandler : MutableSharedFlow<LoginNavigationAction> = MutableSharedFlow()
     val navigationHandler : SharedFlow<LoginNavigationAction> = _navigationHandler
 
 
     fun startLogin(
         token : String
     ){
-        Log.d(TAG,token)
+        Log.d(Constants.TAG,token)
         viewModelScope.launch{
             // 통신로직
 
@@ -40,6 +41,4 @@ class LoginViewModel @Inject constructor(private val loginRepository : LoginRepo
     fun setEmail(_email : String){
         email = _email
     }
-
-
 }

@@ -10,6 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import com.aoztg.greengrim.App.Companion.gso
 import com.aoztg.greengrim.databinding.ActivityLoginBinding
 import com.aoztg.greengrim.ui.base.BaseActivity
+import com.aoztg.greengrim.ui.intro.IntroViewModel
 import com.aoztg.greengrim.ui.intro.terms.TermsActivity
 import com.aoztg.greengrim.ui.main.MainActivity
 import com.aoztg.greengrim.util.Constants.TAG
@@ -31,7 +32,7 @@ import kotlinx.coroutines.flow.collectLatest
 class LoginActivity : BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::inflate) {
 
 
-    private val viewModel : LoginViewModel by viewModels()
+    private val viewModel : IntroViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding.vm = viewModel

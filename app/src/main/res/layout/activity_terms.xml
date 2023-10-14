@@ -3,6 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+        <variable
+            name="vm"
+            type="com.aoztg.greengrim.ui.intro.terms.TermsViewModel" />
 
     </data>
 
@@ -25,13 +28,15 @@
             app:layout_constraintTop_toTopOf="parent" />
 
 
-        <ImageView
+        <CheckBox
             android:id="@+id/btn_terms1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/icon_checkbox_off"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:background="@drawable/selector_custom_checkbox"
+            android:button="@null"
             app:layout_constraintTop_toBottomOf="@id/tv_title"
             app:layout_constraintStart_toStartOf="parent"
+            android:onClick="@{() -> vm.isFirstClicked()}"
             android:layout_marginTop="25dp" />
 
         <TextView
@@ -60,11 +65,12 @@
             android:textColor="@color/white" />
 
 
-        <ImageView
+        <CheckBox
             android:id="@+id/btn_terms2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/icon_checkbox_off"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:background="@drawable/selector_custom_checkbox"
+            android:button="@null"
             app:layout_constraintTop_toBottomOf="@id/tv_terms1_body"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginTop="55dp" />
@@ -77,6 +83,7 @@
             app:layout_constraintStart_toEndOf="@id/btn_terms2"
             app:layout_constraintTop_toTopOf="@id/btn_terms2"
             app:layout_constraintBottom_toBottomOf="@id/btn_terms2"
+            android:onClick="@{() -> vm.isSecondClicked()}"
             android:layout_marginStart="10dp"
             android:textColor="@color/white" />
 
@@ -95,12 +102,14 @@
             android:textColor="@color/white" />
 
 
-        <ImageView
+        <CheckBox
             android:id="@+id/btn_terms_all"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/icon_checkbox_off"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:background="@drawable/selector_custom_checkbox"
+            android:button="@null"
             app:layout_constraintBottom_toTopOf="@id/btn_next"
+            android:onClick="@{() -> vm.isAllClicked()}"
             android:layout_marginBottom="20dp"
             app:layout_constraintStart_toStartOf="parent" />
 
