@@ -1,8 +1,10 @@
 package com.aoztg.greengrim.ui.login
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.aoztg.greengrim.repository.LoginRepository
+import com.aoztg.greengrim.data.repository.LoginRepository
+import com.aoztg.greengrim.util.Constants.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -22,6 +24,7 @@ class LoginViewModel @Inject constructor(private val loginRepository : LoginRepo
     fun startLogin(
         token : String
     ){
+        Log.d(TAG,token)
         viewModelScope.launch{
             // 통신로직
 

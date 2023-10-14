@@ -1,7 +1,7 @@
 package com.aoztg.greengrim.di
 
-import com.aoztg.greengrim.repository.LoginRepository
-import com.aoztg.greengrim.repository.LoginRepositoryImpl
+import com.aoztg.greengrim.data.repository.LoginRepository
+import com.aoztg.greengrim.data.repository.LoginRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

@@ -1,7 +1,7 @@
 package com.aoztg.greengrim.di
 
 import com.aoztg.greengrim.config.RetrofitInterceptor
-import com.aoztg.greengrim.network.loginnetwork.LoginAPI
+import com.aoztg.greengrim.data.network.loginnetwork.LoginAPI
 import com.aoztg.greengrim.util.Constants
 import dagger.Module
 import dagger.Provides
