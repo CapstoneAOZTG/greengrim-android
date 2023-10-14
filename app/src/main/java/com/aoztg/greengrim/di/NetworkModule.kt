@@ -1,6 +1,7 @@
 package com.aoztg.greengrim.di
 
 import com.aoztg.greengrim.config.RetrofitInterceptor
+import com.aoztg.greengrim.network.loginnetwork.LoginAPI
 import com.aoztg.greengrim.util.Constants
 import dagger.Module
 import dagger.Provides
@@ -40,9 +41,10 @@ class NetworkModule {
             .build()
     }
 
-//    @Singleton
-//    @Provides
-//    fun provideIssueListService(retrofit : Retrofit) : API 명 {
-//    }
+    @Singleton
+    @Provides
+    fun provideLoginService(retrofit : Retrofit) : LoginAPI {
+        return retrofit.create(LoginAPI::class.java)
+    }
 
 }
