@@ -7,15 +7,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.LayoutRes
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
-import androidx.viewbinding.ViewBinding
 import com.aoztg.greengrim.util.LoadingDialog
 
 
-abstract class BaseFragment<B : ViewBinding>(
-    private val bind: (View) -> B,
-    @LayoutRes layoutResId: Int
-) : Fragment(layoutResId) {
+abstract class BaseFragment<B : ViewDataBinding>(
+    @LayoutRes private val layoutRes: Int
+) : Fragment() {
     private var _binding: B? = null
     protected val binding get() = _binding!!
 
@@ -26,7 +26,8 @@ abstract class BaseFragment<B : ViewBinding>(
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = bind(super.onCreateView(inflater, container, savedInstanceState)!!)
+        _binding = DataBindingUtil.inflate(inflater, layoutRes, container, false)
+        binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
     }
 

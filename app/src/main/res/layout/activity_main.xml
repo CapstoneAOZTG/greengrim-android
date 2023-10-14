@@ -1,42 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.main.MainActivity">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/fragment_container"
+    <data>
+
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:name="androidx.navigation.fragment.NavHostFragment"
-        app:defaultNavHost="true"
-        app:navGraph="@navigation/main_nav"/>
+        tools:context=".ui.main.MainActivity">
 
-    <com.aoztg.greengrim.customview.GgBottomNavigationView
-        android:id="@+id/bnv"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        app:menu="@menu/main_menu"
-        app:labelVisibilityMode="labeled"
-        app:elevation="0dp"
-        android:layout_gravity="bottom|center"
-        android:background="@color/gg_light_black"
-        app:itemTextColor="@color/selector_bnv_text"
-        app:itemActiveIndicatorStyle="@android:color/transparent"
-        app:itemTextAppearanceActive="@android:color/transparent"
-        app:itemTextAppearanceInactive="@android:color/transparent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/fragment_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:name="androidx.navigation.fragment.NavHostFragment"
+            app:defaultNavHost="true"
+            app:navGraph="@navigation/main_nav" />
 
-    <ImageButton
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:src="@drawable/menu_earth"
-        android:scaleType="fitCenter"
-        android:background="@android:color/transparent"
-        android:layout_gravity="bottom|center"
-        android:layout_marginBottom="20dp"/>
+        <com.aoztg.greengrim.customview.GgBottomNavigationView
+            android:id="@+id/bnv"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            app:menu="@menu/main_menu"
+            app:labelVisibilityMode="labeled"
+            app:elevation="0dp"
+            android:layout_gravity="bottom|center"
+            android:background="@color/gg_light_black"
+            app:itemTextColor="@color/selector_bnv_text"
+            app:itemActiveIndicatorStyle="@android:color/transparent"
+            app:itemTextAppearanceActive="@android:color/transparent"
+            app:itemTextAppearanceInactive="@android:color/transparent"
+            app:layout_constraintBottom_toBottomOf="parent" />
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+        <ImageButton
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/menu_earth"
+            android:scaleType="fitCenter"
+            android:background="@android:color/transparent"
+            android:layout_gravity="bottom|center"
+            android:layout_marginBottom="20dp" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>
