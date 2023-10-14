@@ -40,9 +40,9 @@ class NetworkModule {
             .build()
     }
 
-    @Singleton
-    @Provides
-    fun provideIssueListService(retrofit : Retrofit) {
-    }
+//    @Singleton
+//    @Provides
+//    fun provideIssueListService(retrofit : Retrofit) : API 명 {
+//    }
 
 }
