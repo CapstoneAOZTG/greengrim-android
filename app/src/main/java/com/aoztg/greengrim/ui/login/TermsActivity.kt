@@ -10,7 +10,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class TermsActivity : BaseActivity<ActivityTermsBinding>(ActivityTermsBinding::inflate) {
 
-    private val viewModel : ViewModel by viewModels()
+    private val viewModel : LoginViewModel by viewModels()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

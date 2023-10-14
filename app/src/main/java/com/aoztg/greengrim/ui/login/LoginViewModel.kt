@@ -11,13 +11,16 @@ import javax.inject.Inject
 class LoginViewModel @Inject constructor(private val loginRepository : LoginRepository)  : ViewModel() {
 
 
-
+    private var email = ""
 
     fun startLogin(
-        email : String,
         token : String
     ){
-        Log.d(TAG, "$email  $token")
+        Log.d(TAG, token)
+    }
+
+    fun setEmail(_email : String){
+        email = _email
     }
 
 
