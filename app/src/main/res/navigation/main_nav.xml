@@ -6,12 +6,12 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="com.aoztg.greengrim.ui.home.view.HomeFragment"
+        android:name="com.aoztg.greengrim.presentation.ui.home.view.HomeFragment"
         android:label="HomeFragment"/>
 
     <fragment
         android:id="@+id/nav_challenge"
-        android:name="com.aoztg.greengrim.ui.challenge.view.ChallengeFragment"
+        android:name="com.aoztg.greengrim.presentation.ui.challenge.view.ChallengeFragment"
         android:label="ChallengeFragment">
         <action
             android:id="@+id/action_nav_challenge_to_nav_challenge_list"
@@ -23,7 +23,7 @@
 
     <fragment
         android:id="@+id/nav_challenge_list"
-        android:name="com.aoztg.greengrim.ui.challenge.view.ChallengeListFragment"
+        android:name="com.aoztg.greengrim.presentation.ui.challenge.view.ChallengeListFragment"
         android:label="ChallengeListFragment">
         <action
             android:id="@+id/action_nav_challenge_list_to_nav_challenge_detail"
@@ -35,7 +35,7 @@
 
     <fragment
         android:id="@+id/nav_create_challenge"
-        android:name="com.aoztg.greengrim.ui.challenge.view.CreateChallengeFragment"
+        android:name="com.aoztg.greengrim.presentation.ui.challenge.view.CreateChallengeFragment"
         android:label="CreateChallengeFragment">
         <action
             android:id="@+id/action_nav_create_challenge_to_nav_create_challenge_detail"
@@ -44,17 +44,17 @@
 
     <fragment
         android:id="@+id/nav_create_challenge_detail"
-        android:name="com.aoztg.greengrim.ui.challenge.view.CreateChallengeDetailFragment"
+        android:name="com.aoztg.greengrim.presentation.ui.challenge.view.CreateChallengeDetailFragment"
         android:label="CreateChallengeDetailFragment"/>
 
     <fragment
         android:id="@+id/nav_challenge_detail"
-        android:name="com.aoztg.greengrim.ui.challenge.view.ChallengeDetailFragment"
+        android:name="com.aoztg.greengrim.presentation.ui.challenge.view.ChallengeDetailFragment"
         android:label="ChallengeDetailFragment"/>
 
     <fragment
         android:id="@+id/nav_chat"
-        android:name="com.aoztg.greengrim.ui.chat.view.ChatFragment"
+        android:name="com.aoztg.greengrim.presentation.ui.chat.view.ChatFragment"
         android:label="ChatFragment">
         <action
             android:id="@+id/action_nav_chat_to_nav_chat_room"
@@ -63,7 +63,7 @@
 
     <fragment
         android:id="@+id/nav_chat_room"
-        android:name="com.aoztg.greengrim.ui.chat.view.ChatRoomFragment"
+        android:name="com.aoztg.greengrim.presentation.ui.chat.view.ChatRoomFragment"
         android:label="ChatRoomFragment">
         <action
             android:id="@+id/action_nav_chat_room_to_nav_certification"
@@ -72,24 +72,24 @@
 
     <fragment
         android:id="@+id/nav_certification"
-        android:name="com.aoztg.greengrim.ui.chat.view.CertificateFragment"
+        android:name="com.aoztg.greengrim.presentation.ui.chat.view.CertificateFragment"
         android:label="CertificateFragment"/>
 
 
     <fragment
         android:id="@+id/nav_market"
-        android:name="com.aoztg.greengrim.ui.market.MarketFragment"
+        android:name="com.aoztg.greengrim.presentation.ui.market.MarketFragment"
         android:label="MarketFragment"/>
 
     <fragment
         android:id="@+id/nav_info"
-        android:name="com.aoztg.greengrim.ui.info.view.InfoFragment"
+        android:name="com.aoztg.greengrim.presentation.ui.info.view.InfoFragment"
         android:label="InfoFragment">
     </fragment>
 
     <fragment
         android:id="@+id/nav_profile_setting"
-        android:name="com.aoztg.greengrim.ui.info.view.ProfileSettingFragment"
+        android:name="com.aoztg.greengrim.presentation.ui.info.view.ProfileSettingFragment"
         android:label="ProfileSettingFragment"/>
 
 

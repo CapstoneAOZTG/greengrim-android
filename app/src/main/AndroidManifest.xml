@@ -10,7 +10,7 @@
     <uses-permission android:name="android.permission.CAMERA"/>
 
     <application
-        android:name=".App"
+        android:name=".presentation.App"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -20,12 +20,7 @@
         android:theme="@style/Theme.Greengrim"
         tools:targetApi="31">
 
-        <activity android:name=".ui.splash.SplashActivity"
-            android:exported="true">
-
-        </activity>
-        <activity
-            android:name=".ui.main.view.MainActivity"
+        <activity android:name=".presentation.ui.splash.SplashActivity"
             android:exported="true">
 
             <intent-filter>
@@ -33,14 +28,20 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
-        <activity android:name=".ui.intro.view.LoginActivity"
+        <activity
+            android:name=".presentation.ui.main.view.MainActivity"
+            android:exported="true">
+
+        </activity>
+        <activity android:name=".presentation.ui.intro.view.LoginActivity"
             android:exported="true"/>
 
-        <activity android:name=".ui.intro.view.SignupActivity"
+        <activity android:name=".presentation.ui.intro.view.SignupActivity"
             android:exported="true"/>
 
-        <activity android:name=".ui.intro.view.TermsActivity"
+        <activity android:name=".presentation.ui.intro.view.TermsActivity"
             android:exported="true"/>
 
         <activity

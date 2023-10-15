@@ -6,7 +6,7 @@
 
         <variable
             name="vm"
-            type="com.aoztg.greengrim.ui.intro.viewmodel.SignupViewModel" />
+            type="com.aoztg.greengrim.presentation.ui.intro.viewmodel.SignupViewModel" />
 
     </data>
 

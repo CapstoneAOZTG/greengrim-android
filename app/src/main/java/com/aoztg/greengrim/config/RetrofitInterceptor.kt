@@ -1,8 +1,7 @@
 package com.aoztg.greengrim.config
 
-import android.content.Context
-import com.aoztg.greengrim.App.Companion.sharedPreferences
-import com.aoztg.greengrim.util.Constants.X_ACCESS_TOKEN
+import com.aoztg.greengrim.presentation.App.Companion.sharedPreferences
+import com.aoztg.greengrim.presentation.util.Constants.X_ACCESS_TOKEN
 import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response
