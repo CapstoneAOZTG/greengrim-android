@@ -1,7 +1,6 @@
 package com.aoztg.greengrim.ui.main.view
 
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
@@ -11,8 +10,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.ActivityMainBinding
 import com.aoztg.greengrim.ui.base.BaseActivity
-import com.aoztg.greengrim.ui.home.HomeFragmentDirections
-import com.aoztg.greengrim.ui.intro.event.SignupEvent
+import com.aoztg.greengrim.ui.home.view.HomeFragmentDirections
 import com.aoztg.greengrim.ui.main.event.MainEvent
 import com.aoztg.greengrim.ui.main.viewmodel.MainViewModel
 
