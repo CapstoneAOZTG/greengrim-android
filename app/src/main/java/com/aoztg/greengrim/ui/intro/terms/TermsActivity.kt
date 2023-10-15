@@ -1,13 +1,14 @@
 package com.aoztg.greengrim.ui.intro.terms
 
+import android.content.Intent
 import android.os.Bundle
 import com.aoztg.greengrim.databinding.ActivityTermsBinding
 import com.aoztg.greengrim.ui.base.BaseActivity
+import com.aoztg.greengrim.ui.intro.signup.SignupActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class TermsActivity : BaseActivity<ActivityTermsBinding>(ActivityTermsBinding::inflate) {
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,7 +30,9 @@ class TermsActivity : BaseActivity<ActivityTermsBinding>(ActivityTermsBinding::i
                 binding.btnTerms2.isChecked = state
                 binding.btnNext.isEnabled = state
             }
-
+            btnNext.setOnClickListener {
+                startActivity(Intent(this@TermsActivity,SignupActivity::class.java))
+            }
         }
     }
 

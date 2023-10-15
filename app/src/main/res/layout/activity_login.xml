@@ -6,7 +6,7 @@
 
         <variable
             name="vm"
-            type="com.aoztg.greengrim.ui.intro.IntroViewModel" />
+            type="com.aoztg.greengrim.ui.intro.login.LoginViewModel" />
 
         <variable
             name="view"

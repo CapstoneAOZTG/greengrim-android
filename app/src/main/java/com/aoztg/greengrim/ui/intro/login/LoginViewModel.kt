@@ -1,10 +1,10 @@
-package com.aoztg.greengrim.ui.intro
+package com.aoztg.greengrim.ui.intro.login
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.aoztg.greengrim.data.network.loginnetwork.model.SignupPostData
 import com.aoztg.greengrim.data.repository.IntroRepository
-import com.aoztg.greengrim.ui.intro.login.LoginNavigationAction
 import com.aoztg.greengrim.util.Constants
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class IntroViewModel @Inject constructor(private val introRepository : IntroRepository)  : ViewModel() {
+class LoginViewModel @Inject constructor(private val introRepository : IntroRepository)  : ViewModel() {
 
 
     private var email = ""
@@ -35,8 +35,9 @@ class IntroViewModel @Inject constructor(private val introRepository : IntroRepo
 //            // 성공시 To MainActivity
 //            _navigationHandler.emit(LoginNavigationAction.NavigateToMainActivity)
         }
-
     }
+
+
 
     fun setEmail(_email : String){
         email = _email
