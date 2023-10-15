@@ -25,7 +25,7 @@ class IntroViewModel @Inject constructor(private val introRepository : IntroRepo
     fun startLogin(
         token : String
     ){
-        Log.d(Constants.TAG,token)
+        Log.d(Constants.TAG, "$email $token")
         viewModelScope.launch{
             // 통신로직
 

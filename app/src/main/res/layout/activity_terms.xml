@@ -3,9 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-        <variable
-            name="vm"
-            type="com.aoztg.greengrim.ui.intro.terms.TermsViewModel" />
 
     </data>
 
@@ -36,7 +33,6 @@
             android:button="@null"
             app:layout_constraintTop_toBottomOf="@id/tv_title"
             app:layout_constraintStart_toStartOf="parent"
-            android:onClick="@{() -> vm.isFirstClicked()}"
             android:layout_marginTop="25dp" />
 
         <TextView
@@ -83,7 +79,6 @@
             app:layout_constraintStart_toEndOf="@id/btn_terms2"
             app:layout_constraintTop_toTopOf="@id/btn_terms2"
             app:layout_constraintBottom_toBottomOf="@id/btn_terms2"
-            android:onClick="@{() -> vm.isSecondClicked()}"
             android:layout_marginStart="10dp"
             android:textColor="@color/white" />
 
@@ -109,7 +104,6 @@
             android:background="@drawable/selector_custom_checkbox"
             android:button="@null"
             app:layout_constraintBottom_toTopOf="@id/btn_next"
-            android:onClick="@{() -> vm.isAllClicked()}"
             android:layout_marginBottom="20dp"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -133,7 +127,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             android:text="다음으로"
             android:textColor="@color/white"
-            android:background="@drawable/shape_darkfill_nostroke"
+            android:enabled="false"
+            android:background="@drawable/selector_next_btn"
             android:layout_marginBottom="40dp" />
 
 
