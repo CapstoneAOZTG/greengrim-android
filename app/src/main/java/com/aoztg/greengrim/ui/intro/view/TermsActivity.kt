@@ -13,6 +13,7 @@ class TermsActivity : BaseActivity<ActivityTermsBinding>(ActivityTermsBinding::i
         super.onCreate(savedInstanceState)
 
         setListener()
+        setTextListner()
     }
 
     private fun setListener(){
@@ -25,14 +26,34 @@ class TermsActivity : BaseActivity<ActivityTermsBinding>(ActivityTermsBinding::i
             }
             btnTermsAll.setOnClickListener {
                 val state = binding.btnTermsAll.isChecked
-                binding.btnTerms1.isChecked = state
-                binding.btnTerms2.isChecked = state
-                binding.btnNext.isEnabled = state
+                allToggle(state)
             }
             btnNext.setOnClickListener {
                 startActivity(Intent(this@TermsActivity, SignupActivity::class.java))
             }
         }
+    }
+    private fun setTextListner(){
+        with(binding){
+            tvTerms1Head.setOnClickListener {
+                this.btnTerms1.isChecked = !this.btnTerms1.isChecked
+                check()
+            }
+            tvTerms2Head.setOnClickListener {
+                this.btnTerms2.isChecked = !this.btnTerms2.isChecked
+                check()
+            }
+            tvTermsAllHead.setOnClickListener {
+                this.btnTermsAll.isChecked = !this.btnTermsAll.isChecked
+                allToggle(this.btnTermsAll.isChecked)
+            }
+        }
+    }
+
+    private fun allToggle(state : Boolean){
+        binding.btnTerms1.isChecked = state
+        binding.btnTerms2.isChecked = state
+        binding.btnNext.isEnabled = state
     }
 
     private fun check(){
