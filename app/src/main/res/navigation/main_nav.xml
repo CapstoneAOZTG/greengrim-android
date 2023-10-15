@@ -54,8 +54,27 @@
 
     <fragment
         android:id="@+id/nav_chat"
-        android:name="com.aoztg.greengrim.ui.chat.ChatFragment"
-        android:label="ChatFragment"/>
+        android:name="com.aoztg.greengrim.ui.chat.view.ChatFragment"
+        android:label="ChatFragment">
+        <action
+            android:id="@+id/action_nav_chat_to_nav_chat_room"
+            app:destination="@id/nav_chat_room" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_chat_room"
+        android:name="com.aoztg.greengrim.ui.chat.view.ChatRoomFragment"
+        android:label="ChatRoomFragment">
+        <action
+            android:id="@+id/action_nav_chat_room_to_nav_certification"
+            app:destination="@id/nav_certification" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_certification"
+        android:name="com.aoztg.greengrim.ui.chat.view.CertificateFragment"
+        android:label="CertificateFragment"/>
+
 
     <fragment
         android:id="@+id/nav_market"
@@ -64,8 +83,14 @@
 
     <fragment
         android:id="@+id/nav_info"
-        android:name="com.aoztg.greengrim.ui.info.InfoFragment"
-        android:label="InfoFragment"/>
+        android:name="com.aoztg.greengrim.ui.info.view.InfoFragment"
+        android:label="InfoFragment">
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_profile_setting"
+        android:name="com.aoztg.greengrim.ui.info.view.ProfileSettingFragment"
+        android:label="ProfileSettingFragment"/>
 
 
 

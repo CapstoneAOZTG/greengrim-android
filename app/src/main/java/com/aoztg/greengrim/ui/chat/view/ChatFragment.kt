@@ -1,4 +1,4 @@
-package com.aoztg.greengrim.ui.chat
+package com.aoztg.greengrim.ui.chat.view
 
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentChatBinding
