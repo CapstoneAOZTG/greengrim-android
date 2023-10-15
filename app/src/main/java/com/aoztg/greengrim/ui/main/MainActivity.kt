@@ -2,23 +2,20 @@ package com.aoztg.greengrim.ui.main
 
 
 import android.os.Bundle
-import android.util.Log
-import androidx.core.view.forEach
-import androidx.lifecycle.ReportFragment.Companion.reportFragment
+import androidx.activity.viewModels
 import androidx.navigation.NavController
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.ActivityMainBinding
 import com.aoztg.greengrim.ui.base.BaseActivity
-import com.aoztg.greengrim.ui.home.HomeFragment
 import com.aoztg.greengrim.ui.home.HomeFragmentDirections
-import com.aoztg.greengrim.util.Constants.TAG
 
 class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate) {
 
     private lateinit var navController : NavController
+    private val viewModel : MainViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 

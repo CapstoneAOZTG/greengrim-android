@@ -6,13 +6,51 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="com.aoztg.greengrim.ui.home.HomeFragment"
+        android:name="com.aoztg.greengrim.ui.home.view.HomeFragment"
         android:label="HomeFragment"/>
 
     <fragment
         android:id="@+id/nav_challenge"
-        android:name="com.aoztg.greengrim.ui.challenge.ChallengeFragment"
-        android:label="ChallengeFragment"/>
+        android:name="com.aoztg.greengrim.ui.challenge.view.ChallengeFragment"
+        android:label="ChallengeFragment">
+        <action
+            android:id="@+id/action_nav_challenge_to_nav_challenge_list"
+            app:destination="@id/nav_challenge_list" />
+        <action
+            android:id="@+id/action_nav_challenge_to_nav_create_challenge"
+            app:destination="@id/nav_create_challenge" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_challenge_list"
+        android:name="com.aoztg.greengrim.ui.challenge.view.ChallengeListFragment"
+        android:label="ChallengeListFragment">
+        <action
+            android:id="@+id/action_nav_challenge_list_to_nav_challenge_detail"
+            app:destination="@id/nav_challenge_detail" />
+        <action
+            android:id="@+id/action_nav_challenge_list_to_nav_create_challenge"
+            app:destination="@id/nav_create_challenge" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_create_challenge"
+        android:name="com.aoztg.greengrim.ui.challenge.view.CreateChallengeFragment"
+        android:label="CreateChallengeFragment">
+        <action
+            android:id="@+id/action_nav_create_challenge_to_nav_create_challenge_detail"
+            app:destination="@id/nav_create_challenge_detail" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_create_challenge_detail"
+        android:name="com.aoztg.greengrim.ui.challenge.view.CreateChallengeDetailFragment"
+        android:label="CreateChallengeDetailFragment"/>
+
+    <fragment
+        android:id="@+id/nav_challenge_detail"
+        android:name="com.aoztg.greengrim.ui.challenge.view.ChallengeDetailFragment"
+        android:label="ChallengeDetailFragment"/>
 
     <fragment
         android:id="@+id/nav_chat"
@@ -28,6 +66,8 @@
         android:id="@+id/nav_info"
         android:name="com.aoztg.greengrim.ui.info.InfoFragment"
         android:label="InfoFragment"/>
+
+
 
     <action android:id="@+id/action_global_to_homeFragment"
         app:destination="@id/nav_home"/>

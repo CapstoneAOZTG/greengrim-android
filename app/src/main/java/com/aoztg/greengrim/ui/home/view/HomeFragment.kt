@@ -1,4 +1,4 @@
-package com.aoztg.greengrim.ui.home
+package com.aoztg.greengrim.ui.home.view
 
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentHomeBinding

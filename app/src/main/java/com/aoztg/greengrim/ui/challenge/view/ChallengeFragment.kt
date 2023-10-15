@@ -1,4 +1,4 @@
-package com.aoztg.greengrim.ui.challenge
+package com.aoztg.greengrim.ui.challenge.view
 
 
 import com.aoztg.greengrim.R
