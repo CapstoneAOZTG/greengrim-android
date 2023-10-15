@@ -36,6 +36,7 @@
             app:layout_constraintBottom_toBottomOf="parent" />
 
         <ImageButton
+            android:id="@+id/btn_home"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:src="@drawable/menu_earth"
