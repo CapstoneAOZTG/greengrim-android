@@ -20,7 +20,7 @@ import com.aoztg.greengrim.databinding.ActivitySignupBinding
 import com.aoztg.greengrim.ui.base.BaseActivity
 import com.aoztg.greengrim.ui.intro.event.SignupEvent
 import com.aoztg.greengrim.ui.intro.viewmodel.SignupViewModel
-import com.aoztg.greengrim.ui.main.MainActivity
+import com.aoztg.greengrim.ui.main.view.MainActivity
 import com.aoztg.greengrim.util.Constants.RC_PERMISSION
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -46,11 +46,11 @@ class SignupActivity : BaseActivity<ActivitySignupBinding>(ActivitySignupBinding
         super.onCreate(savedInstanceState)
 
         binding.vm = viewModel
-        setNavigationObserver()
+        setEventObserver()
         setTextWatcher()
     }
 
-    private fun setNavigationObserver(){
+    private fun setEventObserver(){
         repeatOnStarted {
             viewModel.eventFlow.collect {
                 when(it){

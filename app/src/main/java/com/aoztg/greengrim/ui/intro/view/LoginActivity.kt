@@ -12,7 +12,7 @@ import com.aoztg.greengrim.databinding.ActivityLoginBinding
 import com.aoztg.greengrim.ui.base.BaseActivity
 import com.aoztg.greengrim.ui.intro.event.LoginEvent
 import com.aoztg.greengrim.ui.intro.viewmodel.LoginViewModel
-import com.aoztg.greengrim.ui.main.MainActivity
+import com.aoztg.greengrim.ui.main.view.MainActivity
 import com.aoztg.greengrim.util.Constants.TAG
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.common.api.ApiException
@@ -40,10 +40,10 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::i
         binding.vm = viewModel
         binding.view = this
 
-        setNavigationObserver()
+        setEventObserver()
     }
 
-    private fun setNavigationObserver(){
+    private fun setEventObserver(){
         lifecycleScope.launch {
             viewModel.eventFlow.collectLatest {
                 when(it){

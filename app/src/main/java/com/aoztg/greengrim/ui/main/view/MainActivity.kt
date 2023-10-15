@@ -1,7 +1,9 @@
-package com.aoztg.greengrim.ui.main
+package com.aoztg.greengrim.ui.main.view
 
 
+import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.activity.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -10,6 +12,9 @@ import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.ActivityMainBinding
 import com.aoztg.greengrim.ui.base.BaseActivity
 import com.aoztg.greengrim.ui.home.HomeFragmentDirections
+import com.aoztg.greengrim.ui.intro.event.SignupEvent
+import com.aoztg.greengrim.ui.main.event.MainEvent
+import com.aoztg.greengrim.ui.main.viewmodel.MainViewModel
 
 class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate) {
 
@@ -20,6 +25,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         super.onCreate(savedInstanceState)
 
         setBottomNavigation()
+        setEventObserver()
     }
 
     private fun setBottomNavigation(){
@@ -41,6 +47,17 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                 menu.getItem(2).isChecked = true
             }
 
+        }
+    }
+
+    private fun setEventObserver(){
+        repeatOnStarted {
+            viewModel.eventFlow.collect {
+                when(it){
+                    is MainEvent.HideBottomNav -> binding.layoutBnv.visibility = View.INVISIBLE
+                    is MainEvent.ShowBottomNav -> binding.layoutBnv.visibility = View.VISIBLE
+                }
+            }
         }
     }
 }
