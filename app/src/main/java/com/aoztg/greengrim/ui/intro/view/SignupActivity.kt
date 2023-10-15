@@ -72,6 +72,8 @@ class SignupActivity : BaseActivity<ActivitySignupBinding>(ActivitySignupBinding
 
         if(neededPermissionList.isNotEmpty()){
             ActivityCompat.requestPermissions(this, neededPermissionList.toTypedArray(), RC_PERMISSION)
+        } else {
+            openGallery()
         }
     }
 

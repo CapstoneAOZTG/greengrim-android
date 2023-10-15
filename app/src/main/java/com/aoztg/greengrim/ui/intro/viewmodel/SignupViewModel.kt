@@ -18,6 +18,7 @@ class SignupViewModel @Inject constructor(private val introRepository : IntroRep
     val nickname = MutableLiveData<String>()
     val introduce = MutableLiveData<String>()
 
+
     private val _eventFlow : MutableSharedFlow<SignupEvent> = MutableSharedFlow()
     val eventFlow : SharedFlow<SignupEvent> = _eventFlow
 
