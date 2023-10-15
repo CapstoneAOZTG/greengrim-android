@@ -1,4 +1,7 @@
 package com.aoztg.greengrim.ui.intro.event
 
-interface SignupEvent {
+
+sealed class SignupEvent {
+    object NavigateToMainActivity : SignupEvent()
+    object NavigateToGallery : SignupEvent()
 }

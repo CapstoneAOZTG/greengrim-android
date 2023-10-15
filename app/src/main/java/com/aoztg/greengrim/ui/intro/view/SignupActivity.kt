@@ -7,15 +7,12 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.widget.TextView
 import androidx.activity.viewModels
-import androidx.lifecycle.lifecycleScope
 import com.aoztg.greengrim.databinding.ActivitySignupBinding
 import com.aoztg.greengrim.ui.base.BaseActivity
-import com.aoztg.greengrim.ui.intro.event.SignupNavigationAction
+import com.aoztg.greengrim.ui.intro.event.SignupEvent
 import com.aoztg.greengrim.ui.intro.viewmodel.SignupViewModel
 import com.aoztg.greengrim.ui.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class SignupActivity : BaseActivity<ActivitySignupBinding>(ActivitySignupBinding::inflate) {
@@ -31,14 +28,14 @@ class SignupActivity : BaseActivity<ActivitySignupBinding>(ActivitySignupBinding
     }
 
     private fun setNavigationObserver(){
-        lifecycleScope.launch{
-            viewModel.navigationHandler.collectLatest {
+        repeatOnStarted {
+            viewModel.eventFlow.collect {
                 when(it){
-                    is SignupNavigationAction.NavigateToMainActivity -> {
+                    is SignupEvent.NavigateToMainActivity -> {
                         startActivity(Intent(this@SignupActivity, MainActivity::class.java))
                     }
 
-                    is SignupNavigationAction.NavigateToGallery -> {
+                    is SignupEvent.NavigateToGallery -> {
 
                     }
                 }

@@ -10,7 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import com.aoztg.greengrim.App.Companion.gso
 import com.aoztg.greengrim.databinding.ActivityLoginBinding
 import com.aoztg.greengrim.ui.base.BaseActivity
-import com.aoztg.greengrim.ui.intro.event.LoginNavigationAction
+import com.aoztg.greengrim.ui.intro.event.LoginEvent
 import com.aoztg.greengrim.ui.intro.viewmodel.LoginViewModel
 import com.aoztg.greengrim.ui.main.MainActivity
 import com.aoztg.greengrim.util.Constants.TAG
@@ -44,13 +44,13 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::i
 
     private fun setNavigationObserver(){
         lifecycleScope.launch {
-            viewModel.navigationHandler.collectLatest {
+            viewModel.eventFlow.collectLatest {
                 when(it){
-                    is LoginNavigationAction.NavigateToMainActivity -> {
+                    is LoginEvent.NavigateToMainActivity -> {
                         startActivity(Intent(this@LoginActivity, MainActivity::class.java))
                     }
 
-                    is LoginNavigationAction.NavigateToTermsActivity -> {
+                    is LoginEvent.NavigateToTermsActivity -> {
                         startActivity(Intent(this@LoginActivity, TermsActivity::class.java))
                     }
                 }

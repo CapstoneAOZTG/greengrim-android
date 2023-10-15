@@ -10,7 +10,13 @@ import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.aoztg.greengrim.util.LoadingDialog
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 
 abstract class BaseFragment<B : ViewDataBinding>(
@@ -31,6 +37,11 @@ abstract class BaseFragment<B : ViewDataBinding>(
         return binding.root
     }
 
+    fun LifecycleOwner.repeatOnStarted(block: suspend CoroutineScope.() -> Unit) {
+        lifecycleScope.launch {
+            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED, block)
+        }
+    }
 
     fun showLoading(context : Context){
         loadingDialog = LoadingDialog(context)
