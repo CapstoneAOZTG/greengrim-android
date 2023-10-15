@@ -43,6 +43,7 @@
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:src="@drawable/icon_goto_gallery"
+            android:onClick="@{() -> vm.goToGallery()}"
             app:layout_constraintBottom_toBottomOf="@id/iv_profile"
             app:layout_constraintEnd_toEndOf="@id/iv_profile" />
 

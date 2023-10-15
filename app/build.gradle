@@ -96,6 +96,4 @@ dependencies {
     implementation "com.google.dagger:hilt-android:2.44"
     kapt "com.google.dagger:hilt-compiler:2.44"
 
-    // lifecycle
-    implementation "lifecycle:lifecycle-runtime-ktx:2.4.0-alpha01"
 }
