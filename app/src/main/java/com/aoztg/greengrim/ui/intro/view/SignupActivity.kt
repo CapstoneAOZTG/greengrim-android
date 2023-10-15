@@ -10,11 +10,12 @@ import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.aoztg.greengrim.databinding.ActivitySignupBinding
 import com.aoztg.greengrim.ui.base.BaseActivity
-import com.aoztg.greengrim.ui.intro.action.SignupNavigationAction
+import com.aoztg.greengrim.ui.intro.event.SignupNavigationAction
 import com.aoztg.greengrim.ui.intro.viewmodel.SignupViewModel
 import com.aoztg.greengrim.ui.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class SignupActivity : BaseActivity<ActivitySignupBinding>(ActivitySignupBinding::inflate) {
@@ -30,7 +31,7 @@ class SignupActivity : BaseActivity<ActivitySignupBinding>(ActivitySignupBinding
     }
 
     private fun setNavigationObserver(){
-        lifecycleScope.launchWhenStarted {
+        lifecycleScope.launch{
             viewModel.navigationHandler.collectLatest {
                 when(it){
                     is SignupNavigationAction.NavigateToMainActivity -> {

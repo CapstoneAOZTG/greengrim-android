@@ -10,7 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import com.aoztg.greengrim.App.Companion.gso
 import com.aoztg.greengrim.databinding.ActivityLoginBinding
 import com.aoztg.greengrim.ui.base.BaseActivity
-import com.aoztg.greengrim.ui.intro.action.LoginNavigationAction
+import com.aoztg.greengrim.ui.intro.event.LoginNavigationAction
 import com.aoztg.greengrim.ui.intro.viewmodel.LoginViewModel
 import com.aoztg.greengrim.ui.main.MainActivity
 import com.aoztg.greengrim.util.Constants.TAG
@@ -27,6 +27,7 @@ import com.navercorp.nid.profile.NidProfileCallback
 import com.navercorp.nid.profile.data.NidProfileResponse
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class LoginActivity : BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::inflate) {
@@ -42,7 +43,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::i
     }
 
     private fun setNavigationObserver(){
-        lifecycleScope.launchWhenStarted {
+        lifecycleScope.launch {
             viewModel.navigationHandler.collectLatest {
                 when(it){
                     is LoginNavigationAction.NavigateToMainActivity -> {

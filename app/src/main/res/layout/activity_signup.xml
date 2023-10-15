@@ -95,6 +95,7 @@
             android:layout_height="wrap_content"
             android:text="사용할 수 없는 닉네임 입니다."
             android:textColor="@color/gg_red"
+            android:visibility="invisible"
             app:layout_constraintTop_toBottomOf="@id/et_nickname"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginTop="5dp" />

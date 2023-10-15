@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.data.repository.IntroRepository
-import com.aoztg.greengrim.ui.intro.action.LoginNavigationAction
+import com.aoztg.greengrim.ui.intro.event.LoginNavigationAction
 import com.aoztg.greengrim.util.Constants
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow

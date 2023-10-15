@@ -1,4 +1,4 @@
-package com.aoztg.greengrim.ui.intro.action
+package com.aoztg.greengrim.ui.intro.event
 
 sealed class LoginNavigationAction {
 
