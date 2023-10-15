@@ -5,12 +5,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.data.repository.IntroRepository
 import com.aoztg.greengrim.ui.intro.action.SignupNavigationAction
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
+@HiltViewModel
 class SignupViewModel @Inject constructor(private val introRepository : IntroRepository) : ViewModel() {
 
     val nickname = MutableLiveData<String>()

@@ -65,7 +65,7 @@ class SignupActivity : BaseActivity<ActivitySignupBinding>(ActivitySignupBinding
             @SuppressLint("SetTextI18n")
             override fun onTextChanged(text: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 text?.let{
-                    countView.text = "($it/$limit)"
+                    countView.text = "(${it.length}/$limit)"
 
                     if(isNick){
                         viewModel.checkNick(it.toString())
