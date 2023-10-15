@@ -1,4 +1,4 @@
-package com.aoztg.greengrim.data.network.loginnetwork.model
+package com.aoztg.greengrim.data.remote.introremote.model
 
 data class SignupPostData(
     val email : String,

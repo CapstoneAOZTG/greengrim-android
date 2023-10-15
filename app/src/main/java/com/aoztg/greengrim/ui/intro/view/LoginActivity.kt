@@ -1,4 +1,4 @@
-package com.aoztg.greengrim.ui.intro.login
+package com.aoztg.greengrim.ui.intro.view
 
 import android.app.Activity
 import android.content.Intent
@@ -10,7 +10,8 @@ import androidx.lifecycle.lifecycleScope
 import com.aoztg.greengrim.App.Companion.gso
 import com.aoztg.greengrim.databinding.ActivityLoginBinding
 import com.aoztg.greengrim.ui.base.BaseActivity
-import com.aoztg.greengrim.ui.intro.terms.TermsActivity
+import com.aoztg.greengrim.ui.intro.action.LoginNavigationAction
+import com.aoztg.greengrim.ui.intro.viewmodel.LoginViewModel
 import com.aoztg.greengrim.ui.main.MainActivity
 import com.aoztg.greengrim.util.Constants.TAG
 import com.google.android.gms.auth.api.signin.GoogleSignIn

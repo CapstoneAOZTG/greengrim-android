@@ -1,4 +1,4 @@
-package com.aoztg.greengrim.di
+package com.aoztg.greengrim.data.di
 
 import com.aoztg.greengrim.data.repository.IntroRepository
 import com.aoztg.greengrim.data.repository.IntroRepositoryImpl

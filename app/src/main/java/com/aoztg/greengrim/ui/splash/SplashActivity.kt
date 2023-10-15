@@ -11,7 +11,7 @@ import android.os.Looper
 import androidx.appcompat.app.AlertDialog
 import com.aoztg.greengrim.databinding.ActivitySplashBinding
 import com.aoztg.greengrim.ui.base.BaseActivity
-import com.aoztg.greengrim.ui.intro.login.LoginActivity
+import com.aoztg.greengrim.ui.intro.view.LoginActivity
 
 class SplashActivity : BaseActivity<ActivitySplashBinding>(ActivitySplashBinding::inflate) {
 

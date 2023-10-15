@@ -29,13 +29,13 @@
             android:exported="true">
 
         </activity>
-        <activity android:name=".ui.intro.login.LoginActivity"
+        <activity android:name=".ui.intro.view.LoginActivity"
             android:exported="true"/>
 
-        <activity android:name=".ui.intro.signup.SignupActivity"
+        <activity android:name=".ui.intro.view.SignupActivity"
             android:exported="true"/>
 
-        <activity android:name=".ui.intro.terms.TermsActivity"
+        <activity android:name=".ui.intro.view.TermsActivity"
             android:exported="true"/>
 
         <activity

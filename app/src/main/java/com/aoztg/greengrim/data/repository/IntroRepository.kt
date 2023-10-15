@@ -1,6 +1,6 @@
 package com.aoztg.greengrim.data.repository
 
-import com.aoztg.greengrim.data.network.loginnetwork.model.SignupPostData
+import com.aoztg.greengrim.data.remote.introremote.model.SignupPostData
 
 interface IntroRepository {
 

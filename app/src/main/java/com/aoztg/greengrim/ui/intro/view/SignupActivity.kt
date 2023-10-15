@@ -1,4 +1,4 @@
-package com.aoztg.greengrim.ui.intro.signup
+package com.aoztg.greengrim.ui.intro.view
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -10,6 +10,8 @@ import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.aoztg.greengrim.databinding.ActivitySignupBinding
 import com.aoztg.greengrim.ui.base.BaseActivity
+import com.aoztg.greengrim.ui.intro.action.SignupNavigationAction
+import com.aoztg.greengrim.ui.intro.viewmodel.SignupViewModel
 import com.aoztg.greengrim.ui.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -47,7 +49,9 @@ class SignupActivity : BaseActivity<ActivitySignupBinding>(ActivitySignupBinding
         with(binding){
             etNickname.addTextChangedListener(getTextWatcher(8, this.tvNicknameCount, true))
             etIntroduce.addTextChangedListener(getTextWatcher(200,this.tvIntroduceCount, false ))
+
         }
+
     }
 
     private fun getTextWatcher(

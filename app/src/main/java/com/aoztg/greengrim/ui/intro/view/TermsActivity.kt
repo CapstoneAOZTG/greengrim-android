@@ -1,10 +1,9 @@
-package com.aoztg.greengrim.ui.intro.terms
+package com.aoztg.greengrim.ui.intro.view
 
 import android.content.Intent
 import android.os.Bundle
 import com.aoztg.greengrim.databinding.ActivityTermsBinding
 import com.aoztg.greengrim.ui.base.BaseActivity
-import com.aoztg.greengrim.ui.intro.signup.SignupActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -31,7 +30,7 @@ class TermsActivity : BaseActivity<ActivityTermsBinding>(ActivityTermsBinding::i
                 binding.btnNext.isEnabled = state
             }
             btnNext.setOnClickListener {
-                startActivity(Intent(this@TermsActivity,SignupActivity::class.java))
+                startActivity(Intent(this@TermsActivity, SignupActivity::class.java))
             }
         }
     }

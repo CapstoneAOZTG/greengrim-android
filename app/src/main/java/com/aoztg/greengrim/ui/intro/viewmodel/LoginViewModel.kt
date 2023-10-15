@@ -1,10 +1,10 @@
-package com.aoztg.greengrim.ui.intro.login
+package com.aoztg.greengrim.ui.intro.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.aoztg.greengrim.data.network.loginnetwork.model.SignupPostData
 import com.aoztg.greengrim.data.repository.IntroRepository
+import com.aoztg.greengrim.ui.intro.action.LoginNavigationAction
 import com.aoztg.greengrim.util.Constants
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow

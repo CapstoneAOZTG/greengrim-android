@@ -1,10 +1,10 @@
-package com.aoztg.greengrim.ui.intro.signup
+package com.aoztg.greengrim.ui.intro.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.aoztg.greengrim.data.network.loginnetwork.model.SignupPostData
 import com.aoztg.greengrim.data.repository.IntroRepository
+import com.aoztg.greengrim.ui.intro.action.SignupNavigationAction
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch

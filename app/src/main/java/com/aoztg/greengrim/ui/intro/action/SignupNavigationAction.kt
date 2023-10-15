@@ -1,4 +1,4 @@
-package com.aoztg.greengrim.ui.intro.signup
+package com.aoztg.greengrim.ui.intro.action
 
 
 sealed class SignupNavigationAction {
