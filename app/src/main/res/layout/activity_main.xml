@@ -7,7 +7,7 @@
 
     </data>
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.main.MainActivity">
@@ -20,30 +20,55 @@
             app:defaultNavHost="true"
             app:navGraph="@navigation/main_nav" />
 
-        <com.aoztg.greengrim.customview.GgBottomNavigationView
-            android:id="@+id/bnv"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            app:menu="@menu/main_menu"
-            app:labelVisibilityMode="labeled"
-            app:elevation="0dp"
-            android:layout_gravity="bottom|center"
-            android:background="@color/gg_light_black"
-            app:itemTextColor="@color/selector_bnv_text"
-            app:itemActiveIndicatorStyle="@android:color/transparent"
-            app:itemTextAppearanceActive="@android:color/transparent"
-            app:itemTextAppearanceInactive="@android:color/transparent"
-            app:layout_constraintBottom_toBottomOf="parent" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_bnv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
 
-        <ImageButton
-            android:id="@+id/btn_home"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@drawable/menu_earth"
-            android:scaleType="fitCenter"
-            android:background="@android:color/transparent"
-            android:layout_gravity="bottom|center"
-            android:layout_marginBottom="20dp" />
+            <com.aoztg.greengrim.customview.GgBottomNavigationView
+                android:id="@+id/bnv"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                app:menu="@menu/main_menu"
+                app:labelVisibilityMode="labeled"
+                app:elevation="0dp"
+                android:layout_gravity="bottom|center"
+                android:background="@color/gg_light_black"
+                app:itemTextColor="@color/selector_bnv_text"
+                app:itemActiveIndicatorStyle="@android:color/transparent"
+                app:itemTextAppearanceActive="@android:color/transparent"
+                app:itemTextAppearanceInactive="@android:color/transparent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+            <View
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:background="@drawable/shape_dark_circle"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <ImageButton
+                android:id="@+id/btn_home"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:src="@drawable/menu_earth"
+                android:scaleType="fitCenter"
+                android:background="@android:color/transparent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginBottom="10dp" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
