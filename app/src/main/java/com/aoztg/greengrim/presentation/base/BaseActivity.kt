@@ -25,6 +25,7 @@ abstract class BaseActivity<B : ViewDataBinding>(private val inflate: (LayoutInf
         super.onCreate(savedInstanceState)
         binding = inflate(layoutInflater)
         setContentView(binding.root)
+
     }
 
     fun LifecycleOwner.repeatOnStarted(block: suspend CoroutineScope.() -> Unit) {
