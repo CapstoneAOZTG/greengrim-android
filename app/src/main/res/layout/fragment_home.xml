@@ -56,7 +56,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 android:paddingTop="25dp"
                 android:layout_marginTop="15dp"
-                android:background="@drawable/shape_darkfill_nostroke">
+                android:background="@drawable/shape_darkfill_nostroke_radius10">
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guide_banner"

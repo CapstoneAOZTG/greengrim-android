@@ -3,11 +3,15 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <color name="gg_gray">#D4D3D3</color>
+
     <color name="gg_light_black">#1C1C1E</color>
     <color name="gg_dark_Gray">#3F3F3F</color>
-    <color name="gg_middle_gray">#AEAEAE</color>
     <color name="gg_green">#8CC63E</color>
-    <color name="gg_light_gray">#AEAEAE</color>
+
+    <color name="gg_grey5">#AEAEAE</color>
+    <color name="gg_grey4">#AEAEAE</color>
+    <color name="gg_grey3">#D4D3D3</color>
+    <color name="gg_grey2">#D9D9D9</color>
+    <color name="gg_grey1">#DCDCDC</color>
     <color name="gg_red">#FF5C5C</color>
 </resources>

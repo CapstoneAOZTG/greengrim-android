@@ -57,7 +57,7 @@
             android:id="@+id/line_center"
             android:layout_width="0dp"
             android:layout_height="1dp"
-            android:background="@color/gg_gray"
+            android:background="@color/gg_grey3"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
