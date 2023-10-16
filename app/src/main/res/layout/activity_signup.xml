@@ -10,36 +10,31 @@
 
     </data>
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingHorizontal="25dp">
 
-
-
         <TextView
             android:id="@+id/tv_title"
+            style="@style/TextHeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="9dp"
             android:text="유저 정보 입력"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/iv_profile"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_marginTop="30dp"
-            android:background="@drawable/shape_nofill_graystroke"
             android:onClick="@{() -> vm.goToGallery()}"
-            android:scaleType="centerCrop"
+            android:src="@drawable/icon_profile"
+            app:civ_border_color="@color/gg_dark_white"
+            app:civ_border_width="1dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_title" />
@@ -53,26 +48,23 @@
             app:layout_constraintBottom_toBottomOf="@id/iv_profile"
             app:layout_constraintEnd_toEndOf="@id/iv_profile" />
 
-
         <TextView
             android:id="@+id/tv_nickname_label"
+            style="@style/TextSignupLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginTop="30dp"
             android:text="닉네임"
-            android:textColor="@color/white"
-            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/iv_profile" />
 
         <TextView
             android:id="@+id/tv_nickname_count"
+            style="@style/TextSignupLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="(0/8)"
-            android:textColor="@color/white"
-            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/tv_nickname_label" />
 
@@ -107,26 +99,23 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/et_nickname" />
 
-
         <TextView
             android:id="@+id/tv_introduce_label"
+            style="@style/TextSignupLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginTop="30dp"
             android:text="자기소개"
-            android:textColor="@color/white"
-            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_warning" />
 
         <TextView
             android:id="@+id/tv_introduce_count"
+            style="@style/TextSignupLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="(0/200)"
-            android:textColor="@color/white"
-            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/tv_introduce_label" />
 
@@ -159,12 +148,12 @@
             android:layout_marginBottom="40dp"
             android:background="@drawable/selector_next_btn"
             android:enabled="false"
+            android:onClick="@{() -> vm.postSignUp()}"
             android:text="다음으로"
             android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
