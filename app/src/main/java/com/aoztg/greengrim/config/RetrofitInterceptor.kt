@@ -21,6 +21,4 @@ class RetrofitInterceptor() : Interceptor{
 
         return chain.proceed(builder.build())
     }
-
-
 }
