@@ -98,6 +98,131 @@
 
 
 
+        <TextView
+            android:id="@+id/tv_label_hot_challenge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/TextHeader"
+            android:text="Hot Challenge 🔥"
+            app:layout_constraintTop_toBottomOf="@id/layout_home_banner"
+            android:layout_marginTop="12dp"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <TextView
+            android:id="@+id/tv_detail_hot_challenge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="지금 핫한 챌린지"
+            style="@style/TextGgTiny"
+            app:layout_constraintTop_toBottomOf="@id/tv_label_hot_challenge"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/vp_hot_challenge"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/tv_detail_hot_challenge"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/indicator_hot_challenge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/vp_hot_challenge"
+            app:layout_constraintStart_toStartOf="parent"
+            app:tabIndicatorFullWidth="false"
+            app:tabSelectedTextColor="#3f3fff"
+            app:tabIndicatorColor="#3f3fff"
+            app:tabRippleColor="#00ff0000"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+
+        <TextView
+            android:id="@+id/tv_label_more_activity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/TextHeader"
+            android:text="More Activity 🌈"
+            app:layout_constraintTop_toBottomOf="@id/indicator_hot_challenge"
+            android:layout_marginTop="12dp"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <TextView
+            android:id="@+id/tv_detail_more_activity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="활동을 통해 포인트를 얻으세요!"
+            style="@style/TextGgTiny"
+            app:layout_constraintTop_toBottomOf="@id/tv_label_more_activity"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/vp_more_activity"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/tv_detail_more_activity"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/indicator_more_activity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/vp_more_activity"
+            app:layout_constraintStart_toStartOf="parent"
+            app:tabIndicatorFullWidth="false"
+            app:tabSelectedTextColor="#3f3fff"
+            app:tabIndicatorColor="#3f3fff"
+            app:tabRippleColor="#00ff0000"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+
+
+        <TextView
+            android:id="@+id/tv_label_hot_nft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/TextHeader"
+            android:text="Hot NFT 🍀"
+            app:layout_constraintTop_toBottomOf="@id/indicator_more_activity"
+            android:layout_marginTop="12dp"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <TextView
+            android:id="@+id/tv_detail_hot_nft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="지금 핫한 NFT"
+            style="@style/TextGgTiny"
+            app:layout_constraintTop_toBottomOf="@id/tv_label_hot_nft"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/vp_hot_nft"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/tv_detail_hot_nft"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/indicator_hot_nft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/vp_hot_nft"
+            app:layout_constraintStart_toStartOf="parent"
+            app:tabIndicatorFullWidth="false"
+            app:tabSelectedTextColor="#3f3fff"
+            app:tabIndicatorColor="#3f3fff"
+            app:tabRippleColor="#00ff0000"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+
+
 
 
 
