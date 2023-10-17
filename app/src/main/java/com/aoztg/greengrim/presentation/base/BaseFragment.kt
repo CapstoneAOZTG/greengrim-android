@@ -38,7 +38,7 @@ abstract class BaseFragment<B : ViewDataBinding>(
     }
 
     fun LifecycleOwner.repeatOnStarted(block: suspend CoroutineScope.() -> Unit) {
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED, block)
         }
     }
@@ -63,6 +63,5 @@ abstract class BaseFragment<B : ViewDataBinding>(
         super.onDestroyView()
         _binding = null
     }
-
 
 }
