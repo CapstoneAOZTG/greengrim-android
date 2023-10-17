@@ -4,8 +4,11 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.aoztg.greengrim.databinding.ItemHomeHotChallengeBinding
+import com.aoztg.greengrim.databinding.ItemHomeHotNftBinding
+import com.aoztg.greengrim.databinding.ItemHomeMoreActivityBinding
+import com.aoztg.greengrim.presentation.ui.home.model.HomeUiModel
 
-class HomeAdapter(val data : Array<String>, val type : vpItemType) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class HomeAdapter(val data : List<HomeUiModel>, private val type : vpItemType) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var listener : HomeItemClickListener? = null
 
@@ -28,10 +31,10 @@ class HomeAdapter(val data : Array<String>, val type : vpItemType) : RecyclerVie
             vpItemType.HOT_CHALLENGE -> HotChallengeHolder(ItemHomeHotChallengeBinding.inflate(
                 LayoutInflater.from(parent.context), parent, false))
 
-            vpItemType.MORE_ACTIVITY -> MoreActivityHolder(ItemHomeHotChallengeBinding.inflate(
+            vpItemType.MORE_ACTIVITY -> MoreActivityHolder(ItemHomeMoreActivityBinding.inflate(
                 LayoutInflater.from(parent.context), parent, false))
 
-            vpItemType.HOT_NFT -> HotNftHolder(ItemHomeHotChallengeBinding.inflate(
+            vpItemType.HOT_NFT -> HotNftHolder(ItemHomeHotNftBinding.inflate(
                 LayoutInflater.from(parent.context), parent, false))
         }
     }

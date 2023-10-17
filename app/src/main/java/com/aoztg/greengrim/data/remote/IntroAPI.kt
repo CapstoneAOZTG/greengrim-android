@@ -8,7 +8,6 @@ import javax.inject.Singleton
 @Singleton
 interface IntroAPI {
 
-
     @POST("/signup")
     suspend fun postSignup(
         @Body params : SignupPostData
