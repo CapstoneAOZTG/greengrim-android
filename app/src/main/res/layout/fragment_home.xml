@@ -116,14 +116,15 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_label_hot_challenge" />
 
-            <androidx.viewpager2.widget.ViewPager2
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/vp_hot_challenge"
                 android:layout_width="0dp"
-                android:layout_height="160dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                android:clipChildren="false"
-                android:clipToPadding="false"
                 app:layout_constraintTop_toBottomOf="@id/tv_detail_hot_challenge" />
 
             <com.google.android.material.tabs.TabLayout
@@ -157,14 +158,15 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_label_more_activity" />
 
-            <androidx.viewpager2.widget.ViewPager2
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/vp_more_activity"
                 android:layout_width="0dp"
-                android:layout_height="160dp"
-                android:clipChildren="false"
-                android:clipToPadding="false"
-                app:layout_constraintStart_toStartOf="parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_detail_more_activity" />
 
             <com.google.android.material.tabs.TabLayout
@@ -198,12 +200,13 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_label_hot_nft" />
 
-            <androidx.viewpager2.widget.ViewPager2
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/vp_hot_nft"
                 android:layout_width="0dp"
-                android:layout_height="160dp"
-                android:clipChildren="false"
-                android:clipToPadding="false"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_detail_hot_nft" />
@@ -222,7 +225,7 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="500dp"
+                android:layout_height="200dp"
                 app:layout_constraintTop_toBottomOf="@id/indicator_hot_nft" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
