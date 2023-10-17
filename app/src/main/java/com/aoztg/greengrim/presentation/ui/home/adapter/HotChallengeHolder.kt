@@ -17,18 +17,29 @@ class HotChallengeHolder(private val binding : ItemHomeHotChallengeBinding) : Re
             tvTitle.text = item.title
             ivImage.setImageResource(R.drawable.test)
 
-//            item.chipList?.let{ chips ->
-//                chips.forEach{
-//                    val chip = Chip(App.context()).apply{
-//                        text = it.text
-//                        chipBackgroundColor = App.context().getColorStateList(R.color.gg_red)
-//                        setTextColor(App.context().getColor(R.color.black))
-//                    }
-//
-//                    this.itemChipgroup.addView(chip)
-//                }
-//            }
-        }
+            item.chipList?.let{ chips ->
+                chips.forEachIndexed{ index, data ->
+                    val chip = Chip(binding.itemChipgroup.context).apply{
+                        text = data
+                        when(index){
+                            0 -> { chipBackgroundColor = App.context().getColorStateList(R.color.gg_purple) }
+                            1 -> { chipBackgroundColor = App.context().getColorStateList(R.color.gg_yellow) }
+                            2 -> { chipBackgroundColor = App.context().getColorStateList(R.color.gg_grey2) }
+                        }
+                        setEnsureMinTouchTargetSize(false)
+                        chipCornerRadius = 40F
+                        chipMinHeight = 30F
+                        setTextAppearance(R.style.TextGgSmallBlack)
+                        setChipStrokeColorResource(android.R.color.transparent)
+                        chipStartPadding = 0F
+                        chipEndPadding = 0F
+                    }
 
+                    this.itemChipgroup.addView(chip)
+                }
+            }
+        }
     }
+
+
 }

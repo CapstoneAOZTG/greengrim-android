@@ -69,7 +69,7 @@
                     android:layout_height="wrap_content"
                     android:text="유보라 님의 탄소 저감량"
                     android:textColor="@color/white"
-                    android:textSize="15sp"
+                    android:textSize="18sp"
                     app:layout_constraintEnd_toEndOf="@id/guide_banner"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -109,15 +109,16 @@
 
             <TextView
                 android:id="@+id/tv_detail_hot_challenge"
-                style="@style/TextGgTiny"
+                style="@style/TextGgSmallGrey"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
                 android:text="지금 핫한 챌린지"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_label_hot_challenge" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/vp_hot_challenge"
+                android:id="@+id/rv_hot_challenge"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
@@ -133,7 +134,7 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/vp_hot_challenge"
+                app:layout_constraintTop_toBottomOf="@id/rv_hot_challenge"
                 app:tabIndicatorColor="#3f3fff"
                 app:tabIndicatorFullWidth="false"
                 app:tabRippleColor="#00ff0000"
@@ -151,15 +152,16 @@
 
             <TextView
                 android:id="@+id/tv_detail_more_activity"
-                style="@style/TextGgTiny"
+                style="@style/TextGgSmallGrey"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
                 android:text="활동을 통해 포인트를 얻으세요!"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_label_more_activity" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/vp_more_activity"
+                android:id="@+id/rv_more_activity"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
@@ -175,7 +177,7 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/vp_more_activity"
+                app:layout_constraintTop_toBottomOf="@id/rv_more_activity"
                 app:tabIndicatorColor="#3f3fff"
                 app:tabIndicatorFullWidth="false"
                 app:tabRippleColor="#00ff0000"
@@ -193,15 +195,16 @@
 
             <TextView
                 android:id="@+id/tv_detail_hot_nft"
-                style="@style/TextGgTiny"
+                style="@style/TextGgSmallGrey"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
                 android:text="지금 핫한 NFT"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_label_hot_nft" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/vp_hot_nft"
+                android:id="@+id/rv_hot_nft"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
@@ -217,7 +220,7 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/vp_hot_nft"
+                app:layout_constraintTop_toBottomOf="@id/rv_hot_nft"
                 app:tabIndicatorColor="#3f3fff"
                 app:tabIndicatorFullWidth="false"
                 app:tabRippleColor="#00ff0000"

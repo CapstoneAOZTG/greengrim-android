@@ -3,7 +3,6 @@ package com.aoztg.greengrim.presentation.ui.home.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.aoztg.greengrim.presentation.ui.home.model.ChipModel
 import com.aoztg.greengrim.presentation.ui.home.model.HomeUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -22,12 +21,12 @@ class HomeViewModel @Inject constructor()  : ViewModel() {
 
     fun getHomeList(){
         val dummyHomeList = listOf(
-            HomeUiModel(chipList= listOf(ChipModel("sdf","asdf"),ChipModel("sdf","asdf"),ChipModel("sdf","asdf")),
+            HomeUiModel(chipList= listOf("줍킹","남은 티켓 5개","#줍다"),
                 title="쓰레기 줍고 지구 살리기"),
-            HomeUiModel(chipList= listOf(ChipModel("sdf","asdf"),ChipModel("sdf","asdf"),ChipModel("sdf","asdf")),
+            HomeUiModel(chipList= listOf("에코 제품 사용","남은 티콋 6개","#먹다"),
                 title="카페에서 항상 종이빨대!!"),
-            HomeUiModel(chipList= listOf(ChipModel("sdf","asdf"),ChipModel("sdf","asdf"),ChipModel("sdf","asdf")),
-                title="쓰레기 줍고 지구 살리기")
+            HomeUiModel(chipList= listOf("아아","sdf","asdf"),
+                title="전기자동차 인증팟!")
         )
         _hotChallengeList.value = dummyHomeList
         
