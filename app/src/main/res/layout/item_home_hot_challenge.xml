@@ -24,7 +24,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:shapeAppearanceOverlay="@style/TopRadiusImageView" />
 
-
     <TextView
         android:id="@+id/tv_title"
         style="@style/TextGgSmall"
@@ -49,6 +48,5 @@
         app:layout_constraintTop_toBottomOf="@id/tv_title">
 
     </com.google.android.material.chip.ChipGroup>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

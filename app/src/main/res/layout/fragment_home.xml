@@ -21,29 +21,27 @@
                 android:id="@+id/layout_toolbar"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent">
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
                     android:id="@+id/tv_header"
+                    style="@style/TextHeader"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    style="@style/TextHeader"
                     android:text="HOME"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"/>
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/btn_alarm"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:src="@drawable/icon_alarm"
                     android:layout_gravity="end"
+                    android:src="@drawable/icon_alarm"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    />
-
+                    app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -51,19 +49,19 @@
                 android:id="@+id/layout_home_banner"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/layout_toolbar"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/shape_darkfill_nostroke_radius10"
                 android:paddingTop="25dp"
-                android:layout_marginTop="15dp"
-                android:background="@drawable/shape_darkfill_nostroke_radius10">
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/layout_toolbar">
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guide_banner"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    app:layout_constraintGuide_percent="0.6"/>
+                    app:layout_constraintGuide_percent="0.6" />
 
                 <TextView
                     android:id="@+id/tv_banner_name"
@@ -72,173 +70,155 @@
                     android:text="유보라 님의 탄소 저감량"
                     android:textColor="@color/white"
                     android:textSize="15sp"
-                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="@id/guide_banner"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="@id/guide_banner"/>
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/tv_banner_carbon"
+                    style="@style/TextGgLarge"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    style="@style/TextGgLarge"
                     android:text="15.8g"
-                    app:layout_constraintTop_toBottomOf="@id/tv_banner_name"
-                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="@id/guide_banner"/>
+                    app:layout_constraintEnd_toEndOf="@id/guide_banner"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_banner_name" />
 
                 <ImageView
                     android:id="@+id/iv_tree"
                     android:layout_width="128dp"
                     android:layout_height="128dp"
                     android:src="@drawable/icon_tree"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@id/guide_banner"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"/>
-
-
+                    app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-
             <TextView
                 android:id="@+id/tv_label_hot_challenge"
+                style="@style/TextHeader"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/TextHeader"
+                android:layout_marginTop="16dp"
                 android:text="Hot Challenge 🔥"
-                app:layout_constraintTop_toBottomOf="@id/layout_home_banner"
-                android:layout_marginTop="12dp"
-                app:layout_constraintStart_toStartOf="parent"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/layout_home_banner" />
 
             <TextView
                 android:id="@+id/tv_detail_hot_challenge"
+                style="@style/TextGgTiny"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="지금 핫한 챌린지"
-                style="@style/TextGgTiny"
-                app:layout_constraintTop_toBottomOf="@id/tv_label_hot_challenge"
-                app:layout_constraintStart_toStartOf="parent"/>
-
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_label_hot_challenge" />
 
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/vp_hot_challenge"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/tv_detail_hot_challenge"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:layout_constraintTop_toBottomOf="@id/tv_detail_hot_challenge" />
 
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/indicator_hot_challenge"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/vp_hot_challenge"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:tabIndicatorFullWidth="false"
-                app:tabSelectedTextColor="#3f3fff"
+                app:layout_constraintTop_toBottomOf="@id/vp_hot_challenge"
                 app:tabIndicatorColor="#3f3fff"
+                app:tabIndicatorFullWidth="false"
                 app:tabRippleColor="#00ff0000"
-                app:layout_constraintEnd_toEndOf="parent"/>
-
+                app:tabSelectedTextColor="#3f3fff" />
 
             <TextView
                 android:id="@+id/tv_label_more_activity"
+                style="@style/TextHeader"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/TextHeader"
+                android:layout_marginTop="16dp"
                 android:text="More Activity 🌈"
-                app:layout_constraintTop_toBottomOf="@id/indicator_hot_challenge"
-                android:layout_marginTop="12dp"
-                app:layout_constraintStart_toStartOf="parent"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/indicator_hot_challenge" />
 
             <TextView
                 android:id="@+id/tv_detail_more_activity"
+                style="@style/TextGgTiny"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="활동을 통해 포인트를 얻으세요!"
-                style="@style/TextGgTiny"
-                app:layout_constraintTop_toBottomOf="@id/tv_label_more_activity"
-                app:layout_constraintStart_toStartOf="parent"/>
-
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_label_more_activity" />
 
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/vp_more_activity"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/tv_detail_more_activity"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                android:layout_width="match_parent"
+                android:layout_height="160dp"
+                app:layout_constraintTop_toBottomOf="@id/tv_detail_more_activity" />
 
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/indicator_more_activity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/vp_more_activity"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:tabIndicatorFullWidth="false"
-                app:tabSelectedTextColor="#3f3fff"
+                app:layout_constraintTop_toBottomOf="@id/vp_more_activity"
                 app:tabIndicatorColor="#3f3fff"
+                app:tabIndicatorFullWidth="false"
                 app:tabRippleColor="#00ff0000"
-                app:layout_constraintEnd_toEndOf="parent"/>
-
-
+                app:tabSelectedTextColor="#3f3fff" />
 
             <TextView
                 android:id="@+id/tv_label_hot_nft"
+                style="@style/TextHeader"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/TextHeader"
+                android:layout_marginTop="16dp"
                 android:text="Hot NFT 🍀"
-                app:layout_constraintTop_toBottomOf="@id/indicator_more_activity"
-                android:layout_marginTop="12dp"
-                app:layout_constraintStart_toStartOf="parent"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/indicator_more_activity" />
 
             <TextView
                 android:id="@+id/tv_detail_hot_nft"
+                style="@style/TextGgTiny"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="지금 핫한 NFT"
-                style="@style/TextGgTiny"
-                app:layout_constraintTop_toBottomOf="@id/tv_label_hot_nft"
-                app:layout_constraintStart_toStartOf="parent"/>
-
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_label_hot_nft" />
 
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/vp_hot_nft"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/tv_detail_hot_nft"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:layout_constraintTop_toBottomOf="@id/tv_detail_hot_nft" />
 
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/indicator_hot_nft"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/vp_hot_nft"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:tabIndicatorFullWidth="false"
-                app:tabSelectedTextColor="#3f3fff"
+                app:layout_constraintTop_toBottomOf="@id/vp_hot_nft"
                 app:tabIndicatorColor="#3f3fff"
+                app:tabIndicatorFullWidth="false"
                 app:tabRippleColor="#00ff0000"
-                app:layout_constraintEnd_toEndOf="parent"/>
-
+                app:tabSelectedTextColor="#3f3fff" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="500dp"
-                app:layout_constraintTop_toBottomOf="@id/indicator_hot_nft"/>
-
-
+                app:layout_constraintTop_toBottomOf="@id/indicator_hot_nft" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-
     </androidx.core.widget.NestedScrollView>
-
 
 </layout>
