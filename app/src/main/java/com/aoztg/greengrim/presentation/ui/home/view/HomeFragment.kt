@@ -12,7 +12,6 @@ import com.aoztg.greengrim.presentation.ui.home.adapter.HomeAdapter
 import com.aoztg.greengrim.presentation.ui.home.adapter.vpItemType
 import com.aoztg.greengrim.presentation.ui.home.model.HomeUiModel
 import com.aoztg.greengrim.presentation.ui.home.viewmodel.HomeViewModel
-import com.google.android.material.tabs.TabLayoutMediator
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
@@ -48,6 +47,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         val adapter = HomeAdapter(data, type)
         rcView.adapter = adapter
         PagerSnapHelper().attachToRecyclerView(rcView)
+
     }
 
     private fun setData() {

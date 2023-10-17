@@ -3,11 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:name=".presentation.App"
@@ -18,7 +18,8 @@
         android:theme="@style/Theme.Greengrim"
         tools:targetApi="31">
 
-        <activity android:name=".presentation.ui.splash.SplashActivity"
+        <activity
+            android:name=".presentation.ui.splash.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -33,26 +34,30 @@
             android:exported="true">
 
 
-
         </activity>
-        <activity android:name=".presentation.ui.intro.view.LoginActivity"
-            android:exported="true"/>
+        <activity
+            android:name=".presentation.ui.intro.view.LoginActivity"
+            android:exported="true" />
 
-        <activity android:name=".presentation.ui.intro.view.SignupActivity"
-            android:exported="true"/>
+        <activity
+            android:name=".presentation.ui.intro.view.SignupActivity"
+            android:exported="true" />
 
-        <activity android:name=".presentation.ui.intro.view.TermsActivity"
-            android:exported="true"/>
+        <activity
+            android:name=".presentation.ui.intro.view.TermsActivity"
+            android:exported="true" />
 
         <activity
             android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:host="oauth"
+                <data
+                    android:host="oauth"
                     android:scheme="kakao0ffd7abd3b15b2896c7e59533b7cccd4" />
             </intent-filter>
         </activity>
