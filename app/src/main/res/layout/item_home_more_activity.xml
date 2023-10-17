@@ -27,7 +27,7 @@
 
     <TextView
         android:id="@+id/tv_title"
-        style="@style/TextGgSmall"
+        style="@style/TextGgMedium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
@@ -40,27 +40,25 @@
 
     <TextView
         android:id="@+id/tv_detail"
+        style="@style/TextGgSmallGrey"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
         android:layout_marginBottom="5dp"
         android:text="지금 플레이하면"
-        android:textColor="@color/gg_grey1"
-        android:textSize="10sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_title" />
 
     <TextView
         android:id="@+id/tv_point"
+        style="@style/TextGgSmallBlack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
         android:background="@drawable/shape_greenfill_nostroke_radius20"
         android:paddingHorizontal="5dp"
         android:text="+ 10 G"
-        android:textColor="@color/black"
-        android:textSize="10sp"
         app:layout_constraintBottom_toBottomOf="@id/tv_detail"
         app:layout_constraintStart_toEndOf="@id/tv_detail"
         app:layout_constraintTop_toTopOf="@id/tv_detail" />
