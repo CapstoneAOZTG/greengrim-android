@@ -48,6 +48,7 @@ class SignupActivity : BaseActivity<ActivitySignupBinding>(ActivitySignupBinding
         binding.vm = viewModel
         setEventObserver()
         setTextWatcher()
+        setObserver()
     }
 
     private fun setEventObserver(){
@@ -60,6 +61,19 @@ class SignupActivity : BaseActivity<ActivitySignupBinding>(ActivitySignupBinding
                     is SignupEvent.HideWarning -> binding.tvWarning.visibility = View.INVISIBLE
                 }
             }
+        }
+    }
+
+    private fun setTextWatcher(){
+        with(binding){
+            etNickname.addTextChangedListener(getTextWatcher(8, this.tvNicknameCount, true))
+            etIntroduce.addTextChangedListener(getTextWatcher(200,this.tvIntroduceCount, false ))
+        }
+    }
+
+    private fun setObserver(){
+        viewModel.isAllDataSet.observe(this){
+            binding.btnNext.isEnabled = it
         }
     }
 
@@ -78,13 +92,6 @@ class SignupActivity : BaseActivity<ActivitySignupBinding>(ActivitySignupBinding
     }
 
 
-
-    private fun setTextWatcher(){
-        with(binding){
-            etNickname.addTextChangedListener(getTextWatcher(8, this.tvNicknameCount, true))
-            etIntroduce.addTextChangedListener(getTextWatcher(200,this.tvIntroduceCount, false ))
-        }
-    }
 
     private fun getTextWatcher(
         limit : Int,
