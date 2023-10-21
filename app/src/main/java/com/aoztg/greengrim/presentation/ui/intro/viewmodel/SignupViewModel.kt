@@ -2,6 +2,7 @@ package com.aoztg.greengrim.presentation.ui.intro.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.aoztg.greengrim.data.model.CheckNickRequest
 import com.aoztg.greengrim.data.model.ErrorResponse
 import com.aoztg.greengrim.data.model.SignupRequest
 import com.aoztg.greengrim.data.repository.IntroRepository
@@ -25,6 +26,7 @@ data class SignupUiState(
     val nextBtnState: SignupState = SignupState.Empty,
     val signupState: SignupState = SignupState.Empty
 )
+
 sealed class SignupState {
     object Empty : SignupState()
     object Success : SignupState()
@@ -35,14 +37,6 @@ sealed class SignupState {
 @HiltViewModel
 class SignupViewModel @Inject constructor(private val introRepository: IntroRepository) :
     ViewModel() {
-
-    companion object {
-        const val UNAVAILABLE_EMAIL = "GLOBAL_001"
-        const val UNAVAILABLE_MEMEBER = "MEMBER_001"
-        const val DUPLICATE_MEMEBER = "MEMBER_002"
-        const val DUPLICATE_NICK = "MEMBER_003"
-        const val UNREGISTERED_EMAIL = "MEMBER_004"
-    }
 
     private val _uiState = MutableStateFlow(SignupUiState())
     val uiState: StateFlow<SignupUiState> = _uiState.asStateFlow()
@@ -69,18 +63,28 @@ class SignupViewModel @Inject constructor(private val introRepository: IntroRepo
 
     private fun checkNickDuplicate() {
         nickname.onEach {
-            // 중복체크 통신부
-            if (it.length == 7) {
-                // 성공시
-                isNicknameValid.value = true
-                _uiState.update { state ->
-                    state.copy(nickState = SignupState.Success)
+            val response = introRepository.checkNick(CheckNickRequest(it))
+            if (response.isSuccessful) {
+                response.body()?.let { body ->
+
+                    if (body.used) {
+                        isNicknameValid.value = true
+                        _uiState.update { state ->
+                            state.copy(nickState = SignupState.Success)
+                        }
+                    } else {
+                        isNicknameValid.value = false
+                        _uiState.update { state ->
+                            state.copy(nickState = SignupState.Error("사용할 수 없는 닉네임 입니다"))
+                        }
+                    }
                 }
             } else {
-                // 실패시
                 isNicknameValid.value = false
+                val error =
+                    Gson().fromJson(response.errorBody()?.string(), ErrorResponse::class.java)
                 _uiState.update { state ->
-                    state.copy(nickState = SignupState.Error("에러에러에러에러"))
+                    state.copy(nickState = SignupState.Error(error.message))
                 }
             }
         }.launchIn(viewModelScope)

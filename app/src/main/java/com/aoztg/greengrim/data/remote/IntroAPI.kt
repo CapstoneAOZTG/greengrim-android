@@ -1,5 +1,7 @@
 package com.aoztg.greengrim.data.remote
 
+import com.aoztg.greengrim.data.model.CheckNickRequest
+import com.aoztg.greengrim.data.model.CheckNickResponse
 import com.aoztg.greengrim.data.model.LoginRequest
 import com.aoztg.greengrim.data.model.LoginResponse
 import com.aoztg.greengrim.data.model.SignupRequest
@@ -18,6 +20,11 @@ interface IntroAPI {
 
     @POST("/login")
     suspend fun login(
-        @Body params : LoginRequest
-    ) : Response<LoginResponse>
+        @Body params: LoginRequest
+    ): Response<LoginResponse>
+
+    @POST("/nick-name")
+    suspend fun checkNick(
+        @Body params: CheckNickRequest
+    ): Response<CheckNickResponse>
 }
