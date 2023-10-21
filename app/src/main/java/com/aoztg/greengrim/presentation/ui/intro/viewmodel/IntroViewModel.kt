@@ -44,10 +44,52 @@ class IntroViewModel @Inject constructor(private val introRepository: IntroRepos
     val nickname = MutableStateFlow("")
     val introduce = MutableStateFlow("")
     val profileImg = MutableStateFlow("")
-    val isNicknameValid = MutableStateFlow(true)
+
+    private val isNicknameValid = MutableStateFlow(false)
+    private val isDataReady = combine(nickname, isNicknameValid) { nick, nickValid ->
+        nick.isNotBlank() && nickValid
+    }.stateIn(
+        viewModelScope,
+        SharingStarted.WhileSubscribed(),
+        false
+    )
 
     init {
         checkNickDuplicate()
+        checkSignupState()
+    }
+
+    private fun checkNickDuplicate() {
+        nickname.onEach {
+            // 중복체크 통신부
+            if(it.length == 7){
+                // 성공시
+                isNicknameValid.value = true
+                _uiState.update { state ->
+                    state.copy(nickState = true)
+                }
+            } else{
+                // 실패시
+                isNicknameValid.value = false
+                _uiState.update{ state ->
+                    state.copy(nickState = false)
+                }
+            }
+        }.launchIn(viewModelScope)
+    }
+
+    private fun checkSignupState(){
+        isDataReady.onEach{
+            if(it) {
+                _uiState.update{ state ->
+                    state.copy(signupState = true)
+                }
+            } else{
+                _uiState.update{ state ->
+                    state.copy(signupState = false)
+                }
+            }
+        }.launchIn(viewModelScope)
     }
 
     fun startLogin(
@@ -86,30 +128,6 @@ class IntroViewModel @Inject constructor(private val introRepository: IntroRepos
         viewModelScope.launch {
             _events.emit(IntroEvent.NavigateToGallery)
         }
-    }
-
-    val isDataReady = combine(nickname, isNicknameValid) { nick, nickValid ->
-        nick.isNotBlank() && nickValid
-    }.stateIn(
-        viewModelScope,
-        SharingStarted.WhileSubscribed(),
-        false
-    )
-
-    private fun checkNickDuplicate() {
-        nickname.onEach {
-            // 중복체크 통신부
-
-            // 성공시
-            _uiState.update { state ->
-                state.copy(nickState = true)
-            }
-
-//            // 실패시
-//            _uiState.update{ state ->
-//                state.copy(nickState = false)
-//            }
-        }.launchIn(viewModelScope)
     }
 
     fun signUp() {

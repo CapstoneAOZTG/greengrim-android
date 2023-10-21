@@ -28,13 +28,13 @@ class SignupFragment : BaseFragment<FragmentSignupBinding>(R.layout.fragment_sig
         repeatOnStarted {
             parentViewModel.uiState.collect {
                 when (it.signupState) {
-                    true -> binding.tvWarning.visibility = View.INVISIBLE
-                    false -> binding.tvWarning.visibility = View.VISIBLE
+                    true -> binding.btnNext.isEnabled = true
+                    else -> binding.btnNext.isEnabled = false
                 }
 
                 when (it.nickState) {
-                    true -> binding.btnNext.isEnabled = true
-                    else -> binding.btnNext.isEnabled = false
+                    true -> binding.tvWarning.visibility = View.INVISIBLE
+                    else -> binding.tvWarning.visibility = View.VISIBLE
                 }
             }
         }
