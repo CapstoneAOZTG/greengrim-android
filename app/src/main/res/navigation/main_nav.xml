@@ -1,101 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:startDestination="@id/nav_home"
-    android:id="@+id/main_nav">
+    android:id="@+id/main_nav"
+    app:startDestination="@id/home_fragment">
 
     <fragment
-        android:id="@+id/nav_home"
+        android:id="@+id/home_fragment"
         android:name="com.aoztg.greengrim.presentation.ui.home.view.HomeFragment"
-        android:label="HomeFragment"/>
+        android:label="Home" />
 
     <fragment
-        android:id="@+id/nav_challenge"
+        android:id="@+id/challenge_fragment"
         android:name="com.aoztg.greengrim.presentation.ui.challenge.view.ChallengeFragment"
-        android:label="ChallengeFragment">
+        android:label="Challenge">
         <action
-            android:id="@+id/action_nav_challenge_to_nav_challenge_list"
-            app:destination="@id/nav_challenge_list" />
+            android:id="@+id/action_challenge_fragment_to_challenge_list_fragment"
+            app:destination="@id/challenge_list_fragment" />
         <action
-            android:id="@+id/action_nav_challenge_to_nav_create_challenge"
-            app:destination="@id/nav_create_challenge" />
+            android:id="@+id/action_challenge_fragment_to_create_challenge_fragment"
+            app:destination="@id/create_challenge_fragment" />
     </fragment>
 
     <fragment
-        android:id="@+id/nav_challenge_list"
+        android:id="@+id/challenge_list_fragment"
         android:name="com.aoztg.greengrim.presentation.ui.challenge.view.ChallengeListFragment"
-        android:label="ChallengeListFragment">
+        android:label="ChallengeList">
         <action
-            android:id="@+id/action_nav_challenge_list_to_nav_challenge_detail"
-            app:destination="@id/nav_challenge_detail" />
+            android:id="@+id/action_challenge_list_fragment_to_create_challenge_fragment"
+            app:destination="@id/create_challenge_fragment" />
         <action
-            android:id="@+id/action_nav_challenge_list_to_nav_create_challenge"
-            app:destination="@id/nav_create_challenge" />
+            android:id="@+id/action_challenge_list_fragment_to_challenge_detail_fragment"
+            app:destination="@id/challenge_detail_fragment" />
     </fragment>
 
     <fragment
-        android:id="@+id/nav_create_challenge"
+        android:id="@+id/create_challenge_fragment"
         android:name="com.aoztg.greengrim.presentation.ui.challenge.view.CreateChallengeFragment"
-        android:label="CreateChallengeFragment">
+        android:label="CreateChallenget">
         <action
-            android:id="@+id/action_nav_create_challenge_to_nav_create_challenge_detail"
-            app:destination="@id/nav_create_challenge_detail" />
+            android:id="@+id/action_create_challenge_fragment_to_create_challenge_detail_fragment"
+            app:destination="@id/create_challenge_detail_fragment" />
     </fragment>
 
     <fragment
-        android:id="@+id/nav_create_challenge_detail"
+        android:id="@+id/create_challenge_detail_fragment"
         android:name="com.aoztg.greengrim.presentation.ui.challenge.view.CreateChallengeDetailFragment"
-        android:label="CreateChallengeDetailFragment"/>
+        android:label="CreateChallengeDetail" />
 
     <fragment
-        android:id="@+id/nav_challenge_detail"
+        android:id="@+id/challenge_detail_fragment"
         android:name="com.aoztg.greengrim.presentation.ui.challenge.view.ChallengeDetailFragment"
-        android:label="ChallengeDetailFragment"/>
+        android:label="ChallengeDetail" />
 
     <fragment
-        android:id="@+id/nav_chat"
+        android:id="@+id/chat_fragment"
         android:name="com.aoztg.greengrim.presentation.ui.chat.view.ChatFragment"
-        android:label="ChatFragment">
+        android:label="Chat">
         <action
-            android:id="@+id/action_nav_chat_to_nav_chat_room"
-            app:destination="@id/nav_chat_room" />
+            android:id="@+id/action_chat_fragment_to_chat_room_fragment"
+            app:destination="@id/chat_room_fragment" />
     </fragment>
 
     <fragment
-        android:id="@+id/nav_chat_room"
+        android:id="@+id/chat_room_fragment"
         android:name="com.aoztg.greengrim.presentation.ui.chat.view.ChatRoomFragment"
-        android:label="ChatRoomFragment">
+        android:label="ChatRoom">
         <action
-            android:id="@+id/action_nav_chat_room_to_nav_certification"
-            app:destination="@id/nav_certification" />
+            android:id="@+id/action_chat_room_fragment_to_certificate_fragment"
+            app:destination="@id/certificate_fragment" />
     </fragment>
 
     <fragment
-        android:id="@+id/nav_certification"
+        android:id="@+id/certificate_fragment"
         android:name="com.aoztg.greengrim.presentation.ui.chat.view.CertificateFragment"
-        android:label="CertificateFragment"/>
+        android:label="Certificate" />
 
 
     <fragment
-        android:id="@+id/nav_market"
+        android:id="@+id/market_fragment"
         android:name="com.aoztg.greengrim.presentation.ui.market.MarketFragment"
-        android:label="MarketFragment"/>
+        android:label="Market" />
 
     <fragment
-        android:id="@+id/nav_info"
+        android:id="@+id/info_fragment"
         android:name="com.aoztg.greengrim.presentation.ui.info.view.InfoFragment"
-        android:label="InfoFragment">
-    </fragment>
+        android:label="Info"></fragment>
 
     <fragment
-        android:id="@+id/nav_profile_setting"
+        android:id="@+id/profile_setting_fragment"
         android:name="com.aoztg.greengrim.presentation.ui.info.view.ProfileSettingFragment"
-        android:label="ProfileSettingFragment"/>
+        android:label="ProfileSetting" />
 
 
-
-    <action android:id="@+id/action_global_to_homeFragment"
-        app:destination="@id/nav_home"/>
+    <action
+        android:id="@+id/action_global_to_homeFragment"
+        app:destination="@id/home_fragment" />
 
 
 </navigation>

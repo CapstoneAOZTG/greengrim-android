@@ -4,6 +4,10 @@
 
     <data>
 
+        <variable
+            name="pvm"
+            type="com.aoztg.greengrim.presentation.ui.intro.viewmodel.IntroViewModel" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
