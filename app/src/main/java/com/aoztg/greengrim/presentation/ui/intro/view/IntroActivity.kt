@@ -123,7 +123,7 @@ class IntroActivity : BaseActivity<ActivityIntroBinding>(ActivityIntroBinding::i
             if (result.resultCode == Activity.RESULT_OK) {
                 val uri = result.data?.data
 
-                viewModel.profileImg.value = uri.toString()
+                viewModel.setProfileImg(uri.toString())
             }
         }
 

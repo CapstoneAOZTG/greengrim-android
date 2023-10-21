@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
+import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
 import androidx.fragment.app.activityViewModels
 import com.aoztg.greengrim.R
@@ -38,8 +39,15 @@ class SignupFragment : BaseFragment<FragmentSignupBinding>(R.layout.fragment_sig
                 }
             }
         }
-    }
 
+        repeatOnStarted {
+            parentViewModel.profileImg.collect {
+                if (it.isNotBlank()) {
+                    binding.ivProfile.setImageURI(it.toUri())
+                }
+            }
+        }
+    }
 }
 
 @SuppressLint("SetTextI18n")

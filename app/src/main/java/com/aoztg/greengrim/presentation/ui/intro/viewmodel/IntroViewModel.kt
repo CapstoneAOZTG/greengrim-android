@@ -39,11 +39,13 @@ class IntroViewModel @Inject constructor(private val introRepository: IntroRepos
     private val _uiState = MutableStateFlow(SignupUiState())
     val uiState: StateFlow<SignupUiState> = _uiState.asStateFlow()
 
-    private var emailData = ""
 
     val nickname = MutableStateFlow("")
     val introduce = MutableStateFlow("")
-    val profileImg = MutableStateFlow("")
+    private var emailData = ""
+
+    private val _profileImg = MutableStateFlow("")
+    val profileImg: StateFlow<String> = _profileImg.asStateFlow()
 
     private val isNicknameValid = MutableStateFlow(false)
     private val isDataReady = combine(nickname, isNicknameValid) { nick, nickValid ->
@@ -62,30 +64,30 @@ class IntroViewModel @Inject constructor(private val introRepository: IntroRepos
     private fun checkNickDuplicate() {
         nickname.onEach {
             // 중복체크 통신부
-            if(it.length == 7){
+            if (it.length == 7) {
                 // 성공시
                 isNicknameValid.value = true
                 _uiState.update { state ->
                     state.copy(nickState = true)
                 }
-            } else{
+            } else {
                 // 실패시
                 isNicknameValid.value = false
-                _uiState.update{ state ->
+                _uiState.update { state ->
                     state.copy(nickState = false)
                 }
             }
         }.launchIn(viewModelScope)
     }
 
-    private fun checkSignupState(){
-        isDataReady.onEach{
-            if(it) {
-                _uiState.update{ state ->
+    private fun checkSignupState() {
+        isDataReady.onEach {
+            if (it) {
+                _uiState.update { state ->
                     state.copy(signupState = true)
                 }
-            } else{
-                _uiState.update{ state ->
+            } else {
+                _uiState.update { state ->
                     state.copy(signupState = false)
                 }
             }
@@ -130,6 +132,10 @@ class IntroViewModel @Inject constructor(private val introRepository: IntroRepos
         }
     }
 
+    fun setProfileImg(url: String) {
+        _profileImg.value = url
+    }
+
     fun signUp() {
         viewModelScope.launch {
             // 통신로직
@@ -138,7 +144,7 @@ class IntroViewModel @Inject constructor(private val introRepository: IntroRepos
                     email = emailData,
                     nickName = nickname.value,
                     introduction = introduce.value,
-                    profileImgUrl = profileImg.value
+                    profileImgUrl = _profileImg.value
                 )
             )
 
