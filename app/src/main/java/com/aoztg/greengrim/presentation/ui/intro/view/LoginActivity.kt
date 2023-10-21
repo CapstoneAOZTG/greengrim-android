@@ -10,7 +10,6 @@ import androidx.lifecycle.lifecycleScope
 import com.aoztg.greengrim.presentation.App.Companion.gso
 import com.aoztg.greengrim.databinding.ActivityLoginBinding
 import com.aoztg.greengrim.presentation.base.BaseActivity
-import com.aoztg.greengrim.presentation.ui.intro.EmailData
 import com.aoztg.greengrim.presentation.ui.intro.event.LoginEvent
 import com.aoztg.greengrim.presentation.ui.intro.viewmodel.LoginViewModel
 import com.aoztg.greengrim.presentation.ui.main.view.MainActivity
@@ -73,8 +72,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::i
             val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
             val account = task.getResult(ApiException::class.java)
 
-            EmailData.setEmail(account?.email.toString())
-            viewModel.startLogin(account?.idToken.toString())
+            viewModel.startLogin(account?.email.toString())
         }
     }
 
@@ -100,7 +98,6 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::i
                 }
                 // 로그인 성공 부분
                 else if (token != null) {
-                    viewModel.startLogin(token.accessToken)
                     kakaoCallInfo()
                 }
             }
@@ -115,7 +112,6 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::i
         if (error != null) {
             Log.e(TAG, "이메일 로그인 실패 $error")
         } else if (token != null) {
-            viewModel.startLogin(token.accessToken)
             kakaoCallInfo()
         }
     }
@@ -126,7 +122,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::i
         UserApiClient.instance.me { user, error ->
             error?.let{ e ->
                 user?.let{
-                    EmailData.setEmail(it.kakaoAccount?.email.toString())
+                    viewModel.startLogin(it.kakaoAccount?.email.toString())
                 }
             }
         }
@@ -136,7 +132,6 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::i
         val oauthLoginCallback = object : OAuthLoginCallback {
 
             override fun onSuccess() {
-                viewModel.startLogin(NaverIdLoginSDK.getAccessToken().toString())
                 NidOAuthLogin().callProfileApi(profileCallback)
             }
             override fun onFailure(httpStatus: Int, message: String) {
@@ -154,7 +149,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::i
     // 네이버 유저정보 콜백
     private val profileCallback = object : NidProfileCallback<NidProfileResponse> {
         override fun onSuccess(response: NidProfileResponse) {
-            EmailData.setEmail(response.profile?.email.toString())
+            viewModel.startLogin(response.profile?.email.toString())
         }
         override fun onFailure(httpStatus: Int, message: String) {
             val errorCode = NaverIdLoginSDK.getLastErrorCode().code

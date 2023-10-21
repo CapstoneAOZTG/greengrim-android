@@ -19,7 +19,7 @@ class LoginViewModel @Inject constructor(private val introRepository : IntroRepo
 
 
     fun startLogin(
-        token : String
+        email : String
     ){
         viewModelScope.launch{
             // 통신로직
