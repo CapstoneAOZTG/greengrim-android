@@ -1,4 +1,4 @@
-package com.aoztg.greengrim.presentation
+package com.aoztg.greengrim.app
 
 import android.app.Application
 import android.content.Context
