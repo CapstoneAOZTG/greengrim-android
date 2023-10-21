@@ -8,6 +8,10 @@
             name="pvm"
             type="com.aoztg.greengrim.presentation.ui.intro.viewmodel.IntroViewModel" />
 
+        <variable
+            name="vm"
+            type="com.aoztg.greengrim.presentation.ui.intro.viewmodel.SignupViewModel" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -66,7 +70,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/tv_nickname_label"
-            app:textLength="@{pvm.nickname}"
+            app:textLength="@{vm.nickname}"
             app:textLimit="@{8}" />
 
         <EditText
@@ -81,7 +85,7 @@
             android:maxLines="1"
             android:paddingHorizontal="15dp"
             android:paddingVertical="8dp"
-            android:text="@={pvm.nickname}"
+            android:text="@={vm.nickname}"
             android:textColor="@color/white"
             android:textColorHint="@color/gg_grey5"
             android:textSize="13sp"
@@ -118,7 +122,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/tv_introduce_label"
-            app:textLength="@{pvm.introduce}"
+            app:textLength="@{vm.introduce}"
             app:textLimit="@{200}" />
 
         <EditText
@@ -135,7 +139,7 @@
             android:maxLines="3"
             android:paddingHorizontal="15dp"
             android:paddingVertical="12dp"
-            android:text="@={pvm.introduce}"
+            android:text="@={vm.introduce}"
             android:textColor="@color/white"
             android:textColorHint="@color/gg_grey5"
             android:textSize="13sp"
@@ -150,7 +154,7 @@
             android:layout_marginBottom="40dp"
             android:background="@drawable/selector_next_btn"
             android:enabled="false"
-            android:onClick="@{() -> pvm.signUp()}"
+            android:onClick="@{() -> vm.signUp()}"
             android:text="다음으로"
             android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"

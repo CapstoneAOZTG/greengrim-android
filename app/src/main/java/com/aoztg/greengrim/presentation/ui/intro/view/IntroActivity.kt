@@ -11,24 +11,18 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment
-import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.ActivityIntroBinding
 import com.aoztg.greengrim.presentation.base.BaseActivity
-import com.aoztg.greengrim.presentation.ui.intro.event.IntroEvent
+import com.aoztg.greengrim.presentation.ui.intro.viewmodel.IntroEvent
 import com.aoztg.greengrim.presentation.ui.intro.viewmodel.IntroViewModel
 import com.aoztg.greengrim.presentation.ui.main.view.MainActivity
 import com.aoztg.greengrim.presentation.util.Constants
-import com.aoztg.greengrim.presentation.util.Constants.RC_PERMISSION
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class IntroActivity : BaseActivity<ActivityIntroBinding>(ActivityIntroBinding::inflate) {
 
     private val viewModel: IntroViewModel by viewModels()
-    private val navHostFragment by lazy { supportFragmentManager.findFragmentById(R.id.intro_frag) as NavHostFragment }
-    private val navController by lazy { navHostFragment.navController }
 
     private lateinit var neededPermissionList: MutableList<String>
     private val requiredPermissionList =
@@ -53,16 +47,14 @@ class IntroActivity : BaseActivity<ActivityIntroBinding>(ActivityIntroBinding::i
         repeatOnStarted {
             viewModel.events.collect {
                 when (it) {
-                    is IntroEvent.NavigateToMainActivity -> startActivity(
+                    is IntroEvent.GoToMainActivity -> startActivity(
                         Intent(
                             this@IntroActivity,
                             MainActivity::class.java
                         )
                     )
 
-                    is IntroEvent.NavigateToTermsFragment -> navController.navigateToTerms()
-                    is IntroEvent.NavigateToSignupFragment -> navController.navigateToSignup()
-                    is IntroEvent.NavigateToGallery -> onCheckPermissions()
+                    is IntroEvent.GoToGallery -> onCheckPermissions()
                 }
             }
         }
@@ -83,7 +75,7 @@ class IntroActivity : BaseActivity<ActivityIntroBinding>(ActivityIntroBinding::i
             ActivityCompat.requestPermissions(
                 this,
                 neededPermissionList.toTypedArray(),
-                RC_PERMISSION
+                Constants.RC_PERMISSION
             )
         } else {
             openGallery()
@@ -123,18 +115,8 @@ class IntroActivity : BaseActivity<ActivityIntroBinding>(ActivityIntroBinding::i
             if (result.resultCode == Activity.RESULT_OK) {
                 val uri = result.data?.data
 
-                viewModel.setProfileImg(uri.toString())
+                viewModel.setProfile(uri.toString())
             }
         }
-
-    private fun NavController.navigateToTerms() {
-        val action = LoginFragmentDirections.actionLoginFragmentToTermsFragment()
-        this.navigate(action)
-    }
-
-    private fun NavController.navigateToSignup() {
-        val action = TermsFragmentDirections.actionTermsFragmentToSignupFragment()
-        this.navigate(action)
-    }
 
 }

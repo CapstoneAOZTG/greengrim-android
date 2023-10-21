@@ -7,35 +7,54 @@ import android.widget.TextView
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentSignupBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
 import com.aoztg.greengrim.presentation.ui.intro.viewmodel.IntroViewModel
+import com.aoztg.greengrim.presentation.ui.intro.viewmodel.SignupState
+import com.aoztg.greengrim.presentation.ui.intro.viewmodel.SignupViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class SignupFragment : BaseFragment<FragmentSignupBinding>(R.layout.fragment_signup) {
 
     private val parentViewModel: IntroViewModel by activityViewModels()
+    private val viewModel: SignupViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         binding.pvm = parentViewModel
+        binding.vm = viewModel
         initObserver()
     }
 
     private fun initObserver() {
         repeatOnStarted {
-            parentViewModel.uiState.collect {
-                when (it.signupState) {
-                    true -> binding.btnNext.isEnabled = true
-                    else -> binding.btnNext.isEnabled = false
+            viewModel.uiState.collect {
+                when (it.nextBtnState) {
+                    is SignupState.Success -> binding.btnNext.isEnabled = true
+                    is SignupState.Failure -> {
+                        binding.btnNext.isEnabled = false
+                    }
+
+                    else -> {}
                 }
 
                 when (it.nickState) {
-                    true -> binding.tvWarning.visibility = View.INVISIBLE
-                    else -> binding.tvWarning.visibility = View.VISIBLE
+                    is SignupState.Success -> binding.tvWarning.visibility = View.INVISIBLE
+                    is SignupState.Error -> {
+                        binding.tvWarning.visibility = View.VISIBLE
+                        binding.tvWarning.text = it.nickState.msg
+                    }
+
+                    else -> {}
+                }
+
+                when (it.signupState) {
+                    is SignupState.Success -> parentViewModel.goToMain()
+                    is SignupState.Error -> showCustomToast(it.signupState.msg)
+                    else -> {}
                 }
             }
         }
@@ -44,6 +63,7 @@ class SignupFragment : BaseFragment<FragmentSignupBinding>(R.layout.fragment_sig
             parentViewModel.profileImg.collect {
                 if (it.isNotBlank()) {
                     binding.ivProfile.setImageURI(it.toUri())
+                    viewModel.setProfileImg(it)
                 }
             }
         }

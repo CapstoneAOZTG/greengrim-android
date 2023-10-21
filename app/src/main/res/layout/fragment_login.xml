@@ -5,10 +5,6 @@
     <data>
 
         <variable
-            name="pvm"
-            type="com.aoztg.greengrim.presentation.ui.intro.viewmodel.IntroViewModel" />
-
-        <variable
             name="view"
             type="com.aoztg.greengrim.presentation.ui.intro.view.LoginFragment" />
 

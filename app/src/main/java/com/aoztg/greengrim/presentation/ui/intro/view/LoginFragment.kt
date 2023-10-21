@@ -6,11 +6,16 @@ import android.util.Log
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.app.App.Companion.gso
 import com.aoztg.greengrim.databinding.FragmentLoginBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
+import com.aoztg.greengrim.presentation.ui.intro.navigateToTerms
 import com.aoztg.greengrim.presentation.ui.intro.viewmodel.IntroViewModel
+import com.aoztg.greengrim.presentation.ui.intro.viewmodel.LoginViewModel
+import com.aoztg.greengrim.presentation.ui.intro.viewmodel.LoginState
 import com.aoztg.greengrim.presentation.util.Constants.TAG
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.common.api.ApiException
@@ -28,14 +33,36 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class LoginFragment : BaseFragment<FragmentLoginBinding>(R.layout.fragment_login) {
 
-
     private val parentViewModel: IntroViewModel by activityViewModels()
+    private val viewModel: LoginViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         super.onCreate(savedInstanceState)
-        binding.pvm = parentViewModel
         binding.view = this
+        initObserver()
+    }
+
+    private fun initObserver() {
+        repeatOnStarted {
+            viewModel.uiState.collect {
+                when (it.loginState) {
+                    is LoginState.Success -> {
+                        parentViewModel.goToMain()
+                    }
+
+                    is LoginState.NoMember -> {
+                        findNavController().navigateToTerms()
+                    }
+
+                    is LoginState.Error -> {
+                        showCustomToast(it.loginState.msg)
+                    }
+
+                    else -> {}
+                }
+            }
+        }
     }
 
     fun googleLogin() {
@@ -52,7 +79,8 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(R.layout.fragment_login
                 val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
                 val account = task.getResult(ApiException::class.java)
 
-                parentViewModel.startLogin(account?.email.toString())
+                parentViewModel.emailData = account?.email.toString()
+                viewModel.startLogin(account?.email.toString())
             }
         }
 
@@ -112,7 +140,8 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(R.layout.fragment_login
             } else if (user != null) {
                 Log.d(TAG, "사용자 정보 요청 성공 : $user")
                 user.kakaoAccount?.email?.let {
-                    parentViewModel.startLogin(it)
+                    parentViewModel.emailData = it
+                    viewModel.startLogin(it)
                 }
             }
         }
@@ -142,7 +171,9 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(R.layout.fragment_login
     private val profileCallback = object : NidProfileCallback<NidProfileResponse> {
         override fun onSuccess(result: NidProfileResponse) {
             Log.d(TAG, result.profile.toString())
-            parentViewModel.startLogin(result.profile?.email.toString())
+
+            parentViewModel.emailData = result.profile?.email.toString()
+            viewModel.startLogin(result.profile?.email.toString())
         }
 
         override fun onFailure(httpStatus: Int, message: String) {

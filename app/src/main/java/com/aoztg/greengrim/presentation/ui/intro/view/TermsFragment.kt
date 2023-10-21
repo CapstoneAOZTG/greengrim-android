@@ -2,17 +2,15 @@ package com.aoztg.greengrim.presentation.ui.intro.view
 
 import android.os.Bundle
 import android.view.View
-import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentTermsBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
-import com.aoztg.greengrim.presentation.ui.intro.viewmodel.IntroViewModel
+import com.aoztg.greengrim.presentation.ui.intro.navigateToSignup
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class TermsFragment : BaseFragment<FragmentTermsBinding>(R.layout.fragment_terms) {
-
-    private val parentViewModel: IntroViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -34,7 +32,7 @@ class TermsFragment : BaseFragment<FragmentTermsBinding>(R.layout.fragment_terms
                 allToggle(state)
             }
             btnNext.setOnClickListener {
-                parentViewModel.navigateToSignup()
+                findNavController().navigateToSignup()
             }
         }
     }

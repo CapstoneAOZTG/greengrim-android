@@ -10,13 +10,7 @@ import javax.inject.Inject
 
 class IntroRepositoryImpl @Inject constructor(private val api: IntroAPI) : IntroRepository {
 
-    override suspend fun signup(data: SignupRequest): Response<SignupResponse> {
-        return api.signup(data)
-
-    }
-
-    override suspend fun login(data: LoginRequest): Response<LoginResponse> {
-        return api.login(data)
-    }
+    override suspend fun signup(data: SignupRequest): Response<SignupResponse> = api.signup(data)
+    override suspend fun login(data: LoginRequest): Response<LoginResponse> = api.login(data)
 
 }
