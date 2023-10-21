@@ -11,13 +11,13 @@ import android.os.Looper
 import androidx.appcompat.app.AlertDialog
 import com.aoztg.greengrim.databinding.ActivitySplashBinding
 import com.aoztg.greengrim.presentation.base.BaseActivity
-import com.aoztg.greengrim.presentation.ui.intro.view.LoginActivity
+import com.aoztg.greengrim.presentation.ui.intro.view.IntroActivity
 
 class SplashActivity : BaseActivity<ActivitySplashBinding>(ActivitySplashBinding::inflate) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        
+
 
         Handler(Looper.getMainLooper()).postDelayed({
 
@@ -43,7 +43,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(ActivitySplashBinding
             } else {
                 // 네트워크 검사 끝났으면 LoadingDialog 내리기
                 dismissLoading()
-                startActivity(Intent(this, LoginActivity::class.java))
+                startActivity(Intent(this, IntroActivity::class.java))
                 finish()
             }
         }, 1500)
