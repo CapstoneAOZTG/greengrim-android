@@ -13,7 +13,9 @@ import com.aoztg.greengrim.presentation.base.BaseActivity
 import com.aoztg.greengrim.presentation.ui.home.view.HomeFragmentDirections
 import com.aoztg.greengrim.presentation.ui.main.event.MainEvent
 import com.aoztg.greengrim.presentation.ui.main.viewmodel.MainViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate) {
 
     private lateinit var navController : NavController
@@ -27,7 +29,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     }
 
     private fun setBottomNavigation(){
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragment_container) as NavHostFragment
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.main_frag) as NavHostFragment
         navController = navHostFragment.navController
 
         with(binding){

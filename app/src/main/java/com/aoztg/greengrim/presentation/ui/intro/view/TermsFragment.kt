@@ -1,23 +1,28 @@
 package com.aoztg.greengrim.presentation.ui.intro.view
 
-import android.content.Intent
 import android.os.Bundle
-import com.aoztg.greengrim.databinding.ActivityTermsBinding
-import com.aoztg.greengrim.presentation.base.BaseActivity
+import android.view.View
+import androidx.fragment.app.activityViewModels
+import com.aoztg.greengrim.R
+import com.aoztg.greengrim.databinding.FragmentTermsBinding
+import com.aoztg.greengrim.presentation.base.BaseFragment
+import com.aoztg.greengrim.presentation.ui.intro.viewmodel.IntroViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class TermsActivity : BaseActivity<ActivityTermsBinding>(ActivityTermsBinding::inflate) {
+class TermsFragment : BaseFragment<FragmentTermsBinding>(R.layout.fragment_terms) {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    private val parentViewModel: IntroViewModel by activityViewModels()
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         setListener()
         setTextListner()
     }
 
-    private fun setListener(){
-        with(binding){
+    private fun setListener() {
+        with(binding) {
             btnTerms1.setOnCheckedChangeListener { _, state ->
                 check()
             }
@@ -29,12 +34,13 @@ class TermsActivity : BaseActivity<ActivityTermsBinding>(ActivityTermsBinding::i
                 allToggle(state)
             }
             btnNext.setOnClickListener {
-                startActivity(Intent(this@TermsActivity, SignupActivity::class.java))
+                parentViewModel.navigateToSignup()
             }
         }
     }
-    private fun setTextListner(){
-        with(binding){
+
+    private fun setTextListner() {
+        with(binding) {
             tvTerms1Head.setOnClickListener {
                 this.btnTerms1.isChecked = !this.btnTerms1.isChecked
                 check()
@@ -50,14 +56,14 @@ class TermsActivity : BaseActivity<ActivityTermsBinding>(ActivityTermsBinding::i
         }
     }
 
-    private fun allToggle(state : Boolean){
+    private fun allToggle(state: Boolean) {
         binding.btnTerms1.isChecked = state
         binding.btnTerms2.isChecked = state
         binding.btnNext.isEnabled = state
     }
 
-    private fun check(){
-        if( binding.btnTerms1.isChecked && binding.btnTerms2.isChecked){
+    private fun check() {
+        if (binding.btnTerms1.isChecked && binding.btnTerms2.isChecked) {
             binding.btnTermsAll.isChecked = true
             binding.btnNext.isEnabled = true
         } else {
