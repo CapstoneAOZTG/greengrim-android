@@ -1,4 +1,4 @@
-package com.aoztg.greengrim.presentation.ui.intro.view
+package com.aoztg.greengrim.presentation.ui.intro.terms
 
 import android.os.Bundle
 import android.view.View

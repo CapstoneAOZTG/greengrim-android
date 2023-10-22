@@ -1,4 +1,4 @@
-package com.aoztg.greengrim.presentation.ui.intro.view
+package com.aoztg.greengrim.presentation.ui.intro.login
 
 import android.app.Activity
 import android.os.Bundle
@@ -13,9 +13,7 @@ import com.aoztg.greengrim.app.App.Companion.gso
 import com.aoztg.greengrim.databinding.FragmentLoginBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
 import com.aoztg.greengrim.presentation.ui.intro.navigateToTerms
-import com.aoztg.greengrim.presentation.ui.intro.viewmodel.IntroViewModel
-import com.aoztg.greengrim.presentation.ui.intro.viewmodel.LoginViewModel
-import com.aoztg.greengrim.presentation.ui.intro.viewmodel.LoginState
+import com.aoztg.greengrim.presentation.ui.intro.IntroViewModel
 import com.aoztg.greengrim.presentation.util.Constants.TAG
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.common.api.ApiException

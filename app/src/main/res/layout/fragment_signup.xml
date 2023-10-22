@@ -6,11 +6,11 @@
 
         <variable
             name="pvm"
-            type="com.aoztg.greengrim.presentation.ui.intro.viewmodel.IntroViewModel" />
+            type="com.aoztg.greengrim.presentation.ui.intro.IntroViewModel" />
 
         <variable
             name="vm"
-            type="com.aoztg.greengrim.presentation.ui.intro.viewmodel.SignupViewModel" />
+            type="com.aoztg.greengrim.presentation.ui.intro.signup.SignupViewModel" />
 
     </data>
 

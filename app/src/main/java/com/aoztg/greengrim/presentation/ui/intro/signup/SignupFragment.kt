@@ -1,4 +1,4 @@
-package com.aoztg.greengrim.presentation.ui.intro.view
+package com.aoztg.greengrim.presentation.ui.intro.signup
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -11,9 +11,7 @@ import androidx.fragment.app.viewModels
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentSignupBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
-import com.aoztg.greengrim.presentation.ui.intro.viewmodel.IntroViewModel
-import com.aoztg.greengrim.presentation.ui.intro.viewmodel.SignupState
-import com.aoztg.greengrim.presentation.ui.intro.viewmodel.SignupViewModel
+import com.aoztg.greengrim.presentation.ui.intro.IntroViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

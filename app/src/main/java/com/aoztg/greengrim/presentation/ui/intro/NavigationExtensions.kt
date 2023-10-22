@@ -1,8 +1,8 @@
 package com.aoztg.greengrim.presentation.ui.intro
 
 import androidx.navigation.NavController
-import com.aoztg.greengrim.presentation.ui.intro.view.LoginFragmentDirections
-import com.aoztg.greengrim.presentation.ui.intro.view.TermsFragmentDirections
+import com.aoztg.greengrim.presentation.ui.intro.login.LoginFragmentDirections
+import com.aoztg.greengrim.presentation.ui.intro.terms.TermsFragmentDirections
 
 internal fun NavController.navigateToTerms() {
     val action = LoginFragmentDirections.actionLoginFragmentToTermsFragment()

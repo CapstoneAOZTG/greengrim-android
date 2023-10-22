@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/login_fragment"
-        android:name="com.aoztg.greengrim.presentation.ui.intro.view.LoginFragment"
+        android:name="com.aoztg.greengrim.presentation.ui.intro.login.LoginFragment"
         android:label="Login">
         <action
             android:id="@+id/action_login_fragment_to_terms_fragment"
@@ -15,7 +15,7 @@
 
     <fragment
         android:id="@+id/terms_fragment"
-        android:name="com.aoztg.greengrim.presentation.ui.intro.view.TermsFragment"
+        android:name="com.aoztg.greengrim.presentation.ui.intro.terms.TermsFragment"
         android:label="Terms">
         <action
             android:id="@+id/action_terms_fragment_to_signup_fragment"
@@ -24,7 +24,7 @@
 
     <fragment
         android:id="@+id/signup_fragment"
-        android:name="com.aoztg.greengrim.presentation.ui.intro.view.SignupFragment"
+        android:name="com.aoztg.greengrim.presentation.ui.intro.signup.SignupFragment"
         android:label="Signup" />
 
 </navigation>

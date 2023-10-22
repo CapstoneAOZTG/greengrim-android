@@ -6,7 +6,7 @@
 
         <variable
             name="pvm"
-            type="com.aoztg.greengrim.presentation.ui.intro.viewmodel.IntroViewModel" />
+            type="com.aoztg.greengrim.presentation.ui.intro.IntroViewModel" />
 
     </data>
 
