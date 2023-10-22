@@ -46,6 +46,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(R.layout.fragment_login
     private fun initObserver() {
         repeatOnStarted {
             viewModel.uiState.collect {
+                Log.d(TAG,it.toString())
                 when (it.loginState) {
                     is LoginState.Success -> {
                         parentViewModel.goToMain()
