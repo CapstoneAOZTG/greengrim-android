@@ -32,6 +32,7 @@ android {
         buildConfigField "String", "NAVER_CLIENT_SECRET", properties['naverClientSecret']
         buildConfigField "String", "NAVER_CLIENT_NAME", properties['naverClientName']
         buildConfigField "String", "KAKAO_API_KEY", properties['kakaoAppKey']
+        manifestPlaceholders = [KAKAO_API_KEY: properties["kakaoAppKey"]]
     }
 
     buildTypes {
