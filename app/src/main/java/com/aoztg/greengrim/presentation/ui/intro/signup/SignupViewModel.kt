@@ -6,6 +6,7 @@ import com.aoztg.greengrim.data.model.CheckNickRequest
 import com.aoztg.greengrim.data.model.ErrorResponse
 import com.aoztg.greengrim.data.model.SignupRequest
 import com.aoztg.greengrim.data.repository.IntroRepository
+import com.aoztg.greengrim.presentation.ui.intro.EmailData
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -44,8 +45,6 @@ class SignupViewModel @Inject constructor(private val introRepository: IntroRepo
     val nickname = MutableStateFlow("")
     val introduce = MutableStateFlow("")
     private var profileUrl = ""
-    private var emailData = ""
-
 
     private val isNicknameValid = MutableStateFlow(false)
     private val isDataReady = combine(nickname, isNicknameValid) { nick, nickValid ->
@@ -68,14 +67,14 @@ class SignupViewModel @Inject constructor(private val introRepository: IntroRepo
                 response.body()?.let { body ->
 
                     if (body.used) {
-                        isNicknameValid.value = true
-                        _uiState.update { state ->
-                            state.copy(nickState = SignupState.Success)
-                        }
-                    } else {
                         isNicknameValid.value = false
                         _uiState.update { state ->
                             state.copy(nickState = SignupState.Error("사용할 수 없는 닉네임 입니다"))
+                        }
+                    } else {
+                        isNicknameValid.value = true
+                        _uiState.update { state ->
+                            state.copy(nickState = SignupState.Success)
                         }
                     }
                 }
@@ -113,7 +112,7 @@ class SignupViewModel @Inject constructor(private val introRepository: IntroRepo
             // 통신로직
             val response = introRepository.signup(
                 SignupRequest(
-                    email = emailData,
+                    email = EmailData.email,
                     nickName = nickname.value,
                     introduction = introduce.value,
                     profileImgUrl = profileUrl

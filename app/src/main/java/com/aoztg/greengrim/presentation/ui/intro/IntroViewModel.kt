@@ -27,8 +27,6 @@ class IntroViewModel @Inject constructor(private val introRepository: IntroRepos
     private val _profileImg = MutableStateFlow("")
     val profileImg: StateFlow<String> = _profileImg.asStateFlow()
 
-    var emailData = ""
-
     fun goToGallery() {
         viewModelScope.launch {
             _events.emit(
