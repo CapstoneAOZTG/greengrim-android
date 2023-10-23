@@ -16,7 +16,7 @@ class AccessTokenInterceptor() : Interceptor {
         jwt?.let {
             builder.addHeader("Authorization", jwt)
         } ?: run {
-            builder.addHeader("Authorization", "")
+
         }
 
         return chain.proceed(builder.build())
