@@ -15,7 +15,7 @@ abstract class RepositoryModule {
 
     @Singleton
     @Binds
-    abstract fun bindLoginRepository(
+    abstract fun bindIntroRepository(
         loginRepositoryImpl: IntroRepositoryImpl
     ): IntroRepository
 }
