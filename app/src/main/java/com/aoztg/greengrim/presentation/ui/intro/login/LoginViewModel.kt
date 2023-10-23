@@ -2,9 +2,11 @@ package com.aoztg.greengrim.presentation.ui.intro.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.aoztg.greengrim.app.App
 import com.aoztg.greengrim.data.model.ErrorResponse
 import com.aoztg.greengrim.data.model.LoginRequest
 import com.aoztg.greengrim.data.repository.IntroRepository
+import com.aoztg.greengrim.presentation.util.Constants
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -55,6 +57,13 @@ class LoginViewModel @Inject constructor(private val introRepository: IntroRepos
             )
 
             if (response.isSuccessful) {
+                response.body()?.let {
+                    App.sharedPreferences.edit()
+                        .putString(Constants.X_ACCESS_TOKEN, "Bearer " + it.accessToken)
+                        .putString(Constants.X_REFRESH_TOKEN, it.refreshToken)
+                        .apply()
+                }
+
                 _uiState.update { state ->
                     state.copy(
                         loginState = LoginState.Success

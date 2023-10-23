@@ -9,9 +9,13 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import androidx.appcompat.app.AlertDialog
+import com.aoztg.greengrim.app.App
 import com.aoztg.greengrim.databinding.ActivitySplashBinding
 import com.aoztg.greengrim.presentation.base.BaseActivity
 import com.aoztg.greengrim.presentation.ui.intro.IntroActivity
+import com.aoztg.greengrim.presentation.ui.main.view.MainActivity
+import com.aoztg.greengrim.presentation.util.Constants
+import com.aoztg.greengrim.presentation.util.Constants.X_ACCESS_TOKEN
 
 class SplashActivity : BaseActivity<ActivitySplashBinding>(ActivitySplashBinding::inflate) {
 
@@ -43,8 +47,16 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(ActivitySplashBinding
             } else {
                 // 네트워크 검사 끝났으면 LoadingDialog 내리기
                 dismissLoading()
-                startActivity(Intent(this, IntroActivity::class.java))
-                finish()
+
+                val jwt: String? = App.sharedPreferences.getString(X_ACCESS_TOKEN, null)
+                jwt?.let {
+                    startActivity(Intent(this, MainActivity::class.java))
+                    finish()
+                } ?: run {
+                    // 로컬에 저장된 토큰 없는경우
+                    startActivity(Intent(this, IntroActivity::class.java))
+                    finish()
+                }
             }
         }, 1500)
     }

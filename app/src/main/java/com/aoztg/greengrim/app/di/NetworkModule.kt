@@ -1,7 +1,7 @@
 package com.aoztg.greengrim.app.di
 
 import com.aoztg.greengrim.BuildConfig
-import com.aoztg.greengrim.config.RetrofitInterceptor
+import com.aoztg.greengrim.config.AccessTokenInterceptor
 import com.aoztg.greengrim.presentation.util.Constants
 import dagger.Module
 import dagger.Provides
@@ -47,7 +47,7 @@ class NetworkModule {
             .readTimeout(30000, TimeUnit.MILLISECONDS)
             .connectTimeout(30000, TimeUnit.MILLISECONDS)
             .addInterceptor(httpLoggingInterceptor)
-            .addNetworkInterceptor(RetrofitInterceptor())
+            .addNetworkInterceptor(AccessTokenInterceptor())
             .build()
     }
 
