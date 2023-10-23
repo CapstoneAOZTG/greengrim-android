@@ -5,12 +5,8 @@
     <data>
 
         <variable
-            name="vm"
-            type="com.aoztg.greengrim.presentation.ui.intro.viewmodel.LoginViewModel" />
-
-        <variable
             name="view"
-            type="com.aoztg.greengrim.presentation.ui.intro.view.LoginActivity" />
+            type="com.aoztg.greengrim.presentation.ui.intro.login.LoginFragment" />
 
     </data>
 

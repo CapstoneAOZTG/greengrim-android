@@ -7,10 +7,9 @@
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
-        android:name=".presentation.App"
+        android:name=".app.App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -20,7 +19,8 @@
 
         <activity
             android:name=".presentation.ui.splash.SplashActivity"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -35,17 +35,9 @@
 
 
         </activity>
-        <activity
-            android:name=".presentation.ui.intro.view.LoginActivity"
-            android:exported="true" />
 
-        <activity
-            android:name=".presentation.ui.intro.view.SignupActivity"
-            android:exported="true" />
-
-        <activity
-            android:name=".presentation.ui.intro.view.TermsActivity"
-            android:exported="true" />
+        <activity android:name=".presentation.ui.intro.IntroActivity"
+            android:exported="true"/>
 
         <activity
             android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
@@ -58,7 +50,7 @@
 
                 <data
                     android:host="oauth"
-                    android:scheme="kakao0ffd7abd3b15b2896c7e59533b7cccd4" />
+                    android:scheme="kakao${KAKAO_API_KEY}" />
             </intent-filter>
         </activity>
     </application>

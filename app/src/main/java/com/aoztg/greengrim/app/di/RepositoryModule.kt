@@ -1,4 +1,4 @@
-package com.aoztg.greengrim.presentation.di
+package com.aoztg.greengrim.app.di
 
 import com.aoztg.greengrim.data.repository.IntroRepository
 import com.aoztg.greengrim.data.repository.IntroRepositoryImpl
@@ -15,7 +15,7 @@ abstract class RepositoryModule {
 
     @Singleton
     @Binds
-    abstract fun bindLoginRepository(
-        loginRepositoryImpl : IntroRepositoryImpl
-    ) : IntroRepository
+    abstract fun bindIntroRepository(
+        loginRepositoryImpl: IntroRepositoryImpl
+    ): IntroRepository
 }

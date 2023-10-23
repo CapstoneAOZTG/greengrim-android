@@ -5,8 +5,12 @@
     <data>
 
         <variable
+            name="pvm"
+            type="com.aoztg.greengrim.presentation.ui.intro.IntroViewModel" />
+
+        <variable
             name="vm"
-            type="com.aoztg.greengrim.presentation.ui.intro.viewmodel.SignupViewModel" />
+            type="com.aoztg.greengrim.presentation.ui.intro.signup.SignupViewModel" />
 
     </data>
 
@@ -31,7 +35,7 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_marginTop="30dp"
-            android:onClick="@{() -> vm.goToGallery()}"
+            android:onClick="@{() -> pvm.goToGallery()}"
             android:src="@drawable/icon_profile"
             app:civ_border_color="@color/gg_grey1"
             app:civ_border_width="1dp"
@@ -43,7 +47,7 @@
             android:id="@+id/btn_goto_gallery"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:onClick="@{() -> vm.goToGallery()}"
+            android:onClick="@{() -> pvm.goToGallery()}"
             android:src="@drawable/icon_goto_gallery"
             app:layout_constraintBottom_toBottomOf="@id/iv_profile"
             app:layout_constraintEnd_toEndOf="@id/iv_profile" />
@@ -64,9 +68,10 @@
             style="@style/TextSignupLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="(0/8)"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/tv_nickname_label" />
+            app:layout_constraintTop_toTopOf="@id/tv_nickname_label"
+            app:textLength="@{vm.nickname}"
+            app:textLimit="@{8}" />
 
         <EditText
             android:id="@+id/et_nickname"
@@ -115,9 +120,10 @@
             style="@style/TextSignupLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="(0/200)"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/tv_introduce_label" />
+            app:layout_constraintTop_toTopOf="@id/tv_introduce_label"
+            app:textLength="@{vm.introduce}"
+            app:textLimit="@{200}" />
 
         <EditText
             android:id="@+id/et_introduce"
@@ -148,7 +154,7 @@
             android:layout_marginBottom="40dp"
             android:background="@drawable/selector_next_btn"
             android:enabled="false"
-            android:onClick="@{() -> vm.postSignUp()}"
+            android:onClick="@{() -> vm.signUp()}"
             android:text="다음으로"
             android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"

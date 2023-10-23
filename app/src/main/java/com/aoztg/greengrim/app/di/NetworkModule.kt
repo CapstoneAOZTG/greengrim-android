@@ -1,7 +1,7 @@
-package com.aoztg.greengrim.presentation.di
+package com.aoztg.greengrim.app.di
 
+import com.aoztg.greengrim.BuildConfig
 import com.aoztg.greengrim.config.RetrofitInterceptor
-import com.aoztg.greengrim.data.remote.IntroAPI
 import com.aoztg.greengrim.presentation.util.Constants
 import dagger.Module
 import dagger.Provides
@@ -20,31 +20,35 @@ class NetworkModule {
 
     @Singleton
     @Provides
-    fun provideOkHttpClient() : OkHttpClient {
-
-        return OkHttpClient.Builder()
-            .readTimeout(30000, TimeUnit.MILLISECONDS)
-            .connectTimeout(30000, TimeUnit.MILLISECONDS)
-            .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
-            .addNetworkInterceptor(RetrofitInterceptor())
-            .build()
-    }
-
-    @Singleton
-    @Provides
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
 
         return Retrofit.Builder()
-            .baseUrl(Constants.BASE_URL)
+            .baseUrl(Constants.BASE_DEV_URL)
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
 
+    @Provides
+    @Singleton
+    fun provideLoggingInterceptor(): HttpLoggingInterceptor {
+        return HttpLoggingInterceptor().apply {
+            level = if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE
+        }
+    }
+
     @Singleton
     @Provides
-    fun provideLoginService(retrofit : Retrofit) : IntroAPI {
-        return retrofit.create(IntroAPI::class.java)
+    fun provideOkHttpClient(
+        httpLoggingInterceptor: HttpLoggingInterceptor
+    ): OkHttpClient {
+
+        return OkHttpClient.Builder()
+            .readTimeout(30000, TimeUnit.MILLISECONDS)
+            .connectTimeout(30000, TimeUnit.MILLISECONDS)
+            .addInterceptor(httpLoggingInterceptor)
+            .addNetworkInterceptor(RetrofitInterceptor())
+            .build()
     }
 
 }

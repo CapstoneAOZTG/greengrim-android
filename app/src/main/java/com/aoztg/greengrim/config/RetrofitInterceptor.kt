@@ -1,6 +1,6 @@
 package com.aoztg.greengrim.config
 
-import com.aoztg.greengrim.presentation.App.Companion.sharedPreferences
+import com.aoztg.greengrim.app.App.Companion.sharedPreferences
 import com.aoztg.greengrim.presentation.util.Constants.X_ACCESS_TOKEN
 import okhttp3.Interceptor
 import okhttp3.Request

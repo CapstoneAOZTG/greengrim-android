@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/intro_nav"
+    app:startDestination="@id/login_fragment">
+
+    <fragment
+        android:id="@+id/login_fragment"
+        android:name="com.aoztg.greengrim.presentation.ui.intro.login.LoginFragment"
+        android:label="Login">
+        <action
+            android:id="@+id/action_login_fragment_to_terms_fragment"
+            app:destination="@id/terms_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/terms_fragment"
+        android:name="com.aoztg.greengrim.presentation.ui.intro.terms.TermsFragment"
+        android:label="Terms">
+        <action
+            android:id="@+id/action_terms_fragment_to_signup_fragment"
+            app:destination="@id/signup_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/signup_fragment"
+        android:name="com.aoztg.greengrim.presentation.ui.intro.signup.SignupFragment"
+        android:label="Signup" />
+
+</navigation>
