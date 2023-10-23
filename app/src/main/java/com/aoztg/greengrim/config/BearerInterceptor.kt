@@ -64,6 +64,7 @@ class BearerInterceptor : Interceptor {
             }
         }
 
+        // 해당 특정 에러코드가 그대로 내려간다면, LoginActivity로 다시 보내기
         return response
     }
 }
