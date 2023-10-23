@@ -3,12 +3,12 @@
 
 
     <item
-        android:id="@+id/nav_challenge"
+        android:id="@+id/challenge_fragment"
         android:icon="@drawable/selector_challenge"
         android:title="챌린지"/>
 
     <item
-        android:id="@+id/nav_chat"
+        android:id="@+id/chat_fragment"
         android:icon="@drawable/selector_chatting"
         android:title="채팅방"/>
 
@@ -17,12 +17,12 @@
         android:title=""/>
 
     <item
-        android:id="@+id/nav_market"
+        android:id="@+id/market_fragment"
         android:icon="@drawable/selector_market"
         android:title="마켓"/>
 
     <item
-        android:id="@+id/nav_info"
+        android:id="@+id/info_fragment"
         android:icon="@drawable/selector_more"
         android:title="더보기"/>
 </menu>
