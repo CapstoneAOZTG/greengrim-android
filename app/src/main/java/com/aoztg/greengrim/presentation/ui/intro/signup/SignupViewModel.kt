@@ -2,11 +2,14 @@ package com.aoztg.greengrim.presentation.ui.intro.signup
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.aoztg.greengrim.app.App.Companion.sharedPreferences
 import com.aoztg.greengrim.data.model.CheckNickRequest
 import com.aoztg.greengrim.data.model.ErrorResponse
 import com.aoztg.greengrim.data.model.SignupRequest
 import com.aoztg.greengrim.data.repository.IntroRepository
 import com.aoztg.greengrim.presentation.ui.intro.EmailData
+import com.aoztg.greengrim.presentation.util.Constants.X_ACCESS_TOKEN
+import com.aoztg.greengrim.presentation.util.Constants.X_REFRESH_TOKEN
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -121,6 +124,14 @@ class SignupViewModel @Inject constructor(private val introRepository: IntroRepo
 
             if (response.isSuccessful) {
                 isNicknameValid.value = true
+
+                response.body()?.let{
+                    sharedPreferences.edit()
+                        .putString(X_ACCESS_TOKEN, "Bearer " + it.accessToken)
+                        .putString(X_REFRESH_TOKEN, it.refreshToken)
+                        .apply()
+                }
+
                 _uiState.update { state ->
                     state.copy(signupState = SignupState.Success)
                 }
