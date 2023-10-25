@@ -1,4 +1,4 @@
-package com.aoztg.greengrim.presentation.ui.challenge.view
+package com.aoztg.greengrim.presentation.ui.challenge.create
 
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentCreateChallengeBinding

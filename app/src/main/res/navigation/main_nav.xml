@@ -11,7 +11,7 @@
 
     <fragment
         android:id="@+id/challenge_fragment"
-        android:name="com.aoztg.greengrim.presentation.ui.challenge.view.ChallengeFragment"
+        android:name="com.aoztg.greengrim.presentation.ui.challenge.ChallengeFragment"
         android:label="Challenge">
         <action
             android:id="@+id/action_challenge_fragment_to_challenge_list_fragment"
@@ -23,7 +23,7 @@
 
     <fragment
         android:id="@+id/challenge_list_fragment"
-        android:name="com.aoztg.greengrim.presentation.ui.challenge.view.ChallengeListFragment"
+        android:name="com.aoztg.greengrim.presentation.ui.challenge.list.ChallengeListFragment"
         android:label="ChallengeList">
         <action
             android:id="@+id/action_challenge_list_fragment_to_create_challenge_fragment"
@@ -35,7 +35,7 @@
 
     <fragment
         android:id="@+id/create_challenge_fragment"
-        android:name="com.aoztg.greengrim.presentation.ui.challenge.view.CreateChallengeFragment"
+        android:name="com.aoztg.greengrim.presentation.ui.challenge.create.CreateChallengeFragment"
         android:label="CreateChallenget">
         <action
             android:id="@+id/action_create_challenge_fragment_to_create_challenge_detail_fragment"
@@ -44,12 +44,12 @@
 
     <fragment
         android:id="@+id/create_challenge_detail_fragment"
-        android:name="com.aoztg.greengrim.presentation.ui.challenge.view.CreateChallengeDetailFragment"
+        android:name="com.aoztg.greengrim.presentation.ui.challenge.create.CreateChallengeDetailFragment"
         android:label="CreateChallengeDetail" />
 
     <fragment
         android:id="@+id/challenge_detail_fragment"
-        android:name="com.aoztg.greengrim.presentation.ui.challenge.view.ChallengeDetailFragment"
+        android:name="com.aoztg.greengrim.presentation.ui.challenge.detail.ChallengeDetailFragment"
         android:label="ChallengeDetail" />
 
     <fragment
