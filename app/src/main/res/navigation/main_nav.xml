@@ -10,15 +10,15 @@
         android:label="Home" />
 
     <fragment
-        android:id="@+id/challenge_fragment"
-        android:name="com.aoztg.greengrim.presentation.ui.challenge.ChallengeFragment"
+        android:id="@+id/challenge_category_fragment"
+        android:name="com.aoztg.greengrim.presentation.ui.challenge.category.ChallengeCategoryFragment"
         android:label="Challenge">
         <action
-            android:id="@+id/action_challenge_fragment_to_challenge_list_fragment"
-            app:destination="@id/challenge_list_fragment" />
-        <action
-            android:id="@+id/action_challenge_fragment_to_create_challenge_fragment"
+            android:id="@+id/action_challenge_category_fragment_to_create_challenge_fragment"
             app:destination="@id/create_challenge_fragment" />
+        <action
+            android:id="@+id/action_challenge_category_fragment_to_challenge_list_fragment"
+            app:destination="@id/challenge_list_fragment" />
     </fragment>
 
     <fragment
