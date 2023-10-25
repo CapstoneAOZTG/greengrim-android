@@ -1,4 +1,4 @@
-package com.aoztg.greengrim.presentation.ui.main.view
+package com.aoztg.greengrim.presentation.ui.main
 
 
 import android.os.Bundle
@@ -12,7 +12,6 @@ import com.aoztg.greengrim.databinding.ActivityMainBinding
 import com.aoztg.greengrim.presentation.base.BaseActivity
 import com.aoztg.greengrim.presentation.ui.home.HomeFragmentDirections
 import com.aoztg.greengrim.presentation.ui.main.event.MainEvent
-import com.aoztg.greengrim.presentation.ui.main.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

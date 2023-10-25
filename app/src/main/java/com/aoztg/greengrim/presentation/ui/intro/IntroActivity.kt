@@ -13,7 +13,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.aoztg.greengrim.databinding.ActivityIntroBinding
 import com.aoztg.greengrim.presentation.base.BaseActivity
-import com.aoztg.greengrim.presentation.ui.main.view.MainActivity
+import com.aoztg.greengrim.presentation.ui.main.MainActivity
 import com.aoztg.greengrim.presentation.util.Constants
 import dagger.hilt.android.AndroidEntryPoint
 

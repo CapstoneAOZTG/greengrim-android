@@ -1,4 +1,4 @@
-package com.aoztg.greengrim.presentation.ui.main.viewmodel
+package com.aoztg.greengrim.presentation.ui.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
