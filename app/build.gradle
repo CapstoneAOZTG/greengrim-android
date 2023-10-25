@@ -99,4 +99,7 @@ dependencies {
     // CircleImageView
     implementation 'de.hdodenhof:circleimageview:3.1.0'
 
+    // CircleIndicator
+    implementation 'me.relex:circleindicator:2.1.6'
+
 }

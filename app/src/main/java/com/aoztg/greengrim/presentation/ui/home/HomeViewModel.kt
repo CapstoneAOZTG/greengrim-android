@@ -1,4 +1,4 @@
-package com.aoztg.greengrim.presentation.ui.home.viewmodel
+package com.aoztg.greengrim.presentation.ui.home
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
