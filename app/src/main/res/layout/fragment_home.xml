@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -79,11 +80,11 @@
                     style="@style/TextGgLarge"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="15.8g"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="@id/guide_banner"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_banner_name" />
+                    app:layout_constraintTop_toBottomOf="@id/tv_banner_name"
+                    android:text="15.8g" />
 
                 <ImageView
                     android:id="@+id/iv_tree"
@@ -102,7 +103,7 @@
                 style="@style/TextHeader"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="32dp"
                 android:text="Hot Challenge 🔥"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/layout_home_banner" />
@@ -128,24 +129,26 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_detail_hot_challenge" />
 
-            <com.google.android.material.tabs.TabLayout
+            <me.relex.circleindicator.CircleIndicator2
                 android:id="@+id/indicator_hot_challenge"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="20dp"
+                android:layout_marginTop="20dp"
+                app:ci_animator="@anim/alpha"
+                app:ci_drawable="@drawable/shape_indicator_select"
+                app:ci_drawable_unselected="@drawable/shape_indicator_unselect"
+                app:ci_height="8dp"
+                app:ci_width="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/rv_hot_challenge"
-                app:tabIndicatorColor="#3f3fff"
-                app:tabIndicatorFullWidth="false"
-                app:tabRippleColor="#00ff0000"
-                app:tabSelectedTextColor="#3f3fff" />
+                app:layout_constraintTop_toBottomOf="@id/rv_hot_challenge" />
 
             <TextView
                 android:id="@+id/tv_label_more_activity"
                 style="@style/TextHeader"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="32dp"
                 android:text="More Activity 🌈"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/indicator_hot_challenge" />
@@ -171,24 +174,26 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_detail_more_activity" />
 
-            <com.google.android.material.tabs.TabLayout
+            <me.relex.circleindicator.CircleIndicator2
                 android:id="@+id/indicator_more_activity"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="20dp"
+                android:layout_marginTop="20dp"
+                app:ci_animator="@anim/alpha"
+                app:ci_drawable="@drawable/shape_indicator_select"
+                app:ci_drawable_unselected="@drawable/shape_indicator_unselect"
+                app:ci_height="8dp"
+                app:ci_width="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/rv_more_activity"
-                app:tabIndicatorColor="#3f3fff"
-                app:tabIndicatorFullWidth="false"
-                app:tabRippleColor="#00ff0000"
-                app:tabSelectedTextColor="#3f3fff" />
+                app:layout_constraintTop_toBottomOf="@id/rv_more_activity" />
 
             <TextView
                 android:id="@+id/tv_label_hot_nft"
                 style="@style/TextHeader"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="32dp"
                 android:text="Hot NFT 🍀"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/indicator_more_activity" />
@@ -214,17 +219,19 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_detail_hot_nft" />
 
-            <com.google.android.material.tabs.TabLayout
+            <me.relex.circleindicator.CircleIndicator2
                 android:id="@+id/indicator_hot_nft"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="20dp"
+                android:layout_marginTop="20dp"
+                app:ci_animator="@anim/alpha"
+                app:ci_drawable="@drawable/shape_indicator_select"
+                app:ci_drawable_unselected="@drawable/shape_indicator_unselect"
+                app:ci_height="8dp"
+                app:ci_width="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/rv_hot_nft"
-                app:tabIndicatorColor="#3f3fff"
-                app:tabIndicatorFullWidth="false"
-                app:tabRippleColor="#00ff0000"
-                app:tabSelectedTextColor="#3f3fff" />
+                app:layout_constraintTop_toBottomOf="@id/rv_hot_nft" />
 
             <View
                 android:layout_width="match_parent"

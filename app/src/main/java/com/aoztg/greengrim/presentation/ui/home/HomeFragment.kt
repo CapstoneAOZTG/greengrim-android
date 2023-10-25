@@ -1,4 +1,4 @@
-package com.aoztg.greengrim.presentation.ui.home.view
+package com.aoztg.greengrim.presentation.ui.home
 
 import android.os.Bundle
 import android.view.View
@@ -11,7 +11,7 @@ import com.aoztg.greengrim.presentation.base.BaseFragment
 import com.aoztg.greengrim.presentation.ui.home.adapter.HomeAdapter
 import com.aoztg.greengrim.presentation.ui.home.adapter.vpItemType
 import com.aoztg.greengrim.presentation.ui.home.model.HomeUiModel
-import com.aoztg.greengrim.presentation.ui.home.viewmodel.HomeViewModel
+
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
@@ -46,8 +46,26 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
     ) {
         val adapter = HomeAdapter(data, type)
         rcView.adapter = adapter
-        PagerSnapHelper().attachToRecyclerView(rcView)
 
+        val pagerSnapHelper = PagerSnapHelper()
+        pagerSnapHelper.attachToRecyclerView(rcView)
+
+        when (type) {
+            vpItemType.HOT_CHALLENGE -> binding.indicatorHotChallenge.attachToRecyclerView(
+                rcView,
+                pagerSnapHelper
+            )
+
+            vpItemType.MORE_ACTIVITY -> binding.indicatorMoreActivity.attachToRecyclerView(
+                rcView,
+                pagerSnapHelper
+            )
+
+            vpItemType.HOT_NFT -> binding.indicatorHotNft.attachToRecyclerView(
+                rcView,
+                pagerSnapHelper
+            )
+        }
     }
 
     private fun setData() {
