@@ -146,8 +146,7 @@
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_detail_hot_challenge"
-                    app:list="@{vm.hotChallengeList}" />
+                    app:layout_constraintTop_toBottomOf="@id/tv_detail_hot_challenge" />
 
                 <me.relex.circleindicator.CircleIndicator2
                     android:id="@+id/indicator_hot_challenge"
@@ -192,8 +191,7 @@
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_detail_more_activity"
-                    app:list="@{vm.moreActivityList}" />
+                    app:layout_constraintTop_toBottomOf="@id/tv_detail_more_activity" />
 
                 <me.relex.circleindicator.CircleIndicator2
                     android:id="@+id/indicator_more_activity"
@@ -238,8 +236,7 @@
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_detail_hot_nft"
-                    app:list="@{vm.hotNftList}" />
+                    app:layout_constraintTop_toBottomOf="@id/tv_detail_hot_nft"/>
 
                 <me.relex.circleindicator.CircleIndicator2
                     android:id="@+id/indicator_hot_nft"

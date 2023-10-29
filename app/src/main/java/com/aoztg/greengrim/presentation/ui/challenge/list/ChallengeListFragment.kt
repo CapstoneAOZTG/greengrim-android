@@ -22,5 +22,17 @@ class ChallengeListFragment : BaseFragment<FragmentChallengeListBinding>(R.layou
         binding.tvTitle.text = title
         binding.rvChallengeList.adapter = ChallengeRoomAdapter()
         viewModel.getChallengeRooms()
+        initObserver()
+    }
+
+    private fun initObserver(){
+        repeatOnStarted {
+            viewModel.uiState.collect{
+                when(it.loading){
+                    true -> showLoading(requireContext())
+                    else -> dismissLoading()
+                }
+            }
+        }
     }
 }

@@ -23,18 +23,48 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.vm = viewModel
-        initRecycler()
         viewModel.getHomeList()
+        initRecycler()
+        initObserver()
     }
 
     private fun initRecycler() {
-        with(binding) {
-            rvHotChallenge.adapter = HotChallengeAdapter()
-            rvHotNft.adapter = HotNftAdapter()
-            rvMoreActivity.adapter = MoreActivityAdapter()
-            recyclerToViewPager(rvHotChallenge, indicatorHotChallenge)
-            recyclerToViewPager(rvHotNft, indicatorHotNft)
-            recyclerToViewPager(rvMoreActivity, indicatorMoreActivity)
+        repeatOnStarted {
+            viewModel.hotChallengeList.collect {
+                if (it.isNotEmpty()) {
+                    binding.rvHotChallenge.adapter = HotChallengeAdapter(it)
+                    recyclerToViewPager(binding.rvHotChallenge, binding.indicatorHotChallenge)
+                }
+            }
+        }
+
+        repeatOnStarted {
+            viewModel.hotNftList.collect {
+                if (it.isNotEmpty()) {
+                    binding.rvHotNft.adapter = HotNftAdapter(it)
+                    recyclerToViewPager(binding.rvHotNft, binding.indicatorHotNft)
+                }
+            }
+        }
+
+        repeatOnStarted {
+            viewModel.moreActivityList.collect {
+                if (it.isNotEmpty()) {
+                    binding.rvMoreActivity.adapter = MoreActivityAdapter(it)
+                    recyclerToViewPager(binding.rvMoreActivity, binding.indicatorMoreActivity)
+                }
+            }
+        }
+    }
+
+    private fun initObserver() {
+        repeatOnStarted {
+            viewModel.uiState.collect {
+                when (it.loading) {
+                    true -> showLoading(requireContext())
+                    else -> dismissLoading()
+                }
+            }
         }
     }
 
