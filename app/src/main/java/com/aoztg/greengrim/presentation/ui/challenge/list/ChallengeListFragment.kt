@@ -7,13 +7,15 @@ import androidx.navigation.fragment.navArgs
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentChallengeListBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
+import com.aoztg.greengrim.presentation.ui.LoadingState
 import com.aoztg.greengrim.presentation.ui.challenge.adapter.ChallengeRoomAdapter
 
-class ChallengeListFragment : BaseFragment<FragmentChallengeListBinding>(R.layout.fragment_challenge_list) {
+class ChallengeListFragment :
+    BaseFragment<FragmentChallengeListBinding>(R.layout.fragment_challenge_list) {
 
     private val viewModel: ChallengeListViewModel by viewModels()
     private val args: ChallengeListFragmentArgs by navArgs()
-    private val title by lazy{ args.title }
+    private val title by lazy { args.title }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -25,12 +27,16 @@ class ChallengeListFragment : BaseFragment<FragmentChallengeListBinding>(R.layou
         initObserver()
     }
 
-    private fun initObserver(){
+    private fun initObserver() {
         repeatOnStarted {
-            viewModel.uiState.collect{
-                when(it.loading){
-                    true -> showLoading(requireContext())
-                    else -> dismissLoading()
+            viewModel.uiState.collect {
+                when (it.loading) {
+                    is LoadingState.IsLoading -> {
+                        if (it.loading.state) showLoading(requireContext())
+                        else dismissLoading()
+                    }
+
+                    else -> {}
                 }
             }
         }

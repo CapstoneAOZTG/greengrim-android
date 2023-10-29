@@ -2,6 +2,7 @@ package com.aoztg.greengrim.presentation.ui.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.aoztg.greengrim.presentation.ui.LoadingState
 import com.aoztg.greengrim.presentation.ui.home.model.HotChallenge
 import com.aoztg.greengrim.presentation.ui.home.model.HotNft
 import com.aoztg.greengrim.presentation.ui.home.model.MoreActivity
@@ -15,7 +16,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 data class HomeUiState(
-    val loading: Boolean = true,
+    val loading: LoadingState = LoadingState.Empty,
 )
 
 @HiltViewModel
@@ -34,10 +35,10 @@ class HomeViewModel @Inject constructor() : ViewModel() {
     val hotNftList: StateFlow<List<HotNft>> = _hotNftList.asStateFlow()
 
     fun getHomeList() {
-        viewModelScope.launch{
+        viewModelScope.launch {
             _uiState.update {
                 it.copy(
-                    loading = true
+                    loading = LoadingState.IsLoading(true)
                 )
             }
             _hotChallengeList.value = listOf(
@@ -60,7 +61,7 @@ class HomeViewModel @Inject constructor() : ViewModel() {
 
             _uiState.update {
                 it.copy(
-                    loading = false
+                    loading = LoadingState.IsLoading(false)
                 )
             }
         }

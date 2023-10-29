@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentHomeBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
+import com.aoztg.greengrim.presentation.ui.LoadingState
 import com.aoztg.greengrim.presentation.ui.home.adapter.HotChallengeAdapter
 import com.aoztg.greengrim.presentation.ui.home.adapter.HotNftAdapter
 import com.aoztg.greengrim.presentation.ui.home.adapter.MoreActivityAdapter
@@ -23,9 +24,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.vm = viewModel
-        viewModel.getHomeList()
         initRecycler()
         initObserver()
+        viewModel.getHomeList()
     }
 
     private fun initRecycler() {
@@ -61,8 +62,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         repeatOnStarted {
             viewModel.uiState.collect {
                 when (it.loading) {
-                    true -> showLoading(requireContext())
-                    else -> dismissLoading()
+                    is LoadingState.IsLoading -> {
+                        if (it.loading.state) showLoading(requireContext())
+                        else dismissLoading()
+                    }
+
+                    else -> {}
                 }
             }
         }

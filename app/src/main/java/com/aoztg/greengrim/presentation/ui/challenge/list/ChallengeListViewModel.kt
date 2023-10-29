@@ -2,6 +2,7 @@ package com.aoztg.greengrim.presentation.ui.challenge.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.aoztg.greengrim.presentation.ui.LoadingState
 import com.aoztg.greengrim.presentation.ui.challenge.model.ChallengeRoom
 import com.aoztg.greengrim.presentation.ui.home.HomeUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,7 +15,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 data class ChallengeListUiState(
-    val loading: Boolean = true
+    val loading: LoadingState = LoadingState.Empty
 )
 
 @HiltViewModel
@@ -32,7 +33,7 @@ class ChallengeListViewModel @Inject constructor(): ViewModel() {
 
             _uiState.update{
                 it.copy(
-                    loading = true
+                    loading = LoadingState.IsLoading(true)
                 )
             }
 
@@ -48,7 +49,7 @@ class ChallengeListViewModel @Inject constructor(): ViewModel() {
 
             _uiState.update{
                 it.copy(
-                    loading = false
+                    loading = LoadingState.IsLoading(false)
                 )
             }
 
