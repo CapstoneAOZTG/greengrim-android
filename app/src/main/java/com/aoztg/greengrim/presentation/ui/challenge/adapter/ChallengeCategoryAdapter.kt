@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.aoztg.greengrim.databinding.ItemChallengeCategoryBinding
 import com.aoztg.greengrim.presentation.ui.challenge.model.ChallengeCategory
 
+
 class ChallengeCategoryAdapter :
     ListAdapter<ChallengeCategory, ChallengeCategoryViewHolder>(ChallengeCategoryDiffUtil()) {
 
@@ -30,7 +31,7 @@ class ChallengeCategoryAdapter :
             oldItem: ChallengeCategory,
             newItem: ChallengeCategory
         ): Boolean {
-            return oldItem.name == newItem.name
+            return oldItem.title == newItem.title
         }
 
         override fun areItemsTheSame(
@@ -40,9 +41,7 @@ class ChallengeCategoryAdapter :
             return oldItem == newItem
         }
     }
-
 }
-
 
 class ChallengeCategoryViewHolder(private val binding: ItemChallengeCategoryBinding) :
     RecyclerView.ViewHolder(binding.root) {
