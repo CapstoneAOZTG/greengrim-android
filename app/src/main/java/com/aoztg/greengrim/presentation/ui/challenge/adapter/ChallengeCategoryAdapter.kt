@@ -27,17 +27,11 @@ class ChallengeCategoryAdapter :
     }
 
     class ChallengeCategoryDiffUtil : DiffUtil.ItemCallback<ChallengeCategory>() {
-        override fun areContentsTheSame(
-            oldItem: ChallengeCategory,
-            newItem: ChallengeCategory
-        ): Boolean {
+        override fun areContentsTheSame(oldItem: ChallengeCategory, newItem: ChallengeCategory): Boolean {
             return oldItem.title == newItem.title
         }
 
-        override fun areItemsTheSame(
-            oldItem: ChallengeCategory,
-            newItem: ChallengeCategory
-        ): Boolean {
+        override fun areItemsTheSame(oldItem: ChallengeCategory, newItem: ChallengeCategory): Boolean {
             return oldItem == newItem
         }
     }

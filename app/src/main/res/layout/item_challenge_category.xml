@@ -24,7 +24,6 @@
             android:id="@+id/iv_image"
             android:layout_width="64dp"
             android:layout_height="64dp"
-            android:src="@drawable/icon_eco_bag"
             app:imgResource="@{item.icon}"
             app:layout_constraintBottom_toTopOf="@id/tv_name"
             app:layout_constraintEnd_toEndOf="parent"

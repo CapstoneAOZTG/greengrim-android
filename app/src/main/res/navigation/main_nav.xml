@@ -25,12 +25,16 @@
         android:id="@+id/challenge_list_fragment"
         android:name="com.aoztg.greengrim.presentation.ui.challenge.list.ChallengeListFragment"
         android:label="ChallengeList">
+        <argument
+            android:name="title"
+            app:argType="string"/>
         <action
             android:id="@+id/action_challenge_list_fragment_to_create_challenge_fragment"
             app:destination="@id/create_challenge_fragment" />
         <action
             android:id="@+id/action_challenge_list_fragment_to_challenge_detail_fragment"
             app:destination="@id/challenge_detail_fragment" />
+
     </fragment>
 
     <fragment
