@@ -2,15 +2,15 @@ package com.aoztg.greengrim.presentation.ui.challenge.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.aoztg.greengrim.databinding.ItemChallengeCategoryBinding
 import com.aoztg.greengrim.presentation.ui.challenge.model.ChallengeCategory
+import com.aoztg.greengrim.presentation.util.DefaultDiffUtil
 
 
 class ChallengeCategoryAdapter :
-    ListAdapter<ChallengeCategory, ChallengeCategoryViewHolder>(ChallengeCategoryDiffUtil()) {
+    ListAdapter<ChallengeCategory, ChallengeCategoryViewHolder>(DefaultDiffUtil<ChallengeCategory>()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChallengeCategoryViewHolder {
         return ChallengeCategoryViewHolder(
@@ -24,16 +24,6 @@ class ChallengeCategoryAdapter :
 
     override fun onBindViewHolder(holder: ChallengeCategoryViewHolder, position: Int) {
         holder.bind(getItem(position))
-    }
-
-    class ChallengeCategoryDiffUtil : DiffUtil.ItemCallback<ChallengeCategory>() {
-        override fun areContentsTheSame(oldItem: ChallengeCategory, newItem: ChallengeCategory): Boolean {
-            return oldItem.title == newItem.title
-        }
-
-        override fun areItemsTheSame(oldItem: ChallengeCategory, newItem: ChallengeCategory): Boolean {
-            return oldItem == newItem
-        }
     }
 }
 

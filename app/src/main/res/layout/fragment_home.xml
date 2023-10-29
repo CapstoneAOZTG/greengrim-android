@@ -4,6 +4,10 @@
 
     <data>
 
+        <variable
+            name="vm"
+            type="com.aoztg.greengrim.presentation.ui.home.HomeViewModel" />
+
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -142,7 +146,8 @@
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_detail_hot_challenge" />
+                    app:layout_constraintTop_toBottomOf="@id/tv_detail_hot_challenge"
+                    app:list="@{vm.hotChallengeList}" />
 
                 <me.relex.circleindicator.CircleIndicator2
                     android:id="@+id/indicator_hot_challenge"
@@ -187,7 +192,8 @@
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_detail_more_activity" />
+                    app:layout_constraintTop_toBottomOf="@id/tv_detail_more_activity"
+                    app:list="@{vm.moreActivityList}" />
 
                 <me.relex.circleindicator.CircleIndicator2
                     android:id="@+id/indicator_more_activity"
@@ -232,7 +238,8 @@
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_detail_hot_nft" />
+                    app:layout_constraintTop_toBottomOf="@id/tv_detail_hot_nft"
+                    app:list="@{vm.hotNftList}" />
 
                 <me.relex.circleindicator.CircleIndicator2
                     android:id="@+id/indicator_hot_nft"

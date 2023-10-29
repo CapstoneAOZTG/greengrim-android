@@ -16,7 +16,7 @@ fun bindResource(imageView: ImageView, resource: Int) {
 fun bindImg(imageView: ImageView, url: String) {
     Glide.with(imageView.context)
         .load(url)
-        .error(R.drawable.ic_launcher_foreground)
+        .error(R.drawable.test)
         .into(imageView)
 }
 
