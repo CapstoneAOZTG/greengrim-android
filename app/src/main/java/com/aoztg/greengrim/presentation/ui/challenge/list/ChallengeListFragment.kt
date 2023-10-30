@@ -2,6 +2,7 @@ package com.aoztg.greengrim.presentation.ui.challenge.list
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
@@ -11,18 +12,20 @@ import com.aoztg.greengrim.databinding.FragmentChallengeListBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
 import com.aoztg.greengrim.presentation.ui.LoadingState
 import com.aoztg.greengrim.presentation.ui.challenge.adapter.ChallengeRoomAdapter
+import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 
 
 class ChallengeListFragment :
     BaseFragment<FragmentChallengeListBinding>(R.layout.fragment_challenge_list) {
 
     private val viewModel: ChallengeListViewModel by viewModels()
+    private val parentViewModel: MainViewModel by activityViewModels()
     private val args: ChallengeListFragmentArgs by navArgs()
     private val category by lazy { args.category }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        parentViewModel.showBNV()
         binding.vm = viewModel
         binding.tvTitle.text = category
         binding.rvChallengeList.adapter = ChallengeRoomAdapter()
@@ -45,16 +48,19 @@ class ChallengeListFragment :
         }
 
         repeatOnStarted {
-            viewModel.events.collect{
-                when(it){
-                    is ChallengeListEvents.NavigateToChallengeDetail -> findNavController().toChallengeDetail(it.id)
+            viewModel.events.collect {
+                when (it) {
+                    is ChallengeListEvents.NavigateToChallengeDetail -> findNavController().toChallengeDetail(
+                        it.id
+                    )
                 }
             }
         }
     }
 
     private fun NavController.toChallengeDetail(id: String) {
-        val action = ChallengeListFragmentDirections.actionChallengeListFragmentToChallengeDetailFragment(id)
+        val action =
+            ChallengeListFragmentDirections.actionChallengeListFragmentToChallengeDetailFragment(id)
         this.navigate(action)
     }
 }
