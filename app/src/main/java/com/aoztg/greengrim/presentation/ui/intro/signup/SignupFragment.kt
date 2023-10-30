@@ -3,6 +3,7 @@ package com.aoztg.greengrim.presentation.ui.intro.signup
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
@@ -12,6 +13,7 @@ import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentSignupBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
 import com.aoztg.greengrim.presentation.ui.intro.IntroViewModel
+import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -35,7 +37,6 @@ class SignupFragment : BaseFragment<FragmentSignupBinding>(R.layout.fragment_sig
                     is SignupState.Failure -> {
                         binding.btnNext.isEnabled = false
                     }
-
                     else -> {}
                 }
 
@@ -45,7 +46,6 @@ class SignupFragment : BaseFragment<FragmentSignupBinding>(R.layout.fragment_sig
                         binding.tvWarning.visibility = View.VISIBLE
                         binding.tvWarning.text = it.nickState.msg
                     }
-
                     else -> {}
                 }
 
@@ -60,11 +60,20 @@ class SignupFragment : BaseFragment<FragmentSignupBinding>(R.layout.fragment_sig
         repeatOnStarted {
             parentViewModel.profileImg.collect {
                 if (it.isNotBlank()) {
-                    binding.ivProfile.setImageURI(it.toUri())
                     viewModel.setProfileImg(it)
                 }
             }
         }
+    }
+}
+
+@BindingAdapter("profileImgUrl")
+fun bindProfileImg(imageView: ImageView, url: String) {
+    if(url.isNotBlank()){
+        Glide.with(imageView.context)
+            .load(url)
+            .error(R.drawable.icon_profile)
+            .into(imageView)
     }
 }
 

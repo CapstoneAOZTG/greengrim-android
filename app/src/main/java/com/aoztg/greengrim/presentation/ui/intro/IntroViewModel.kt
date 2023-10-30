@@ -51,8 +51,12 @@ class IntroViewModel @Inject constructor(
     fun imageToUrl(file: MultipartBody.Part) {
         viewModelScope.launch {
             val response = imageRepository.imageToUrl(file)
-            response.body()?.let{
-                _profileImg.value = it.image
+
+            if (response.isSuccessful) {
+
+                response.body()?.let {
+                    _profileImg.value = it.imgUrl
+                }
             }
         }
     }

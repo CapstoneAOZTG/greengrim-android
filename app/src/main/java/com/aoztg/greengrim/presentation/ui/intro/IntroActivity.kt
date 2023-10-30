@@ -122,7 +122,7 @@ class IntroActivity : BaseActivity<ActivityIntroBinding>(ActivityIntroBinding::i
                 uri?.let{
                     val file = File(getRealPathFromUri(it, this)?:"")
                     val requestFile = file.asRequestBody("image/jpg".toMediaTypeOrNull())
-                    val body = MultipartBody.Part.createFormData("file", file.name, requestFile)
+                    val body = MultipartBody.Part.createFormData("image", file.name, requestFile)
 
                     viewModel.imageToUrl(body)
                 }
