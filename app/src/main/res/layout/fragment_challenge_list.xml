@@ -73,7 +73,7 @@
                     android:layout_height="wrap_content"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_header"/>
+                    app:layout_constraintTop_toBottomOf="@id/tv_header" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -88,19 +88,32 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
+                <TextView
+                    android:id="@+id/tv_filter"
+                    style="@style/TextGgSmall"
+                    android:layout_width="0dp"
+                    android:layout_height="20dp"
+                    android:layout_marginEnd="32dp"
+                    android:drawableEnd="@drawable/icon_filter"
+                    android:textAlignment="textEnd"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="최신순" />
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_challenge_list"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:paddingHorizontal="10dp"
-                    app:list="@{vm.challengeRoom}"
                     app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_filter"
+                    app:list="@{vm.challengeRoom}"
                     app:spanCount="2"
-                    tools:listitem="@layout/item_challenge_list"/>
+                    tools:listitem="@layout/item_challenge_list" />
 
                 <View
                     android:layout_width="0dp"
@@ -121,8 +134,8 @@
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="88dp"
             android:background="@android:color/transparent"
-            android:scaleType="fitCenter"
             android:onClick="@{() -> vm.navigateToCreateChallenge()}"
+            android:scaleType="fitCenter"
             android:src="@drawable/icon_plus" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
