@@ -27,7 +27,7 @@ class ChallengeListFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        parentViewModel.showBNV()
+        parentViewModel.hideBNV()
         binding.vm = viewModel
         binding.tvTitle.text = category
         binding.rvChallengeList.adapter = ChallengeRoomAdapter()
