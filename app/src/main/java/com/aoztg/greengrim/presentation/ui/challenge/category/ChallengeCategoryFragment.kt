@@ -30,13 +30,23 @@ class ChallengeCategoryFragment :
             viewModel.events.collect {
                 when (it) {
                     is ChallengeCategoryEvents.NavigateToChallengeList -> findNavController().toChallengeList(it.category)
+                    is ChallengeCategoryEvents.NavigateToCreateChallenge -> findNavController().toCreateChallenge()
                 }
             }
         }
     }
 
     private fun NavController.toChallengeList(category: String) {
-        val action = ChallengeCategoryFragmentDirections.actionChallengeCategoryFragmentToChallengeListFragment(category)
+        val action =
+            ChallengeCategoryFragmentDirections.actionChallengeCategoryFragmentToChallengeListFragment(
+                category
+            )
+        this.navigate(action)
+    }
+
+    private fun NavController.toCreateChallenge() {
+        val action =
+            ChallengeCategoryFragmentDirections.actionChallengeCategoryFragmentToCreateChallengeFragment()
         this.navigate(action)
     }
 

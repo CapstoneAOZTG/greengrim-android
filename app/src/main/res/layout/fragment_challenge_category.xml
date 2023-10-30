@@ -114,6 +114,18 @@
 
         </androidx.core.widget.NestedScrollView>
 
+        <ImageButton
+            android:id="@+id/btn_create_challenge"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="bottom|end"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="88dp"
+            android:background="@android:color/transparent"
+            android:scaleType="fitCenter"
+            android:onClick="@{() -> vm.navigateToCreateChallenge()}"
+            android:src="@drawable/icon_plus" />
+
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </layout>
