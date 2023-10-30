@@ -6,8 +6,11 @@ import com.aoztg.greengrim.presentation.ui.LoadingState
 import com.aoztg.greengrim.presentation.ui.challenge.model.ChallengeDetail
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -17,11 +20,20 @@ data class ChallengeDetailUiState(
     val loading: LoadingState = LoadingState.Empty
 )
 
+sealed class ChallengeDetailEvents {
+    object NavigateBack : ChallengeDetailEvents()
+    object PopUpMenu : ChallengeDetailEvents()
+    data class NavigateChatRoom(val id: String) : ChallengeDetailEvents()
+}
+
 @HiltViewModel
 class ChallengeDetailViewModel @Inject constructor() : ViewModel() {
 
     private val _uiState = MutableStateFlow(ChallengeDetailUiState())
     val uiState: StateFlow<ChallengeDetailUiState> = _uiState.asStateFlow()
+
+    private val _events = MutableSharedFlow<ChallengeDetailEvents>()
+    val events: SharedFlow<ChallengeDetailEvents> = _events.asSharedFlow()
 
     private val _challengeDetail = MutableStateFlow(ChallengeDetail())
     val challengeDetail: StateFlow<ChallengeDetail> = _challengeDetail.asStateFlow()
@@ -51,6 +63,24 @@ class ChallengeDetailViewModel @Inject constructor() : ViewModel() {
                     loading = LoadingState.IsLoading(false)
                 )
             }
+        }
+    }
+
+    fun navigateToBack(){
+        viewModelScope.launch{
+            _events.emit(ChallengeDetailEvents.NavigateBack)
+        }
+    }
+
+    fun popUpMenu(){
+        viewModelScope.launch{
+            _events.emit(ChallengeDetailEvents.PopUpMenu)
+        }
+    }
+
+    fun navigateToChatRoom(id: String){
+        viewModelScope.launch{
+            _events.emit(ChallengeDetailEvents.NavigateChatRoom(id))
         }
     }
 
