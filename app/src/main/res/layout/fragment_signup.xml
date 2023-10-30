@@ -38,11 +38,11 @@
             android:onClick="@{() -> pvm.goToGallery()}"
             android:src="@drawable/icon_profile"
             app:civ_border_color="@color/gg_grey1"
-            app:profileImgUrl="@{pvm.profileImg}"
             app:civ_border_width="1dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_title" />
+            app:layout_constraintTop_toBottomOf="@id/tv_title"
+            app:profileImgUrl="@{pvm.profileImg}" />
 
         <ImageView
             android:id="@+id/btn_goto_gallery"
@@ -157,7 +157,7 @@
             android:enabled="false"
             android:onClick="@{() -> vm.signUp()}"
             android:text="다음으로"
-            android:textColor="@color/white"
+            android:textColor="@color/selector_next_btn_text"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

@@ -125,7 +125,7 @@
             android:background="@drawable/selector_next_btn"
             android:enabled="false"
             android:text="다음으로"
-            android:textColor="@color/white"
+            android:textColor="@color/selector_next_btn_text"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
