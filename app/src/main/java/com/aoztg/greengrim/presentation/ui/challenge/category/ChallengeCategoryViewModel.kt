@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 sealed class ChallengeCategoryEvents{
-    data class NavigateToChallengeList(val title: String) : ChallengeCategoryEvents()
+    data class NavigateToChallengeList(val category: String) : ChallengeCategoryEvents()
 }
 
 @HiltViewModel
@@ -42,9 +42,9 @@ class ChallengeCategoryViewModel @Inject constructor(): ViewModel() {
         )
     }
 
-    private fun navigateToChallengeList(title: String){
+    private fun navigateToChallengeList(category: String){
         viewModelScope.launch{
-            _events.emit(ChallengeCategoryEvents.NavigateToChallengeList(title))
+            _events.emit(ChallengeCategoryEvents.NavigateToChallengeList(category))
         }
     }
 }

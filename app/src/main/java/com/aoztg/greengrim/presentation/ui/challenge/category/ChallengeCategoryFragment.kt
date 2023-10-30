@@ -25,18 +25,21 @@ class ChallengeCategoryFragment :
         initObserver()
     }
 
-    private fun initObserver(){
+    private fun initObserver() {
         repeatOnStarted {
-            viewModel.events.collect{
-                when(it){
-                    is ChallengeCategoryEvents.NavigateToChallengeList -> findNavController().toChallengeList(it.title)
+            viewModel.events.collect {
+                when (it) {
+                    is ChallengeCategoryEvents.NavigateToChallengeList -> findNavController().toChallengeList(it.category)
                 }
             }
         }
     }
 
-    private fun NavController.toChallengeList(title: String) {
-        val action = ChallengeCategoryFragmentDirections.actionChallengeCategoryFragmentToChallengeListFragment(title)
+    private fun NavController.toChallengeList(category: String) {
+        val action =
+            ChallengeCategoryFragmentDirections.actionChallengeCategoryFragmentToChallengeListFragment(
+                category
+            )
         this.navigate(action)
     }
 

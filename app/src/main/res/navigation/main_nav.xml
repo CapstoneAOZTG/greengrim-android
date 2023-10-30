@@ -26,8 +26,8 @@
         android:name="com.aoztg.greengrim.presentation.ui.challenge.list.ChallengeListFragment"
         android:label="ChallengeList">
         <argument
-            android:name="title"
-            app:argType="string"/>
+            android:name="category"
+            app:argType="string" />
         <action
             android:id="@+id/action_challenge_list_fragment_to_create_challenge_fragment"
             app:destination="@id/create_challenge_fragment" />
@@ -54,7 +54,13 @@
     <fragment
         android:id="@+id/challenge_detail_fragment"
         android:name="com.aoztg.greengrim.presentation.ui.challenge.detail.ChallengeDetailFragment"
-        android:label="ChallengeDetail" />
+        android:label="ChallengeDetail">
+
+        <argument
+            android:name="id"
+            app:argType="string" />
+
+    </fragment>
 
     <fragment
         android:id="@+id/chat_fragment"
