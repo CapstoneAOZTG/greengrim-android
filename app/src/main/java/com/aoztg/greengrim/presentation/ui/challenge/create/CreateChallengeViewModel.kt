@@ -61,10 +61,10 @@ class CreateChallengeViewModel @Inject constructor() : ViewModel() {
     }
 
     fun navigateToCreateChallengeDetail() {
-        selectedCategory.value = ""
         viewModelScope.launch {
             _events.emit(CreateChallengeEvents.NavigateToCreateDetail(selectedCategory.value))
         }
+        selectedCategory.value = ""
     }
 
     fun navigateToBack() {

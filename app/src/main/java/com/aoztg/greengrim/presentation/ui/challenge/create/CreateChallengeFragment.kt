@@ -56,10 +56,7 @@ class CreateChallengeFragment :
     }
 
     private fun NavController.toCreateChallengeDetail(category: String) {
-        val action =
-            CreateChallengeFragmentDirections.actionCreateChallengeFragmentToCreateChallengeDetailFragment(
-                category
-            )
+        val action = CreateChallengeFragmentDirections.actionCreateChallengeFragmentToCreateChallengeDetailFragment(category)
         this.navigate(action)
     }
 }
