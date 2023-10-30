@@ -36,9 +36,12 @@ class ChallengeDetailFragment :
                 when (it) {
                     is ChallengeDetailEvents.NavigateBack -> findNavController().navigateUp()
                     is ChallengeDetailEvents.PopUpMenu -> {
-                        if (!isPopupShowing) {
+                        isPopupShowing = if (isPopupShowing) {
+                            dismissOnePopup()
+                            false
+                        } else{
                             showPopup()
-                            isPopupShowing = true
+                            true
                         }
                     }
 
@@ -76,6 +79,7 @@ class ChallengeDetailFragment :
 
     private fun navigateToAccusation() {
         dismissOnePopup()
+        isPopupShowing = false
         showCustomToast("신고하기로 이동 구현 전")
     }
 }
