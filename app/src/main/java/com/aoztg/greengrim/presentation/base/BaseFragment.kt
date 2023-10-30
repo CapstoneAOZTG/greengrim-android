@@ -15,6 +15,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.aoztg.greengrim.presentation.util.LoadingDialog
+import com.aoztg.greengrim.presentation.util.OnePopupMenu
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -25,7 +26,8 @@ abstract class BaseFragment<B : ViewDataBinding>(
     private var _binding: B? = null
     protected val binding get() = _binding!!
 
-    private lateinit var loadingDialog : LoadingDialog
+    private lateinit var loadingDialog: LoadingDialog
+    private lateinit var onePopupMenu: OnePopupMenu
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,15 +45,29 @@ abstract class BaseFragment<B : ViewDataBinding>(
         }
     }
 
-    fun showLoading(context : Context){
+    fun showLoading(context: Context) {
         loadingDialog = LoadingDialog(context)
         loadingDialog.show()
     }
 
-    fun dismissLoading(){
-        if(loadingDialog.isShowing){
+    fun dismissLoading() {
+        if (loadingDialog.isShowing) {
             loadingDialog.dismiss()
         }
+    }
+
+    fun showOnePopup(
+        context: Context,
+        onClickListener: () -> Unit,
+        xPosition: Int,
+        yPosition: Int
+    ) {
+        onePopupMenu = OnePopupMenu(context, onClickListener)
+        onePopupMenu.show(xPosition, yPosition)
+    }
+
+    fun dismissOnePopup() {
+        onePopupMenu.dismiss()
     }
 
     fun showCustomToast(message: String) {

@@ -1,245 +1,269 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
+        <variable
+            name="vm"
+            type="com.aoztg.greengrim.presentation.ui.home.HomeViewModel" />
+
     </data>
 
-    <androidx.core.widget.NestedScrollView
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fillViewport="true">
+        android:layout_height="match_parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingHorizontal="20dp"
-            android:paddingVertical="12dp">
+            android:layout_height="wrap_content"
+            android:background="@color/black">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/layout_toolbar"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingHorizontal="@dimen/padding_large"
+                android:paddingVertical="@dimen/padding_middle"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_scrollFlags="scroll|enterAlways">
 
                 <TextView
                     android:id="@+id/tv_header"
                     style="@style/TextHeader"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:text="HOME"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/btn_alarm"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <ImageView
+                <ImageButton
                     android:id="@+id/btn_alarm"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:layout_gravity="end"
+                    android:background="@android:color/transparent"
+                    android:scaleType="fitCenter"
                     android:src="@drawable/icon_alarm"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/layout_home_banner"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/shape_darkfill_nostroke_radius10"
-                android:paddingTop="25dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/layout_toolbar">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingHorizontal="@dimen/padding_large"
+                android:paddingVertical="@dimen/padding_middle">
 
-                <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/guide_banner"
-                    android:layout_width="wrap_content"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layout_home_banner"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintGuide_percent="0.6" />
-
-                <TextView
-                    android:id="@+id/tv_banner_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="유보라 님의 탄소 저감량"
-                    android:textColor="@color/white"
-                    android:textSize="18sp"
-                    app:layout_constraintEnd_toEndOf="@id/guide_banner"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/tv_banner_carbon"
-                    style="@style/TextGgLarge"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="@id/guide_banner"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_banner_name"
-                    android:text="15.8g" />
-
-                <ImageView
-                    android:id="@+id/iv_tree"
-                    android:layout_width="128dp"
-                    android:layout_height="128dp"
-                    android:src="@drawable/icon_tree"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/shape_darkfill_nostroke_radius10"
+                    android:paddingTop="25dp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="@id/guide_banner"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guide_banner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent="0.6" />
+
+                    <TextView
+                        android:id="@+id/tv_banner_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="유보라 님의 탄소 저감량"
+                        android:textColor="@color/white"
+                        android:textSize="18sp"
+                        app:layout_constraintEnd_toEndOf="@id/guide_banner"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tv_banner_carbon"
+                        style="@style/TextGgLarge"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="15.8g"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="@id/guide_banner"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_banner_name" />
+
+                    <ImageView
+                        android:id="@+id/iv_tree"
+                        android:layout_width="128dp"
+                        android:layout_height="128dp"
+                        android:src="@drawable/icon_tree"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@id/guide_banner"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <TextView
+                    android:id="@+id/tv_label_hot_challenge"
+                    style="@style/TextHeader"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    android:text="Hot Challenge 🔥"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/layout_home_banner" />
+
+                <TextView
+                    android:id="@+id/tv_detail_hot_challenge"
+                    style="@style/TextGgSmallGrey"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="지금 핫한 챌린지"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_label_hot_challenge" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_hot_challenge"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_detail_hot_challenge" />
+
+                <me.relex.circleindicator.CircleIndicator2
+                    android:id="@+id/indicator_hot_challenge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:layout_marginTop="20dp"
+                    app:ci_animator="@anim/alpha"
+                    app:ci_drawable="@drawable/shape_indicator_select"
+                    app:ci_drawable_unselected="@drawable/shape_indicator_unselect"
+                    app:ci_height="8dp"
+                    app:ci_width="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/rv_hot_challenge" />
+
+                <TextView
+                    android:id="@+id/tv_label_more_activity"
+                    style="@style/TextHeader"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    android:text="More Activity 🌈"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/indicator_hot_challenge" />
+
+                <TextView
+                    android:id="@+id/tv_detail_more_activity"
+                    style="@style/TextGgSmallGrey"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="활동을 통해 포인트를 얻으세요!"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_label_more_activity" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_more_activity"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_detail_more_activity" />
+
+                <me.relex.circleindicator.CircleIndicator2
+                    android:id="@+id/indicator_more_activity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:layout_marginTop="20dp"
+                    app:ci_animator="@anim/alpha"
+                    app:ci_drawable="@drawable/shape_indicator_select"
+                    app:ci_drawable_unselected="@drawable/shape_indicator_unselect"
+                    app:ci_height="8dp"
+                    app:ci_width="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/rv_more_activity" />
+
+                <TextView
+                    android:id="@+id/tv_label_hot_nft"
+                    style="@style/TextHeader"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    android:text="Hot NFT 🍀"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/indicator_more_activity" />
+
+                <TextView
+                    android:id="@+id/tv_detail_hot_nft"
+                    style="@style/TextGgSmallGrey"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="지금 핫한 NFT"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_label_hot_nft" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_hot_nft"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_detail_hot_nft" />
+
+                <me.relex.circleindicator.CircleIndicator2
+                    android:id="@+id/indicator_hot_nft"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:layout_marginTop="20dp"
+                    app:ci_animator="@anim/alpha"
+                    app:ci_drawable="@drawable/shape_indicator_select"
+                    app:ci_drawable_unselected="@drawable/shape_indicator_unselect"
+                    app:ci_height="8dp"
+                    app:ci_width="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/rv_hot_nft" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    app:layout_constraintTop_toBottomOf="@id/indicator_hot_nft" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <TextView
-                android:id="@+id/tv_label_hot_challenge"
-                style="@style/TextHeader"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:text="Hot Challenge 🔥"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/layout_home_banner" />
+        </androidx.core.widget.NestedScrollView>
 
-            <TextView
-                android:id="@+id/tv_detail_hot_challenge"
-                style="@style/TextGgSmallGrey"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="지금 핫한 챌린지"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_label_hot_challenge" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_hot_challenge"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:orientation="horizontal"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_detail_hot_challenge" />
-
-            <me.relex.circleindicator.CircleIndicator2
-                android:id="@+id/indicator_hot_challenge"
-                android:layout_width="wrap_content"
-                android:layout_height="20dp"
-                android:layout_marginTop="20dp"
-                app:ci_animator="@anim/alpha"
-                app:ci_drawable="@drawable/shape_indicator_select"
-                app:ci_drawable_unselected="@drawable/shape_indicator_unselect"
-                app:ci_height="8dp"
-                app:ci_width="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/rv_hot_challenge" />
-
-            <TextView
-                android:id="@+id/tv_label_more_activity"
-                style="@style/TextHeader"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:text="More Activity 🌈"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/indicator_hot_challenge" />
-
-            <TextView
-                android:id="@+id/tv_detail_more_activity"
-                style="@style/TextGgSmallGrey"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="활동을 통해 포인트를 얻으세요!"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_label_more_activity" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_more_activity"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:orientation="horizontal"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_detail_more_activity" />
-
-            <me.relex.circleindicator.CircleIndicator2
-                android:id="@+id/indicator_more_activity"
-                android:layout_width="wrap_content"
-                android:layout_height="20dp"
-                android:layout_marginTop="20dp"
-                app:ci_animator="@anim/alpha"
-                app:ci_drawable="@drawable/shape_indicator_select"
-                app:ci_drawable_unselected="@drawable/shape_indicator_unselect"
-                app:ci_height="8dp"
-                app:ci_width="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/rv_more_activity" />
-
-            <TextView
-                android:id="@+id/tv_label_hot_nft"
-                style="@style/TextHeader"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:text="Hot NFT 🍀"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/indicator_more_activity" />
-
-            <TextView
-                android:id="@+id/tv_detail_hot_nft"
-                style="@style/TextGgSmallGrey"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="지금 핫한 NFT"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_label_hot_nft" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_hot_nft"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:orientation="horizontal"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_detail_hot_nft" />
-
-            <me.relex.circleindicator.CircleIndicator2
-                android:id="@+id/indicator_hot_nft"
-                android:layout_width="wrap_content"
-                android:layout_height="20dp"
-                android:layout_marginTop="20dp"
-                app:ci_animator="@anim/alpha"
-                app:ci_drawable="@drawable/shape_indicator_select"
-                app:ci_drawable_unselected="@drawable/shape_indicator_unselect"
-                app:ci_height="8dp"
-                app:ci_width="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/rv_hot_nft" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                app:layout_constraintTop_toBottomOf="@id/indicator_hot_nft" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </androidx.core.widget.NestedScrollView>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </layout>

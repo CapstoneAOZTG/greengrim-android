@@ -10,21 +10,24 @@
         android:label="Home" />
 
     <fragment
-        android:id="@+id/challenge_fragment"
-        android:name="com.aoztg.greengrim.presentation.ui.challenge.view.ChallengeFragment"
+        android:id="@+id/challenge_category_fragment"
+        android:name="com.aoztg.greengrim.presentation.ui.challenge.category.ChallengeCategoryFragment"
         android:label="Challenge">
         <action
-            android:id="@+id/action_challenge_fragment_to_challenge_list_fragment"
-            app:destination="@id/challenge_list_fragment" />
-        <action
-            android:id="@+id/action_challenge_fragment_to_create_challenge_fragment"
+            android:id="@+id/action_challenge_category_fragment_to_create_challenge_fragment"
             app:destination="@id/create_challenge_fragment" />
+        <action
+            android:id="@+id/action_challenge_category_fragment_to_challenge_list_fragment"
+            app:destination="@id/challenge_list_fragment" />
     </fragment>
 
     <fragment
         android:id="@+id/challenge_list_fragment"
-        android:name="com.aoztg.greengrim.presentation.ui.challenge.view.ChallengeListFragment"
+        android:name="com.aoztg.greengrim.presentation.ui.challenge.list.ChallengeListFragment"
         android:label="ChallengeList">
+        <argument
+            android:name="category"
+            app:argType="string" />
         <action
             android:id="@+id/action_challenge_list_fragment_to_create_challenge_fragment"
             app:destination="@id/create_challenge_fragment" />
@@ -35,7 +38,7 @@
 
     <fragment
         android:id="@+id/create_challenge_fragment"
-        android:name="com.aoztg.greengrim.presentation.ui.challenge.view.CreateChallengeFragment"
+        android:name="com.aoztg.greengrim.presentation.ui.challenge.create.CreateChallengeFragment"
         android:label="CreateChallenget">
         <action
             android:id="@+id/action_create_challenge_fragment_to_create_challenge_detail_fragment"
@@ -44,13 +47,20 @@
 
     <fragment
         android:id="@+id/create_challenge_detail_fragment"
-        android:name="com.aoztg.greengrim.presentation.ui.challenge.view.CreateChallengeDetailFragment"
+        android:name="com.aoztg.greengrim.presentation.ui.challenge.create.CreateChallengeDetailFragment"
         android:label="CreateChallengeDetail" />
 
     <fragment
         android:id="@+id/challenge_detail_fragment"
-        android:name="com.aoztg.greengrim.presentation.ui.challenge.view.ChallengeDetailFragment"
-        android:label="ChallengeDetail" />
+        android:name="com.aoztg.greengrim.presentation.ui.challenge.detail.ChallengeDetailFragment"
+        android:label="ChallengeDetail">
+        <argument
+            android:name="id"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_challenge_detail_fragment_to_chat_room_fragment"
+            app:destination="@id/chat_room_fragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/chat_fragment"
@@ -65,6 +75,9 @@
         android:id="@+id/chat_room_fragment"
         android:name="com.aoztg.greengrim.presentation.ui.chat.view.ChatRoomFragment"
         android:label="ChatRoom">
+        <argument
+            android:name="id"
+            app:argType="string"/>
         <action
             android:id="@+id/action_chat_room_fragment_to_certificate_fragment"
             app:destination="@id/certificate_fragment" />
@@ -74,7 +87,6 @@
         android:id="@+id/certificate_fragment"
         android:name="com.aoztg.greengrim.presentation.ui.chat.view.CertificateFragment"
         android:label="Certificate" />
-
 
     <fragment
         android:id="@+id/market_fragment"
@@ -91,10 +103,8 @@
         android:name="com.aoztg.greengrim.presentation.ui.info.view.ProfileSettingFragment"
         android:label="ProfileSetting" />
 
-
     <action
         android:id="@+id/action_global_to_homeFragment"
         app:destination="@id/home_fragment" />
-
 
 </navigation>

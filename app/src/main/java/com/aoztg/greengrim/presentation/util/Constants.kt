@@ -9,4 +9,7 @@ object Constants {
     const val X_REFRESH_TOKEN = "X_REFRESH_TOKEN"
 
     const val RC_PERMISSION = 1000
+
+    const val ONE_POPUP_WIDTH_DP = 220
+    const val ONE_POPUP_HEIGHT_DP = 40
 }

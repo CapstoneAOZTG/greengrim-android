@@ -3,7 +3,7 @@
 
 
     <item
-        android:id="@+id/challenge_fragment"
+        android:id="@+id/challenge_category_fragment"
         android:icon="@drawable/selector_challenge"
         android:title="챌린지"/>
 

@@ -18,4 +18,11 @@
         <item name="cornerSizeBottomLeft">0dp</item>
     </style>
 
+    <style name="AllRadiusImageView" parent="">
+        <item name="cornerSizeTopRight">28dp</item>
+        <item name="cornerSizeTopLeft">28dp</item>
+        <item name="cornerSizeBottomRight">28dp</item>
+        <item name="cornerSizeBottomLeft">28dp</item>
+    </style>
+
 </resources>

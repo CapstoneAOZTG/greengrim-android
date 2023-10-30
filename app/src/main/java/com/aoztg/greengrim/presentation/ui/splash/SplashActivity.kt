@@ -13,8 +13,7 @@ import com.aoztg.greengrim.app.App
 import com.aoztg.greengrim.databinding.ActivitySplashBinding
 import com.aoztg.greengrim.presentation.base.BaseActivity
 import com.aoztg.greengrim.presentation.ui.intro.IntroActivity
-import com.aoztg.greengrim.presentation.ui.main.view.MainActivity
-import com.aoztg.greengrim.presentation.util.Constants
+import com.aoztg.greengrim.presentation.ui.main.MainActivity
 import com.aoztg.greengrim.presentation.util.Constants.X_ACCESS_TOKEN
 
 class SplashActivity : BaseActivity<ActivitySplashBinding>(ActivitySplashBinding::inflate) {
