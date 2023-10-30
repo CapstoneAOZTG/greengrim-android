@@ -4,5 +4,4 @@ data class ChallengeCategory(
     val icon: Int,
     val category: String,
     val point: String,
-    val onItemClicked: (String) -> Unit,
 )
