@@ -3,6 +3,7 @@ package com.aoztg.greengrim.presentation.ui.challenge.list
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.presentation.ui.LoadingState
+import com.aoztg.greengrim.presentation.ui.challenge.detail.ChallengeDetailEvents
 import com.aoztg.greengrim.presentation.ui.challenge.model.ChallengeRoom
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
@@ -23,6 +24,7 @@ data class ChallengeListUiState(
 sealed class ChallengeListEvents {
     data class NavigateToChallengeDetail(val id: String) : ChallengeListEvents()
     object NavigateToCreateChallenge : ChallengeListEvents()
+    object ShowBottomSheet : ChallengeListEvents()
 }
 
 @HiltViewModel
@@ -101,4 +103,20 @@ class ChallengeListViewModel @Inject constructor() : ViewModel() {
             _events.emit(ChallengeListEvents.NavigateToCreateChallenge)
         }
     }
+
+    fun showBottomSheet(){
+        viewModelScope.launch{
+            _events.emit(ChallengeListEvents.ShowBottomSheet)
+        }
+    }
+
+    fun setSortType(type: ChallengeSortType){
+
+    }
+}
+
+enum class ChallengeSortType(val text: String){
+    RECENT("최신순"),
+    MANY_PEOPLE("인원 많은순"),
+    LESS_PEOPLE("인원 적은순")
 }
