@@ -55,7 +55,7 @@
 
         <TextView
             android:id="@+id/tv_nickname_label"
-            style="@style/TextSignupLabel"
+            style="@style/TextFormLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -66,7 +66,7 @@
 
         <TextView
             android:id="@+id/tv_nickname_count"
-            style="@style/TextSignupLabel"
+            style="@style/TextFormLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
@@ -107,7 +107,7 @@
 
         <TextView
             android:id="@+id/tv_introduce_label"
-            style="@style/TextSignupLabel"
+            style="@style/TextFormLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -118,7 +118,7 @@
 
         <TextView
             android:id="@+id/tv_introduce_count"
-            style="@style/TextSignupLabel"
+            style="@style/TextFormLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
