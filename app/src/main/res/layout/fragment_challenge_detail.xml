@@ -141,6 +141,7 @@
             android:onClick="@{() -> vm.navigateToChatRoom(vm.challengeDetail.title)}"
             android:text="입장하기"
             android:textColor="@color/black"
+            android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
