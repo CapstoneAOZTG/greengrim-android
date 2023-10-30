@@ -36,10 +36,7 @@ class ChallengeCategoryFragment :
     }
 
     private fun NavController.toChallengeList(category: String) {
-        val action =
-            ChallengeCategoryFragmentDirections.actionChallengeCategoryFragmentToChallengeListFragment(
-                category
-            )
+        val action = ChallengeCategoryFragmentDirections.actionChallengeCategoryFragmentToChallengeListFragment(category)
         this.navigate(action)
     }
 

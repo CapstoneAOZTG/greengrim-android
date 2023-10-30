@@ -59,8 +59,7 @@ class ChallengeListFragment :
     }
 
     private fun NavController.toChallengeDetail(id: String) {
-        val action =
-            ChallengeListFragmentDirections.actionChallengeListFragmentToChallengeDetailFragment(id)
+        val action = ChallengeListFragmentDirections.actionChallengeListFragmentToChallengeDetailFragment(id)
         this.navigate(action)
     }
 }

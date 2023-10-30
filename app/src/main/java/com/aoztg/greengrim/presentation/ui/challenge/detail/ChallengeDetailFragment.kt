@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.aoztg.greengrim.R
@@ -33,9 +34,14 @@ class ChallengeDetailFragment :
                 when (it) {
                     is ChallengeDetailEvents.NavigateBack -> findNavController().navigateUp()
                     is ChallengeDetailEvents.PopUpMenu -> {}
-                    is ChallengeDetailEvents.NavigateChatRoom -> {}
+                    is ChallengeDetailEvents.NavigateChatRoom -> findNavController().toChatRoom(it.id)
                 }
             }
         }
+    }
+
+    private fun NavController.toChatRoom(id: String) {
+        val action = ChallengeDetailFragmentDirections.actionChallengeDetailFragmentToChatRoomFragment(id)
+        this.navigate(action)
     }
 }
