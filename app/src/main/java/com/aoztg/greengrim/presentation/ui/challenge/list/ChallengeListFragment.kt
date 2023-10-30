@@ -50,9 +50,8 @@ class ChallengeListFragment :
         repeatOnStarted {
             viewModel.events.collect {
                 when (it) {
-                    is ChallengeListEvents.NavigateToChallengeDetail -> findNavController().toChallengeDetail(
-                        it.id
-                    )
+                    is ChallengeListEvents.NavigateToChallengeDetail -> findNavController().toChallengeDetail(it.id)
+                    is ChallengeListEvents.NavigateToCreateChallenge -> findNavController().toCreateChallenge()
                 }
             }
         }
@@ -60,6 +59,11 @@ class ChallengeListFragment :
 
     private fun NavController.toChallengeDetail(id: String) {
         val action = ChallengeListFragmentDirections.actionChallengeListFragmentToChallengeDetailFragment(id)
+        this.navigate(action)
+    }
+
+    private fun NavController.toCreateChallenge(){
+        val action = ChallengeListFragmentDirections.actionChallengeListFragmentToCreateChallengeFragment()
         this.navigate(action)
     }
 }

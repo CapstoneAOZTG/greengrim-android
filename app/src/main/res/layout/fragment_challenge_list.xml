@@ -122,6 +122,7 @@
             android:layout_marginBottom="88dp"
             android:background="@android:color/transparent"
             android:scaleType="fitCenter"
+            android:onClick="@{() -> vm.navigateToCreateChallenge()}"
             android:src="@drawable/icon_plus" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

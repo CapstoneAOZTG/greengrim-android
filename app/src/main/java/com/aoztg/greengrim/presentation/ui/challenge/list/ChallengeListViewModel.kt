@@ -22,6 +22,7 @@ data class ChallengeListUiState(
 
 sealed class ChallengeListEvents {
     data class NavigateToChallengeDetail(val id: String) : ChallengeListEvents()
+    object NavigateToCreateChallenge : ChallengeListEvents()
 }
 
 @HiltViewModel
@@ -47,11 +48,36 @@ class ChallengeListViewModel @Inject constructor() : ViewModel() {
             }
 
             _challengeRoom.value = listOf(
-                ChallengeRoom("test", "쓰레기 줍기", listOf("줍킹", "티켓 25/30", "인증 15회", "키워드 #줍다"), ::navigateToChallengeDetail),
-                ChallengeRoom("test", "쓰레기 줍기", listOf("줍킹", "티켓 25/30", "인증 15회", "키워드 #줍다"), ::navigateToChallengeDetail),
-                ChallengeRoom("test", "쓰레기 줍기", listOf("줍킹", "티켓 25/30", "인증 15회", "키워드 #줍다"), ::navigateToChallengeDetail),
-                ChallengeRoom("test", "쓰레기 줍기", listOf("줍킹", "티켓 25/30", "인증 15회", "키워드 #줍다"), ::navigateToChallengeDetail),
-                ChallengeRoom("test", "쓰레기 줍기", listOf("줍킹", "티켓 25/30", "인증 15회", "키워드 #줍다"), ::navigateToChallengeDetail),
+                ChallengeRoom(
+                    "test",
+                    "쓰레기 줍기",
+                    listOf("줍킹", "티켓 25/30", "인증 15회", "키워드 #줍다"),
+                    ::navigateToChallengeDetail
+                ),
+                ChallengeRoom(
+                    "test",
+                    "쓰레기 줍기",
+                    listOf("줍킹", "티켓 25/30", "인증 15회", "키워드 #줍다"),
+                    ::navigateToChallengeDetail
+                ),
+                ChallengeRoom(
+                    "test",
+                    "쓰레기 줍기",
+                    listOf("줍킹", "티켓 25/30", "인증 15회", "키워드 #줍다"),
+                    ::navigateToChallengeDetail
+                ),
+                ChallengeRoom(
+                    "test",
+                    "쓰레기 줍기",
+                    listOf("줍킹", "티켓 25/30", "인증 15회", "키워드 #줍다"),
+                    ::navigateToChallengeDetail
+                ),
+                ChallengeRoom(
+                    "test",
+                    "쓰레기 줍기",
+                    listOf("줍킹", "티켓 25/30", "인증 15회", "키워드 #줍다"),
+                    ::navigateToChallengeDetail
+                ),
             )
 
             delay(1000)
@@ -67,6 +93,12 @@ class ChallengeListViewModel @Inject constructor() : ViewModel() {
     private fun navigateToChallengeDetail(id: String) {
         viewModelScope.launch {
             _events.emit(ChallengeListEvents.NavigateToChallengeDetail(id))
+        }
+    }
+
+    fun navigateToCreateChallenge(){
+        viewModelScope.launch{
+            _events.emit(ChallengeListEvents.NavigateToCreateChallenge)
         }
     }
 }
