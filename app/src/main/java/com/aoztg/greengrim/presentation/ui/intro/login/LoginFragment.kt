@@ -7,6 +7,7 @@ import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.app.App.Companion.gso
@@ -14,7 +15,6 @@ import com.aoztg.greengrim.databinding.FragmentLoginBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
 import com.aoztg.greengrim.presentation.ui.intro.EmailData
 import com.aoztg.greengrim.presentation.ui.intro.IntroViewModel
-import com.aoztg.greengrim.presentation.ui.intro.navigateToTerms
 import com.aoztg.greengrim.presentation.util.Constants.TAG
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.common.api.ApiException
@@ -183,6 +183,11 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(R.layout.fragment_login
         override fun onError(errorCode: Int, message: String) {
             onFailure(errorCode, message)
         }
+    }
+
+    private fun NavController.navigateToTerms() {
+        val action = LoginFragmentDirections.actionLoginFragmentToTermsFragment()
+        this.navigate(action)
     }
 
 }

@@ -2,11 +2,11 @@ package com.aoztg.greengrim.presentation.ui.intro.terms
 
 import android.os.Bundle
 import android.view.View
+import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentTermsBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
-import com.aoztg.greengrim.presentation.ui.intro.navigateToSignup
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -70,5 +70,9 @@ class TermsFragment : BaseFragment<FragmentTermsBinding>(R.layout.fragment_terms
         }
     }
 
+    private fun NavController.navigateToSignup() {
+        val action = TermsFragmentDirections.actionTermsFragmentToSignupFragment()
+        this.navigate(action)
+    }
 
 }
