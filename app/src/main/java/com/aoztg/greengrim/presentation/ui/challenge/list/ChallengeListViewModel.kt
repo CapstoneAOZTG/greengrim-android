@@ -38,11 +38,11 @@ class ChallengeListViewModel @Inject constructor(): ViewModel() {
             }
 
             _challengeRoom.value = listOf(
-                ChallengeRoom("test","title", listOf("a","b","c")),
-                ChallengeRoom("test","title", listOf("a","b","c")),
-                ChallengeRoom("test","title", listOf("a","b","c")),
-                ChallengeRoom("test","title", listOf("a","b","c")),
-                ChallengeRoom("test","title", listOf("a","b","c")),
+                ChallengeRoom("test","쓰레기 줍기", listOf("줍킹","티켓 25/30","인증 15회", "키워드 #줍다")),
+                ChallengeRoom("test","쓰레기 줍기", listOf("줍킹","티켓 25/30","인증 15회", "키워드 #줍다")),
+                ChallengeRoom("test","쓰레기 줍기", listOf("줍킹","티켓 25/30","인증 15회", "키워드 #줍다")),
+                ChallengeRoom("test","쓰레기 줍기", listOf("줍킹","티켓 25/30","인증 15회", "키워드 #줍다")),
+                ChallengeRoom("test","쓰레기 줍기", listOf("줍킹","티켓 25/30","인증 15회", "키워드 #줍다")),
             )
 
             delay(1000)
