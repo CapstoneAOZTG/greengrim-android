@@ -19,6 +19,7 @@ import javax.inject.Inject
 
 sealed class CreateChallengeEvents {
     data class NavigateToCreateDetail(val category: String) : CreateChallengeEvents()
+    object NavigateToBack : CreateChallengeEvents()
 }
 
 @HiltViewModel
@@ -63,6 +64,12 @@ class CreateChallengeViewModel @Inject constructor() : ViewModel() {
         selectedCategory.value = ""
         viewModelScope.launch {
             _events.emit(CreateChallengeEvents.NavigateToCreateDetail(selectedCategory.value))
+        }
+    }
+
+    fun navigateToBack() {
+        viewModelScope.launch{
+            _events.emit(CreateChallengeEvents.NavigateToBack)
         }
     }
 }

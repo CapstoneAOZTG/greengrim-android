@@ -38,9 +38,8 @@ class CreateChallengeFragment :
         repeatOnStarted {
             viewModel.events.collect {
                 when (it) {
-                    is CreateChallengeEvents.NavigateToCreateDetail -> findNavController().toCreateChallengeDetail(
-                        it.category
-                    )
+                    is CreateChallengeEvents.NavigateToCreateDetail -> findNavController().toCreateChallengeDetail(it.category)
+                    is CreateChallengeEvents.NavigateToBack -> findNavController().navigateUp()
                 }
             }
         }
