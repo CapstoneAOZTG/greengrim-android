@@ -33,9 +33,11 @@
                 <TextView
                     android:id="@+id/tv_header"
                     style="@style/TextHeader"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:text="HOME"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/btn_alarm"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -47,6 +49,7 @@
                     android:background="@android:color/transparent"
                     android:scaleType="fitCenter"
                     android:src="@drawable/icon_alarm"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -236,7 +239,7 @@
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_detail_hot_nft"/>
+                    app:layout_constraintTop_toBottomOf="@id/tv_detail_hot_nft" />
 
                 <me.relex.circleindicator.CircleIndicator2
                     android:id="@+id/indicator_hot_nft"
