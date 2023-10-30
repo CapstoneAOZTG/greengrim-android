@@ -1,5 +1,6 @@
 package com.aoztg.greengrim.app.di
 
+import com.aoztg.greengrim.data.remote.ImageAPI
 import com.aoztg.greengrim.data.remote.IntroAPI
 import dagger.Module
 import dagger.Provides
@@ -16,6 +17,12 @@ object ApiModule {
     @Provides
     fun provideIntroService(retrofit: Retrofit): IntroAPI {
         return retrofit.create(IntroAPI::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun provideImageService(retrofit: Retrofit): ImageAPI {
+        return retrofit.create(ImageAPI::class.java)
     }
 
 
