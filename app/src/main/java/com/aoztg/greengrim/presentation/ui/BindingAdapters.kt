@@ -22,8 +22,10 @@ fun bindImg(imageView: ImageView, url: String) {
         .into(imageView)
 }
 
-@BindingAdapter("chipList")
-fun bindChips(chipGroup: ChipGroup, chips: List<String>) {
+@BindingAdapter("colorChipList")
+fun bindColorChips(chipGroup: ChipGroup, chips: List<String>) {
+
+    chipGroup.removeAllViews()
 
     val colors = listOf(
         R.drawable.shape_greenfill_nostroke_radius20,
@@ -36,6 +38,23 @@ fun bindChips(chipGroup: ChipGroup, chips: List<String>) {
         val chip = TextView(chipGroup.context).apply {
             text = data
             setBackgroundResource(colors.random())
+            setTextAppearance(R.style.TextGgSmallBlack)
+            setPadding(20, 4, 20, 4)
+        }
+
+        chipGroup.addView(chip)
+    }
+}
+
+@BindingAdapter("greyChipList")
+fun bindGreyChips(chipGroup: ChipGroup, chips: List<String>) {
+
+    chipGroup.removeAllViews()
+
+    chips.forEach { data ->
+        val chip = TextView(chipGroup.context).apply {
+            text = data
+            setBackgroundResource(R.drawable.shape_grey2fill_nostroke_radius20)
             setTextAppearance(R.style.TextGgSmallBlack)
             setPadding(20, 4, 20, 4)
         }
