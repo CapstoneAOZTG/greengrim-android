@@ -15,6 +15,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:onClick="@{() -> vm.rootClicked()}"
         android:paddingHorizontal="@dimen/padding_large">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -32,22 +33,22 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:background="@android:color/transparent"
+                android:onClick="@{() -> vm.navigateToBack()}"
                 android:scaleType="fitCenter"
                 android:src="@drawable/icon_back"
-                android:onClick="@{() -> vm.navigateToBack()}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageButton
-                android:id="@+id/btn_alarm"
+                android:id="@+id/btn_more"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_gravity="end"
                 android:background="@android:color/transparent"
-                android:scaleType="fitCenter"
-                android:src="@drawable/icon_alarm"
                 android:onClick="@{() -> vm.popUpMenu()}"
+                android:scaleType="fitCenter"
+                android:src="@drawable/icon_more"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -137,12 +138,12 @@
             android:layout_marginTop="24dp"
             android:layout_marginBottom="40dp"
             android:background="@drawable/shape_greenfill_nostroke_radius10"
+            android:onClick="@{() -> vm.navigateToChatRoom(vm.challengeDetail.title)}"
             android:text="입장하기"
             android:textColor="@color/black"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:onClick="@{() -> vm.navigateToChatRoom(vm.challengeDetail.title)}"
             app:layout_constraintTop_toBottomOf="@id/tv_date" />
 
 

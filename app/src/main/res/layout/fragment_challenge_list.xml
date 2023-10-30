@@ -95,11 +95,11 @@
                     android:layout_height="20dp"
                     android:layout_marginEnd="32dp"
                     android:drawableEnd="@drawable/icon_filter"
+                    android:text="최신순"
                     android:textAlignment="textEnd"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:text="최신순" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_challenge_list"

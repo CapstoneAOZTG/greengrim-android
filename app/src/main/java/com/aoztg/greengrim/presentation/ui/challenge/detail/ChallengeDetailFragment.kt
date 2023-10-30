@@ -19,6 +19,8 @@ class ChallengeDetailFragment :
     private val parentViewModel: MainViewModel by activityViewModels()
     private val args: ChallengeDetailFragmentArgs by navArgs()
     private val id by lazy { args.id }
+    private val popupLocation = IntArray(2)
+    private var isPopupShowing = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -33,15 +35,47 @@ class ChallengeDetailFragment :
             viewModel.events.collect {
                 when (it) {
                     is ChallengeDetailEvents.NavigateBack -> findNavController().navigateUp()
-                    is ChallengeDetailEvents.PopUpMenu -> {}
+                    is ChallengeDetailEvents.PopUpMenu -> {
+                        if (!isPopupShowing) {
+                            showPopup()
+                            isPopupShowing = true
+                        }
+                    }
+
+                    is ChallengeDetailEvents.RootClicked -> {
+                        if (isPopupShowing) {
+                            dismissOnePopup()
+                            isPopupShowing = false
+                        }
+                    }
+
                     is ChallengeDetailEvents.NavigateChatRoom -> findNavController().toChatRoom(it.id)
                 }
             }
         }
     }
 
+    private fun showPopup() {
+        val moreBtn = binding.btnMore
+        moreBtn.getLocationOnScreen(popupLocation)
+        val left = popupLocation[0] + moreBtn.left.toFloat()
+        val top = popupLocation[1] + moreBtn.bottom.toFloat()
+        showOnePopup(
+            requireContext(),
+            ::navigateToAccusation,
+            left.toInt(),
+            top.toInt()
+        )
+    }
+
     private fun NavController.toChatRoom(id: String) {
-        val action = ChallengeDetailFragmentDirections.actionChallengeDetailFragmentToChatRoomFragment(id)
+        val action =
+            ChallengeDetailFragmentDirections.actionChallengeDetailFragmentToChatRoomFragment(id)
         this.navigate(action)
+    }
+
+    private fun navigateToAccusation() {
+        dismissOnePopup()
+        showCustomToast("신고하기로 이동 구현 전")
     }
 }

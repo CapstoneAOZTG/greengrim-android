@@ -23,6 +23,7 @@ data class ChallengeDetailUiState(
 sealed class ChallengeDetailEvents {
     object NavigateBack : ChallengeDetailEvents()
     object PopUpMenu : ChallengeDetailEvents()
+    object RootClicked : ChallengeDetailEvents()
     data class NavigateChatRoom(val id: String) : ChallengeDetailEvents()
 }
 
@@ -66,20 +67,26 @@ class ChallengeDetailViewModel @Inject constructor() : ViewModel() {
         }
     }
 
-    fun navigateToBack(){
-        viewModelScope.launch{
+    fun navigateToBack() {
+        viewModelScope.launch {
             _events.emit(ChallengeDetailEvents.NavigateBack)
         }
     }
 
-    fun popUpMenu(){
-        viewModelScope.launch{
+    fun popUpMenu() {
+        viewModelScope.launch {
             _events.emit(ChallengeDetailEvents.PopUpMenu)
         }
     }
 
-    fun navigateToChatRoom(id: String){
-        viewModelScope.launch{
+    fun rootClicked() {
+        viewModelScope.launch {
+            _events.emit(ChallengeDetailEvents.RootClicked)
+        }
+    }
+
+    fun navigateToChatRoom(id: String) {
+        viewModelScope.launch {
             _events.emit(ChallengeDetailEvents.NavigateChatRoom(id))
         }
     }
