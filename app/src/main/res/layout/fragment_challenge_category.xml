@@ -68,7 +68,7 @@
 
                 <TextView
                     android:id="@+id/tv_title"
-                    style="@style/TextGgSmall"
+                    style="@style/TextGgSmallGrey1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="@string/challenge_to_protect_the_environment"

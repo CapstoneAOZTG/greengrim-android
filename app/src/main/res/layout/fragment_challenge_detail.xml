@@ -84,7 +84,7 @@
 
         <TextView
             android:id="@+id/tv_description"
-            style="@style/TextGgSmall"
+            style="@style/TextGgSmallGrey1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:paddingHorizontal="@dimen/padding_middle"
