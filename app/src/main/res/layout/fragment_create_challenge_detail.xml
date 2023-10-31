@@ -234,10 +234,38 @@
                     android:id="@+id/seekbar_certificate_count"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="16dp"
+                    android:max="4"
+                    android:maxHeight="3dp"
+                    android:minHeight="3dp"
+                    android:progressDrawable="@color/white"
+                    android:splitTrack="false"
+                    android:thumb="@drawable/seekbar_thumb"
+                    android:tickMark="@drawable/seekbar_tickmark"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_certificate_count_description" />
+
+                <TextView
+                    android:id="@+id/tv_certificate_min_count"
+                    style="@style/TextGgTiny"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="12dp"
+                    android:text="10"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/seekbar_certificate_count" />
+
+                <TextView
+                    android:id="@+id/tv_certificate_max_count"
+                    style="@style/TextGgTiny"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="12dp"
+                    android:text="30"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/tv_certificate_min_count" />
 
                 <TextView
                     android:id="@+id/tv_ticket_count_label"
@@ -247,7 +275,7 @@
                     android:layout_marginTop="20dp"
                     android:text="성공 티켓 개수"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/seekbar_certificate_count" />
+                    app:layout_constraintTop_toBottomOf="@id/tv_certificate_min_count" />
 
                 <TextView
                     android:id="@+id/tv_ticket_count"
@@ -274,10 +302,38 @@
                     android:id="@+id/seekbar_ticket_count"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="16dp"
+                    android:max="4"
+                    android:maxHeight="3dp"
+                    android:minHeight="3dp"
+                    android:progressDrawable="@color/white"
+                    android:splitTrack="false"
+                    android:thumb="@drawable/seekbar_thumb"
+                    android:tickMark="@drawable/seekbar_tickmark"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_ticket_count_description" />
+
+                <TextView
+                    android:id="@+id/tv_ticket_min_count"
+                    style="@style/TextGgTiny"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="12dp"
+                    android:text="20"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/seekbar_ticket_count" />
+
+                <TextView
+                    android:id="@+id/tv_ticket_max_count"
+                    style="@style/TextGgTiny"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="12dp"
+                    android:text="100"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/tv_ticket_min_count" />
 
                 <TextView
                     android:id="@+id/tv_min_certificate_count_label"
@@ -287,7 +343,7 @@
                     android:layout_marginTop="20dp"
                     android:text="최소 인증 횟수"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/seekbar_ticket_count" />
+                    app:layout_constraintTop_toBottomOf="@id/tv_ticket_min_count" />
 
                 <TextView
                     android:id="@+id/tv_min_certificate_count"
@@ -314,10 +370,38 @@
                     android:id="@+id/seekbar_min_certificate_count"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="16dp"
+                    android:max="4"
+                    android:maxHeight="3dp"
+                    android:minHeight="3dp"
+                    android:progressDrawable="@color/white"
+                    android:splitTrack="false"
+                    android:thumb="@drawable/seekbar_thumb"
+                    android:tickMark="@drawable/seekbar_tickmark"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_min_certificate_count_description" />
+
+                <TextView
+                    android:id="@+id/tv_min_certificate_min_count"
+                    style="@style/TextGgTiny"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="12dp"
+                    android:text="2"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/seekbar_min_certificate_count" />
+
+                <TextView
+                    android:id="@+id/tv_min_certificate_max_count"
+                    style="@style/TextGgTiny"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="12dp"
+                    android:text="6"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/tv_min_certificate_min_count" />
 
                 <TextView
                     android:id="@+id/tv_keyword_label"
@@ -327,7 +411,7 @@
                     android:layout_marginTop="20dp"
                     android:text="키워드"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/seekbar_min_certificate_count" />
+                    app:layout_constraintTop_toBottomOf="@id/tv_min_certificate_min_count" />
 
                 <ImageButton
                     android:id="@+id/btn_refresh_keyword"
