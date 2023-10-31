@@ -4,10 +4,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
@@ -36,6 +39,19 @@ class CreateChallengeDetailViewModel @Inject constructor() : ViewModel() {
     val certificateProgress = MutableStateFlow(0)
     val ticketProgress = MutableStateFlow(0)
     val minCertificateProgress = MutableStateFlow(0)
+
+    val isDataReady = combine(title, description) { title, description ->
+        title.isNotBlank() && description.isNotBlank()
+                && imageUrl.isNotBlank()
+    }.stateIn(
+        viewModelScope,
+        SharingStarted.WhileSubscribed(),
+        false
+    )
+
+    fun setImageUrl(url: String) {
+        imageUrl = url
+    }
 
     init {
         observeSeekBar()
@@ -73,7 +89,9 @@ class CreateChallengeDetailViewModel @Inject constructor() : ViewModel() {
         }.launchIn(viewModelScope)
     }
 
-    fun setImageUrl(url: String) {
-        imageUrl = url
+    fun createChallenge(){
+
     }
+
+
 }
