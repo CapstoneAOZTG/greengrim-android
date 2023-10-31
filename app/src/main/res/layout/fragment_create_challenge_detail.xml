@@ -6,6 +6,10 @@
     <data>
 
         <variable
+            name="pvm"
+            type="com.aoztg.greengrim.presentation.ui.main.MainViewModel" />
+
+        <variable
             name="vm"
             type="com.aoztg.greengrim.presentation.ui.challenge.create.CreateChallengeDetailViewModel" />
 
@@ -109,6 +113,7 @@
                     android:maxLines="1"
                     android:paddingHorizontal="15dp"
                     android:paddingVertical="8dp"
+                    android:text="@={vm.title}"
                     android:textColor="@color/white"
                     android:textColorHint="@color/gg_grey5"
                     android:textSize="13sp"
@@ -148,6 +153,7 @@
                     android:maxLines="3"
                     android:paddingHorizontal="15dp"
                     android:paddingVertical="12dp"
+                    android:text="@={vm.description}"
                     android:textColor="@color/white"
                     android:textColorHint="@color/gg_grey5"
                     android:textSize="13sp"
@@ -165,39 +171,19 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/et_introduce" />
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/layout_add_photo"
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/iv_add_photo"
                     android:layout_width="0dp"
-                    android:layout_height="200dp"
+                    android:layout_height="0dp"
                     android:layout_marginTop="8dp"
-                    android:background="@drawable/shape_darkfill_grey5stroke_radius10"
+                    android:onClick="@{() -> pvm.goToGallery()}"
+                    android:src="@drawable/img_add_photo"
+                    app:imgUrlCheckEmtpy="@{pvm.image}"
+                    app:layout_constraintDimensionRatio="942:576"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_photo_label">
-
-                    <ImageView
-                        android:id="@+id/iv_picture"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:src="@drawable/icon_picture"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/tv_add_picture_announce"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="대표 사진을 등록해보세요"
-                        android:textAlignment="center"
-                        android:textColor="@color/gg_grey5"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/iv_picture" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                    app:layout_constraintTop_toBottomOf="@id/tv_photo_label"
+                    app:shapeAppearanceOverlay="@style/All10RadiusImageView" />
 
                 <TextView
                     android:id="@+id/tv_certificate_count_label"
@@ -207,7 +193,7 @@
                     android:layout_marginTop="20dp"
                     android:text="성공 인증 횟수"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/layout_add_photo" />
+                    app:layout_constraintTop_toBottomOf="@id/iv_add_photo" />
 
                 <TextView
                     android:id="@+id/tv_certificate_count"
@@ -217,6 +203,7 @@
                     app:layout_constraintBottom_toBottomOf="@id/tv_certificate_count_label"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@id/tv_certificate_count_label"
+                    app:progressText="@{vm.uiState.certificateProgressState}"
                     tools:text="10 회" />
 
                 <TextView
@@ -238,6 +225,7 @@
                     android:max="4"
                     android:maxHeight="3dp"
                     android:minHeight="3dp"
+                    android:progress="@={vm.certificateProgress}"
                     android:progressDrawable="@color/white"
                     android:splitTrack="false"
                     android:thumb="@drawable/seekbar_thumb"
@@ -285,6 +273,7 @@
                     app:layout_constraintBottom_toBottomOf="@id/tv_ticket_count_label"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@id/tv_ticket_count_label"
+                    app:progressText="@{vm.uiState.ticketProgressState}"
                     tools:text="100 개" />
 
                 <TextView
@@ -306,6 +295,7 @@
                     android:max="4"
                     android:maxHeight="3dp"
                     android:minHeight="3dp"
+                    android:progress="@={vm.ticketProgress}"
                     android:progressDrawable="@color/white"
                     android:splitTrack="false"
                     android:thumb="@drawable/seekbar_thumb"
@@ -353,6 +343,7 @@
                     app:layout_constraintBottom_toBottomOf="@id/tv_min_certificate_count_label"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@id/tv_min_certificate_count_label"
+                    app:progressText="@{vm.uiState.minCertificateProgressState}"
                     tools:text="주 3회" />
 
                 <TextView
@@ -374,6 +365,7 @@
                     android:max="4"
                     android:maxHeight="3dp"
                     android:minHeight="3dp"
+                    android:progress="@={vm.minCertificateProgress}"
                     android:progressDrawable="@color/white"
                     android:splitTrack="false"
                     android:thumb="@drawable/seekbar_thumb"
