@@ -29,25 +29,15 @@
         app:layout_constraintStart_toEndOf="@id/iv_edit_profile"
         app:layout_constraintTop_toTopOf="@id/iv_edit_profile" />
 
-    <com.google.android.material.divider.MaterialDivider
-        android:id="@+id/devider_edit_profile"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        app:dividerColor="@color/gg_grey5"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/iv_edit_profile" />
-
     <ImageView
         android:id="@+id/iv_notification"
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_marginStart="12dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="28dp"
         android:src="@drawable/icon_setting"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/devider_edit_profile" />
+        app:layout_constraintTop_toBottomOf="@id/iv_edit_profile" />
 
     <TextView
         android:id="@+id/tv_notification"
@@ -60,25 +50,15 @@
         app:layout_constraintStart_toEndOf="@id/iv_notification"
         app:layout_constraintTop_toTopOf="@id/iv_notification" />
 
-    <com.google.android.material.divider.MaterialDivider
-        android:id="@+id/devider_notification"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        app:dividerColor="@color/gg_grey5"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/iv_notification" />
-
     <ImageView
         android:id="@+id/iv_edit_password"
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_marginStart="12dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="28dp"
         android:src="@drawable/icon_setting"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/devider_notification" />
+        app:layout_constraintTop_toBottomOf="@id/iv_notification" />
 
     <TextView
         android:id="@+id/tv_edit_password"
@@ -91,25 +71,15 @@
         app:layout_constraintStart_toEndOf="@id/iv_edit_password"
         app:layout_constraintTop_toTopOf="@id/iv_edit_password" />
 
-    <com.google.android.material.divider.MaterialDivider
-        android:id="@+id/devider_edit_password"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        app:dividerColor="@color/gg_grey5"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/iv_edit_password" />
-
     <ImageView
         android:id="@+id/iv_accouncement"
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_marginStart="12dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="28dp"
         android:src="@drawable/icon_setting"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/devider_edit_password" />
+        app:layout_constraintTop_toBottomOf="@id/iv_edit_password" />
 
     <TextView
         android:id="@+id/tv_announcement"
@@ -122,25 +92,15 @@
         app:layout_constraintStart_toEndOf="@id/iv_accouncement"
         app:layout_constraintTop_toTopOf="@id/iv_accouncement" />
 
-    <com.google.android.material.divider.MaterialDivider
-        android:id="@+id/devider_announement"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        app:dividerColor="@color/gg_grey5"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/iv_accouncement" />
-
     <ImageView
         android:id="@+id/iv_terms"
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_marginStart="12dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="28dp"
         android:src="@drawable/icon_setting"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/devider_announement" />
+        app:layout_constraintTop_toBottomOf="@id/iv_accouncement" />
 
     <TextView
         android:id="@+id/tv_terms"
@@ -153,25 +113,15 @@
         app:layout_constraintStart_toEndOf="@id/iv_terms"
         app:layout_constraintTop_toTopOf="@id/iv_terms" />
 
-    <com.google.android.material.divider.MaterialDivider
-        android:id="@+id/devider_terms"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        app:dividerColor="@color/gg_grey5"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/iv_terms" />
-
     <ImageView
         android:id="@+id/iv_app_version"
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_marginStart="12dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="28dp"
         android:src="@drawable/icon_setting"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/devider_terms" />
+        app:layout_constraintTop_toBottomOf="@id/iv_terms" />
 
     <TextView
         android:id="@+id/tv_app_version"
@@ -195,25 +145,15 @@
         app:layout_constraintTop_toTopOf="@id/iv_app_version"
         tools:text="1.0.0" />
 
-    <com.google.android.material.divider.MaterialDivider
-        android:id="@+id/devider_app_version"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        app:dividerColor="@color/gg_grey5"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/iv_app_version" />
-
     <ImageView
         android:id="@+id/iv_logout"
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_marginStart="12dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="28dp"
         android:src="@drawable/icon_setting"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/devider_app_version" />
+        app:layout_constraintTop_toBottomOf="@id/iv_app_version" />
 
     <TextView
         android:id="@+id/tv_logout"
@@ -226,25 +166,15 @@
         app:layout_constraintStart_toEndOf="@id/iv_logout"
         app:layout_constraintTop_toTopOf="@id/iv_logout" />
 
-    <com.google.android.material.divider.MaterialDivider
-        android:id="@+id/devider_logout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        app:dividerColor="@color/gg_grey5"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/iv_logout" />
-
     <ImageView
         android:id="@+id/iv_withdrawal"
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_marginStart="12dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="28dp"
         android:src="@drawable/icon_setting"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/devider_logout" />
+        app:layout_constraintTop_toBottomOf="@id/iv_logout" />
 
     <TextView
         android:id="@+id/tv_withdrawal"
@@ -259,7 +189,7 @@
 
     <View
         android:layout_width="0dp"
-        android:layout_height="50dp"
+        android:layout_height="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/iv_withdrawal" />
