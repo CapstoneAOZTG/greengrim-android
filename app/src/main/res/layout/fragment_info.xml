@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -9,12 +11,323 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_toolbar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="info"
-            android:textSize="50sp"
-            android:gravity="center" />
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="@dimen/padding_large"
+            android:paddingVertical="@dimen/padding_middle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_scrollFlags="scroll|enterAlways">
+
+            <TextView
+                android:id="@+id/tv_header"
+                style="@style/TextHeader"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="더보기"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/btn_setting"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/btn_setting"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="end"
+                android:background="@android:color/transparent"
+                android:scaleType="fitCenter"
+                android:src="@drawable/icon_setting"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/layout_toolbar">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="@dimen/padding_large">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/iv_profile"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="12dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/test"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:shapeAppearanceOverlay="@style/All28RadiusImageView" />
+
+                <TextView
+                    android:id="@+id/tv_name"
+                    style="@style/TextGgMedium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toTopOf="@id/tv_comment"
+                    app:layout_constraintStart_toEndOf="@id/iv_profile"
+                    app:layout_constraintTop_toTopOf="@id/iv_profile"
+                    tools:text="유보라 님" />
+
+                <TextView
+                    android:id="@+id/tv_comment"
+                    style="@style/TextGgSmallGrey1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="@id/iv_profile"
+                    app:layout_constraintStart_toStartOf="@id/tv_name"
+                    app:layout_constraintTop_toBottomOf="@id/tv_name"
+                    tools:text="지구를 지켜 지수" />
+
+                <ImageButton
+                    android:id="@+id/btn_goto_edit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/icon_next"
+                    app:layout_constraintBottom_toBottomOf="@id/iv_profile"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/iv_profile" />
+
+                <TextView
+                    android:id="@+id/tv_own_label"
+                    style="@style/TextHeader"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="보유"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/iv_profile" />
+
+                <ImageView
+                    android:id="@+id/iv_green_point"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="12dp"
+                    android:src="@drawable/icon_green_point"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_own_label" />
+
+                <TextView
+                    android:id="@+id/tv_green_point_label"
+                    style="@style/TextGgSmallGrey1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:text="그린 포인트"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toTopOf="@id/tv_green_point"
+                    app:layout_constraintStart_toEndOf="@id/iv_green_point"
+                    app:layout_constraintTop_toTopOf="@id/iv_green_point" />
+
+                <TextView
+                    android:id="@+id/tv_green_point"
+                    style="@style/TextGgMedium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="@id/iv_green_point"
+                    app:layout_constraintStart_toStartOf="@id/tv_green_point_label"
+                    app:layout_constraintTop_toBottomOf="@id/tv_green_point_label"
+                    tools:text="1,000 G" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline_own"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.55" />
+
+                <ImageView
+                    android:id="@+id/iv_green_coin"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="12dp"
+                    android:src="@drawable/icon_green_coin"
+                    app:layout_constraintStart_toEndOf="@id/guideline_own"
+                    app:layout_constraintTop_toBottomOf="@id/tv_own_label" />
+
+                <TextView
+                    android:id="@+id/tv_green_coin_label"
+                    style="@style/TextGgSmallGrey1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:text="그린 코인"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toTopOf="@id/tv_green_coin"
+                    app:layout_constraintStart_toEndOf="@id/iv_green_coin"
+                    app:layout_constraintTop_toTopOf="@id/iv_green_coin" />
+
+                <TextView
+                    android:id="@+id/tv_green_coin"
+                    style="@style/TextGgMedium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="@id/iv_green_coin"
+                    app:layout_constraintStart_toStartOf="@id/tv_green_coin_label"
+                    app:layout_constraintTop_toBottomOf="@id/tv_green_coin_label"
+                    tools:text="475 C" />
+
+                <TextView
+                    android:id="@+id/tv_info_label"
+                    style="@style/TextHeader"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="40dp"
+                    android:text="정보"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/iv_green_point" />
+
+                <TextView
+                    android:id="@+id/tv_myaccount_label"
+                    style="@style/TextGgMedium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="12dp"
+                    android:text="내 계정"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_info_label" />
+
+                <TextView
+                    android:id="@+id/tv_myaccount"
+                    style="@style/TextGgSmallGrey1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_myaccount_label"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    tools:text="youoni4@naver.com" />
+
+                <TextView
+                    android:id="@+id/tv_my_attend_check_label"
+                    style="@style/TextGgMedium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="출석 체크"
+                    app:layout_constraintStart_toStartOf="@id/tv_myaccount_label"
+                    app:layout_constraintTop_toBottomOf="@id/tv_myaccount_label" />
+
+                <TextView
+                    android:id="@+id/tv_my_attend_check"
+                    style="@style/TextGgSmallGrey1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="상호 인증 하고 포인트 얻기"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_my_attend_check_label"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_challenge_label"
+                    style="@style/TextHeader"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="40dp"
+                    android:text="Challenge"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_my_attend_check_label" />
+
+                <TextView
+                    android:id="@+id/tv_my_challenge"
+                    style="@style/TextGgMedium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="12dp"
+                    android:text="출석 체크"
+                    app:layout_constraintStart_toStartOf="@id/tv_challenge_label"
+                    app:layout_constraintTop_toBottomOf="@id/tv_challenge_label" />
+
+                <TextView
+                    android:id="@+id/tv_my_certificate_history"
+                    style="@style/TextGgMedium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="내 인증 내역"
+                    app:layout_constraintStart_toStartOf="@id/tv_my_challenge"
+                    app:layout_constraintTop_toBottomOf="@id/tv_my_challenge" />
+
+                <TextView
+                    android:id="@+id/tv_nft_label"
+                    style="@style/TextHeader"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="40dp"
+                    android:text="NFT"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_my_certificate_history" />
+
+                <TextView
+                    android:id="@+id/tv_my_wallet"
+                    style="@style/TextGgMedium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="12dp"
+                    android:text="내 지갑"
+                    app:layout_constraintStart_toStartOf="@id/tv_nft_label"
+                    app:layout_constraintTop_toBottomOf="@id/tv_nft_label" />
+
+                <TextView
+                    android:id="@+id/tv_my_wallet_description"
+                    style="@style/TextGgSmallGrey1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_my_wallet"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    tools:text="지갑이 없어요!" />
+
+                <TextView
+                    android:id="@+id/tv_my_keywords"
+                    style="@style/TextGgMedium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="내 키워드"
+                    app:layout_constraintStart_toStartOf="@id/tv_my_wallet"
+                    app:layout_constraintTop_toBottomOf="@id/tv_my_wallet" />
+
+                <TextView
+                    android:id="@+id/tv_my_nft"
+                    style="@style/TextGgMedium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="내 NFT"
+                    app:layout_constraintStart_toStartOf="@id/tv_my_wallet"
+                    app:layout_constraintTop_toBottomOf="@id/tv_my_keywords" />
+
+                <TextView
+                    android:id="@+id/tv_transaction_history"
+                    style="@style/TextGgMedium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="거래 내역"
+                    app:layout_constraintStart_toStartOf="@id/tv_my_wallet"
+                    app:layout_constraintTop_toBottomOf="@id/tv_my_nft" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.core.widget.NestedScrollView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
