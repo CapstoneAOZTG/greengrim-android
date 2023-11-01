@@ -39,10 +39,10 @@ class IntroActivity : BaseActivity<ActivityIntroBinding>(ActivityIntroBinding::i
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        initObserver()
+        initEventObserver()
     }
 
-    private fun initObserver() {
+    private fun initEventObserver() {
         repeatOnStarted {
             viewModel.events.collect {
                 when (it) {

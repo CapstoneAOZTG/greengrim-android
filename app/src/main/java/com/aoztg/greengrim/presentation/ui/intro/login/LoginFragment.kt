@@ -39,10 +39,10 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(R.layout.fragment_login
         super.onViewCreated(view, savedInstanceState)
         super.onCreate(savedInstanceState)
         binding.view = this
-        initObserver()
+        initStateObserver()
     }
 
-    private fun initObserver() {
+    private fun initStateObserver() {
         repeatOnStarted {
             viewModel.uiState.collect {
                 when (it.loginState) {

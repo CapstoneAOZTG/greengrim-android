@@ -49,7 +49,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
         setBottomNavigation()
         setBottomNavigationListener()
-        setEventObserver()
+        initEventObserver()
     }
 
     private fun setBottomNavigation() {
@@ -87,7 +87,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         }
     }
 
-    private fun setEventObserver() {
+    private fun initEventObserver() {
         repeatOnStarted {
             viewModel.event.collect {
                 when (it) {

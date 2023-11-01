@@ -27,10 +27,10 @@ class ChallengeDetailFragment :
         parentViewModel.hideBNV()
         binding.vm = viewModel
         viewModel.getChallengeDetailInfo()
-        initObserver()
+        initEventObserver()
     }
 
-    private fun initObserver() {
+    private fun initEventObserver() {
         repeatOnStarted {
             viewModel.events.collect {
                 when (it) {

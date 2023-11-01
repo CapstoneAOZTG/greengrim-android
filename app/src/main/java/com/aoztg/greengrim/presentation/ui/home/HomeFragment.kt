@@ -25,7 +25,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
         binding.vm = viewModel
         initRecycler()
-        initObserver()
+        initStateObserver()
         viewModel.getHomeList()
     }
 
@@ -58,7 +58,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         }
     }
 
-    private fun initObserver() {
+    private fun initStateObserver() {
         repeatOnStarted {
             viewModel.uiState.collect {
                 when (it.loading) {

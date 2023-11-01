@@ -1,6 +1,7 @@
 package com.aoztg.greengrim.presentation.ui.challenge.list
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -13,6 +14,7 @@ import com.aoztg.greengrim.presentation.base.BaseFragment
 import com.aoztg.greengrim.presentation.ui.LoadingState
 import com.aoztg.greengrim.presentation.ui.challenge.adapter.ChallengeRoomAdapter
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
+import com.aoztg.greengrim.presentation.util.Constants.TAG
 import com.aoztg.greengrim.presentation.util.getSortSheet
 
 
@@ -24,6 +26,7 @@ class ChallengeListFragment :
     private val args: ChallengeListFragmentArgs by navArgs()
     private val category by lazy { args.category }
     private var sortType = ChallengeSortType.RECENT
+    private var loadingState = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -32,23 +35,31 @@ class ChallengeListFragment :
         binding.tvTitle.text = category
         binding.rvChallengeList.adapter = ChallengeRoomAdapter()
         viewModel.getChallengeRooms()
-        initObserver()
+        initStateObserver()
+        initEventObserver()
     }
 
-    private fun initObserver() {
+    private fun initStateObserver() {
         repeatOnStarted {
             viewModel.uiState.collect {
                 when (it.loading) {
                     is LoadingState.IsLoading -> {
-                        if (it.loading.state) showLoading(requireContext())
-                        else dismissLoading()
+                        if (it.loading.state) {
+                            showLoading(requireContext())
+                            loadingState = true
+                        } else {
+                            dismissLoading()
+                            loadingState = false
+                        }
                     }
 
                     else -> {}
                 }
             }
         }
+    }
 
+    private fun initEventObserver() {
         repeatOnStarted {
             viewModel.events.collect {
                 when (it) {
@@ -60,8 +71,8 @@ class ChallengeListFragment :
         }
     }
 
-    private fun showBottomSheet(){
-        getSortSheet(requireContext(), sortType){ type ->
+    private fun showBottomSheet() {
+        getSortSheet(requireContext(), sortType) { type ->
             sortType = type
             viewModel.setSortType(type)
             binding.tvFilter.text = type.text
@@ -73,8 +84,13 @@ class ChallengeListFragment :
         this.navigate(action)
     }
 
-    private fun NavController.toCreateChallenge(){
+    private fun NavController.toCreateChallenge() {
         val action = ChallengeListFragmentDirections.actionChallengeListFragmentToCreateChallengeFragment()
         this.navigate(action)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        if (loadingState) dismissLoading()
     }
 }

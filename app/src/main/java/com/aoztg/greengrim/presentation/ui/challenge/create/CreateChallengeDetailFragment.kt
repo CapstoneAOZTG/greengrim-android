@@ -34,11 +34,11 @@ class CreateChallengeDetailFragment :
         binding.pvm = parentViewModel
         binding.vm = viewModel
         binding.tvHeader.text = "$category 챌린지 생성"
-        stateObserver()
-        eventObserver()
+        initStateObserver()
+        initEventObserver()
     }
 
-    private fun stateObserver() {
+    private fun initStateObserver() {
         repeatOnStarted {
             parentViewModel.image.collect {
                 viewModel.setImageUrl(it)
@@ -60,7 +60,7 @@ class CreateChallengeDetailFragment :
         }
     }
 
-    private fun eventObserver() {
+    private fun initEventObserver() {
         repeatOnStarted {
             viewModel.events.collect {
                 when (it) {
