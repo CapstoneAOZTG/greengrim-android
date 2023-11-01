@@ -99,12 +99,12 @@
 
     <fragment
         android:id="@+id/info_fragment"
-        android:name="com.aoztg.greengrim.presentation.ui.info.view.InfoFragment"
+        android:name="com.aoztg.greengrim.presentation.ui.info.info.InfoFragment"
         android:label="Info"></fragment>
 
     <fragment
         android:id="@+id/profile_setting_fragment"
-        android:name="com.aoztg.greengrim.presentation.ui.info.view.ProfileSettingFragment"
+        android:name="com.aoztg.greengrim.presentation.ui.info.editprofile.ProfileSettingFragment"
         android:label="ProfileSetting" />
 
     <action
