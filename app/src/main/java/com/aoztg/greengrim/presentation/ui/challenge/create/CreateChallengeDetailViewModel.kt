@@ -54,7 +54,7 @@ class CreateChallengeDetailViewModel @Inject constructor() : ViewModel() {
 
     val isDataReady = combine(title, description) { title, description ->
         title.isNotBlank() && description.isNotBlank()
-                && imageUrl.isNotBlank()
+                && imageUrl.isNotBlank() && keyword.isNotBlank()
     }.stateIn(
         viewModelScope,
         SharingStarted.WhileSubscribed(),
@@ -125,7 +125,7 @@ class CreateChallengeDetailViewModel @Inject constructor() : ViewModel() {
     }
 
     fun createChallenge() {
-
+        // todo 서버에 챌린지 form 통신하기
     }
 
 

@@ -47,6 +47,7 @@ class CreateChallengeDetailFragment :
             viewModel.uiState.collect {
                 when (it.randomKeywordState) {
                     is KeywordState.Set -> {
+                        viewModel.setKeyword("")
                         delay(100)
                         setChipListener()
                     }
