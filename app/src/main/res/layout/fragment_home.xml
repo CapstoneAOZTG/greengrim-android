@@ -132,7 +132,7 @@
 
                 <TextView
                     android:id="@+id/tv_detail_hot_challenge"
-                    style="@style/TextGgSmallGrey"
+                    style="@style/TextGgSmallGrey1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
@@ -177,7 +177,7 @@
 
                 <TextView
                     android:id="@+id/tv_detail_more_activity"
-                    style="@style/TextGgSmallGrey"
+                    style="@style/TextGgSmallGrey1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
@@ -222,7 +222,7 @@
 
                 <TextView
                     android:id="@+id/tv_detail_hot_nft"
-                    style="@style/TextGgSmallGrey"
+                    style="@style/TextGgSmallGrey1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"

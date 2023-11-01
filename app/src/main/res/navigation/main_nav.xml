@@ -48,7 +48,11 @@
     <fragment
         android:id="@+id/create_challenge_detail_fragment"
         android:name="com.aoztg.greengrim.presentation.ui.challenge.create.CreateChallengeDetailFragment"
-        android:label="CreateChallengeDetail" />
+        android:label="CreateChallengeDetail" >
+        <argument
+            android:name="category"
+            app:argType="string" />
+    </fragment>
 
     <fragment
         android:id="@+id/challenge_detail_fragment"

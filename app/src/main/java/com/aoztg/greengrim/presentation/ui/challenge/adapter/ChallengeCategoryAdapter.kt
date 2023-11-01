@@ -9,7 +9,9 @@ import com.aoztg.greengrim.presentation.ui.challenge.model.ChallengeCategory
 import com.aoztg.greengrim.presentation.util.DefaultDiffUtil
 
 
-class ChallengeCategoryAdapter :
+class ChallengeCategoryAdapter(
+    private val listener: OnCategoryItemClickListener
+) :
     ListAdapter<ChallengeCategory, ChallengeCategoryViewHolder>(DefaultDiffUtil<ChallengeCategory>()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChallengeCategoryViewHolder {
@@ -23,15 +25,21 @@ class ChallengeCategoryAdapter :
     }
 
     override fun onBindViewHolder(holder: ChallengeCategoryViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        holder.bind(getItem(position), listener)
     }
 }
 
 class ChallengeCategoryViewHolder(private val binding: ItemChallengeCategoryBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(item: ChallengeCategory) {
+    fun bind(
+        item: ChallengeCategory,
+        listener: OnCategoryItemClickListener
+    ) {
         binding.item = item
+        binding.root.setOnClickListener {
+            listener.onItemClicked(it,item.category)
+        }
     }
 
 }

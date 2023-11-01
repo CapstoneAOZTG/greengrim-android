@@ -16,10 +16,20 @@ fun bindResource(imageView: ImageView, resource: Int) {
 
 @BindingAdapter("imgUrl")
 fun bindImg(imageView: ImageView, url: String) {
+
     Glide.with(imageView.context)
         .load(url)
         .error(R.drawable.test)
         .into(imageView)
+}
+
+@BindingAdapter("imgUrlCheckEmtpy")
+fun bindImgCheckEmpty(imageView: ImageView, url: String){
+    if(url.isNotBlank()){
+        Glide.with(imageView.context)
+            .load(url)
+            .into(imageView)
+    }
 }
 
 @BindingAdapter("colorChipList")

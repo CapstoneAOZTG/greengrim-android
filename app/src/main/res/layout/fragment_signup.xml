@@ -38,11 +38,11 @@
             android:onClick="@{() -> pvm.goToGallery()}"
             android:src="@drawable/icon_profile"
             app:civ_border_color="@color/gg_grey1"
-            app:profileImgUrl="@{pvm.profileImg}"
             app:civ_border_width="1dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_title" />
+            app:layout_constraintTop_toBottomOf="@id/tv_title"
+            app:profileImgUrl="@{pvm.profileImg}" />
 
         <ImageView
             android:id="@+id/btn_goto_gallery"
@@ -55,7 +55,7 @@
 
         <TextView
             android:id="@+id/tv_nickname_label"
-            style="@style/TextSignupLabel"
+            style="@style/TextFormLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -66,7 +66,7 @@
 
         <TextView
             android:id="@+id/tv_nickname_count"
-            style="@style/TextSignupLabel"
+            style="@style/TextFormLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
@@ -107,7 +107,7 @@
 
         <TextView
             android:id="@+id/tv_introduce_label"
-            style="@style/TextSignupLabel"
+            style="@style/TextFormLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -118,7 +118,7 @@
 
         <TextView
             android:id="@+id/tv_introduce_count"
-            style="@style/TextSignupLabel"
+            style="@style/TextFormLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
@@ -157,7 +157,9 @@
             android:enabled="false"
             android:onClick="@{() -> vm.signUp()}"
             android:text="다음으로"
-            android:textColor="@color/white"
+            android:textColor="@color/selector_next_btn_text"
+            android:textSize="16sp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

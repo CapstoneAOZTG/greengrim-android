@@ -67,7 +67,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/layout_toolbar"
-            app:shapeAppearanceOverlay="@style/AllRadiusImageView" />
+            app:shapeAppearanceOverlay="@style/All28RadiusImageView" />
 
         <TextView
             android:id="@+id/tv_title"
@@ -84,7 +84,7 @@
 
         <TextView
             android:id="@+id/tv_description"
-            style="@style/TextGgSmall"
+            style="@style/TextGgSmallGrey1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:paddingHorizontal="@dimen/padding_middle"
@@ -141,6 +141,7 @@
             android:onClick="@{() -> vm.navigateToChatRoom(vm.challengeDetail.title)}"
             android:text="입장하기"
             android:textColor="@color/black"
+            android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

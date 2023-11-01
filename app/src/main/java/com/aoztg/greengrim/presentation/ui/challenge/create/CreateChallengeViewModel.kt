@@ -1,4 +1,4 @@
-package com.aoztg.greengrim.presentation.ui.challenge.category
+package com.aoztg.greengrim.presentation.ui.challenge.create
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -8,26 +8,40 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-sealed class ChallengeCategoryEvents{
-    object NavigateToCreateChallenge : ChallengeCategoryEvents()
+sealed class CreateChallengeEvents {
+    data class NavigateToCreateDetail(val category: String) : CreateChallengeEvents()
+    object NavigateToBack : CreateChallengeEvents()
 }
 
 @HiltViewModel
-class ChallengeCategoryViewModel @Inject constructor(): ViewModel() {
+class CreateChallengeViewModel @Inject constructor() : ViewModel() {
 
     private val _categories = MutableStateFlow<List<ChallengeCategory>>(emptyList())
     val categories: StateFlow<List<ChallengeCategory>> = _categories.asStateFlow()
 
-    private val _events = MutableSharedFlow<ChallengeCategoryEvents>()
-    val events: SharedFlow<ChallengeCategoryEvents> = _events.asSharedFlow()
+    private val _events = MutableSharedFlow<CreateChallengeEvents>()
+    val events: SharedFlow<CreateChallengeEvents> = _events.asSharedFlow()
 
-    fun getCategoryList(){
+    private val selectedCategory = MutableStateFlow("")
+
+    val isDataReady = combine(selectedCategory) { data ->
+        data[0].isNotBlank()
+    }.stateIn(
+        viewModelScope,
+        SharingStarted.WhileSubscribed(),
+        false
+    )
+
+    fun getCategoryList() {
 
         _categories.value = listOf(
             ChallengeCategory(R.drawable.icon_eco_bag, "에코 제품 사용", "+ 10 G"),
@@ -42,9 +56,20 @@ class ChallengeCategoryViewModel @Inject constructor(): ViewModel() {
         )
     }
 
-    fun navigateToCreateChallenge(){
+    fun setSelectedCategory(category: String) {
+        selectedCategory.value = category
+    }
+
+    fun navigateToCreateChallengeDetail() {
+        viewModelScope.launch {
+            _events.emit(CreateChallengeEvents.NavigateToCreateDetail(selectedCategory.value))
+        }
+        selectedCategory.value = ""
+    }
+
+    fun navigateToBack() {
         viewModelScope.launch{
-            _events.emit(ChallengeCategoryEvents.NavigateToCreateChallenge)
+            _events.emit(CreateChallengeEvents.NavigateToBack)
         }
     }
 }
