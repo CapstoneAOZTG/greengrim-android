@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/shape_darkfill_nostroke_radius20_onlytop"
+    android:padding="10dp">
+
+    <ImageView
+        android:id="@+id/iv_edit_profile"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/icon_setting"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_edit_profile"
+        style="@style/TextGgMedium"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:text="프로필 수정"
+        app:layout_constraintBottom_toBottomOf="@id/iv_edit_profile"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/iv_edit_profile"
+        app:layout_constraintTop_toTopOf="@id/iv_edit_profile" />
+
+    <com.google.android.material.divider.MaterialDivider
+        android:id="@+id/devider_edit_profile"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:dividerColor="@color/gg_grey5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_edit_profile" />
+
+    <ImageView
+        android:id="@+id/iv_notification"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/icon_setting"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/devider_edit_profile" />
+
+    <TextView
+        android:id="@+id/tv_notification"
+        style="@style/TextGgMedium"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:text="알림"
+        app:layout_constraintBottom_toBottomOf="@id/iv_notification"
+        app:layout_constraintStart_toEndOf="@id/iv_notification"
+        app:layout_constraintTop_toTopOf="@id/iv_notification" />
+
+    <com.google.android.material.divider.MaterialDivider
+        android:id="@+id/devider_notification"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:dividerColor="@color/gg_grey5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_notification" />
+
+    <ImageView
+        android:id="@+id/iv_edit_password"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/icon_setting"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/devider_notification" />
+
+    <TextView
+        android:id="@+id/tv_edit_password"
+        style="@style/TextGgMedium"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:text="비밀번호 변경"
+        app:layout_constraintBottom_toBottomOf="@id/iv_edit_password"
+        app:layout_constraintStart_toEndOf="@id/iv_edit_password"
+        app:layout_constraintTop_toTopOf="@id/iv_edit_password" />
+
+    <com.google.android.material.divider.MaterialDivider
+        android:id="@+id/devider_edit_password"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:dividerColor="@color/gg_grey5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_edit_password" />
+
+    <ImageView
+        android:id="@+id/iv_accouncement"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/icon_setting"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/devider_edit_password" />
+
+    <TextView
+        android:id="@+id/tv_announcement"
+        style="@style/TextGgMedium"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:text="공지사항"
+        app:layout_constraintBottom_toBottomOf="@id/iv_accouncement"
+        app:layout_constraintStart_toEndOf="@id/iv_accouncement"
+        app:layout_constraintTop_toTopOf="@id/iv_accouncement" />
+
+    <com.google.android.material.divider.MaterialDivider
+        android:id="@+id/devider_announement"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:dividerColor="@color/gg_grey5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_accouncement" />
+
+    <ImageView
+        android:id="@+id/iv_terms"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/icon_setting"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/devider_announement" />
+
+    <TextView
+        android:id="@+id/tv_terms"
+        style="@style/TextGgMedium"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:text="이용 약관 및 개인정보 처리 방침"
+        app:layout_constraintBottom_toBottomOf="@id/iv_terms"
+        app:layout_constraintStart_toEndOf="@id/iv_terms"
+        app:layout_constraintTop_toTopOf="@id/iv_terms" />
+
+    <com.google.android.material.divider.MaterialDivider
+        android:id="@+id/devider_terms"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:dividerColor="@color/gg_grey5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_terms" />
+
+    <ImageView
+        android:id="@+id/iv_app_version"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/icon_setting"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/devider_terms" />
+
+    <TextView
+        android:id="@+id/tv_app_version"
+        style="@style/TextGgMedium"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:text="앱 버전"
+        app:layout_constraintBottom_toBottomOf="@id/iv_app_version"
+        app:layout_constraintStart_toEndOf="@id/iv_app_version"
+        app:layout_constraintTop_toTopOf="@id/iv_app_version" />
+
+    <TextView
+        android:id="@+id/tv_app_version_text"
+        style="@style/TextGgSmallGrey5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="12dp"
+        app:layout_constraintBottom_toBottomOf="@id/iv_app_version"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/iv_app_version"
+        tools:text="1.0.0" />
+
+    <com.google.android.material.divider.MaterialDivider
+        android:id="@+id/devider_app_version"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:dividerColor="@color/gg_grey5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_app_version" />
+
+    <ImageView
+        android:id="@+id/iv_logout"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/icon_setting"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/devider_app_version" />
+
+    <TextView
+        android:id="@+id/tv_logout"
+        style="@style/TextGgMedium"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:text="로그아웃"
+        app:layout_constraintBottom_toBottomOf="@id/iv_logout"
+        app:layout_constraintStart_toEndOf="@id/iv_logout"
+        app:layout_constraintTop_toTopOf="@id/iv_logout" />
+
+    <com.google.android.material.divider.MaterialDivider
+        android:id="@+id/devider_logout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:dividerColor="@color/gg_grey5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_logout" />
+
+    <ImageView
+        android:id="@+id/iv_withdrawal"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/icon_setting"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/devider_logout" />
+
+    <TextView
+        android:id="@+id/tv_withdrawal"
+        style="@style/TextGgMedium"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:text="계정 탈퇴"
+        app:layout_constraintBottom_toBottomOf="@id/iv_withdrawal"
+        app:layout_constraintStart_toEndOf="@id/iv_withdrawal"
+        app:layout_constraintTop_toTopOf="@id/iv_withdrawal" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_withdrawal" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
