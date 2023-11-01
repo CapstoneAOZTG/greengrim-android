@@ -100,12 +100,16 @@
     <fragment
         android:id="@+id/info_fragment"
         android:name="com.aoztg.greengrim.presentation.ui.info.info.InfoFragment"
-        android:label="Info"></fragment>
+        android:label="Info">
+        <action
+            android:id="@+id/action_info_fragment_to_edit_profile_fragment"
+            app:destination="@id/edit_profile_fragment" />
+    </fragment>
 
     <fragment
-        android:id="@+id/profile_setting_fragment"
-        android:name="com.aoztg.greengrim.presentation.ui.info.editprofile.ProfileSettingFragment"
-        android:label="ProfileSetting" />
+        android:id="@+id/edit_profile_fragment"
+        android:name="com.aoztg.greengrim.presentation.ui.info.editprofile.EditProfileFragment"
+        android:label="EditProfile" />
 
     <action
         android:id="@+id/action_global_to_homeFragment"
