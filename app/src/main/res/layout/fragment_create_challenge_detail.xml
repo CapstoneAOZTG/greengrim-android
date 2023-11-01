@@ -62,8 +62,8 @@
                 android:enabled="@{vm.isDataReady()}"
                 android:minWidth="0dp"
                 android:minHeight="0dp"
-                android:text="완료"
                 android:onClick="@{() -> vm.createChallenge()}"
+                android:text="완료"
                 android:textColor="@color/selector_complete_text"
                 android:textSize="16sp"
                 android:textStyle="bold"
@@ -365,8 +365,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:max="4"
-                    android:maxHeight="3dp"
-                    android:minHeight="3dp"
+                    android:maxHeight="4dp"
+                    android:minHeight="4dp"
                     android:progress="@={vm.minCertificateProgress}"
                     android:progressDrawable="@color/white"
                     android:splitTrack="false"
@@ -409,9 +409,11 @@
 
                 <ImageButton
                     android:id="@+id/btn_refresh_keyword"
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:padding="2dp"
                     android:background="@android:color/transparent"
+                    android:onClick="@{() -> vm.setRandomKeywords()}"
                     android:scaleType="fitCenter"
                     android:src="@drawable/icon_refresh"
                     app:layout_constraintBottom_toBottomOf="@id/tv_keyword_label"
@@ -436,7 +438,8 @@
                     android:layout_marginTop="8dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_keyword_description"></com.google.android.material.chip.ChipGroup>
+                    app:layout_constraintTop_toBottomOf="@id/tv_keyword_description"
+                    app:selectChipList="@{vm.uiState.randomKeywordState}"></com.google.android.material.chip.ChipGroup>
 
                 <TextView
                     android:id="@+id/tv_last_warning"
