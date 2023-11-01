@@ -26,10 +26,10 @@ class SignupFragment : BaseFragment<FragmentSignupBinding>(R.layout.fragment_sig
         super.onViewCreated(view, savedInstanceState)
         binding.pvm = parentViewModel
         binding.vm = viewModel
-        initObserver()
+        initStateObserver()
     }
 
-    private fun initObserver() {
+    private fun initStateObserver() {
         repeatOnStarted {
             viewModel.uiState.collect {
                 when (it.nextBtnState) {

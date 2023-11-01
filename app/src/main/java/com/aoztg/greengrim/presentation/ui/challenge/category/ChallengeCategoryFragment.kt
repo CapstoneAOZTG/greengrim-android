@@ -26,11 +26,11 @@ class ChallengeCategoryFragment :
         parentViewModel.showBNV()
         binding.vm = viewModel
         binding.rvChallengeCategory.adapter = ChallengeCategoryAdapter(this)
-        initObserver()
+        initEventObserver()
         viewModel.getCategoryList()
     }
 
-    private fun initObserver() {
+    private fun initEventObserver() {
         repeatOnStarted {
             viewModel.events.collect {
                 when (it) {

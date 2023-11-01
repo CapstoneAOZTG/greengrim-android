@@ -32,10 +32,11 @@ class ChallengeListFragment :
         binding.tvTitle.text = category
         binding.rvChallengeList.adapter = ChallengeRoomAdapter()
         viewModel.getChallengeRooms()
-        initObserver()
+        initStateObserver()
+        initEventObserver()
     }
 
-    private fun initObserver() {
+    private fun initStateObserver() {
         repeatOnStarted {
             viewModel.uiState.collect {
                 when (it.loading) {
@@ -48,7 +49,9 @@ class ChallengeListFragment :
                 }
             }
         }
+    }
 
+    private fun initEventObserver(){
         repeatOnStarted {
             viewModel.events.collect {
                 when (it) {
