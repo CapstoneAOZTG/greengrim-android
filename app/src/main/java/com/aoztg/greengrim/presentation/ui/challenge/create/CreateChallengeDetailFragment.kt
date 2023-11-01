@@ -8,6 +8,7 @@ import androidx.core.view.children
 import androidx.databinding.BindingAdapter
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentCreateChallengeDetailBinding
@@ -33,10 +34,11 @@ class CreateChallengeDetailFragment :
         binding.pvm = parentViewModel
         binding.vm = viewModel
         binding.tvHeader.text = "$category 챌린지 생성"
-        imageObserver()
+        stateObserver()
+        eventObserver()
     }
 
-    private fun imageObserver() {
+    private fun stateObserver() {
         repeatOnStarted {
             parentViewModel.image.collect {
                 viewModel.setImageUrl(it)
@@ -53,6 +55,16 @@ class CreateChallengeDetailFragment :
                     }
 
                     else -> {}
+                }
+            }
+        }
+    }
+
+    private fun eventObserver() {
+        repeatOnStarted {
+            viewModel.events.collect {
+                when (it) {
+                    is CreateChallengeDetailEvents.NavigateToBack -> findNavController().navigateUp()
                 }
             }
         }
