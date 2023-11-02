@@ -59,7 +59,7 @@ class LoginViewModel @Inject constructor(private val introRepository: IntroRepos
             if (response.isSuccessful) {
                 response.body()?.let {
                     App.sharedPreferences.edit()
-                        .putString(Constants.X_ACCESS_TOKEN, "Bearer " + it.accessToken)
+                        .putString(Constants.X_ACCESS_TOKEN, it.accessToken)
                         .putString(Constants.X_REFRESH_TOKEN, it.refreshToken)
                         .apply()
                 }
