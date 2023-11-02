@@ -112,42 +112,54 @@ class InfoFragment : BaseFragment<FragmentInfoBinding>(R.layout.fragment_info) {
 
     private fun goToIntroActivity() {
         when (SocialLoginType.type) {
-            KAKAO -> kakaoUnlink()
-            NAVER -> naverUnlink()
-            GOOGLE -> googleLogout()
+            KAKAO -> kakaoUnlink("logout")
+            NAVER -> naverUnlink("logout")
+            GOOGLE -> googleLogout("logout")
         }
-
     }
 
     private fun withdrawal() {
-        viewModel.withdrawal()
+        when (SocialLoginType.type) {
+            KAKAO -> kakaoUnlink("withdrawal")
+            NAVER -> naverUnlink("withdrawal")
+            GOOGLE -> googleLogout("withdrawal")
+        }
     }
 
-    private fun googleLogout() {
+    private fun googleLogout(state: String) {
         val googleSignInClient = GoogleSignIn.getClient(
             requireContext(), GoogleSignInOptions.Builder(
                 GoogleSignInOptions.DEFAULT_SIGN_IN
             ).build()
         )
         googleSignInClient.signOut().addOnCompleteListener {
-            parentViewModel.logout()
-        }
-    }
-
-    private fun kakaoUnlink() {
-        UserApiClient.instance.unlink { error ->
-            if (error != null) {
-                showCustomToast("로그아웃 실패")
-            } else {
-                parentViewModel.logout()
+            when (state) {
+                "logout" -> parentViewModel.logout()
+                "withdrawal" -> viewModel.withdrawal()
             }
         }
     }
 
-    private fun naverUnlink() {
+    private fun kakaoUnlink(state: String) {
+        UserApiClient.instance.unlink { error ->
+            if (error != null) {
+                showCustomToast("로그아웃 실패")
+            } else {
+                when (state) {
+                    "logout" -> parentViewModel.logout()
+                    "withdrawal" -> viewModel.withdrawal()
+                }
+            }
+        }
+    }
+
+    private fun naverUnlink(state: String) {
         NidOAuthLogin().callDeleteTokenApi(requireContext(), object : OAuthLoginCallback {
             override fun onSuccess() {
-                parentViewModel.logout()
+                when (state) {
+                    "logout" -> parentViewModel.logout()
+                    "withdrawal" -> viewModel.withdrawal()
+                }
             }
 
             override fun onFailure(httpStatus: Int, message: String) {
