@@ -6,6 +6,7 @@ import com.aoztg.greengrim.app.App
 import com.aoztg.greengrim.data.model.CheckNickRequest
 import com.aoztg.greengrim.data.model.ErrorResponse
 import com.aoztg.greengrim.data.model.SignupRequest
+import com.aoztg.greengrim.data.repository.InfoRepository
 import com.aoztg.greengrim.data.repository.IntroRepository
 import com.aoztg.greengrim.presentation.ui.BaseState
 import com.aoztg.greengrim.presentation.ui.intro.EmailData
@@ -27,12 +28,21 @@ import javax.inject.Inject
 data class EditProfileUiState(
     val nickState: BaseState = BaseState.Empty,
     val completeBtnState: BaseState = BaseState.Empty,
+    val getProfileState: ProfileState = ProfileState.Empty,
     val editProfileState: BaseState = BaseState.Empty
 )
 
+sealed class ProfileState {
+    object Empty : ProfileState()
+    data class Success(val imgUrl: String) : ProfileState()
+    object Failure : ProfileState()
+    data class Error(val msg: String) : ProfileState()
+}
+
 @HiltViewModel
 class EditProfileViewModel @Inject constructor(
-    private val introRepository: IntroRepository
+    private val introRepository: IntroRepository,
+    private val infoRepository: InfoRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(EditProfileUiState())
@@ -56,7 +66,26 @@ class EditProfileViewModel @Inject constructor(
     }
 
     private fun getProfileData() {
-        //todo 프로필 데이터를 셋팅 한 뒤에, State 리스너를 등록한다
+        viewModelScope.launch {
+            val response = infoRepository.getProfile()
+
+            if (response.isSuccessful) {
+                response.body()?.let {
+                    nickname.value = it.nickName
+                    introduce.value = it.introduction
+
+                    _uiState.update { state ->
+                        state.copy(getProfileState = ProfileState.Success(it.profileImgUrl))
+                    }
+                }
+            } else {
+                val error =
+                    Gson().fromJson(response.errorBody()?.string(), ErrorResponse::class.java)
+                _uiState.update { state ->
+                    state.copy(getProfileState = ProfileState.Error(error.message))
+                }
+            }
+        }
 
         checkNickDuplicate()
         checkSignupState()
@@ -110,9 +139,9 @@ class EditProfileViewModel @Inject constructor(
     }
 
     fun editProfile() {
-        
+
         // todo signup API -> Edit Profile 로 수정
-        
+
         viewModelScope.launch {
             // 통신로직
             val response = introRepository.signup(

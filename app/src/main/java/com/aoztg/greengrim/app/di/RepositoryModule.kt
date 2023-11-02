@@ -2,6 +2,8 @@ package com.aoztg.greengrim.app.di
 
 import com.aoztg.greengrim.data.repository.ImageRepository
 import com.aoztg.greengrim.data.repository.ImageRepositoryImpl
+import com.aoztg.greengrim.data.repository.InfoRepository
+import com.aoztg.greengrim.data.repository.InfoRepositoryImpl
 import com.aoztg.greengrim.data.repository.IntroRepository
 import com.aoztg.greengrim.data.repository.IntroRepositoryImpl
 import dagger.Binds
@@ -26,4 +28,10 @@ abstract class RepositoryModule {
     abstract fun bindImageRepository(
         imageRepositoryImpl: ImageRepositoryImpl
     ): ImageRepository
+
+    @Singleton
+    @Binds
+    abstract fun bindInfoRepository(
+        infoRepositoryImpl: InfoRepositoryImpl
+    ): InfoRepository
 }

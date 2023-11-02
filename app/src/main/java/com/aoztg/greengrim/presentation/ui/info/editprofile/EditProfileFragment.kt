@@ -10,6 +10,7 @@ import com.aoztg.greengrim.databinding.FragmentEditProfileBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
 import com.aoztg.greengrim.presentation.ui.BaseState
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
+import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -53,8 +54,21 @@ class EditProfileFragment :
                     is BaseState.Error -> showCustomToast(it.editProfileState.msg)
                     else -> {}
                 }
+
+                when (it.getProfileState) {
+                    is ProfileState.Success -> setProfileImg(it.getProfileState.imgUrl)
+                    is ProfileState.Error -> showCustomToast(it.getProfileState.msg)
+                    else -> {}
+                }
             }
         }
+    }
+
+    private fun setProfileImg(url: String) {
+        Glide.with(requireContext())
+            .load(url)
+            .error(R.drawable.icon_profile)
+            .into(binding.ivProfile)
     }
 
     private fun initImageObserver() {
