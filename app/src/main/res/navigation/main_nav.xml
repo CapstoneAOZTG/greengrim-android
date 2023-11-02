@@ -104,6 +104,12 @@
         <action
             android:id="@+id/action_info_fragment_to_edit_profile_fragment"
             app:destination="@id/edit_profile_fragment" />
+        <action
+            android:id="@+id/action_info_fragment_to_my_challenge_fragment"
+            app:destination="@id/my_challenge_fragment" />
+        <action
+            android:id="@+id/action_info_fragment_to_my_certification_fragment"
+            app:destination="@id/my_certification_fragment" />
     </fragment>
 
     <fragment
@@ -111,8 +117,28 @@
         android:name="com.aoztg.greengrim.presentation.ui.info.editprofile.EditProfileFragment"
         android:label="EditProfile" />
 
+    <fragment
+        android:id="@+id/my_challenge_fragment"
+        android:name="com.aoztg.greengrim.presentation.ui.info.mychallenge.MyChallengeFragment"
+        android:label="MyChallenge"/>
+
+    <fragment
+        android:id="@+id/my_certification_fragment"
+        android:name="com.aoztg.greengrim.presentation.ui.info.mycertification.MyCertificationFragment"
+        android:label="MyCertification"/>
+
+    <fragment
+        android:id="@+id/attend_check_fragment"
+        android:name="com.aoztg.greengrim.presentation.ui.global.AttendCheckFragment"
+        android:label="AttendCheck"/>
+
     <action
         android:id="@+id/action_global_to_homeFragment"
         app:destination="@id/home_fragment" />
+
+    <action
+        android:id="@+id/action_global_to_attendCheckFragment"
+        app:destination="@id/attend_check_fragment"/>
+
 
 </navigation>
