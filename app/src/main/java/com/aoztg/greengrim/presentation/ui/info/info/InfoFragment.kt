@@ -10,9 +10,19 @@ import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentInfoBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
 import com.aoztg.greengrim.presentation.ui.BaseState
+import com.aoztg.greengrim.presentation.ui.SocialLoginType
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 import com.aoztg.greengrim.presentation.ui.toAttendCheck
+import com.aoztg.greengrim.presentation.util.Constants.GOOGLE
+import com.aoztg.greengrim.presentation.util.Constants.KAKAO
+import com.aoztg.greengrim.presentation.util.Constants.NAVER
 import com.aoztg.greengrim.presentation.util.getInfoSettingSheet
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.kakao.sdk.user.UserApiClient
+import com.navercorp.nid.NaverIdLoginSDK
+import com.navercorp.nid.oauth.NidOAuthLogin
+import com.navercorp.nid.oauth.OAuthLoginCallback
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -101,10 +111,52 @@ class InfoFragment : BaseFragment<FragmentInfoBinding>(R.layout.fragment_info) {
     }
 
     private fun goToIntroActivity() {
-        parentViewModel.logout()
+        when (SocialLoginType.type) {
+            KAKAO -> kakaoUnlink()
+            NAVER -> naverUnlink()
+            GOOGLE -> googleLogout()
+        }
+
     }
 
     private fun withdrawal() {
         viewModel.withdrawal()
+    }
+
+    private fun googleLogout() {
+        val googleSignInClient = GoogleSignIn.getClient(
+            requireContext(), GoogleSignInOptions.Builder(
+                GoogleSignInOptions.DEFAULT_SIGN_IN
+            ).build()
+        )
+        googleSignInClient.signOut().addOnCompleteListener {
+            parentViewModel.logout()
+        }
+    }
+
+    private fun kakaoUnlink() {
+        UserApiClient.instance.unlink { error ->
+            if (error != null) {
+                showCustomToast("로그아웃 실패")
+            } else {
+                parentViewModel.logout()
+            }
+        }
+    }
+
+    private fun naverUnlink() {
+        NidOAuthLogin().callDeleteTokenApi(requireContext(), object : OAuthLoginCallback {
+            override fun onSuccess() {
+                parentViewModel.logout()
+            }
+
+            override fun onFailure(httpStatus: Int, message: String) {
+                showCustomToast("errorDesc: ${NaverIdLoginSDK.getLastErrorDescription()}")
+            }
+
+            override fun onError(errorCode: Int, message: String) {
+                onFailure(errorCode, message)
+            }
+        })
     }
 }

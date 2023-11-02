@@ -13,4 +13,8 @@ object Constants {
 
     const val ONE_POPUP_WIDTH_DP = 220
     const val ONE_POPUP_HEIGHT_DP = 40
+
+    const val KAKAO = "kakao"
+    const val NAVER = "naver"
+    const val GOOGLE = "google"
 }
