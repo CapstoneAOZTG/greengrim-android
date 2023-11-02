@@ -339,6 +339,13 @@
                     app:layout_constraintStart_toStartOf="@id/tv_my_wallet"
                     app:layout_constraintTop_toBottomOf="@id/tv_my_nft" />
 
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="200dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_transaction_history" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.core.widget.NestedScrollView>
