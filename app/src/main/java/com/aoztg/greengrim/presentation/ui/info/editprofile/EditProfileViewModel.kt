@@ -54,11 +54,11 @@ class EditProfileViewModel @Inject constructor(
 
     val nickname = MutableStateFlow("")
     val introduce = MutableStateFlow("")
-    private var profileUrl = ""
+    private val profileUrl = MutableStateFlow("")
 
     private val isNicknameValid = MutableStateFlow(false)
 
-    val isDataChanged = combine(nickname, introduce, isNicknameValid) { nick, introduce, nickValid ->
+    val isDataChanged = combine(nickname, introduce, profileUrl, isNicknameValid) { nick, introduce, profileUrl, nickValid ->
         (curNickname != nick && nickValid) || curIntroduce != introduce || profileUrl != curProfileUrl
     }.stateIn(
         viewModelScope,
@@ -81,7 +81,7 @@ class EditProfileViewModel @Inject constructor(
                     curProfileUrl = it.profileImgUrl
                     nickname.value = it.nickName
                     introduce.value = it.introduction
-                    profileUrl = it.profileImgUrl
+                    profileUrl.value = it.profileImgUrl
 
                     _uiState.update { state ->
                         state.copy(getProfileState = ProfileState.Success(it.profileImgUrl))
@@ -147,7 +147,7 @@ class EditProfileViewModel @Inject constructor(
     }
 
     fun setProfileImg(url: String) {
-        profileUrl = url
+        profileUrl.value = url
     }
 
     fun editProfile() {
@@ -161,7 +161,7 @@ class EditProfileViewModel @Inject constructor(
                     email = EmailData.email,
                     nickName = nickname.value,
                     introduction = introduce.value,
-                    profileImgUrl = profileUrl
+                    profileImgUrl = profileUrl.value
                 )
             )
 
