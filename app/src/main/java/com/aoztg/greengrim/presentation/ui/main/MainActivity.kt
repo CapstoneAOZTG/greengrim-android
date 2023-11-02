@@ -165,8 +165,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
     private fun logout() {
         App.sharedPreferences.edit()
-            .putString(Constants.X_ACCESS_TOKEN, "")
-            .putString(Constants.X_REFRESH_TOKEN, "")
+            .remove(Constants.X_ACCESS_TOKEN)
+            .remove(Constants.X_REFRESH_TOKEN)
             .apply()
         val intent = Intent(applicationContext, IntroActivity::class.java)
         intent.apply {

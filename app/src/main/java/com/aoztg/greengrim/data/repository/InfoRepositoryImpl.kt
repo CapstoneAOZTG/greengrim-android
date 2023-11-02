@@ -10,4 +10,5 @@ class InfoRepositoryImpl @Inject constructor(private val api: InfoAPI): InfoRepo
 
     override suspend fun getProfile(): Response<GetProfileResponse> = api.getProfile()
     override suspend fun patchProfile(data: PatchProfileRequest): Response<Unit> = api.patchProfile(data)
+    override suspend fun withdrawal(): Response<Unit> = api.withdrawal()
 }

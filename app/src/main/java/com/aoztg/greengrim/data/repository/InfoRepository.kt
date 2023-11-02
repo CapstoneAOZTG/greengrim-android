@@ -11,4 +11,6 @@ interface InfoRepository {
     suspend fun patchProfile(
         data: PatchProfileRequest
     ): Response<Unit>
+
+    suspend fun withdrawal(): Response<Unit>
 }
