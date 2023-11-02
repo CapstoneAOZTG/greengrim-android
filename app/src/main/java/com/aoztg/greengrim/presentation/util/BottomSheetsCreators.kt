@@ -7,6 +7,7 @@ import com.aoztg.greengrim.R
 import com.aoztg.greengrim.app.App
 import com.aoztg.greengrim.databinding.BottomsheetFilterBinding
 import com.aoztg.greengrim.databinding.BottomsheetInfoSettingBinding
+import com.aoztg.greengrim.databinding.BottomsheetPhotoBinding
 import com.aoztg.greengrim.presentation.ui.challenge.list.ChallengeSortType
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
@@ -109,6 +110,28 @@ internal fun getInfoSettingSheet(
 
     binding.tvWithdrawal.setOnClickListener {
         onWithdrawalClickListener()
+        dialog.dismiss()
+    }
+
+    return dialog
+}
+
+internal fun getPhotoSheet(
+    context: Context,
+    onPhotoClickListener: () -> Unit,
+    onGalleryClickListener: () -> Unit,
+) : BottomSheetDialog{
+    val dialog = BottomSheetDialog(context)
+    val binding = BottomsheetPhotoBinding.inflate(LayoutInflater.from(context))
+    dialog.setContentView(binding.root)
+
+    binding.tvCamera.setOnClickListener {
+        onPhotoClickListener()
+        dialog.dismiss()
+    }
+
+    binding.tvGallery.setOnClickListener {
+        onGalleryClickListener()
         dialog.dismiss()
     }
 
