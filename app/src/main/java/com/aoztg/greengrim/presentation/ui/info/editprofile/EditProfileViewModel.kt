@@ -2,15 +2,12 @@ package com.aoztg.greengrim.presentation.ui.info.editprofile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.aoztg.greengrim.app.App
 import com.aoztg.greengrim.data.model.CheckNickRequest
 import com.aoztg.greengrim.data.model.ErrorResponse
-import com.aoztg.greengrim.data.model.SignupRequest
+import com.aoztg.greengrim.data.model.PatchProfileRequest
 import com.aoztg.greengrim.data.repository.InfoRepository
 import com.aoztg.greengrim.data.repository.IntroRepository
 import com.aoztg.greengrim.presentation.ui.BaseState
-import com.aoztg.greengrim.presentation.ui.intro.EmailData
-import com.aoztg.greengrim.presentation.util.Constants
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -166,14 +163,10 @@ class EditProfileViewModel @Inject constructor(
     }
 
     fun editProfile() {
-
-        // todo signup API -> Edit Profile 로 수정
-
         viewModelScope.launch {
-            // 통신로직
-            val response = introRepository.signup(
-                SignupRequest(
-                    email = EmailData.email,
+
+            val response = infoRepository.patchProfile(
+                PatchProfileRequest(
                     nickName = nickname.value,
                     introduction = introduce.value,
                     profileImgUrl = profileUrl.value
@@ -181,15 +174,6 @@ class EditProfileViewModel @Inject constructor(
             )
 
             if (response.isSuccessful) {
-                isNicknameValid.value = true
-
-                response.body()?.let {
-                    App.sharedPreferences.edit()
-                        .putString(Constants.X_ACCESS_TOKEN, "Bearer " + it.accessToken)
-                        .putString(Constants.X_REFRESH_TOKEN, it.refreshToken)
-                        .apply()
-                }
-
                 _uiState.update { state ->
                     state.copy(editProfileState = BaseState.Success)
                 }
@@ -203,7 +187,7 @@ class EditProfileViewModel @Inject constructor(
         }
     }
 
-    fun navigateToBack(){
+    fun navigateToBack() {
         viewModelScope.launch {
             _events.emit(EditProfileEvents.NavigateToBack)
         }
