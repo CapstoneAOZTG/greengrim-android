@@ -48,13 +48,18 @@ class EditProfileViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(EditProfileUiState())
     val uiState: StateFlow<EditProfileUiState> = _uiState.asStateFlow()
 
+    private var curNickname = ""
+    private var curIntroduce = ""
+    private var curProfileUrl = ""
+
     val nickname = MutableStateFlow("")
     val introduce = MutableStateFlow("")
     private var profileUrl = ""
 
     private val isNicknameValid = MutableStateFlow(false)
-    private val isDataReady = combine(nickname, isNicknameValid) { nick, nickValid ->
-        nick.isNotBlank() && nickValid
+
+    val isDataChanged = combine(nickname, introduce, isNicknameValid) { nick, introduce, nickValid ->
+        (curNickname != nick && nickValid) || curIntroduce != introduce || profileUrl != curProfileUrl
     }.stateIn(
         viewModelScope,
         SharingStarted.WhileSubscribed(),
@@ -71,8 +76,12 @@ class EditProfileViewModel @Inject constructor(
 
             if (response.isSuccessful) {
                 response.body()?.let {
+                    curNickname = it.nickName
+                    curIntroduce = it.introduction
+                    curProfileUrl = it.profileImgUrl
                     nickname.value = it.nickName
                     introduce.value = it.introduction
+                    profileUrl = it.profileImgUrl
 
                     _uiState.update { state ->
                         state.copy(getProfileState = ProfileState.Success(it.profileImgUrl))
@@ -88,40 +97,43 @@ class EditProfileViewModel @Inject constructor(
         }
 
         checkNickDuplicate()
-        checkSignupState()
+        checkEditProfileState()
     }
 
     private fun checkNickDuplicate() {
         nickname.onEach {
-            val response = introRepository.checkNick(CheckNickRequest(it))
-            if (response.isSuccessful) {
-                response.body()?.let { body ->
+            if(curNickname != it){
+                val response = introRepository.checkNick(CheckNickRequest(it))
+                if (response.isSuccessful) {
+                    response.body()?.let { body ->
 
-                    if (body.used) {
-                        isNicknameValid.value = false
-                        _uiState.update { state ->
-                            state.copy(nickState = BaseState.Error("사용할 수 없는 닉네임 입니다"))
-                        }
-                    } else {
-                        isNicknameValid.value = true
-                        _uiState.update { state ->
-                            state.copy(nickState = BaseState.Success)
+                        if (body.used) {
+                            isNicknameValid.value = false
+                            _uiState.update { state ->
+                                state.copy(nickState = BaseState.Error("사용할 수 없는 닉네임 입니다"))
+                            }
+                        } else {
+                            isNicknameValid.value = true
+                            _uiState.update { state ->
+                                state.copy(nickState = BaseState.Success)
+                            }
                         }
                     }
-                }
-            } else {
-                isNicknameValid.value = false
-                val error =
-                    Gson().fromJson(response.errorBody()?.string(), ErrorResponse::class.java)
-                _uiState.update { state ->
-                    state.copy(nickState = BaseState.Error(error.message))
+                } else {
+                    isNicknameValid.value = false
+                    val error =
+                        Gson().fromJson(response.errorBody()?.string(), ErrorResponse::class.java)
+                    _uiState.update { state ->
+                        state.copy(nickState = BaseState.Error(error.message))
+                    }
                 }
             }
+
         }.launchIn(viewModelScope)
     }
 
-    private fun checkSignupState() {
-        isDataReady.onEach {
+    private fun checkEditProfileState() {
+        isDataChanged.onEach {
             if (it) {
                 _uiState.update { state ->
                     state.copy(completeBtnState = BaseState.Success)
