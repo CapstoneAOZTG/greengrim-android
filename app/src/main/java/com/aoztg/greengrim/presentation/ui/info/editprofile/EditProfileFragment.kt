@@ -27,6 +27,7 @@ class EditProfileFragment :
         binding.vm = viewModel
         binding.pvm = parentViewModel
         initStateObserver()
+        initEventObserver()
         initImageObserver()
     }
 
@@ -59,6 +60,16 @@ class EditProfileFragment :
                     is ProfileState.Success -> setProfileImg(it.getProfileState.imgUrl)
                     is ProfileState.Error -> showCustomToast(it.getProfileState.msg)
                     else -> {}
+                }
+            }
+        }
+    }
+
+    private fun initEventObserver(){
+        repeatOnStarted {
+            viewModel.events.collect{
+                when(it){
+                    is EditProfileEvents.NavigateToBack -> findNavController().navigateUp()
                 }
             }
         }

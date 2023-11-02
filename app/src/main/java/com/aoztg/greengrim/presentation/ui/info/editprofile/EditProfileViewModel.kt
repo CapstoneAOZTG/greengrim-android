@@ -13,9 +13,12 @@ import com.aoztg.greengrim.presentation.ui.intro.EmailData
 import com.aoztg.greengrim.presentation.util.Constants
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
@@ -39,6 +42,10 @@ sealed class ProfileState {
     data class Error(val msg: String) : ProfileState()
 }
 
+sealed class EditProfileEvents {
+    object NavigateToBack : EditProfileEvents()
+}
+
 @HiltViewModel
 class EditProfileViewModel @Inject constructor(
     private val introRepository: IntroRepository,
@@ -47,6 +54,9 @@ class EditProfileViewModel @Inject constructor(
 
     private val _uiState = MutableStateFlow(EditProfileUiState())
     val uiState: StateFlow<EditProfileUiState> = _uiState.asStateFlow()
+
+    private val _events = MutableSharedFlow<EditProfileEvents>()
+    val events: SharedFlow<EditProfileEvents> = _events.asSharedFlow()
 
     private var curNickname = ""
     private var curIntroduce = ""
@@ -58,7 +68,12 @@ class EditProfileViewModel @Inject constructor(
 
     private val isNicknameValid = MutableStateFlow(false)
 
-    val isDataChanged = combine(nickname, introduce, profileUrl, isNicknameValid) { nick, introduce, profileUrl, nickValid ->
+    val isDataChanged = combine(
+        nickname,
+        introduce,
+        profileUrl,
+        isNicknameValid
+    ) { nick, introduce, profileUrl, nickValid ->
         (curNickname != nick && nickValid) || curIntroduce != introduce || profileUrl != curProfileUrl
     }.stateIn(
         viewModelScope,
@@ -102,7 +117,7 @@ class EditProfileViewModel @Inject constructor(
 
     private fun checkNickDuplicate() {
         nickname.onEach {
-            if(curNickname != it){
+            if (curNickname != it) {
                 val response = introRepository.checkNick(CheckNickRequest(it))
                 if (response.isSuccessful) {
                     response.body()?.let { body ->
@@ -185,6 +200,12 @@ class EditProfileViewModel @Inject constructor(
                     state.copy(editProfileState = BaseState.Error(error.message))
                 }
             }
+        }
+    }
+
+    fun navigateToBack(){
+        viewModelScope.launch {
+            _events.emit(EditProfileEvents.NavigateToBack)
         }
     }
 }
