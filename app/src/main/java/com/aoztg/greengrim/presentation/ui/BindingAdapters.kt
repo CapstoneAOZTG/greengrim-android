@@ -58,7 +58,7 @@ fun bindColorChips(chipGroup: ChipGroup, chips: List<String>) {
         val chip = TextView(chipGroup.context).apply {
             text = data
             setBackgroundResource(colors.random())
-            setTextAppearance(R.style.TextGgSmallBlack)
+            setTextAppearance(R.style.TextGgSmallBlackBold)
             setPadding(20, 4, 20, 4)
         }
 
@@ -75,7 +75,7 @@ fun bindGreyChips(chipGroup: ChipGroup, chips: List<String>) {
         val chip = TextView(chipGroup.context).apply {
             text = data
             setBackgroundResource(R.drawable.shape_grey2fill_nostroke_radius20)
-            setTextAppearance(R.style.TextGgSmallBlack)
+            setTextAppearance(R.style.TextGgSmallBlackBold)
             setPadding(20, 4, 20, 4)
         }
 
