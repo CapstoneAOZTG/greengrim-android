@@ -1,4 +1,4 @@
-package com.aoztg.greengrim.presentation.ui.global
+package com.aoztg.greengrim.presentation.ui.global.attendcheck
 
 import android.os.Bundle
 import android.view.View

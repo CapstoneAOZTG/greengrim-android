@@ -3,7 +3,6 @@ package com.aoztg.greengrim.presentation.ui.challenge.list
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.presentation.ui.LoadingState
-import com.aoztg.greengrim.presentation.ui.challenge.detail.ChallengeDetailEvents
 import com.aoztg.greengrim.presentation.ui.challenge.model.ChallengeRoom
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay

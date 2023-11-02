@@ -1,7 +1,6 @@
 package com.aoztg.greengrim.presentation.ui.challenge.list
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -14,7 +13,7 @@ import com.aoztg.greengrim.presentation.base.BaseFragment
 import com.aoztg.greengrim.presentation.ui.LoadingState
 import com.aoztg.greengrim.presentation.ui.challenge.adapter.ChallengeRoomAdapter
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
-import com.aoztg.greengrim.presentation.util.Constants.TAG
+import com.aoztg.greengrim.presentation.ui.toChallengeDetail
 import com.aoztg.greengrim.presentation.util.getSortSheet
 
 
@@ -77,11 +76,6 @@ class ChallengeListFragment :
             viewModel.setSortType(type)
             binding.tvFilter.text = type.text
         }.show()
-    }
-
-    private fun NavController.toChallengeDetail(id: String) {
-        val action = ChallengeListFragmentDirections.actionChallengeListFragmentToChallengeDetailFragment(id)
-        this.navigate(action)
     }
 
     private fun NavController.toCreateChallenge() {
