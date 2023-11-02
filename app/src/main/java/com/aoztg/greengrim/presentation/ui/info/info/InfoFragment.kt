@@ -38,6 +38,7 @@ class InfoFragment : BaseFragment<FragmentInfoBinding>(R.layout.fragment_info) {
                     is InfoEvents.GoToIntroActivity -> goToIntroActivity()
                     is InfoEvents.NavigateToEditProfile -> navigateToEditProfile()
                     is InfoEvents.NavigateToAttendCheck -> findNavController().toAttendCheck()
+                    is InfoEvents.NavigateToMyChallenge -> findNavController().toMyChallenge()
                 }
             }
         }
@@ -72,6 +73,11 @@ class InfoFragment : BaseFragment<FragmentInfoBinding>(R.layout.fragment_info) {
     private fun navigateToEditProfile() {
         val action = InfoFragmentDirections.actionInfoFragmentToEditProfileFragment()
         findNavController().navigate(action)
+    }
+
+    private fun NavController.toMyChallenge() {
+        val action = InfoFragmentDirections.actionInfoFragmentToMyChallengeFragment()
+        this.navigate(action)
     }
 
     private fun navigateToNotification() {

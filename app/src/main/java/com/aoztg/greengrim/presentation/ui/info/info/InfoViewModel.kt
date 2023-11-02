@@ -27,6 +27,7 @@ sealed class InfoEvents {
     object GoToIntroActivity : InfoEvents()
     object NavigateToEditProfile: InfoEvents()
     object NavigateToAttendCheck: InfoEvents()
+    object NavigateToMyChallenge: InfoEvents()
 }
 
 @HiltViewModel
@@ -74,6 +75,12 @@ class InfoViewModel @Inject constructor(
     fun navigateToAttendCheck(){
         viewModelScope.launch {
             _events.emit(InfoEvents.NavigateToAttendCheck)
+        }
+    }
+
+    fun navigateToMyChallenge(){
+        viewModelScope.launch{
+            _events.emit(InfoEvents.NavigateToMyChallenge)
         }
     }
 }
