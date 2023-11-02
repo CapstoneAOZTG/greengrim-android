@@ -11,7 +11,6 @@ import com.aoztg.greengrim.presentation.base.BaseFragment
 import com.aoztg.greengrim.presentation.ui.LoadingState
 import com.aoztg.greengrim.presentation.ui.challenge.adapter.ChallengeRoomAdapter
 import com.aoztg.greengrim.presentation.ui.challenge.list.ChallengeListEvents
-import com.aoztg.greengrim.presentation.ui.challenge.list.ChallengeListViewModel
 import com.aoztg.greengrim.presentation.ui.challenge.list.ChallengeSortType
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 import com.aoztg.greengrim.presentation.ui.toChallengeDetail
@@ -19,7 +18,7 @@ import com.aoztg.greengrim.presentation.util.getSortSheet
 
 class MyChallengeFragment: BaseFragment<FragmentMyChallengeBinding>(R.layout.fragment_my_challenge) {
 
-    private val viewModel: ChallengeListViewModel by viewModels()
+    private val viewModel: MyChallengeViewModel by viewModels()
     private val parentViewModel: MainViewModel by activityViewModels()
     private var sortType = ChallengeSortType.RECENT
     private var loadingState = false
@@ -58,8 +57,8 @@ class MyChallengeFragment: BaseFragment<FragmentMyChallengeBinding>(R.layout.fra
         repeatOnStarted {
             viewModel.events.collect {
                 when (it) {
-                    is ChallengeListEvents.NavigateToChallengeDetail -> findNavController().toChallengeDetail(it.id)
-                    is ChallengeListEvents.ShowBottomSheet -> showBottomSheet()
+                    is MyChallengeEvents.NavigateToChallengeDetail -> findNavController().toChallengeDetail(it.id)
+                    is MyChallengeEvents.ShowBottomSheet -> showBottomSheet()
                     else -> {}
                 }
             }
