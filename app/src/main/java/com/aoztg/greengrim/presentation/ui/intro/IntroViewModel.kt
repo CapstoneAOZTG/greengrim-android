@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 
 sealed class IntroEvent {
-    object GoToGallery : IntroEvent()
+    object ShowPhotoBottomSheet : IntroEvent()
     object GoToMainActivity : IntroEvent()
 }
 
@@ -35,7 +35,7 @@ class IntroViewModel @Inject constructor(
     fun goToGallery() {
         viewModelScope.launch {
             _events.emit(
-                IntroEvent.GoToGallery
+                IntroEvent.ShowPhotoBottomSheet
             )
         }
     }

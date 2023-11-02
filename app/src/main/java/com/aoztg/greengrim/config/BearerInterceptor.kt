@@ -57,7 +57,7 @@ class BearerInterceptor : Interceptor {
 
                 // 기존 API 재호출
                 val newRequest = originalRequest.newBuilder()
-                    .addHeader("Authorization", "Bearer $accessToken")
+                    .addHeader("Authorization", accessToken)
                     .build()
 
                 return chain.proceed(newRequest)

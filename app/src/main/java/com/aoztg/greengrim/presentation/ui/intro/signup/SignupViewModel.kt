@@ -7,6 +7,7 @@ import com.aoztg.greengrim.data.model.CheckNickRequest
 import com.aoztg.greengrim.data.model.ErrorResponse
 import com.aoztg.greengrim.data.model.SignupRequest
 import com.aoztg.greengrim.data.repository.IntroRepository
+import com.aoztg.greengrim.presentation.ui.BaseState
 import com.aoztg.greengrim.presentation.ui.intro.EmailData
 import com.aoztg.greengrim.presentation.util.Constants.X_ACCESS_TOKEN
 import com.aoztg.greengrim.presentation.util.Constants.X_REFRESH_TOKEN
@@ -26,17 +27,10 @@ import javax.inject.Inject
 
 
 data class SignupUiState(
-    val nickState: SignupState = SignupState.Empty,
-    val nextBtnState: SignupState = SignupState.Empty,
-    val signupState: SignupState = SignupState.Empty
+    val nickState: BaseState = BaseState.Empty,
+    val nextBtnState: BaseState = BaseState.Empty,
+    val signupState: BaseState = BaseState.Empty
 )
-
-sealed class SignupState {
-    object Empty : SignupState()
-    object Success : SignupState()
-    object Failure : SignupState()
-    data class Error(val msg: String) : SignupState()
-}
 
 @HiltViewModel
 class SignupViewModel @Inject constructor(private val introRepository: IntroRepository) :
@@ -72,12 +66,12 @@ class SignupViewModel @Inject constructor(private val introRepository: IntroRepo
                     if (body.used) {
                         isNicknameValid.value = false
                         _uiState.update { state ->
-                            state.copy(nickState = SignupState.Error("사용할 수 없는 닉네임 입니다"))
+                            state.copy(nickState = BaseState.Error("사용할 수 없는 닉네임 입니다"))
                         }
                     } else {
                         isNicknameValid.value = true
                         _uiState.update { state ->
-                            state.copy(nickState = SignupState.Success)
+                            state.copy(nickState = BaseState.Success)
                         }
                     }
                 }
@@ -86,7 +80,7 @@ class SignupViewModel @Inject constructor(private val introRepository: IntroRepo
                 val error =
                     Gson().fromJson(response.errorBody()?.string(), ErrorResponse::class.java)
                 _uiState.update { state ->
-                    state.copy(nickState = SignupState.Error(error.message))
+                    state.copy(nickState = BaseState.Error(error.message))
                 }
             }
         }.launchIn(viewModelScope)
@@ -96,11 +90,11 @@ class SignupViewModel @Inject constructor(private val introRepository: IntroRepo
         isDataReady.onEach {
             if (it) {
                 _uiState.update { state ->
-                    state.copy(nextBtnState = SignupState.Success)
+                    state.copy(nextBtnState = BaseState.Success)
                 }
             } else {
                 _uiState.update { state ->
-                    state.copy(nextBtnState = SignupState.Failure)
+                    state.copy(nextBtnState = BaseState.Failure)
                 }
             }
         }.launchIn(viewModelScope)
@@ -125,21 +119,21 @@ class SignupViewModel @Inject constructor(private val introRepository: IntroRepo
             if (response.isSuccessful) {
                 isNicknameValid.value = true
 
-                response.body()?.let{
+                response.body()?.let {
                     sharedPreferences.edit()
-                        .putString(X_ACCESS_TOKEN, "Bearer " + it.accessToken)
+                        .putString(X_ACCESS_TOKEN, it.accessToken)
                         .putString(X_REFRESH_TOKEN, it.refreshToken)
                         .apply()
                 }
 
                 _uiState.update { state ->
-                    state.copy(signupState = SignupState.Success)
+                    state.copy(signupState = BaseState.Success)
                 }
             } else {
                 val error =
                     Gson().fromJson(response.errorBody()?.string(), ErrorResponse::class.java)
                 _uiState.update { state ->
-                    state.copy(signupState = SignupState.Error(error.message))
+                    state.copy(signupState = BaseState.Error(error.message))
                 }
             }
         }

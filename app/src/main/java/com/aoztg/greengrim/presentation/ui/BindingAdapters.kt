@@ -23,9 +23,19 @@ fun bindImg(imageView: ImageView, url: String) {
         .into(imageView)
 }
 
+@BindingAdapter("profileImgUrl")
+fun bindProfileImg(imageView: ImageView, url: String) {
+    if (url.isNotBlank()) {
+        Glide.with(imageView.context)
+            .load(url)
+            .error(R.drawable.icon_profile)
+            .into(imageView)
+    }
+}
+
 @BindingAdapter("imgUrlCheckEmtpy")
-fun bindImgCheckEmpty(imageView: ImageView, url: String){
-    if(url.isNotBlank()){
+fun bindImgCheckEmpty(imageView: ImageView, url: String) {
+    if (url.isNotBlank()) {
         Glide.with(imageView.context)
             .load(url)
             .into(imageView)

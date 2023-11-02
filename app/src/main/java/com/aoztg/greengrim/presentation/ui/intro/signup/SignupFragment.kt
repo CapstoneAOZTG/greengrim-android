@@ -3,17 +3,15 @@ package com.aoztg.greengrim.presentation.ui.intro.signup
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
-import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentSignupBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
+import com.aoztg.greengrim.presentation.ui.BaseState
 import com.aoztg.greengrim.presentation.ui.intro.IntroViewModel
-import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -33,25 +31,27 @@ class SignupFragment : BaseFragment<FragmentSignupBinding>(R.layout.fragment_sig
         repeatOnStarted {
             viewModel.uiState.collect {
                 when (it.nextBtnState) {
-                    is SignupState.Success -> binding.btnNext.isEnabled = true
-                    is SignupState.Failure -> {
+                    is BaseState.Success -> binding.btnNext.isEnabled = true
+                    is BaseState.Failure -> {
                         binding.btnNext.isEnabled = false
                     }
+
                     else -> {}
                 }
 
                 when (it.nickState) {
-                    is SignupState.Success -> binding.tvWarning.visibility = View.INVISIBLE
-                    is SignupState.Error -> {
+                    is BaseState.Success -> binding.tvWarning.visibility = View.INVISIBLE
+                    is BaseState.Error -> {
                         binding.tvWarning.visibility = View.VISIBLE
                         binding.tvWarning.text = it.nickState.msg
                     }
+
                     else -> {}
                 }
 
                 when (it.signupState) {
-                    is SignupState.Success -> parentViewModel.goToMain()
-                    is SignupState.Error -> showCustomToast(it.signupState.msg)
+                    is BaseState.Success -> parentViewModel.goToMain()
+                    is BaseState.Error -> showCustomToast(it.signupState.msg)
                     else -> {}
                 }
             }
@@ -64,16 +64,6 @@ class SignupFragment : BaseFragment<FragmentSignupBinding>(R.layout.fragment_sig
                 }
             }
         }
-    }
-}
-
-@BindingAdapter("profileImgUrl")
-fun bindProfileImg(imageView: ImageView, url: String) {
-    if(url.isNotBlank()){
-        Glide.with(imageView.context)
-            .load(url)
-            .error(R.drawable.icon_profile)
-            .into(imageView)
     }
 }
 
