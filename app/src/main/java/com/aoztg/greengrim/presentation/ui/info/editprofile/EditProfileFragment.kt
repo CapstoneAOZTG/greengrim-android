@@ -75,13 +75,6 @@ class EditProfileFragment :
         }
     }
 
-    private fun setProfileImg(url: String) {
-        Glide.with(requireContext())
-            .load(url)
-            .error(R.drawable.icon_profile)
-            .into(binding.ivProfile)
-    }
-
     private fun initImageObserver() {
         repeatOnStarted {
             parentViewModel.image.collect {
@@ -90,6 +83,13 @@ class EditProfileFragment :
                 }
             }
         }
+    }
+
+    private fun setProfileImg(url: String) {
+        Glide.with(requireContext())
+            .load(url)
+            .error(R.drawable.icon_profile)
+            .into(binding.ivProfile)
     }
 
 }

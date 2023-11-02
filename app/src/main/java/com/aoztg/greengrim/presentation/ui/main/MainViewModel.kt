@@ -16,7 +16,7 @@ import javax.inject.Inject
 sealed class MainEvent {
     object HideBottomNav : MainEvent()
     object ShowBottomNav : MainEvent()
-    object GoToGallery : MainEvent()
+    object ShowPhotoBottomSheet : MainEvent()
     object Logout: MainEvent()
 }
 
@@ -33,7 +33,7 @@ class MainViewModel @Inject constructor(private val imageRepository: ImageReposi
     fun goToGallery() {
         viewModelScope.launch {
             _events.emit(
-                MainEvent.GoToGallery
+                MainEvent.ShowPhotoBottomSheet
             )
         }
     }
