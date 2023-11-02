@@ -43,9 +43,9 @@
                 android:layout_height="24dp"
                 android:layout_gravity="end"
                 android:background="@android:color/transparent"
+                android:onClick="@{() -> vm.showBottomSheet()}"
                 android:scaleType="fitCenter"
                 android:src="@drawable/icon_setting"
-                android:onClick="@{() -> vm.showBottomSheet()}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

@@ -34,6 +34,7 @@ class InfoFragment : BaseFragment<FragmentInfoBinding>(R.layout.fragment_info) {
                 when (it) {
                     is InfoEvents.ShowBottomSheet -> showBottomSheet()
                     is InfoEvents.GoToIntroActivity -> goToIntroActivity()
+                    is InfoEvents.NavigateToEditProfile -> navigateToEditProfile()
                 }
             }
         }
