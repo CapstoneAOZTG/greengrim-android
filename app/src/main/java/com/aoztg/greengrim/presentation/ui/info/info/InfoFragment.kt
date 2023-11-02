@@ -4,12 +4,14 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentInfoBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
 import com.aoztg.greengrim.presentation.ui.BaseState
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
+import com.aoztg.greengrim.presentation.ui.toAttendCheck
 import com.aoztg.greengrim.presentation.util.getInfoSettingSheet
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -35,6 +37,7 @@ class InfoFragment : BaseFragment<FragmentInfoBinding>(R.layout.fragment_info) {
                     is InfoEvents.ShowBottomSheet -> showBottomSheet()
                     is InfoEvents.GoToIntroActivity -> goToIntroActivity()
                     is InfoEvents.NavigateToEditProfile -> navigateToEditProfile()
+                    is InfoEvents.NavigateToAttendCheck -> findNavController().toAttendCheck()
                 }
             }
         }

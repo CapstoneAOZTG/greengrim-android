@@ -140,5 +140,4 @@
         android:id="@+id/action_global_to_attendCheckFragment"
         app:destination="@id/attend_check_fragment"/>
 
-
 </navigation>

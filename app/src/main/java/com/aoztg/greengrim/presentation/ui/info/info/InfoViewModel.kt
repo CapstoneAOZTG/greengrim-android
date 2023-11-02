@@ -26,6 +26,7 @@ sealed class InfoEvents {
     object ShowBottomSheet : InfoEvents()
     object GoToIntroActivity : InfoEvents()
     object NavigateToEditProfile: InfoEvents()
+    object NavigateToAttendCheck: InfoEvents()
 }
 
 @HiltViewModel
@@ -67,6 +68,12 @@ class InfoViewModel @Inject constructor(
     fun navigateToEditProfile(){
         viewModelScope.launch {
             _events.emit(InfoEvents.NavigateToEditProfile)
+        }
+    }
+
+    fun navigateToAttendCheck(){
+        viewModelScope.launch {
+            _events.emit(InfoEvents.NavigateToAttendCheck)
         }
     }
 }
