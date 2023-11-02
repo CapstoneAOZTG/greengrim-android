@@ -1,6 +1,7 @@
 package com.aoztg.greengrim.app.di
 
 import com.aoztg.greengrim.data.remote.ImageAPI
+import com.aoztg.greengrim.data.remote.InfoAPI
 import com.aoztg.greengrim.data.remote.IntroAPI
 import dagger.Module
 import dagger.Provides
@@ -25,5 +26,10 @@ object ApiModule {
         return retrofit.create(ImageAPI::class.java)
     }
 
+    @Singleton
+    @Provides
+    fun provideInfoService(retrofit: Retrofit): InfoAPI {
+        return retrofit.create(InfoAPI::class.java)
+    }
 
 }
