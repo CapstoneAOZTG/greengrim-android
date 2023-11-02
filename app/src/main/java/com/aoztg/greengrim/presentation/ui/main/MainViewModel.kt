@@ -17,6 +17,7 @@ sealed class MainEvent {
     object HideBottomNav : MainEvent()
     object ShowBottomNav : MainEvent()
     object GoToGallery : MainEvent()
+    object Logout: MainEvent()
 }
 
 @HiltViewModel
@@ -59,6 +60,12 @@ class MainViewModel @Inject constructor(private val imageRepository: ImageReposi
                     _image.value = it.imgUrl
                 }
             }
+        }
+    }
+
+    fun logout(){
+        viewModelScope.launch {
+            _events.emit(MainEvent.Logout)
         }
     }
 

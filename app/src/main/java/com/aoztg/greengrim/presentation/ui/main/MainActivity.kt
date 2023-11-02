@@ -18,9 +18,11 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
 import com.aoztg.greengrim.R
+import com.aoztg.greengrim.app.App
 import com.aoztg.greengrim.databinding.ActivityMainBinding
 import com.aoztg.greengrim.presentation.base.BaseActivity
 import com.aoztg.greengrim.presentation.ui.home.HomeFragmentDirections
+import com.aoztg.greengrim.presentation.ui.intro.IntroActivity
 import com.aoztg.greengrim.presentation.util.Constants
 import com.aoztg.greengrim.presentation.util.toMultiPart
 import dagger.hilt.android.AndroidEntryPoint
@@ -94,6 +96,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                     is MainEvent.HideBottomNav -> binding.layoutBnv.visibility = View.INVISIBLE
                     is MainEvent.ShowBottomNav -> binding.layoutBnv.visibility = View.VISIBLE
                     is MainEvent.GoToGallery -> onCheckPermissions()
+                    is MainEvent.Logout -> logout()
                 }
             }
         }
@@ -159,4 +162,17 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                 }
             }
         }
+
+    private fun logout() {
+        App.sharedPreferences.edit()
+            .putString(Constants.X_ACCESS_TOKEN, "")
+            .putString(Constants.X_REFRESH_TOKEN, "")
+            .apply()
+        val intent = Intent(applicationContext, IntroActivity::class.java)
+        intent.apply {
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            finishAffinity()
+            startActivity(this)
+        }
+    }
 }

@@ -1,14 +1,19 @@
 package com.aoztg.greengrim.presentation.ui.info.info
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.aoztg.greengrim.R
+import com.aoztg.greengrim.app.App
+import com.aoztg.greengrim.app.App.Companion.sharedPreferences
 import com.aoztg.greengrim.databinding.FragmentInfoBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
+import com.aoztg.greengrim.presentation.ui.intro.IntroActivity
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
+import com.aoztg.greengrim.presentation.util.Constants
 import com.aoztg.greengrim.presentation.util.getInfoSettingSheet
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -76,7 +81,7 @@ class InfoFragment : BaseFragment<FragmentInfoBinding>(R.layout.fragment_info) {
     }
 
     private fun logout() {
-        showCustomToast("로그아웃")
+        parentViewModel.logout()
     }
 
     private fun withdrawal() {
