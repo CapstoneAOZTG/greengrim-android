@@ -1,87 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="20dp">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/iv_category_photo"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        android:scaleType="centerCrop"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:shapeAppearanceOverlay="@style/All16RadiusImageView"
-        tools:src="@drawable/test" />
+    <data>
 
-    <TextView
-        android:id="@+id/tv_title"
-        style="@style/TextGgMedium"
-        android:layout_width="wrap_content"
+        <variable
+            name="item"
+            type="com.aoztg.greengrim.presentation.ui.info.model.MyCertification" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        app:layout_constraintBottom_toBottomOf="@id/iv_category_photo"
-        app:layout_constraintStart_toEndOf="@id/iv_category_photo"
-        app:layout_constraintTop_toTopOf="@id/iv_category_photo"
-        tools:text="킹노아" />
+        android:layout_marginTop="20dp">
 
-    <TextView
-        android:id="@+id/tv_keyword_category"
-        style="@style/TextGgSmallBlackBold"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:background="@drawable/shape_purplefill_nostroke_radius20"
-        android:paddingHorizontal="8dp"
-        app:layout_constraintBottom_toBottomOf="@id/tv_title"
-        app:layout_constraintStart_toEndOf="@id/tv_title"
-        app:layout_constraintTop_toTopOf="@id/tv_title"
-        tools:text="줍킹" />
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iv_category_photo"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:scaleType="centerCrop"
+            app:imgUrl="@{item.categoryImg}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/All16RadiusImageView"
+            tools:src="@drawable/test" />
 
-    <ImageView
-        android:id="@+id/iv_certification_photo"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintDimensionRatio="3:2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/iv_category_photo"
-        tools:src="@drawable/test" />
+        <TextView
+            android:id="@+id/tv_title"
+            style="@style/TextGgMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:text="@{item.title}"
+            app:layout_constraintBottom_toBottomOf="@id/iv_category_photo"
+            app:layout_constraintStart_toEndOf="@id/iv_category_photo"
+            app:layout_constraintTop_toTopOf="@id/iv_category_photo"
+            tools:text="킹노아" />
 
-    <TextView
-        android:id="@+id/tv_certification_count"
-        style="@style/TextGgMedium"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/iv_certification_photo"
-        tools:text="[14회차 인증]" />
+        <TextView
+            android:id="@+id/tv_keyword_category"
+            style="@style/TextGgSmallBlackBold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:background="@drawable/shape_purplefill_nostroke_radius20"
+            android:paddingHorizontal="8dp"
+            android:text="@{item.category}"
+            app:layout_constraintBottom_toBottomOf="@id/tv_title"
+            app:layout_constraintStart_toEndOf="@id/tv_title"
+            app:layout_constraintTop_toTopOf="@id/tv_title"
+            tools:text="줍킹" />
 
-    <TextView
-        android:id="@+id/tv_date"
-        style="@style/TextGgTiny"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="20dp"
-        app:layout_constraintBottom_toBottomOf="@id/tv_certification_count"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:text="2023년 9월 26일" />
+        <ImageView
+            android:id="@+id/iv_certification_photo"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="16dp"
+            app:imgUrl="@{item.certificationImg}"
+            android:scaleType="centerCrop"
+            app:layout_constraintDimensionRatio="3:2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_category_photo"
+            tools:src="@drawable/test" />
 
-    <TextView
-        android:id="@+id/tv_certification_description"
-        style="@style/TextGgTiny"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        app:layout_constraintStart_toStartOf="@id/tv_certification_count"
-        app:layout_constraintTop_toBottomOf="@id/tv_certification_count"
-        tools:text="쓰레기도 줍고 치킨도 주웠다." />
+        <TextView
+            android:id="@+id/tv_certification_count"
+            style="@style/TextGgMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:text="@{item.certificationCount}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_certification_photo"
+            tools:text="[14회차 인증]" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/tv_date"
+            style="@style/TextGgTiny"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:text="@{item.date}"
+            app:layout_constraintBottom_toBottomOf="@id/tv_certification_count"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="2023년 9월 26일" />
+
+        <TextView
+            android:id="@+id/tv_certification_description"
+            style="@style/TextGgTiny"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@{item.description}"
+            app:layout_constraintStart_toStartOf="@id/tv_certification_count"
+            app:layout_constraintTop_toBottomOf="@id/tv_certification_count"
+            tools:text="쓰레기도 줍고 치킨도 주웠다." />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

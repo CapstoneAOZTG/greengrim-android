@@ -6,12 +6,15 @@ import android.os.Bundle
 import android.view.View
 import android.widget.TextView
 import androidx.core.view.children
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.CalendarDayLayoutBinding
 import com.aoztg.greengrim.databinding.CalendarHeaderBinding
 import com.aoztg.greengrim.databinding.FragmentMyCertificationBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
+import com.aoztg.greengrim.presentation.ui.info.adapter.MyCertificationAdapter
+import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 import com.kizitonwose.calendar.core.CalendarDay
 import com.kizitonwose.calendar.core.CalendarMonth
 import com.kizitonwose.calendar.core.DayPosition
@@ -20,14 +23,16 @@ import com.kizitonwose.calendar.core.firstDayOfWeekFromLocale
 import com.kizitonwose.calendar.view.MonthDayBinder
 import com.kizitonwose.calendar.view.MonthHeaderFooterBinder
 import com.kizitonwose.calendar.view.ViewContainer
+import dagger.hilt.android.AndroidEntryPoint
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.YearMonth
 
+@AndroidEntryPoint
 class MyCertificationFragment :
     BaseFragment<FragmentMyCertificationBinding>(R.layout.fragment_my_certification) {
 
-
+    private val parentViewModel: MainViewModel by activityViewModels()
     private val viewModel: MyCertificationViewModel by viewModels()
 
     private var selectedDate: LocalDate? = null
@@ -37,6 +42,9 @@ class MyCertificationFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        parentViewModel.hideBNV()
+        binding.vm = viewModel
+        binding.rvCertifications.adapter = MyCertificationAdapter()
         initStateObserver()
         viewModel.getEventList()
         initCalenderView()
