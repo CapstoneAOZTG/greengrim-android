@@ -6,12 +6,12 @@ import android.os.Bundle
 import android.view.View
 import android.widget.TextView
 import androidx.core.view.children
+import androidx.fragment.app.viewModels
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.CalendarDayLayoutBinding
 import com.aoztg.greengrim.databinding.CalendarHeaderBinding
 import com.aoztg.greengrim.databinding.FragmentMyCertificationBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
-import com.aoztg.greengrim.presentation.util.toHeaderText
 import com.aoztg.greengrim.presentation.util.toLocalDate
 import com.kizitonwose.calendar.core.CalendarDay
 import com.kizitonwose.calendar.core.CalendarMonth
@@ -28,22 +28,25 @@ import java.time.YearMonth
 class MyCertificationFragment :
     BaseFragment<FragmentMyCertificationBinding>(R.layout.fragment_my_certification) {
 
+
+    private val viewModel: MyCertificationViewModel by viewModels()
+
     private var selectedDate: LocalDate? = null
+    private var currentMonth: YearMonth = YearMonth.now()
     private var hasEventDate: MutableList<LocalDate> = mutableListOf("2023-10-20".toLocalDate())
     private val today = LocalDate.now()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initStateObserver()
         initCalenderView()
-
     }
 
     @SuppressLint("SetTextI18n")
-    private fun initCalenderView(){
+    private fun initCalenderView() {
         with(binding.calendarView) {
 
-            val currentMonth = YearMonth.now()
             val startMonth = currentMonth.minusMonths(100)
             val endMonth = currentMonth.plusMonths(100)
             val firstDayOfWeek = firstDayOfWeekFromLocale()
@@ -53,13 +56,42 @@ class MyCertificationFragment :
             scrollToMonth(currentMonth)
 
             monthScrollListener = {
-                binding.btnSelectMonth.text =
-                    it.yearMonth.year.toString() + "년 " + it.yearMonth.monthValue + "월"
                 selectDate(it.yearMonth.atDay(1))
+                viewModel.scrollMonth(it.yearMonth)
+            }
+
+            binding.btnNextMonth.setOnClickListener {
+                currentMonth = currentMonth.plusMonths(1)
+                smoothScrollToMonth(currentMonth)
+            }
+
+            binding.btnPreviousMonth.setOnClickListener {
+                currentMonth = currentMonth.minusMonths(1)
+                smoothScrollToMonth(currentMonth)
             }
 
             configureBinders(daysOfWeek)
+        }
 
+    }
+
+    private fun initStateObserver() {
+        repeatOnStarted {
+            viewModel.uiState.collect {
+                when (it.curDate) {
+                    is DateState.Changed -> {
+                        selectedDate = it.curDate.originDate
+                        binding.tvDate.text = it.curDate.stringDate
+                    }
+
+                    else -> {}
+                }
+
+                when (it.curMonth) {
+                    is MonthState.Changed -> binding.btnSelectMonth.text = it.curMonth.stringMonth
+                    else -> {}
+                }
+            }
         }
     }
 
@@ -73,7 +105,6 @@ class MyCertificationFragment :
                 view.setOnClickListener {
                     if (day.position == DayPosition.MonthDate) {
                         selectDate(day.date)
-                        binding.tvDate.text = day.date.toHeaderText()
                     }
                 }
             }
@@ -137,9 +168,9 @@ class MyCertificationFragment :
     private fun selectDate(date: LocalDate) {
         if (selectedDate != date) {
             val oldDate = selectedDate
-            selectedDate = date
             oldDate?.let { binding.calendarView.notifyDateChanged(it) }
             binding.calendarView.notifyDateChanged(date)
+            viewModel.selectDate(date)
         }
     }
 }

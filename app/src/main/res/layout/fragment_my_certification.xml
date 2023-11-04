@@ -98,9 +98,10 @@
             android:id="@+id/btn_previous_month"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="30dp"
+            android:layout_marginEnd="10dp"
             android:background="@android:color/transparent"
             android:src="@drawable/icon_left"
+            android:padding="10dp"
             app:layout_constraintBottom_toBottomOf="@id/btn_select_month"
             app:layout_constraintEnd_toStartOf="@id/btn_next_month"
             app:layout_constraintTop_toTopOf="@id/btn_select_month" />
@@ -109,9 +110,10 @@
             android:id="@+id/btn_next_month"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="30dp"
+            android:layout_marginEnd="10dp"
             android:background="@android:color/transparent"
             android:src="@drawable/icon_right"
+            android:padding="10dp"
             app:layout_constraintBottom_toBottomOf="@id/btn_select_month"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/btn_select_month" />
