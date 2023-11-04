@@ -12,7 +12,6 @@ import com.aoztg.greengrim.databinding.CalendarDayLayoutBinding
 import com.aoztg.greengrim.databinding.CalendarHeaderBinding
 import com.aoztg.greengrim.databinding.FragmentMyCertificationBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
-import com.aoztg.greengrim.presentation.util.toLocalDate
 import com.kizitonwose.calendar.core.CalendarDay
 import com.kizitonwose.calendar.core.CalendarMonth
 import com.kizitonwose.calendar.core.DayPosition
@@ -33,13 +32,13 @@ class MyCertificationFragment :
 
     private var selectedDate: LocalDate? = null
     private var currentMonth: YearMonth = YearMonth.now()
-    private var hasEventDate: MutableList<LocalDate> = mutableListOf("2023-10-20".toLocalDate())
     private val today = LocalDate.now()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         initStateObserver()
+        viewModel.getEventList()
         initCalenderView()
     }
 
@@ -133,7 +132,7 @@ class MyCertificationFragment :
                         dateTv.setTextColor(Color.BLACK)
                     }
 
-                    in hasEventDate -> {
+                    in viewModel.uiState.value.eventDateList -> {
                         dateTv.setBackgroundResource(R.drawable.shape_calendar_hasevent)
                         dateTv.setTextColor(Color.WHITE)
                     }

@@ -1,20 +1,22 @@
 package com.aoztg.greengrim.presentation.ui.info.mycertification
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.presentation.util.toHeaderText
+import com.aoztg.greengrim.presentation.util.toLocalDate
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import java.time.LocalDate
-import java.time.Month
 import java.time.YearMonth
 import javax.inject.Inject
 
 data class MyCertificationUiState(
     val curMonth: MonthState = MonthState.Empty,
-    val curDate: DateState = DateState.Empty
+    val curDate: DateState = DateState.Empty,
+    val eventDateList: List<LocalDate> = emptyList()
 )
 
 sealed class MonthState {
@@ -48,6 +50,23 @@ class MyCertificationViewModel @Inject constructor() : ViewModel() {
                 curDate = DateState.Changed(date.toHeaderText(), date)
             )
         }
+
+        getCurDateCertification(date)
+    }
+
+    fun getEventList(){
+        _uiState.update { state ->
+            state.copy(
+                eventDateList = listOf(
+                    "2023-10-20".toLocalDate(),
+                    "2023-10-30".toLocalDate(),
+                )
+            )
+        }
+    }
+
+    private fun getCurDateCertification(date: LocalDate){
+
     }
 
 }
