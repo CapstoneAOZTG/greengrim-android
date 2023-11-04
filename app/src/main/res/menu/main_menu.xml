@@ -8,7 +8,7 @@
         android:title="챌린지"/>
 
     <item
-        android:id="@+id/chat_fragment"
+        android:id="@+id/chat_list_fragment"
         android:icon="@drawable/selector_chatting"
         android:title="채팅방"/>
 

@@ -1,4 +1,4 @@
-package com.aoztg.greengrim.presentation.ui.chat.view
+package com.aoztg.greengrim.presentation.ui.chat.chatroom
 
 import android.os.Bundle
 import android.view.View
