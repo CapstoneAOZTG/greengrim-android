@@ -118,54 +118,41 @@ class InfoFragment : BaseFragment<FragmentInfoBinding>(R.layout.fragment_info) {
 
     private fun goToIntroActivity() {
         when (SocialLoginType.type) {
-            KAKAO -> kakaoUnlink("logout")
-            NAVER -> naverUnlink("logout")
-            GOOGLE -> googleLogout("logout")
+            KAKAO -> kakaoUnlink()
+            NAVER -> naverUnlink()
+            GOOGLE -> googleLogout()
         }
+        parentViewModel.logout()
     }
 
     private fun withdrawal() {
-        when (SocialLoginType.type) {
-            KAKAO -> kakaoUnlink("withdrawal")
-            NAVER -> naverUnlink("withdrawal")
-            GOOGLE -> googleLogout("withdrawal")
-        }
+        viewModel.withdrawal()
     }
 
-    private fun googleLogout(state: String) {
+    private fun googleLogout() {
         val googleSignInClient = GoogleSignIn.getClient(
             requireContext(), GoogleSignInOptions.Builder(
                 GoogleSignInOptions.DEFAULT_SIGN_IN
             ).build()
         )
         googleSignInClient.signOut().addOnCompleteListener {
-            when (state) {
-                "logout" -> parentViewModel.logout()
-                "withdrawal" -> viewModel.withdrawal()
-            }
+
         }
     }
 
-    private fun kakaoUnlink(state: String) {
+    private fun kakaoUnlink() {
         UserApiClient.instance.unlink { error ->
             if (error != null) {
                 showCustomToast("로그아웃 실패")
             } else {
-                when (state) {
-                    "logout" -> parentViewModel.logout()
-                    "withdrawal" -> viewModel.withdrawal()
-                }
+
             }
         }
     }
 
-    private fun naverUnlink(state: String) {
+    private fun naverUnlink() {
         NidOAuthLogin().callDeleteTokenApi(requireContext(), object : OAuthLoginCallback {
             override fun onSuccess() {
-                when (state) {
-                    "logout" -> parentViewModel.logout()
-                    "withdrawal" -> viewModel.withdrawal()
-                }
             }
 
             override fun onFailure(httpStatus: Int, message: String) {

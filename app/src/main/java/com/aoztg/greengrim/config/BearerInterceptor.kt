@@ -1,10 +1,14 @@
 package com.aoztg.greengrim.config
 
+import android.util.Log
 import com.aoztg.greengrim.app.App.Companion.sharedPreferences
+import com.aoztg.greengrim.data.model.ErrorResponse
 import com.aoztg.greengrim.data.remote.RefreshAPI
 import com.aoztg.greengrim.presentation.util.Constants.BASE_DEV_URL
+import com.aoztg.greengrim.presentation.util.Constants.TAG
 import com.aoztg.greengrim.presentation.util.Constants.X_ACCESS_TOKEN
 import com.aoztg.greengrim.presentation.util.Constants.X_REFRESH_TOKEN
+import com.google.gson.Gson
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import okhttp3.Response
@@ -29,17 +33,18 @@ class BearerInterceptor : Interceptor {
 
                 // 로컬에 refreshToken이 있다면
                 sharedPreferences.getString(X_REFRESH_TOKEN, null)?.let { refresh ->
-
+                    Log.d(TAG, refresh)
                     // refresh API 호출
                     val result = Retrofit.Builder()
                         .baseUrl(BASE_DEV_URL)
                         .addConverterFactory(GsonConverterFactory.create())
                         .build()
                         .create(RefreshAPI::class.java).refreshToken(refresh)
-
+                    
                     if (result.isSuccessful) {
+                        Log.d(TAG,"리프래시 성공")
                         result.body()?.let { body ->
-
+                            Log.d(TAG,body.accessToken)
                             // refresh 성공시 로컬에 저장
                             sharedPreferences.edit()
                                 .putString(X_ACCESS_TOKEN, body.accessToken)
@@ -49,6 +54,10 @@ class BearerInterceptor : Interceptor {
                             isRefreshed = true
                             accessToken = body.accessToken
                         }
+                    }else{
+                        val error =
+                            Gson().fromJson(result.errorBody()?.string(), ErrorResponse::class.java)
+                        Log.d(TAG,error.message)
                     }
                 }
             }
