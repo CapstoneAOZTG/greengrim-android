@@ -102,4 +102,7 @@ dependencies {
     // CircleIndicator
     implementation 'me.relex:circleindicator:2.1.6'
 
+    // Custom Calendar
+    implementation 'com.kizitonwose.calendar:view:2.3.0'
+
 }
