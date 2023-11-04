@@ -1,29 +1,25 @@
-package com.aoztg.greengrim.presentation.ui.challenge.list
+package com.aoztg.greengrim.presentation.ui.info.mychallenge
 
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.aoztg.greengrim.R
-import com.aoztg.greengrim.databinding.FragmentChallengeListBinding
+import com.aoztg.greengrim.databinding.FragmentMyChallengeBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
 import com.aoztg.greengrim.presentation.ui.LoadingState
 import com.aoztg.greengrim.presentation.ui.challenge.adapter.ChallengeRoomAdapter
+import com.aoztg.greengrim.presentation.ui.challenge.list.ChallengeListEvents
+import com.aoztg.greengrim.presentation.ui.challenge.list.ChallengeSortType
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 import com.aoztg.greengrim.presentation.ui.toChallengeDetail
 import com.aoztg.greengrim.presentation.util.getSortSheet
 
+class MyChallengeFragment: BaseFragment<FragmentMyChallengeBinding>(R.layout.fragment_my_challenge) {
 
-class ChallengeListFragment :
-    BaseFragment<FragmentChallengeListBinding>(R.layout.fragment_challenge_list) {
-
-    private val viewModel: ChallengeListViewModel by viewModels()
+    private val viewModel: MyChallengeViewModel by viewModels()
     private val parentViewModel: MainViewModel by activityViewModels()
-    private val args: ChallengeListFragmentArgs by navArgs()
-    private val category by lazy { args.category }
     private var sortType = ChallengeSortType.RECENT
     private var loadingState = false
 
@@ -31,7 +27,6 @@ class ChallengeListFragment :
         super.onViewCreated(view, savedInstanceState)
         parentViewModel.showBNV()
         binding.vm = viewModel
-        binding.tvTitle.text = category
         binding.rvChallengeList.adapter = ChallengeRoomAdapter()
         viewModel.getChallengeRooms()
         initStateObserver()
@@ -43,12 +38,12 @@ class ChallengeListFragment :
             viewModel.uiState.collect {
                 when (it.loading) {
                     is LoadingState.IsLoading -> {
-                        if (it.loading.state) {
+                        loadingState = if (it.loading.state) {
                             showLoading(requireContext())
-                            loadingState = true
+                            true
                         } else {
                             dismissLoading()
-                            loadingState = false
+                            false
                         }
                     }
 
@@ -62,9 +57,9 @@ class ChallengeListFragment :
         repeatOnStarted {
             viewModel.events.collect {
                 when (it) {
-                    is ChallengeListEvents.NavigateToChallengeDetail -> findNavController().toChallengeDetail(it.id)
-                    is ChallengeListEvents.NavigateToCreateChallenge -> findNavController().toCreateChallenge()
-                    is ChallengeListEvents.ShowBottomSheet -> showBottomSheet()
+                    is MyChallengeEvents.NavigateToChallengeDetail -> findNavController().toChallengeDetail(it.id)
+                    is MyChallengeEvents.ShowBottomSheet -> showBottomSheet()
+                    else -> {}
                 }
             }
         }
@@ -76,11 +71,6 @@ class ChallengeListFragment :
             viewModel.setSortType(type)
             binding.tvFilter.text = type.text
         }.show()
-    }
-
-    private fun NavController.toCreateChallenge() {
-        val action = ChallengeListFragmentDirections.actionChallengeListFragmentToCreateChallengeFragment()
-        this.navigate(action)
     }
 
     override fun onDestroyView() {

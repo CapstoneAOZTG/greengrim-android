@@ -102,9 +102,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
-                    android:src="@drawable/icon_next"
-                    android:padding="10dp"
                     android:onClick="@{() -> vm.navigateToEditProfile()}"
+                    android:padding="10dp"
+                    android:src="@drawable/icon_next"
                     app:layout_constraintBottom_toBottomOf="@id/iv_profile"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@id/iv_profile" />
@@ -235,6 +235,7 @@
                     style="@style/TextGgSmallGrey1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:onClick="@{() -> vm.navigateToAttendCheck()}"
                     android:text="상호 인증 하고 포인트 얻기"
                     app:layout_constraintBottom_toBottomOf="@id/tv_my_attend_check_label"
                     app:layout_constraintEnd_toEndOf="parent" />
@@ -253,21 +254,25 @@
                 <TextView
                     android:id="@+id/tv_my_challenge"
                     style="@style/TextGgMedium"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="12dp"
-                    android:text="출석 체크"
+                    android:onClick="@{() -> vm.navigateToMyChallenge()}"
+                    android:text="내 챌린지"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@id/tv_challenge_label"
                     app:layout_constraintTop_toBottomOf="@id/tv_challenge_label" />
 
                 <TextView
                     android:id="@+id/tv_my_certificate_history"
                     style="@style/TextGgMedium"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
                     android:text="내 인증 내역"
+                    android:onClick="@{() -> vm.navigateToMyCertification()}"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@id/tv_my_challenge"
                     app:layout_constraintTop_toBottomOf="@id/tv_my_challenge" />
 
@@ -305,32 +310,42 @@
                 <TextView
                     android:id="@+id/tv_my_keywords"
                     style="@style/TextGgMedium"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
                     android:text="내 키워드"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@id/tv_my_wallet"
                     app:layout_constraintTop_toBottomOf="@id/tv_my_wallet" />
 
                 <TextView
                     android:id="@+id/tv_my_nft"
                     style="@style/TextGgMedium"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
                     android:text="내 NFT"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@id/tv_my_wallet"
                     app:layout_constraintTop_toBottomOf="@id/tv_my_keywords" />
 
                 <TextView
                     android:id="@+id/tv_transaction_history"
                     style="@style/TextGgMedium"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
                     android:text="거래 내역"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@id/tv_my_wallet"
                     app:layout_constraintTop_toBottomOf="@id/tv_my_nft" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="200dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_transaction_history" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

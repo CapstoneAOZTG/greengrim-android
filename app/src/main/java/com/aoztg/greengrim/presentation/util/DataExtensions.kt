@@ -7,10 +7,12 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 
-internal fun Uri.toMultiPart(context: Context): MultipartBody.Part{
-    val file = File(getRealPathFromUri(this, context)?:"")
+internal fun Uri.toMultiPart(context: Context): MultipartBody.Part {
+    val file = File(getRealPathFromUri(this, context) ?: "")
     val requestFile = file.asRequestBody("image/jpg".toMediaTypeOrNull())
     return MultipartBody.Part.createFormData("image", file.name, requestFile)
 }
@@ -29,4 +31,23 @@ private fun getRealPathFromUri(uri: Uri, context: Context): String? {
         it.close()
     }
     return filePath
+}
+
+internal fun String.toLocalDate(): LocalDate {
+    return LocalDate.parse(this, DateTimeFormatter.ISO_DATE)
+}
+
+internal fun LocalDate.toHeaderText(): String {
+
+    val dayOfWeekHash = hashMapOf(
+        "MONDAY" to "월요일",
+        "TUESDAY" to "화요일",
+        "WEDNESDAY" to "수요일",
+        "THURSDAY" to "목요일",
+        "FRIDAY" to "금요일",
+        "SATURDAY" to "토요일",
+        "SUNDAY" to "일요일",
+    )
+
+    return this.monthValue.toString() + "월 " + this.dayOfMonth + "일, " + dayOfWeekHash[this.dayOfWeek.toString()]
 }

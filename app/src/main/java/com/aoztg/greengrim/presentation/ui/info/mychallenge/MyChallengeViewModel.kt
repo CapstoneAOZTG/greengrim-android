@@ -1,8 +1,9 @@
-package com.aoztg.greengrim.presentation.ui.challenge.list
+package com.aoztg.greengrim.presentation.ui.info.mychallenge
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.presentation.ui.LoadingState
+import com.aoztg.greengrim.presentation.ui.challenge.list.ChallengeSortType
 import com.aoztg.greengrim.presentation.ui.challenge.model.ChallengeRoom
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
@@ -16,24 +17,23 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-data class ChallengeListUiState(
+data class MyChallengeUiState(
     val loading: LoadingState = LoadingState.Empty
 )
 
-sealed class ChallengeListEvents {
-    data class NavigateToChallengeDetail(val id: String) : ChallengeListEvents()
-    object NavigateToCreateChallenge : ChallengeListEvents()
-    object ShowBottomSheet : ChallengeListEvents()
+sealed class MyChallengeEvents {
+    data class NavigateToChallengeDetail(val id: String) : MyChallengeEvents()
+    object ShowBottomSheet : MyChallengeEvents()
 }
 
 @HiltViewModel
-class ChallengeListViewModel @Inject constructor() : ViewModel() {
+class MyChallengeViewModel @Inject constructor() : ViewModel() {
 
-    private val _uiState = MutableStateFlow(ChallengeListUiState())
-    val uiState: StateFlow<ChallengeListUiState> = _uiState.asStateFlow()
+    private val _uiState = MutableStateFlow(MyChallengeUiState())
+    val uiState: StateFlow<MyChallengeUiState> = _uiState.asStateFlow()
 
-    private val _events = MutableSharedFlow<ChallengeListEvents>()
-    val events: SharedFlow<ChallengeListEvents> = _events.asSharedFlow()
+    private val _events = MutableSharedFlow<MyChallengeEvents>()
+    val events: SharedFlow<MyChallengeEvents> = _events.asSharedFlow()
 
     private val _challengeRoom = MutableStateFlow<List<ChallengeRoom>>(emptyList())
     val challengeRoom: StateFlow<List<ChallengeRoom>> = _challengeRoom.asStateFlow()
@@ -93,29 +93,17 @@ class ChallengeListViewModel @Inject constructor() : ViewModel() {
 
     private fun navigateToChallengeDetail(id: String) {
         viewModelScope.launch {
-            _events.emit(ChallengeListEvents.NavigateToChallengeDetail(id))
-        }
-    }
-
-    fun navigateToCreateChallenge(){
-        viewModelScope.launch{
-            _events.emit(ChallengeListEvents.NavigateToCreateChallenge)
+            _events.emit(MyChallengeEvents.NavigateToChallengeDetail(id))
         }
     }
 
     fun showBottomSheet(){
         viewModelScope.launch{
-            _events.emit(ChallengeListEvents.ShowBottomSheet)
+            _events.emit(MyChallengeEvents.ShowBottomSheet)
         }
     }
 
     fun setSortType(type: ChallengeSortType){
 
     }
-}
-
-enum class ChallengeSortType(val text: String){
-    RECENT("최신순"),
-    MANY_PEOPLE("인원 많은순"),
-    LESS_PEOPLE("인원 적은순")
 }

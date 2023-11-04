@@ -8,7 +8,7 @@
 
         <variable
             name="vm"
-            type="com.aoztg.greengrim.presentation.ui.challenge.detail.ChallengeDetailViewModel" />
+            type="com.aoztg.greengrim.presentation.ui.global.challengedetail.ChallengeDetailViewModel" />
 
     </data>
 

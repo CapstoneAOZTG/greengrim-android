@@ -16,6 +16,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.aoztg.greengrim.presentation.util.LoadingDialog
 import com.aoztg.greengrim.presentation.util.OnePopupMenu
+import com.aoztg.greengrim.presentation.util.YearMonthPickerDialog
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -28,6 +29,7 @@ abstract class BaseFragment<B : ViewDataBinding>(
 
     private lateinit var loadingDialog: LoadingDialog
     private lateinit var onePopupMenu: OnePopupMenu
+    private lateinit var yearMonthPickerDialog: YearMonthPickerDialog
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -68,6 +70,22 @@ abstract class BaseFragment<B : ViewDataBinding>(
 
     fun dismissOnePopup() {
         onePopupMenu.dismiss()
+    }
+
+    fun showYearMonthDialog(
+        context: Context,
+        curYear: Int,
+        curMonth: Int,
+        onConfirmBtnClickListener: (year: Int, month: Int) -> Unit
+    ){
+        yearMonthPickerDialog = YearMonthPickerDialog(context, curYear, curMonth, onConfirmBtnClickListener)
+        yearMonthPickerDialog.show()
+    }
+
+    fun dismissYearMonthDialog(){
+        if(yearMonthPickerDialog.isShowing){
+            yearMonthPickerDialog.dismiss()
+        }
     }
 
     fun showCustomToast(message: String) {

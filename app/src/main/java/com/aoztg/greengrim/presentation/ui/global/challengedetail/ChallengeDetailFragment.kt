@@ -1,4 +1,4 @@
-package com.aoztg.greengrim.presentation.ui.challenge.detail
+package com.aoztg.greengrim.presentation.ui.global.challengedetail
 
 import android.os.Bundle
 import android.view.View
