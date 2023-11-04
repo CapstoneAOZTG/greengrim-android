@@ -1,14 +1,19 @@
 package com.aoztg.greengrim.presentation.ui.info.mycertification
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.presentation.ui.info.model.MyCertification
 import com.aoztg.greengrim.presentation.util.toHeaderText
 import com.aoztg.greengrim.presentation.util.toLocalDate
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.YearMonth
 import javax.inject.Inject
@@ -30,14 +35,27 @@ sealed class DateState {
     data class Changed(val stringDate: String, val originDate: LocalDate) : DateState()
 }
 
+sealed class MyCertificationEvents {
+    data class showYearMonthPicker(val curYear: Int, val curMonth: Int) : MyCertificationEvents()
+}
+
+
 @HiltViewModel
 class MyCertificationViewModel @Inject constructor() : ViewModel() {
 
     private val _uiState = MutableStateFlow(MyCertificationUiState())
     val uiState: StateFlow<MyCertificationUiState> = _uiState.asStateFlow()
 
+    private val _events = MutableSharedFlow<MyCertificationEvents>()
+    val events: SharedFlow<MyCertificationEvents> = _events.asSharedFlow()
+
+    private var curYear = 1980
+    private var curMonth = 1
+
     fun scrollMonth(date: YearMonth) {
-        val stringYearMonth = date.year.toString() + "년 " + date.monthValue + "월"
+        curYear = date.year
+        curMonth = date.monthValue
+        val stringYearMonth = curYear.toString() + "년 " + curMonth + "월"
         _uiState.update { state ->
             state.copy(
                 curMonth = MonthState.Changed(stringYearMonth, date)
@@ -61,6 +79,17 @@ class MyCertificationViewModel @Inject constructor() : ViewModel() {
                 eventDateList = listOf(
                     "2023-10-20".toLocalDate(),
                     "2023-10-30".toLocalDate(),
+                )
+            )
+        }
+    }
+
+    fun showYearMonthDatePicker() {
+        viewModelScope.launch {
+            _events.emit(
+                MyCertificationEvents.showYearMonthPicker(
+                    curYear = curYear,
+                    curMonth = curMonth
                 )
             )
         }

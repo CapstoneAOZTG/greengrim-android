@@ -46,6 +46,7 @@ class MyCertificationFragment :
         binding.vm = viewModel
         binding.rvCertifications.adapter = MyCertificationAdapter()
         initStateObserver()
+        initEventsObserver()
         viewModel.getEventList()
         initCalenderView()
     }
@@ -95,8 +96,29 @@ class MyCertificationFragment :
                 }
 
                 when (it.curMonth) {
-                    is MonthState.Changed -> binding.btnSelectMonth.text = it.curMonth.stringMonth
+                    is MonthState.Changed -> {
+                        binding.btnSelectMonth.text = it.curMonth.stringMonth
+                    }
+
                     else -> {}
+                }
+            }
+        }
+    }
+
+    private fun initEventsObserver() {
+        repeatOnStarted {
+            viewModel.events.collect {
+                when (it) {
+                    is MyCertificationEvents.showYearMonthPicker -> {
+                        showYearMonthDialog(
+                            requireContext(),
+                            it.curYear,
+                            it.curMonth,
+                            ::yearMonthDatePickerConfirmListener
+                        )
+                    }
+
                 }
             }
         }
@@ -118,6 +140,8 @@ class MyCertificationFragment :
         }
 
         binding.calendarView.dayBinder = object : MonthDayBinder<DayViewContainer> {
+
+
             override fun create(view: View): DayViewContainer = DayViewContainer(view)
 
             override fun bind(container: DayViewContainer, data: CalendarDay) {
@@ -125,29 +149,29 @@ class MyCertificationFragment :
                 val dateTv = container.textView
 
                 dateTv.text = data.date.dayOfMonth.toString()
-
                 if (data.position != DayPosition.MonthDate) {
                     dateTv.visibility = View.GONE
-                }
+                } else {
+                    dateTv.visibility = View.VISIBLE
+                    when (data.date) {
+                        today -> {
+                            dateTv.setTextColor(Color.GRAY)
+                        }
 
-                when (data.date) {
-                    today -> {
-                        dateTv.setTextColor(Color.GRAY)
-                    }
+                        selectedDate -> {
+                            dateTv.setBackgroundResource(R.drawable.shape_calendar_selected)
+                            dateTv.setTextColor(Color.BLACK)
+                        }
 
-                    selectedDate -> {
-                        dateTv.setBackgroundResource(R.drawable.shape_calendar_selected)
-                        dateTv.setTextColor(Color.BLACK)
-                    }
+                        in viewModel.uiState.value.eventDateList -> {
+                            dateTv.setBackgroundResource(R.drawable.shape_calendar_hasevent)
+                            dateTv.setTextColor(Color.WHITE)
+                        }
 
-                    in viewModel.uiState.value.eventDateList -> {
-                        dateTv.setBackgroundResource(R.drawable.shape_calendar_hasevent)
-                        dateTv.setTextColor(Color.WHITE)
-                    }
-
-                    else -> {
-                        dateTv.background = null
-                        dateTv.setTextColor(Color.WHITE)
+                        else -> {
+                            dateTv.background = null
+                            dateTv.setTextColor(Color.WHITE)
+                        }
                     }
                 }
             }
@@ -179,5 +203,10 @@ class MyCertificationFragment :
             binding.calendarView.notifyDateChanged(date)
             viewModel.selectDate(date)
         }
+    }
+
+    private fun yearMonthDatePickerConfirmListener(year: Int, month: Int) {
+        currentMonth = YearMonth.of(year, month)
+        binding.calendarView.scrollToMonth(currentMonth)
     }
 }
