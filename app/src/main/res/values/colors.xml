@@ -18,6 +18,7 @@
     <color name="gg_indicator_unselect">#8E8E93</color>
 
     <color name="gg_calendar_select">#DAF8B2</color>
+    <color name="gg_calendar_grey">#CAC4D0</color>
 
     <color name="gg_red">#FF5C5C</color>
     <color name="gg_yellow">#FFE500</color>

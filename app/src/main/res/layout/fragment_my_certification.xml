@@ -72,17 +72,71 @@
             app:layout_constraintTop_toBottomOf="@id/layout_toolbar"
             tools:text="8월 17일, 목요일" />
 
+        <com.google.android.material.divider.MaterialDivider
+            android:id="@+id/divider_date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:dividerColor="@color/gg_dark_Gray"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_date" />
+
+        <TextView
+            android:id="@+id/btn_select_month"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/gg_calendar_grey"
+            app:drawableEndCompat="@drawable/icon_down"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/divider_date"
+            tools:text="2023년 8월\t" />
+
+        <ImageButton
+            android:id="@+id/btn_previous_month"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="30dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/icon_left"
+            app:layout_constraintBottom_toBottomOf="@id/btn_select_month"
+            app:layout_constraintEnd_toStartOf="@id/btn_next_month"
+            app:layout_constraintTop_toTopOf="@id/btn_select_month" />
+
+        <ImageButton
+            android:id="@+id/btn_next_month"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="30dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/icon_right"
+            app:layout_constraintBottom_toBottomOf="@id/btn_select_month"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/btn_select_month" />
+
         <com.kizitonwose.calendar.view.CalendarView
             android:id="@+id/calendarView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="20dp"
             app:cv_dayViewResource="@layout/calendar_day_layout"
+            app:cv_monthHeaderResource="@layout/calendar_header"
             app:cv_outDateStyle="endOfGrid"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_date"
-            app:cv_monthHeaderResource="@layout/calendar_header"/>
+            app:layout_constraintTop_toBottomOf="@id/btn_select_month" />
 
+        <com.google.android.material.divider.MaterialDivider
+            android:id="@+id/divider_calendar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:dividerColor="@color/gg_dark_Gray"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/calendarView" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

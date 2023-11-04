@@ -36,3 +36,18 @@ private fun getRealPathFromUri(uri: Uri, context: Context): String? {
 internal fun String.toLocalDate(): LocalDate {
     return LocalDate.parse(this, DateTimeFormatter.ISO_DATE)
 }
+
+internal fun LocalDate.toHeaderText(): String {
+
+    val dayOfWeekHash = hashMapOf(
+        "MONDAY" to "월요일",
+        "TUESDAY" to "화요일",
+        "WEDNESDAY" to "수요일",
+        "THURSDAY" to "목요일",
+        "FRIDAY" to "금요일",
+        "SATURDAY" to "토요일",
+        "SUNDAY" to "일요일",
+    )
+
+    return this.monthValue.toString() + "월 " + this.dayOfMonth + "일, " + dayOfWeekHash[this.dayOfWeek.toString()]
+}

@@ -11,6 +11,7 @@ import com.aoztg.greengrim.databinding.CalendarDayLayoutBinding
 import com.aoztg.greengrim.databinding.CalendarHeaderBinding
 import com.aoztg.greengrim.databinding.FragmentMyCertificationBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
+import com.aoztg.greengrim.presentation.util.toHeaderText
 import com.aoztg.greengrim.presentation.util.toLocalDate
 import com.kizitonwose.calendar.core.CalendarDay
 import com.kizitonwose.calendar.core.CalendarMonth
@@ -34,6 +35,12 @@ class MyCertificationFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initCalenderView()
+
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun initCalenderView(){
         with(binding.calendarView) {
 
             val currentMonth = YearMonth.now()
@@ -42,10 +49,16 @@ class MyCertificationFragment :
             val firstDayOfWeek = firstDayOfWeekFromLocale()
             val daysOfWeek = daysOfWeek()
 
-            configureBinders(daysOfWeek)
-
             setup(startMonth, endMonth, firstDayOfWeek)
             scrollToMonth(currentMonth)
+
+            monthScrollListener = {
+                binding.btnSelectMonth.text =
+                    it.yearMonth.year.toString() + "년 " + it.yearMonth.monthValue + "월"
+                selectDate(it.yearMonth.atDay(1))
+            }
+
+            configureBinders(daysOfWeek)
 
         }
     }
@@ -60,6 +73,7 @@ class MyCertificationFragment :
                 view.setOnClickListener {
                     if (day.position == DayPosition.MonthDate) {
                         selectDate(day.date)
+                        binding.tvDate.text = day.date.toHeaderText()
                     }
                 }
             }
@@ -68,7 +82,6 @@ class MyCertificationFragment :
         binding.calendarView.dayBinder = object : MonthDayBinder<DayViewContainer> {
             override fun create(view: View): DayViewContainer = DayViewContainer(view)
 
-            @SuppressLint("ResourceAsColor")
             override fun bind(container: DayViewContainer, data: CalendarDay) {
                 container.day = data
                 val dateTv = container.textView
@@ -129,6 +142,4 @@ class MyCertificationFragment :
             binding.calendarView.notifyDateChanged(date)
         }
     }
-
-
 }
