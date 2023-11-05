@@ -90,12 +90,21 @@
     <fragment
         android:id="@+id/certification_list_fragment"
         android:name="com.aoztg.greengrim.presentation.ui.chat.certificationlist.CertificationListFragment"
-        android:label="CertificationList" />
+        android:label="CertificationList">
+
+        <argument
+            android:name="id"
+            app:argType="String" />
+    </fragment>
 
     <fragment
         android:id="@+id/make_certification_fragment"
         android:name="com.aoztg.greengrim.presentation.ui.chat.makecertification.MakeCertificationFragment"
-        android:label="MakeCertification" />
+        android:label="MakeCertification">
+        <argument
+            android:name="id"
+            app:argType="String" />
+    </fragment>
 
     <fragment
         android:id="@+id/certification_detail_fragment"
