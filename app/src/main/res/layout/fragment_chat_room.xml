@@ -5,6 +5,10 @@
 
     <data>
 
+        <variable
+            name="vm"
+            type="com.aoztg.greengrim.presentation.ui.chat.chatroom.ChatRoomViewModel" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -107,7 +111,7 @@
                 app:layout_goneMarginStart="30dp" />
 
             <TextView
-                android:id="@+id/tv_todya_certification"
+                android:id="@+id/tv_today_certification"
                 style="@style/TextGgSmallBlackBold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -164,6 +168,7 @@
                 android:background="@drawable/shape_nofill_grey4stroke_radius10"
                 android:hint="메세지 입력..."
                 android:paddingHorizontal="12dp"
+                android:text="@={vm.chatMessage}"
                 android:textColorHint="@color/gg_grey4"
                 app:layout_constraintBottom_toBottomOf="@id/btn_goto_gallery"
                 app:layout_constraintEnd_toStartOf="@id/btn_send"
@@ -174,11 +179,13 @@
                 android:id="@+id/btn_send"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/shape_grey2fill_nostroke_radius10"
+                android:background="@drawable/selector_chat_send_btn"
+                android:enabled="@{vm.uiState.editTextState}"
                 android:minWidth="0dp"
                 android:minHeight="0dp"
                 android:padding="6dp"
                 android:text="전송"
+                android:textColor="@color/selector_chat_send_text"
                 app:layout_constraintBottom_toBottomOf="@id/btn_goto_gallery"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/btn_goto_gallery" />
