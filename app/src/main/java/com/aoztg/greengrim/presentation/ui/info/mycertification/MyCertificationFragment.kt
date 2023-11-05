@@ -13,6 +13,8 @@ import com.aoztg.greengrim.databinding.CalendarDayLayoutBinding
 import com.aoztg.greengrim.databinding.CalendarHeaderBinding
 import com.aoztg.greengrim.databinding.FragmentMyCertificationBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
+import com.aoztg.greengrim.presentation.ui.DateState
+import com.aoztg.greengrim.presentation.ui.MonthState
 import com.aoztg.greengrim.presentation.ui.info.adapter.MyCertificationAdapter
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 import com.kizitonwose.calendar.core.CalendarDay
@@ -110,7 +112,7 @@ class MyCertificationFragment :
         repeatOnStarted {
             viewModel.events.collect {
                 when (it) {
-                    is MyCertificationEvents.showYearMonthPicker -> {
+                    is MyCertificationEvents.ShowYearMonthPicker -> {
                         showYearMonthDialog(
                             requireContext(),
                             it.curYear,
