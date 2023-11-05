@@ -5,13 +5,18 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ContentValues
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Rect
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.view.MotionEvent
 import android.view.View
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.app.ActivityCompat
@@ -55,7 +60,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         }
     private val cameraPermission = Manifest.permission.CAMERA
 
-    private lateinit var tempCameraUri : Uri
+    private lateinit var tempCameraUri: Uri
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -113,7 +118,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         }
     }
 
-    private fun showPhotoBottomSheet(){
+    private fun showPhotoBottomSheet() {
         getPhotoSheet(
             this,
             onPhotoClickListener = ::onCheckCameraPermission,
@@ -121,9 +126,13 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         ).show()
     }
 
-    private fun onCheckCameraPermission(){
-        if (ContextCompat.checkSelfPermission(this, cameraPermission) != PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(this, arrayOf(cameraPermission),CAMERA_PERMISSION)
+    private fun onCheckCameraPermission() {
+        if (ContextCompat.checkSelfPermission(
+                this,
+                cameraPermission
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(this, arrayOf(cameraPermission), CAMERA_PERMISSION)
         } else {
             openCamera()
         }
@@ -169,8 +178,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             ) {
                 openGallery()
             }
-        } else if(requestCode == CAMERA_PERMISSION){
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+        } else if (requestCode == CAMERA_PERMISSION) {
+            if (ContextCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.CAMERA
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
                 openCamera()
             }
         }
@@ -199,7 +212,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         createImageFile()?.let { uri ->
             tempCameraUri = uri
             intent.putExtra(MediaStore.EXTRA_OUTPUT, uri)
-            intent.also{
+            intent.also {
                 cameraLauncher.launch(it)
             }
         }
@@ -218,7 +231,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
     private val cameraLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if(result.resultCode == RESULT_OK){
+            if (result.resultCode == RESULT_OK) {
                 viewModel.imageToUrl(tempCameraUri.toMultiPart(this))
             }
         }
@@ -234,6 +247,23 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             finishAffinity()
             startActivity(this)
         }
+    }
+
+    override fun dispatchTouchEvent(event: MotionEvent?): Boolean {
+        if (event?.action === MotionEvent.ACTION_DOWN) {
+            val v = currentFocus
+            if (v is EditText) {
+                val outRect = Rect()
+                v.getGlobalVisibleRect(outRect)
+                if (!outRect.contains(event.rawX.toInt(), event.rawY.toInt())) {
+                    v.clearFocus()
+                    val imm: InputMethodManager =
+                        getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0)
+                }
+            }
+        }
+        return super.dispatchTouchEvent(event)
     }
 
 
