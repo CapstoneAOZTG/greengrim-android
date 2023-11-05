@@ -33,6 +33,7 @@
                 android:background="@android:color/transparent"
                 android:scaleType="fitCenter"
                 android:src="@drawable/icon_back"
+                android:onClick="@{() -> vm.navigateBack()}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -56,6 +57,7 @@
                 android:layout_gravity="end"
                 android:background="@android:color/transparent"
                 android:scaleType="fitCenter"
+                android:onClick="@{() -> vm.showPopupMenu()}"
                 android:src="@drawable/icon_more"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -154,6 +156,7 @@
                 android:layout_marginEnd="20dp"
                 android:background="@android:color/transparent"
                 android:scaleType="fitCenter"
+                android:onClick="@{() -> vm.navigateToMakeCertification()}"
                 android:src="@drawable/icon_plus"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
