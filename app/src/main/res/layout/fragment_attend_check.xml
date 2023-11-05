@@ -5,6 +5,10 @@
 
     <data>
 
+        <variable
+            name="vm"
+            type="com.aoztg.greengrim.presentation.ui.global.attendcheck.AttendCheckViewModel" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
