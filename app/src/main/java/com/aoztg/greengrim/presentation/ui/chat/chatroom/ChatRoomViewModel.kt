@@ -24,6 +24,7 @@ data class ChatRoomUiState(
 sealed class ChatRoomEvents {
     object NavigateBack : ChatRoomEvents()
     object ShowPopupMenu : ChatRoomEvents()
+    object DismissPopupMenu : ChatRoomEvents()
     data class NavigateToMakeCertification(val id: String) : ChatRoomEvents()
     data class NavigateToCertificationList(val id: String) : ChatRoomEvents()
 }
@@ -31,7 +32,8 @@ sealed class ChatRoomEvents {
 @HiltViewModel
 class ChatRoomViewModel @Inject constructor() : ViewModel() {
 
-    private var chatRoomId = ""
+    var chatRoomId = ""
+    var challengeId = ""
 
     private val _uiState = MutableStateFlow(ChatRoomUiState())
     val uiState: StateFlow<ChatRoomUiState> = _uiState.asStateFlow()
@@ -90,5 +92,11 @@ class ChatRoomViewModel @Inject constructor() : ViewModel() {
 
     fun setChatId(id: String) {
         chatRoomId = id
+    }
+
+    fun onRootClicked(){
+        viewModelScope.launch {
+            _events.emit(ChatRoomEvents.DismissPopupMenu)
+        }
     }
 }

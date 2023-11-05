@@ -4,7 +4,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="220dp"
-        android:layout_height="wrap_content"
+        android:layout_height="168dp"
         android:background="@drawable/shape_darkfill_nostroke_radius10">
 
         <TextView

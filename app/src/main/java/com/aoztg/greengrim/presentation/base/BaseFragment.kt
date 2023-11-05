@@ -14,6 +14,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.aoztg.greengrim.presentation.util.FourPopupMenu
 import com.aoztg.greengrim.presentation.util.LoadingDialog
 import com.aoztg.greengrim.presentation.util.OnePopupMenu
 import com.aoztg.greengrim.presentation.util.YearMonthPickerDialog
@@ -29,6 +30,7 @@ abstract class BaseFragment<B : ViewDataBinding>(
 
     private lateinit var loadingDialog: LoadingDialog
     private lateinit var onePopupMenu: OnePopupMenu
+    private lateinit var fourPopupMenu: FourPopupMenu
     private lateinit var yearMonthPickerDialog: YearMonthPickerDialog
 
     override fun onCreateView(
@@ -70,6 +72,23 @@ abstract class BaseFragment<B : ViewDataBinding>(
 
     fun dismissOnePopup() {
         onePopupMenu.dismiss()
+    }
+
+    fun showFourPopup(
+        context: Context,
+        onClickChallengeInfo: () -> Unit,
+        onClickCertificationList: () -> Unit,
+        onClickAccusation: () -> Unit,
+        onClickExit: () -> Unit,
+        xPosition: Int,
+        yPosition: Int
+    ){
+        fourPopupMenu = FourPopupMenu(context, onClickChallengeInfo, onClickCertificationList, onClickAccusation, onClickExit)
+        fourPopupMenu.show(xPosition,yPosition)
+    }
+
+    fun dismissFourPopup(){
+        fourPopupMenu.dismiss()
     }
 
     fun showYearMonthDialog(

@@ -13,7 +13,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:onClick="@{() -> vm.onRootClicked()}">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_toolbar"
@@ -31,9 +32,9 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:background="@android:color/transparent"
+                android:onClick="@{() -> vm.navigateBack()}"
                 android:scaleType="fitCenter"
                 android:src="@drawable/icon_back"
-                android:onClick="@{() -> vm.navigateBack()}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -52,12 +53,13 @@
 
             <ImageButton
                 android:id="@+id/btn_more"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
                 android:layout_gravity="end"
                 android:background="@android:color/transparent"
-                android:scaleType="fitCenter"
                 android:onClick="@{() -> vm.showPopupMenu()}"
+                android:padding="4dp"
+                android:scaleType="fitCenter"
                 android:src="@drawable/icon_more"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -155,8 +157,8 @@
                 android:layout_gravity="bottom|end"
                 android:layout_marginEnd="20dp"
                 android:background="@android:color/transparent"
-                android:scaleType="fitCenter"
                 android:onClick="@{() -> vm.navigateToMakeCertification()}"
+                android:scaleType="fitCenter"
                 android:src="@drawable/icon_plus"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
