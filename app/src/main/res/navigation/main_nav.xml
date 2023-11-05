@@ -94,7 +94,7 @@
 
         <argument
             android:name="id"
-            app:argType="String" />
+            app:argType="string" />
     </fragment>
 
     <fragment
@@ -103,7 +103,7 @@
         android:label="MakeCertification">
         <argument
             android:name="id"
-            app:argType="String" />
+            app:argType="string" />
     </fragment>
 
     <fragment

@@ -31,6 +31,8 @@ sealed class ChatRoomEvents {
 @HiltViewModel
 class ChatRoomViewModel @Inject constructor() : ViewModel() {
 
+    private var chatRoomId = ""
+
     private val _uiState = MutableStateFlow(ChatRoomUiState())
     val uiState: StateFlow<ChatRoomUiState> = _uiState.asStateFlow()
 
@@ -68,15 +70,15 @@ class ChatRoomViewModel @Inject constructor() : ViewModel() {
         }
     }
 
-    fun navigateToMakeCertification(id: String) {
+    fun navigateToMakeCertification() {
         viewModelScope.launch {
-            _events.emit(ChatRoomEvents.NavigateToMakeCertification(id))
+            _events.emit(ChatRoomEvents.NavigateToMakeCertification(chatRoomId))
         }
     }
 
-    fun navigateToCertificationList(id: String) {
+    fun navigateToCertificationList() {
         viewModelScope.launch {
-            _events.emit(ChatRoomEvents.NavigateToCertificationList(id))
+            _events.emit(ChatRoomEvents.NavigateToCertificationList(chatRoomId))
         }
     }
 
@@ -84,5 +86,9 @@ class ChatRoomViewModel @Inject constructor() : ViewModel() {
         viewModelScope.launch {
             _events.emit(ChatRoomEvents.ShowPopupMenu)
         }
+    }
+
+    fun setChatId(id: String) {
+        chatRoomId = id
     }
 }
