@@ -37,6 +37,7 @@ import com.aoztg.greengrim.presentation.util.Constants.STORAGE_PERMISSION
 import com.aoztg.greengrim.presentation.util.getPhotoSheet
 import com.aoztg.greengrim.presentation.util.toMultiPart
 import dagger.hilt.android.AndroidEntryPoint
+import java.net.ServerSocket
 import java.text.SimpleDateFormat
 import java.util.Date
 
@@ -68,6 +69,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         setBottomNavigation()
         setBottomNavigationListener()
         initEventObserver()
+
     }
 
     private fun setBottomNavigation() {

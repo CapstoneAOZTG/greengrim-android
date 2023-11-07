@@ -2,6 +2,8 @@ package com.aoztg.greengrim.presentation.ui.chat.chatroom
 
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageView
+import androidx.databinding.BindingAdapter
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
@@ -11,7 +13,9 @@ import com.aoztg.greengrim.MainNavDirections
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentChatRoomBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
+import com.aoztg.greengrim.presentation.ui.chat.adapter.ChatMessageAdapter
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
+import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -29,8 +33,17 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
 
         binding.vm = viewModel
         parentViewModel.hideBNV()
+        binding.rvChat.adapter = ChatMessageAdapter()
         viewModel.setChatId(chatId)
         initEventsObserver()
+        viewModel.newChatMessage()
+        viewModel.newMyChatMessage()
+        viewModel.newChatMessage()
+        viewModel.newMyChatMessage()
+        viewModel.newChatMessage()
+        viewModel.newMyChatMessage()
+        viewModel.newChatMessage()
+        viewModel.newMyChatMessage()
     }
 
     private fun initEventsObserver() {
@@ -100,4 +113,16 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
         this.navigate(action)
     }
 
+}
+
+@BindingAdapter("chatImgUrl")
+fun bindChatImg(imageView: ImageView, url: String?) {
+    if(url.isNullOrBlank()){
+        imageView.visibility = View.GONE
+    } else {
+        Glide.with(imageView.context)
+            .load(url)
+            .error(R.drawable.test)
+            .into(imageView)
+    }
 }
