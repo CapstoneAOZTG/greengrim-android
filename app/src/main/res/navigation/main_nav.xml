@@ -64,30 +64,52 @@
     </fragment>
 
     <fragment
-        android:id="@+id/chat_fragment"
-        android:name="com.aoztg.greengrim.presentation.ui.chat.view.ChatFragment"
-        android:label="Chat">
+        android:id="@+id/chat_list_fragment"
+        android:name="com.aoztg.greengrim.presentation.ui.chat.chatlist.ChatListFragment"
+        android:label="ChatList">
         <action
-            android:id="@+id/action_chat_fragment_to_chat_room_fragment"
+            android:id="@+id/action_chat_list_fragment_to_chat_room_fragment"
             app:destination="@id/chat_room_fragment" />
     </fragment>
 
     <fragment
         android:id="@+id/chat_room_fragment"
-        android:name="com.aoztg.greengrim.presentation.ui.chat.view.ChatRoomFragment"
+        android:name="com.aoztg.greengrim.presentation.ui.chat.chatroom.ChatRoomFragment"
         android:label="ChatRoom">
         <argument
             android:name="id"
             app:argType="string" />
         <action
-            android:id="@+id/action_chat_room_fragment_to_certificate_fragment"
-            app:destination="@id/certificate_fragment" />
+            android:id="@+id/action_chat_room_fragment_to_certification_list_fragment"
+            app:destination="@id/certification_list_fragment" />
+        <action
+            android:id="@+id/action_chat_room_fragment_to_make_certification_fragment"
+            app:destination="@id/make_certification_fragment" />
     </fragment>
 
     <fragment
-        android:id="@+id/certificate_fragment"
-        android:name="com.aoztg.greengrim.presentation.ui.chat.view.CertificateFragment"
-        android:label="Certificate" />
+        android:id="@+id/certification_list_fragment"
+        android:name="com.aoztg.greengrim.presentation.ui.chat.certificationlist.CertificationListFragment"
+        android:label="CertificationList">
+
+        <argument
+            android:name="id"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/make_certification_fragment"
+        android:name="com.aoztg.greengrim.presentation.ui.chat.makecertification.MakeCertificationFragment"
+        android:label="MakeCertification">
+        <argument
+            android:name="id"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/certification_detail_fragment"
+        android:name="com.aoztg.greengrim.presentation.ui.global.certificationdetail.CertificationDetailFragment"
+        android:label="CertificationDetail" />
 
     <fragment
         android:id="@+id/market_fragment"
@@ -140,5 +162,9 @@
     <action
         android:id="@+id/action_global_to_challengeDetailFragment"
         app:destination="@id/challenge_detail_fragment" />
+
+    <action
+        android:id="@+id/action_global_to_certificationDetail"
+        app:destination="@id/certification_detail_fragment" />
 
 </navigation>

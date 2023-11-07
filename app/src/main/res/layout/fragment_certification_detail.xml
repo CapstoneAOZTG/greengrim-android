@@ -7,7 +7,7 @@
 
         <variable
             name="vm"
-            type="com.aoztg.greengrim.presentation.ui.global.attendcheck.AttendCheckViewModel" />
+            type="com.aoztg.greengrim.presentation.ui.global.certificationdetail.CertificationDetailViewModel" />
 
     </data>
 
@@ -42,7 +42,7 @@
                 style="@style/TextHeader"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="출석체크"
+                android:text="인증 상세보기"
                 android:textAlignment="center"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

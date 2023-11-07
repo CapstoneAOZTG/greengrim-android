@@ -1,4 +1,4 @@
-package com.aoztg.greengrim.presentation.ui.info.mycertification
+package com.aoztg.greengrim.presentation.ui.chat.certificationlist
 
 import android.annotation.SuppressLint
 import android.graphics.Color
@@ -11,11 +11,11 @@ import androidx.fragment.app.viewModels
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.CalendarDayLayoutBinding
 import com.aoztg.greengrim.databinding.CalendarHeaderBinding
-import com.aoztg.greengrim.databinding.FragmentMyCertificationBinding
+import com.aoztg.greengrim.databinding.FragmentCertificationListBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
 import com.aoztg.greengrim.presentation.ui.DateState
 import com.aoztg.greengrim.presentation.ui.MonthState
-import com.aoztg.greengrim.presentation.ui.info.adapter.MyCertificationAdapter
+import com.aoztg.greengrim.presentation.ui.chat.adapter.CertificationListAdapter
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 import com.kizitonwose.calendar.core.CalendarDay
 import com.kizitonwose.calendar.core.CalendarMonth
@@ -25,17 +25,14 @@ import com.kizitonwose.calendar.core.firstDayOfWeekFromLocale
 import com.kizitonwose.calendar.view.MonthDayBinder
 import com.kizitonwose.calendar.view.MonthHeaderFooterBinder
 import com.kizitonwose.calendar.view.ViewContainer
-import dagger.hilt.android.AndroidEntryPoint
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.YearMonth
 
-@AndroidEntryPoint
-class MyCertificationFragment :
-    BaseFragment<FragmentMyCertificationBinding>(R.layout.fragment_my_certification) {
+class CertificationListFragment : BaseFragment<FragmentCertificationListBinding>(R.layout.fragment_certification_list) {
 
     private val parentViewModel: MainViewModel by activityViewModels()
-    private val viewModel: MyCertificationViewModel by viewModels()
+    private val viewModel: CertificationListViewModel by viewModels()
 
     private var selectedDate: LocalDate? = null
     private var currentMonth: YearMonth = YearMonth.now()
@@ -46,7 +43,7 @@ class MyCertificationFragment :
 
         parentViewModel.hideBNV()
         binding.vm = viewModel
-        binding.rvCertifications.adapter = MyCertificationAdapter()
+        binding.rvCertifications.adapter = CertificationListAdapter()
         initStateObserver()
         initEventsObserver()
         viewModel.getEventList()
@@ -112,7 +109,7 @@ class MyCertificationFragment :
         repeatOnStarted {
             viewModel.events.collect {
                 when (it) {
-                    is MyCertificationEvents.ShowYearMonthPicker -> {
+                    is CertificationListEvents.ShowYearMonthPicker -> {
                         showYearMonthDialog(
                             requireContext(),
                             it.curYear,
@@ -211,4 +208,5 @@ class MyCertificationFragment :
         currentMonth = YearMonth.of(year, month)
         binding.calendarView.scrollToMonth(currentMonth)
     }
+
 }
