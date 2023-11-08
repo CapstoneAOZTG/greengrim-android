@@ -40,6 +40,7 @@ sealed class KeywordState {
 
 sealed class CreateChallengeDetailEvents{
     object NavigateToBack : CreateChallengeDetailEvents()
+    data class NavigateToChatRoom(val chatId: Int) : CreateChallengeDetailEvents()
 }
 
 @HiltViewModel
@@ -174,6 +175,7 @@ class CreateChallengeDetailViewModel @Inject constructor(
             )
 
             if(response.isSuccessful){
+                // todo 해당 chatting 방으로 이동
 
             } else {
 

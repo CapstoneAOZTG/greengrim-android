@@ -56,6 +56,9 @@
         <argument
             android:name="categoryValue"
             app:argType="string" />
+        <action
+            android:id="@+id/action_create_challenge_detail_fragment_to_chat_room_fragment"
+            app:destination="@id/chat_room_fragment" />
     </fragment>
 
     <fragment

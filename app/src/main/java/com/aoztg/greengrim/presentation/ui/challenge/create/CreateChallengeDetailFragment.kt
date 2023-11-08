@@ -69,6 +69,9 @@ class CreateChallengeDetailFragment :
             viewModel.events.collect {
                 when (it) {
                     is CreateChallengeDetailEvents.NavigateToBack -> findNavController().navigateUp()
+                    else -> {
+                        // todo 챌린지 생성 성공시, backstack 지운뒤 해당 채팅방으로 이동
+                    }
                 }
             }
         }
