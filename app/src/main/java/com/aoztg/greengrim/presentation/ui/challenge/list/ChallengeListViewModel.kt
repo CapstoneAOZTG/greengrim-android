@@ -2,6 +2,7 @@ package com.aoztg.greengrim.presentation.ui.challenge.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.aoztg.greengrim.data.repository.ChallengeRepository
 import com.aoztg.greengrim.presentation.ui.LoadingState
 import com.aoztg.greengrim.presentation.ui.challenge.model.ChallengeRoom
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -27,7 +28,9 @@ sealed class ChallengeListEvents {
 }
 
 @HiltViewModel
-class ChallengeListViewModel @Inject constructor() : ViewModel() {
+class ChallengeListViewModel @Inject constructor(
+    private val challengeRepository: ChallengeRepository
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ChallengeListUiState())
     val uiState: StateFlow<ChallengeListUiState> = _uiState.asStateFlow()
@@ -114,8 +117,9 @@ class ChallengeListViewModel @Inject constructor() : ViewModel() {
     }
 }
 
-enum class ChallengeSortType(val text: String){
-    RECENT("최신순"),
-    MANY_PEOPLE("인원 많은순"),
-    LESS_PEOPLE("인원 적은순")
+enum class ChallengeSortType(val text: String, val value: String){
+    DESC("최신순", "DESC"),
+    ASC("오래된 순", "ASC"),
+    GREATEST("인원 많은 순", "GREATEST"),
+    LEAST("인원 적은 순", "LEAST")
 }

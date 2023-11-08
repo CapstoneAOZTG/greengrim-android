@@ -15,8 +15,10 @@ import com.aoztg.greengrim.presentation.ui.challenge.adapter.ChallengeRoomAdapte
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 import com.aoztg.greengrim.presentation.ui.toChallengeDetail
 import com.aoztg.greengrim.presentation.util.getSortSheet
+import dagger.hilt.android.AndroidEntryPoint
 
 
+@AndroidEntryPoint
 class ChallengeListFragment :
     BaseFragment<FragmentChallengeListBinding>(R.layout.fragment_challenge_list) {
 
@@ -25,7 +27,7 @@ class ChallengeListFragment :
     private val args: ChallengeListFragmentArgs by navArgs()
     private val categoryText by lazy { args.categoryText }
     private val categoryValue by lazy { args.categoryValue }
-    private var sortType = ChallengeSortType.RECENT
+    private var sortType = ChallengeSortType.DESC
     private var loadingState = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -37,6 +39,7 @@ class ChallengeListFragment :
         viewModel.getChallengeRooms()
         initStateObserver()
         initEventObserver()
+        setScrollEventListener()
     }
 
     private fun initStateObserver() {
@@ -69,6 +72,10 @@ class ChallengeListFragment :
                 }
             }
         }
+    }
+
+    private fun setScrollEventListener(){
+
     }
 
     private fun showBottomSheet() {
