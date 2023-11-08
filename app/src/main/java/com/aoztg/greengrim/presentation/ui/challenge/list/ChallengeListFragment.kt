@@ -2,12 +2,15 @@ package com.aoztg.greengrim.presentation.ui.challenge.list
 
 import android.os.Bundle
 import android.view.View
+import android.widget.TextView
+import androidx.databinding.BindingAdapter
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.aoztg.greengrim.R
+import com.aoztg.greengrim.data.model.ChallengeSimpleTags
 import com.aoztg.greengrim.databinding.FragmentChallengeListBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
 import com.aoztg.greengrim.presentation.ui.LoadingState
@@ -15,6 +18,7 @@ import com.aoztg.greengrim.presentation.ui.challenge.adapter.ChallengeRoomAdapte
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 import com.aoztg.greengrim.presentation.ui.toChallengeDetail
 import com.aoztg.greengrim.presentation.util.getSortSheet
+import com.google.android.material.chip.ChipGroup
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -96,4 +100,44 @@ class ChallengeListFragment :
         super.onDestroyView()
         if (loadingState) dismissLoading()
     }
+}
+
+@BindingAdapter("challengeListChips")
+fun bindChallengeListChips(chipGroup: ChipGroup, chips: ChallengeSimpleTags) {
+
+    chipGroup.removeAllViews()
+
+    val categoryChip = TextView(chipGroup.context).apply {
+        text = chips.category
+        setBackgroundResource(R.drawable.shape_purplefill_nostroke_radius20)
+        setTextAppearance(R.style.TextGgSmallBlackBold)
+        setPadding(20, 4, 20, 4)
+    }
+
+    val ticketCountChip = TextView(chipGroup.context).apply {
+        text = chips.ticketCount
+        setBackgroundResource(R.drawable.shape_yellowfill_nostroke_radius20)
+        setTextAppearance(R.style.TextGgSmallBlackBold)
+        setPadding(20, 4, 20, 4)
+    }
+
+    val goalCountChip = TextView(chipGroup.context).apply {
+        text = chips.goalCount
+        setBackgroundResource(R.drawable.shape_grey2fill_nostroke_radius20)
+        setTextAppearance(R.style.TextGgSmallBlackBold)
+        setPadding(20, 4, 20, 4)
+    }
+
+    val keywordChip = TextView(chipGroup.context).apply {
+        text = chips.keyword
+        setBackgroundResource(R.drawable.shape_grey2fill_nostroke_radius20)
+        setTextAppearance(R.style.TextGgSmallBlackBold)
+        setPadding(20, 4, 20, 4)
+    }
+
+    chipGroup.addView(categoryChip)
+    chipGroup.addView(ticketCountChip)
+    chipGroup.addView(goalCountChip)
+    chipGroup.addView(keywordChip)
+
 }
