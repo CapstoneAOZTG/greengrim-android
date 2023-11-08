@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.data.repository.ChallengeRepository
 import com.aoztg.greengrim.presentation.ui.LoadingState
+import com.aoztg.greengrim.presentation.ui.challenge.mapper.toChallengeListData
 import com.aoztg.greengrim.presentation.ui.challenge.model.ChallengeRoom
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
@@ -41,7 +42,13 @@ class ChallengeListViewModel @Inject constructor(
     private val _challengeRoom = MutableStateFlow<List<ChallengeRoom>>(emptyList())
     val challengeRoom: StateFlow<List<ChallengeRoom>> = _challengeRoom.asStateFlow()
 
-    fun getChallengeRooms() {
+    private var sorType = ChallengeSortType.DESC
+    private var category = ""
+
+    var page = 0
+    var hasNext = false
+
+    fun getChallengeList() {
 
         viewModelScope.launch {
 
@@ -51,41 +58,20 @@ class ChallengeListViewModel @Inject constructor(
                 )
             }
 
-            _challengeRoom.value = listOf(
-                ChallengeRoom(
-                    "test",
-                    "쓰레기 줍기",
-                    listOf("줍킹", "티켓 25/30", "인증 15회", "키워드 #줍다"),
-                    ::navigateToChallengeDetail
-                ),
-                ChallengeRoom(
-                    "test",
-                    "쓰레기 줍기",
-                    listOf("줍킹", "티켓 25/30", "인증 15회", "키워드 #줍다"),
-                    ::navigateToChallengeDetail
-                ),
-                ChallengeRoom(
-                    "test",
-                    "쓰레기 줍기",
-                    listOf("줍킹", "티켓 25/30", "인증 15회", "키워드 #줍다"),
-                    ::navigateToChallengeDetail
-                ),
-                ChallengeRoom(
-                    "test",
-                    "쓰레기 줍기",
-                    listOf("줍킹", "티켓 25/30", "인증 15회", "키워드 #줍다"),
-                    ::navigateToChallengeDetail
-                ),
-                ChallengeRoom(
-                    "test",
-                    "쓰레기 줍기",
-                    listOf("줍킹", "티켓 25/30", "인증 15회", "키워드 #줍다"),
-                    ::navigateToChallengeDetail
-                ),
-            )
+            val response = challengeRepository.getChallengeList(category,0,20,sorType.value)
+
+            if(response.isSuccessful){
+                response.body()?.let{ body ->
+                    val uiData = body.toChallengeListData(::navigateToChallengeDetail)
+                    hasNext = uiData.hasNext
+                    page = uiData.page
+                    _challengeRoom.value = uiData.result
+                }
+            } else {
+
+            }
 
             delay(1000)
-
             _uiState.update {
                 it.copy(
                     loading = LoadingState.IsLoading(false)
@@ -113,7 +99,11 @@ class ChallengeListViewModel @Inject constructor(
     }
 
     fun setSortType(type: ChallengeSortType){
+        sorType = type
+    }
 
+    fun setCategory(type: String){
+        category = type
     }
 }
 

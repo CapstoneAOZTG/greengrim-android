@@ -35,8 +35,9 @@ class ChallengeListFragment :
         parentViewModel.showBNV()
         binding.vm = viewModel
         binding.tvTitle.text = categoryText
+        viewModel.setCategory(categoryValue)
         binding.rvChallengeList.adapter = ChallengeRoomAdapter()
-        viewModel.getChallengeRooms()
+        viewModel.getChallengeList()
         initStateObserver()
         initEventObserver()
         setScrollEventListener()
