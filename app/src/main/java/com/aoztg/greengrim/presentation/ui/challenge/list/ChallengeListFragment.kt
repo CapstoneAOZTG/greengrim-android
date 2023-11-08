@@ -71,7 +71,10 @@ class ChallengeListFragment :
         repeatOnStarted {
             viewModel.events.collect {
                 when (it) {
-                    is ChallengeListEvents.NavigateToChallengeDetail -> findNavController().toChallengeDetail(it.id)
+                    is ChallengeListEvents.NavigateToChallengeDetail -> findNavController().toChallengeDetail(
+                        it.id
+                    )
+
                     is ChallengeListEvents.NavigateToCreateChallenge -> findNavController().toCreateChallenge()
                     is ChallengeListEvents.ShowBottomSheet -> showBottomSheet()
                 }
@@ -79,7 +82,7 @@ class ChallengeListFragment :
         }
     }
 
-    private fun setScrollEventListener(){
+    private fun setScrollEventListener() {
 
     }
 
@@ -92,7 +95,8 @@ class ChallengeListFragment :
     }
 
     private fun NavController.toCreateChallenge() {
-        val action = ChallengeListFragmentDirections.actionChallengeListFragmentToCreateChallengeFragment()
+        val action =
+            ChallengeListFragmentDirections.actionChallengeListFragmentToCreateChallengeFragment()
         this.navigate(action)
     }
 
@@ -107,37 +111,34 @@ fun bindChallengeListChips(chipGroup: ChipGroup, chips: ChallengeSimpleTags) {
 
     chipGroup.removeAllViews()
 
-    val categoryChip = TextView(chipGroup.context).apply {
+    val chipList = mutableListOf<TextView>()
+
+    chipList.add(TextView(chipGroup.context).apply {
         text = chips.category
         setBackgroundResource(R.drawable.shape_purplefill_nostroke_radius20)
-        setTextAppearance(R.style.TextGgSmallBlackBold)
-        setPadding(20, 4, 20, 4)
-    }
+    })
 
-    val ticketCountChip = TextView(chipGroup.context).apply {
+    chipList.add(TextView(chipGroup.context).apply {
         text = chips.ticketCount
         setBackgroundResource(R.drawable.shape_yellowfill_nostroke_radius20)
-        setTextAppearance(R.style.TextGgSmallBlackBold)
-        setPadding(20, 4, 20, 4)
-    }
+    })
 
-    val goalCountChip = TextView(chipGroup.context).apply {
+    chipList.add(TextView(chipGroup.context).apply {
         text = chips.goalCount
         setBackgroundResource(R.drawable.shape_grey2fill_nostroke_radius20)
-        setTextAppearance(R.style.TextGgSmallBlackBold)
-        setPadding(20, 4, 20, 4)
-    }
+    })
 
-    val keywordChip = TextView(chipGroup.context).apply {
+    chipList.add(TextView(chipGroup.context).apply {
         text = chips.keyword
         setBackgroundResource(R.drawable.shape_grey2fill_nostroke_radius20)
-        setTextAppearance(R.style.TextGgSmallBlackBold)
-        setPadding(20, 4, 20, 4)
-    }
+    })
 
-    chipGroup.addView(categoryChip)
-    chipGroup.addView(ticketCountChip)
-    chipGroup.addView(goalCountChip)
-    chipGroup.addView(keywordChip)
+    chipList.forEach { chip ->
+        chip.apply {
+            setTextAppearance(R.style.TextGgSmallBlackBold)
+            setPadding(20, 4, 20, 4)
+        }
+        chipGroup.addView(chip)
+    }
 
 }
