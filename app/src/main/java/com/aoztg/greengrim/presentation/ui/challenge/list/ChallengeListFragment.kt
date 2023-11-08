@@ -23,7 +23,8 @@ class ChallengeListFragment :
     private val viewModel: ChallengeListViewModel by viewModels()
     private val parentViewModel: MainViewModel by activityViewModels()
     private val args: ChallengeListFragmentArgs by navArgs()
-    private val category by lazy { args.category }
+    private val categoryText by lazy { args.categoryText }
+    private val categoryValue by lazy { args.categoryValue }
     private var sortType = ChallengeSortType.RECENT
     private var loadingState = false
 
@@ -31,7 +32,7 @@ class ChallengeListFragment :
         super.onViewCreated(view, savedInstanceState)
         parentViewModel.showBNV()
         binding.vm = viewModel
-        binding.tvTitle.text = category
+        binding.tvTitle.text = categoryText
         binding.rvChallengeList.adapter = ChallengeRoomAdapter()
         viewModel.getChallengeRooms()
         initStateObserver()
