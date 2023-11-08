@@ -1,5 +1,7 @@
 package com.aoztg.greengrim.app.di
 
+import com.aoztg.greengrim.data.repository.ChallengeRepository
+import com.aoztg.greengrim.data.repository.ChallengeRepositoryImpl
 import com.aoztg.greengrim.data.repository.ImageRepository
 import com.aoztg.greengrim.data.repository.ImageRepositoryImpl
 import com.aoztg.greengrim.data.repository.InfoRepository
@@ -34,4 +36,10 @@ abstract class RepositoryModule {
     abstract fun bindInfoRepository(
         infoRepositoryImpl: InfoRepositoryImpl
     ): InfoRepository
+
+    @Singleton
+    @Binds
+    abstract fun bindChallengeRepository(
+        challengeRepositoryImpl: ChallengeRepositoryImpl
+    ): ChallengeRepository
 }
