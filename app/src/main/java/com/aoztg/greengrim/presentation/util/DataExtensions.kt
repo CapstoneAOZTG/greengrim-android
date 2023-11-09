@@ -3,6 +3,7 @@ package com.aoztg.greengrim.presentation.util
 import android.content.Context
 import android.net.Uri
 import android.provider.MediaStore
+import com.aoztg.greengrim.presentation.ui.challenge.model.CategoryName
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -50,4 +51,13 @@ internal fun LocalDate.toHeaderText(): String {
     )
 
     return this.monthValue.toString() + "월 " + this.dayOfMonth + "일, " + dayOfWeekHash[this.dayOfWeek.toString()]
+}
+
+internal fun String.toCategoryText(): String{
+    CategoryName.values().forEach {
+        if(it.value == this){
+            return it.text
+        }
+    }
+    return ""
 }
