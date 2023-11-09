@@ -6,6 +6,7 @@ import com.aoztg.greengrim.data.model.ErrorResponse
 import com.aoztg.greengrim.data.repository.HomeRepository
 import com.aoztg.greengrim.presentation.ui.BaseState
 import com.aoztg.greengrim.presentation.ui.LoadingState
+import com.aoztg.greengrim.presentation.ui.challenge.list.ChallengeListEvents
 import com.aoztg.greengrim.presentation.ui.home.mapper.toHotChallenge
 import com.aoztg.greengrim.presentation.ui.home.model.HotChallenge
 import com.aoztg.greengrim.presentation.ui.home.model.HotNft
@@ -13,8 +14,11 @@ import com.aoztg.greengrim.presentation.ui.home.model.MoreActivity
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -25,6 +29,10 @@ data class HomeUiState(
     val apiState: BaseState = BaseState.Empty
 )
 
+sealed class HomeEvents{
+    data class NavigateToChallengeDetail(val id : Int): HomeEvents()
+}
+
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val homeRepository: HomeRepository
@@ -32,6 +40,9 @@ class HomeViewModel @Inject constructor(
 
     private val _uiState = MutableStateFlow(HomeUiState())
     val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
+
+    private val _events = MutableSharedFlow<HomeEvents>()
+    val events: SharedFlow<HomeEvents> = _events.asSharedFlow()
 
     private val _hotChallengeList = MutableStateFlow<List<HotChallenge>>(emptyList())
     val hotChallengeList: StateFlow<List<HotChallenge>> = _hotChallengeList.asStateFlow()
@@ -55,7 +66,7 @@ class HomeViewModel @Inject constructor(
             if(response.isSuccessful){
                 response.body()?.let{
                     val uiModel = it.hotChallengeInfos.map{ data ->
-                        data.toHotChallenge()
+                        data.toHotChallenge(::navigateToChallengeDetail)
                     }
                     _hotChallengeList.value = uiModel
                 }
@@ -88,7 +99,12 @@ class HomeViewModel @Inject constructor(
                 )
             }
         }
+    }
 
+    private fun navigateToChallengeDetail(id: Int) {
+        viewModelScope.launch {
+            _events.emit(HomeEvents.NavigateToChallengeDetail(id))
+        }
     }
 
 }

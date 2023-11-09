@@ -3,8 +3,11 @@ package com.aoztg.greengrim.presentation.ui.home
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.aoztg.greengrim.MainNavDirections
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentHomeBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
@@ -28,6 +31,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         binding.vm = viewModel
         initRecycler()
         initStateObserver()
+        initEventObserver()
         viewModel.getHomeList()
     }
 
@@ -80,6 +84,19 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         }
     }
 
+    private fun initEventObserver() {
+        repeatOnStarted {
+            viewModel.events.collect {
+                when (it) {
+                    is HomeEvents.NavigateToChallengeDetail -> findNavController().toChallengeDetail(
+                        it.id
+                    )
+                }
+            }
+        }
+    }
+
+
     private fun recyclerToViewPager(
         recycler: RecyclerView,
         indicator: CircleIndicator2
@@ -90,4 +107,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
         indicator.attachToRecyclerView(recycler, pagerSnapHelper)
     }
+
+    private fun NavController.toChallengeDetail(id: Int) {
+        val action = MainNavDirections.actionGlobalToChallengeDetailFragment(id)
+        this.navigate(action)
+    }
+
 }
