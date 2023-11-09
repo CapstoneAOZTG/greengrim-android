@@ -2,10 +2,14 @@ package com.aoztg.greengrim.presentation.ui.challenge.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.aoztg.greengrim.data.model.ErrorResponse
 import com.aoztg.greengrim.data.repository.ChallengeRepository
+import com.aoztg.greengrim.presentation.ui.BaseState
 import com.aoztg.greengrim.presentation.ui.LoadingState
 import com.aoztg.greengrim.presentation.ui.challenge.mapper.toChallengeListData
 import com.aoztg.greengrim.presentation.ui.challenge.model.ChallengeRoom
+import com.aoztg.greengrim.presentation.ui.info.editprofile.ProfileState
+import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -14,12 +18,19 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 data class ChallengeListUiState(
-    val loading: LoadingState = LoadingState.Empty
+    val loading: LoadingState = LoadingState.Empty,
+    val challengeRoom: List<ChallengeRoom> = emptyList(),
+    val sortType: ChallengeSortType = ChallengeSortType.DESC,
+    val page: Int = 0,
+    val hasNext: Boolean = true,
+    val getChallengeRoomState : BaseState = BaseState.Empty
 )
 
 sealed class ChallengeListEvents {
@@ -39,41 +50,55 @@ class ChallengeListViewModel @Inject constructor(
     private val _events = MutableSharedFlow<ChallengeListEvents>()
     val events: SharedFlow<ChallengeListEvents> = _events.asSharedFlow()
 
-    private val _challengeRoom = MutableStateFlow<List<ChallengeRoom>>(emptyList())
-    val challengeRoom: StateFlow<List<ChallengeRoom>> = _challengeRoom.asStateFlow()
-
-    private var sorType = ChallengeSortType.DESC
     private var category = ""
-
-    var page = 0
-    var hasNext = false
 
     fun getChallengeList() {
 
-        viewModelScope.launch {
+        if(_uiState.value.hasNext){
+            viewModelScope.launch {
 
-            _uiState.update {
-                it.copy(
-                    loading = LoadingState.IsLoading(true)
-                )
-            }
-
-            val response = challengeRepository.getChallengeList(category,0,20,sorType.value)
-
-            if(response.isSuccessful){
-                response.body()?.let{ body ->
-                    val uiData = body.toChallengeListData(::navigateToChallengeDetail)
-                    hasNext = uiData.hasNext
-                    page = uiData.page
-                    _challengeRoom.value = uiData.result
+                _uiState.update {
+                    it.copy(
+                        loading = LoadingState.IsLoading(true),
+                        page = it.page
+                    )
                 }
-            } else {
 
-            }
+                val response = challengeRepository.getChallengeList(
+                    category,
+                    _uiState.value.page,
+                    20,
+                    _uiState.value.sortType.value
+                )
 
-            delay(1000)
-            _uiState.update {
-                it.copy(
+
+                if (response.isSuccessful) {
+                    response.body()?.let { body ->
+                        val uiData = body.toChallengeListData(::navigateToChallengeDetail)
+                        _uiState.update { state ->
+                            state.copy(
+                                challengeRoom = uiData.result,
+                                hasNext = uiData.hasNext,
+                                page = uiData.page + 1,
+                                getChallengeRoomState = BaseState.Success,
+                                loading = LoadingState.Empty
+                            )
+                        }
+                    }
+                } else {
+                    val error =
+                        Gson().fromJson(response.errorBody()?.string(), ErrorResponse::class.java)
+
+                    _uiState.update { state ->
+                        state.copy(
+                            getChallengeRoomState = BaseState.Error(error.message),
+                            loading = LoadingState.Empty
+                        )
+                    }
+                }
+
+                delay(1000)
+                _uiState.value = _uiState.value.copy(
                     loading = LoadingState.IsLoading(false)
                 )
             }
@@ -86,28 +111,35 @@ class ChallengeListViewModel @Inject constructor(
         }
     }
 
-    fun navigateToCreateChallenge(){
-        viewModelScope.launch{
+    fun navigateToCreateChallenge() {
+        viewModelScope.launch {
             _events.emit(ChallengeListEvents.NavigateToCreateChallenge)
         }
     }
 
-    fun showBottomSheet(){
-        viewModelScope.launch{
+    fun showBottomSheet() {
+        viewModelScope.launch {
             _events.emit(ChallengeListEvents.ShowBottomSheet)
         }
     }
 
-    fun setSortType(type: ChallengeSortType){
-        sorType = type
+    fun setSortType(type: ChallengeSortType) {
+        _uiState.update { state ->
+            state.copy(
+                hasNext = true,
+                sortType = type,
+                page = 0
+            )
+        }
+        getChallengeList()
     }
 
-    fun setCategory(type: String){
+    fun setCategory(type: String) {
         category = type
     }
 }
 
-enum class ChallengeSortType(val text: String, val value: String){
+enum class ChallengeSortType(val text: String, val value: String) {
     DESC("최신순", "DESC"),
     ASC("오래된 순", "ASC"),
     GREATEST("인원 많은 순", "GREATEST"),

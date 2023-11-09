@@ -1,24 +1,25 @@
 package com.aoztg.greengrim.presentation.ui.challenge.list
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
-import android.widget.TextView
-import androidx.databinding.BindingAdapter
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.aoztg.greengrim.R
-import com.aoztg.greengrim.data.model.ChallengeSimpleTags
 import com.aoztg.greengrim.databinding.FragmentChallengeListBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
+import com.aoztg.greengrim.presentation.ui.BaseState
 import com.aoztg.greengrim.presentation.ui.LoadingState
 import com.aoztg.greengrim.presentation.ui.challenge.adapter.ChallengeRoomAdapter
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 import com.aoztg.greengrim.presentation.ui.toChallengeDetail
+import com.aoztg.greengrim.presentation.util.Constants.TAG
 import com.aoztg.greengrim.presentation.util.getSortSheet
-import com.google.android.material.chip.ChipGroup
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -50,14 +51,20 @@ class ChallengeListFragment :
     private fun initStateObserver() {
         repeatOnStarted {
             viewModel.uiState.collect {
+
+                when(it.getChallengeRoomState){
+                    is BaseState.Error -> showCustomToast(it.getChallengeRoomState.msg)
+                    else -> {}
+                }
+
                 when (it.loading) {
                     is LoadingState.IsLoading -> {
-                        if (it.loading.state) {
+                        loadingState = if (it.loading.state) {
                             showLoading(requireContext())
-                            loadingState = true
+                            true
                         } else {
                             dismissLoading()
-                            loadingState = false
+                            false
                         }
                     }
 
@@ -84,6 +91,19 @@ class ChallengeListFragment :
 
     private fun setScrollEventListener() {
 
+        binding.rvChallengeList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                val lastVisibleItemPosition = (recyclerView.layoutManager as GridLayoutManager).findLastCompletelyVisibleItemPosition()
+                val itemTotalCount = recyclerView.adapter?.itemCount?.minus(1)
+
+                if (lastVisibleItemPosition == itemTotalCount) {
+                    viewModel.getChallengeList()
+                }
+            }
+        })
     }
 
     private fun showBottomSheet() {
@@ -106,39 +126,3 @@ class ChallengeListFragment :
     }
 }
 
-@BindingAdapter("challengeListChips")
-fun bindChallengeListChips(chipGroup: ChipGroup, chips: ChallengeSimpleTags) {
-
-    chipGroup.removeAllViews()
-
-    val chipList = mutableListOf<TextView>()
-
-    chipList.add(TextView(chipGroup.context).apply {
-        text = chips.category
-        setBackgroundResource(R.drawable.shape_purplefill_nostroke_radius20)
-    })
-
-    chipList.add(TextView(chipGroup.context).apply {
-        text = chips.ticketCount
-        setBackgroundResource(R.drawable.shape_yellowfill_nostroke_radius20)
-    })
-
-    chipList.add(TextView(chipGroup.context).apply {
-        text = chips.goalCount
-        setBackgroundResource(R.drawable.shape_grey2fill_nostroke_radius20)
-    })
-
-    chipList.add(TextView(chipGroup.context).apply {
-        text = chips.keyword
-        setBackgroundResource(R.drawable.shape_grey2fill_nostroke_radius20)
-    })
-
-    chipList.forEach { chip ->
-        chip.apply {
-            setTextAppearance(R.style.TextGgSmallBlackBold)
-            setPadding(20, 4, 20, 4)
-        }
-        chipGroup.addView(chip)
-    }
-
-}
