@@ -29,4 +29,11 @@ interface ChallengeAPI {
         @Query("size") size: Int,
         @Query("sort") sort : String
     ): Response<ChallengeListResponse>
+
+    @GET("/visitor/challenges")
+    suspend fun getMyChallengeList(
+        @Query("page") page: Int,
+        @Query("size") size: Int,
+        @Query("sort") sort : String
+    ): Response<ChallengeListResponse>
 }
