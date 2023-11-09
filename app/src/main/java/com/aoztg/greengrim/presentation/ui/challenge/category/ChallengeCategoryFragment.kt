@@ -12,6 +12,7 @@ import com.aoztg.greengrim.databinding.FragmentChallengeCategoryBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
 import com.aoztg.greengrim.presentation.ui.challenge.adapter.ChallengeCategoryAdapter
 import com.aoztg.greengrim.presentation.ui.challenge.adapter.OnCategoryItemClickListener
+import com.aoztg.greengrim.presentation.ui.challenge.model.CategoryName
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 
 class ChallengeCategoryFragment :
@@ -40,15 +41,12 @@ class ChallengeCategoryFragment :
         }
     }
 
-    override fun onItemClicked(view: View, category: String) {
+    override fun onItemClicked(view: View, category: CategoryName) {
         findNavController().toChallengeList(category)
     }
 
-    private fun NavController.toChallengeList(category: String) {
-        val action =
-            ChallengeCategoryFragmentDirections.actionChallengeCategoryFragmentToChallengeListFragment(
-                category
-            )
+    private fun NavController.toChallengeList(category: CategoryName) {
+        val action = ChallengeCategoryFragmentDirections.actionChallengeCategoryFragmentToChallengeListFragment(category.text, category.value)
         this.navigate(action)
     }
 

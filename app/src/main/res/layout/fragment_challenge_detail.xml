@@ -62,7 +62,7 @@
             android:layout_marginTop="16dp"
             android:scaleType="centerCrop"
             android:src="@drawable/test"
-            app:imgUrl="@{vm.challengeDetail.imgUrl}"
+            app:imgUrl="@{vm.uiState.challengeDetail.imgUrl}"
             app:layout_constraintDimensionRatio="3:2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -76,7 +76,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:paddingHorizontal="@dimen/padding_middle"
-            android:text="@{vm.challengeDetail.title}"
+            android:text="@{vm.uiState.challengeDetail.title}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/iv_image"
@@ -88,7 +88,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:paddingHorizontal="@dimen/padding_middle"
-            android:text="@{vm.challengeDetail.description}"
+            android:text="@{vm.uiState.challengeDetail.description}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_title"
@@ -101,10 +101,10 @@
             android:layout_marginHorizontal="12dp"
             android:layout_marginTop="8dp"
             app:chipSpacingVertical="4dp"
-            app:colorChipList="@{vm.challengeDetail.mainKeyword}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_description"></com.google.android.material.chip.ChipGroup>
+            app:layout_constraintTop_toBottomOf="@id/tv_description"
+            app:mainChipList="@{vm.uiState.challengeDetail.keywords}"></com.google.android.material.chip.ChipGroup>
 
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/chipgroup_grey"
@@ -113,10 +113,10 @@
             android:layout_marginHorizontal="12dp"
             android:layout_marginTop="4dp"
             app:chipSpacingVertical="4dp"
-            app:greyChipList="@{vm.challengeDetail.subKeyword}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/chipgroup_color"></com.google.android.material.chip.ChipGroup>
+            app:layout_constraintTop_toBottomOf="@id/chipgroup_color"
+            app:subChipList="@{vm.uiState.challengeDetail.keywords}"></com.google.android.material.chip.ChipGroup>
 
         <TextView
             android:id="@+id/tv_date"
@@ -125,7 +125,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:paddingHorizontal="@dimen/padding_middle"
-            android:text="@{vm.challengeDetail.date}"
+            android:text="@{vm.uiState.challengeDetail.date}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/chipgroup_grey"
@@ -138,7 +138,7 @@
             android:layout_marginTop="24dp"
             android:layout_marginBottom="40dp"
             android:background="@drawable/shape_greenfill_nostroke_radius10"
-            android:onClick="@{() -> vm.navigateToChatRoom(vm.challengeDetail.title)}"
+            android:onClick="@{() -> vm.navigateToChatRoom(vm.uiState.challengeDetail.id)}"
             android:text="입장하기"
             android:textColor="@color/black"
             android:textSize="16sp"

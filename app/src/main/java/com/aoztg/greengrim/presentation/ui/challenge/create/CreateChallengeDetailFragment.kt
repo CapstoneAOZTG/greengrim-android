@@ -8,6 +8,7 @@ import androidx.core.view.children
 import androidx.databinding.BindingAdapter
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.aoztg.greengrim.R
@@ -15,15 +16,18 @@ import com.aoztg.greengrim.databinding.FragmentCreateChallengeDetailBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 import com.google.android.material.chip.ChipGroup
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 
+@AndroidEntryPoint
 class CreateChallengeDetailFragment :
     BaseFragment<FragmentCreateChallengeDetailBinding>(R.layout.fragment_create_challenge_detail) {
 
     private val parentViewModel: MainViewModel by activityViewModels()
     private val viewModel: CreateChallengeDetailViewModel by viewModels()
     private val args: CreateChallengeDetailFragmentArgs by navArgs()
-    private val category by lazy { args.category }
+    private val categoryText by lazy { args.categoryText }
+    private val categoryValue by lazy {args.categoryValue }
 
     private lateinit var curView: TextView
     private var isCurViewExist = false
@@ -33,7 +37,8 @@ class CreateChallengeDetailFragment :
 
         binding.pvm = parentViewModel
         binding.vm = viewModel
-        binding.tvHeader.text = "$category 챌린지 생성"
+        binding.tvHeader.text = "$categoryText 챌린지 생성"
+        viewModel.setCategory(categoryValue)
         initStateObserver()
         initEventObserver()
     }
@@ -65,6 +70,7 @@ class CreateChallengeDetailFragment :
             viewModel.events.collect {
                 when (it) {
                     is CreateChallengeDetailEvents.NavigateToBack -> findNavController().navigateUp()
+                    is CreateChallengeDetailEvents.NavigateToChatList -> findNavController().toChatList()
                 }
             }
         }
@@ -82,6 +88,11 @@ class CreateChallengeDetailFragment :
                 viewModel.setKeyword(curView.text.toString())
             }
         }
+    }
+
+    private fun NavController.toChatList(){
+        val action = CreateChallengeDetailFragmentDirections.actionCreateChallengeDetailFragmentToChatListFragment()
+        this.navigate(action)
     }
 }
 

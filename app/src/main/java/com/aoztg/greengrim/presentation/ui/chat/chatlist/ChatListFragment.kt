@@ -41,7 +41,7 @@ class ChatListFragment : BaseFragment<FragmentChatListBinding>(R.layout.fragment
         }
     }
 
-    private fun NavController.toChatRoom(id: String) {
+    private fun NavController.toChatRoom(id: Int) {
         val action = ChatListFragmentDirections.actionChatListFragmentToChatRoomFragment(id)
         this.navigate(action)
     }

@@ -2,6 +2,11 @@ package com.aoztg.greengrim.presentation.ui.challenge.create
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.aoztg.greengrim.data.model.CreateChallengeRequest
+import com.aoztg.greengrim.data.model.ErrorResponse
+import com.aoztg.greengrim.data.repository.ChallengeRepository
+import com.aoztg.greengrim.presentation.ui.BaseState
+import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,7 +28,8 @@ data class CreateChallengeDetailUiState(
     val certificateProgressState: ProgressState = ProgressState.Empty,
     val ticketProgressState: ProgressState = ProgressState.Empty,
     val minCertificateProgressState: ProgressState = ProgressState.Empty,
-    val randomKeywordState: KeywordState = KeywordState.Empty
+    val randomKeywordState: KeywordState = KeywordState.Empty,
+    val createChallengeState: BaseState = BaseState.Empty
 )
 
 sealed class ProgressState {
@@ -38,10 +44,13 @@ sealed class KeywordState {
 
 sealed class CreateChallengeDetailEvents{
     object NavigateToBack : CreateChallengeDetailEvents()
+    object NavigateToChatList : CreateChallengeDetailEvents()
 }
 
 @HiltViewModel
-class CreateChallengeDetailViewModel @Inject constructor() : ViewModel() {
+class CreateChallengeDetailViewModel @Inject constructor(
+    private val challengeRepository: ChallengeRepository
+) : ViewModel() {
 
     companion object {
         val keywordsWhat = listOf("꽃다발", "개", "고양이", "버스", "감자튀김", "컵", "운동화", "기타", "모자", "소파", "우주선", "접시", "나무", "럭비공", "모래성", "초콜릿", "피망", "책", "포도")
@@ -56,16 +65,22 @@ class CreateChallengeDetailViewModel @Inject constructor() : ViewModel() {
 
     val title = MutableStateFlow("")
     val description = MutableStateFlow("")
-    private var imageUrl = ""
-    private var keyword = ""
+    val imageUrl = MutableStateFlow("")
+    val keyword = MutableStateFlow("")
+    val category = MutableStateFlow("")
 
     val certificateProgress = MutableStateFlow(0)
     val ticketProgress = MutableStateFlow(0)
     val minCertificateProgress = MutableStateFlow(0)
 
-    val isDataReady = combine(title, description) { title, description ->
+    private var goalCount = 0
+    private var ticketTotalCount = 0
+    private var weekMinCount = 0
+
+    val isDataReady = combine(title, description, imageUrl, keyword, category) {
+            title, description, img, keyword, category ->
         title.isNotBlank() && description.isNotBlank()
-                && imageUrl.isNotBlank() && keyword.isNotBlank()
+                && img.isNotBlank() && keyword.isNotBlank() && category.isNotBlank()
     }.stateIn(
         viewModelScope,
         SharingStarted.WhileSubscribed(),
@@ -73,11 +88,11 @@ class CreateChallengeDetailViewModel @Inject constructor() : ViewModel() {
     )
 
     fun setImageUrl(url: String) {
-        imageUrl = url
+        imageUrl.value = url
     }
 
     fun setKeyword(text: String) {
-        keyword = text
+        keyword.value = text
     }
 
     init {
@@ -87,10 +102,11 @@ class CreateChallengeDetailViewModel @Inject constructor() : ViewModel() {
 
     private fun observeSeekBar() {
         certificateProgress.onEach { progress ->
+            goalCount = 10 + progress * 5
             _uiState.update { state ->
                 state.copy(
                     certificateProgressState = ProgressState.Changed(
-                        (10 + (progress * 5)).toString() + "회"
+                        goalCount.toString() + "회"
                     ),
                     randomKeywordState = KeywordState.Empty
                 )
@@ -98,10 +114,11 @@ class CreateChallengeDetailViewModel @Inject constructor() : ViewModel() {
         }.launchIn(viewModelScope)
 
         ticketProgress.onEach { progress ->
+            ticketTotalCount = 20 + progress * 20
             _uiState.update { state ->
                 state.copy(
                     ticketProgressState = ProgressState.Changed(
-                        (20 + (progress * 20)).toString() + "개"
+                        ticketTotalCount.toString() + "개"
                     ),
                     randomKeywordState = KeywordState.Empty
                 )
@@ -109,10 +126,11 @@ class CreateChallengeDetailViewModel @Inject constructor() : ViewModel() {
         }.launchIn(viewModelScope)
 
         minCertificateProgress.onEach { progress ->
+            weekMinCount = 2 + progress
             _uiState.update { state ->
                 state.copy(
                     minCertificateProgressState = ProgressState.Changed(
-                        "주 " + (2 + progress).toString() + "회"
+                        "주 " + weekMinCount.toString() + "회"
                     ),
                     randomKeywordState = KeywordState.Empty
                 )
@@ -135,6 +153,10 @@ class CreateChallengeDetailViewModel @Inject constructor() : ViewModel() {
         }
     }
 
+    fun setCategory(data: String){
+        category.value = data
+    }
+
     fun navigateToBack(){
         viewModelScope.launch{
             _events.emit(CreateChallengeDetailEvents.NavigateToBack)
@@ -142,7 +164,35 @@ class CreateChallengeDetailViewModel @Inject constructor() : ViewModel() {
     }
 
     fun createChallenge() {
-        // todo 서버에 챌린지 form 통신하기
+        viewModelScope.launch {
+
+            val response = challengeRepository.createChallenge(
+                CreateChallengeRequest(
+                    category = category.value,
+                    title = title.value,
+                    description = description.value,
+                    imgUrl = imageUrl.value,
+                    goalCount = goalCount,
+                    ticketTotalCount = ticketTotalCount,
+                    weekMinCount = weekMinCount,
+                    keyword = keyword.value)
+            )
+
+            if(response.isSuccessful){
+                _events.emit(CreateChallengeDetailEvents.NavigateToChatList)
+            } else {
+
+                val error =
+                    Gson().fromJson(response.errorBody()?.string(), ErrorResponse::class.java)
+                _uiState.update { state ->
+                    state.copy(
+                        createChallengeState = BaseState.Error(error.message)
+                    )
+                }
+
+            }
+        }
+
     }
 
 

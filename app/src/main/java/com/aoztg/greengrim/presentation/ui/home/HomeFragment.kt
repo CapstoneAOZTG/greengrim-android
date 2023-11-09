@@ -2,30 +2,40 @@ package com.aoztg.greengrim.presentation.ui.home
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentHomeBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
+import com.aoztg.greengrim.presentation.ui.BaseState
 import com.aoztg.greengrim.presentation.ui.LoadingState
 import com.aoztg.greengrim.presentation.ui.home.adapter.HotChallengeAdapter
 import com.aoztg.greengrim.presentation.ui.home.adapter.HotNftAdapter
 import com.aoztg.greengrim.presentation.ui.home.adapter.MoreActivityAdapter
+import com.aoztg.greengrim.presentation.ui.main.MainViewModel
+import com.aoztg.greengrim.presentation.ui.toChallengeDetail
+import dagger.hilt.android.AndroidEntryPoint
 import me.relex.circleindicator.CircleIndicator2
 
 
+@AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
+    private val parentViewModel: MainViewModel by activityViewModels()
 
     private val viewModel: HomeViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        parentViewModel.showBNV()
         binding.vm = viewModel
         initRecycler()
         initStateObserver()
+        initEventObserver()
         viewModel.getHomeList()
     }
 
@@ -69,9 +79,27 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
                     else -> {}
                 }
+
+                when (it.apiState) {
+                    is BaseState.Error -> showCustomToast(it.apiState.msg)
+                    else -> {}
+                }
             }
         }
     }
+
+    private fun initEventObserver() {
+        repeatOnStarted {
+            viewModel.events.collect {
+                when (it) {
+                    is HomeEvents.NavigateToChallengeDetail -> findNavController().toChallengeDetail(
+                        it.id
+                    )
+                }
+            }
+        }
+    }
+
 
     private fun recyclerToViewPager(
         recycler: RecyclerView,
@@ -83,4 +111,5 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
         indicator.attachToRecyclerView(recycler, pagerSnapHelper)
     }
+
 }

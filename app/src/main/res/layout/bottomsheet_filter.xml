@@ -22,7 +22,7 @@
         android:orientation="vertical">
 
         <RadioButton
-            android:id="@+id/btn_recent"
+            android:id="@+id/btn_desc"
             style="@style/TextGgMedium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -35,7 +35,20 @@
             android:textColor="@color/gg_grey5" />
 
         <RadioButton
-            android:id="@+id/btn_many_people"
+            android:id="@+id/btn_asc"
+            style="@style/TextGgMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="15dp"
+            android:layout_marginStart="9dp"
+            android:background="#00ff0000"
+            android:button="@null"
+            android:gravity="start|center"
+            android:text="오래된 순"
+            android:textColor="@color/gg_grey5" />
+
+        <RadioButton
+            android:id="@+id/btn_greatest"
             style="@style/TextGgMedium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -48,7 +61,7 @@
             android:textColor="@color/gg_grey5" />
 
         <RadioButton
-            android:id="@+id/btn_less_people"
+            android:id="@+id/btn_least"
             style="@style/TextGgMedium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -2,8 +2,14 @@ package com.aoztg.greengrim.presentation.ui.challenge.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.aoztg.greengrim.data.model.ErrorResponse
+import com.aoztg.greengrim.data.repository.ChallengeRepository
+import com.aoztg.greengrim.presentation.ui.BaseState
 import com.aoztg.greengrim.presentation.ui.LoadingState
+import com.aoztg.greengrim.presentation.ui.challenge.mapper.toChallengeListData
 import com.aoztg.greengrim.presentation.ui.challenge.model.ChallengeRoom
+import com.aoztg.greengrim.presentation.ui.info.editprofile.ProfileState
+import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -12,22 +18,37 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 data class ChallengeListUiState(
-    val loading: LoadingState = LoadingState.Empty
+    val loading: LoadingState = LoadingState.Empty,
+    val challengeRoom: List<ChallengeRoom> = emptyList(),
+    val sortType: ChallengeSortType = ChallengeSortType.DESC,
+    val page: Int = 0,
+    val hasNext: Boolean = true,
+    val getChallengeRoomState: BaseState = BaseState.Empty
 )
 
 sealed class ChallengeListEvents {
-    data class NavigateToChallengeDetail(val id: String) : ChallengeListEvents()
+    data class NavigateToChallengeDetail(val id: Int) : ChallengeListEvents()
     object NavigateToCreateChallenge : ChallengeListEvents()
     object ShowBottomSheet : ChallengeListEvents()
+    object ScrollToTop : ChallengeListEvents()
 }
 
 @HiltViewModel
-class ChallengeListViewModel @Inject constructor() : ViewModel() {
+class ChallengeListViewModel @Inject constructor(
+    private val challengeRepository: ChallengeRepository
+) : ViewModel() {
+
+    companion object {
+        const val SORT = 0
+        const val ORIGINAL = 1
+    }
 
     private val _uiState = MutableStateFlow(ChallengeListUiState())
     val uiState: StateFlow<ChallengeListUiState> = _uiState.asStateFlow()
@@ -35,87 +56,91 @@ class ChallengeListViewModel @Inject constructor() : ViewModel() {
     private val _events = MutableSharedFlow<ChallengeListEvents>()
     val events: SharedFlow<ChallengeListEvents> = _events.asSharedFlow()
 
-    private val _challengeRoom = MutableStateFlow<List<ChallengeRoom>>(emptyList())
-    val challengeRoom: StateFlow<List<ChallengeRoom>> = _challengeRoom.asStateFlow()
+    private var category = ""
 
-    fun getChallengeRooms() {
+    fun getChallengeList(option: Int) {
 
-        viewModelScope.launch {
+        if (_uiState.value.hasNext) {
+            viewModelScope.launch {
 
-            _uiState.update {
-                it.copy(
-                    loading = LoadingState.IsLoading(true)
+                _uiState.update {
+                    it.copy(
+                        loading = LoadingState.IsLoading(true),
+                        page = it.page
+                    )
+                }
+
+                val response = challengeRepository.getChallengeList(
+                    category,
+                    _uiState.value.page,
+                    20,
+                    _uiState.value.sortType.value
                 )
-            }
 
-            _challengeRoom.value = listOf(
-                ChallengeRoom(
-                    "test",
-                    "쓰레기 줍기",
-                    listOf("줍킹", "티켓 25/30", "인증 15회", "키워드 #줍다"),
-                    ::navigateToChallengeDetail
-                ),
-                ChallengeRoom(
-                    "test",
-                    "쓰레기 줍기",
-                    listOf("줍킹", "티켓 25/30", "인증 15회", "키워드 #줍다"),
-                    ::navigateToChallengeDetail
-                ),
-                ChallengeRoom(
-                    "test",
-                    "쓰레기 줍기",
-                    listOf("줍킹", "티켓 25/30", "인증 15회", "키워드 #줍다"),
-                    ::navigateToChallengeDetail
-                ),
-                ChallengeRoom(
-                    "test",
-                    "쓰레기 줍기",
-                    listOf("줍킹", "티켓 25/30", "인증 15회", "키워드 #줍다"),
-                    ::navigateToChallengeDetail
-                ),
-                ChallengeRoom(
-                    "test",
-                    "쓰레기 줍기",
-                    listOf("줍킹", "티켓 25/30", "인증 15회", "키워드 #줍다"),
-                    ::navigateToChallengeDetail
-                ),
-            )
 
-            delay(1000)
+                if (response.isSuccessful) {
+                    response.body()?.let { body ->
+                        val uiData = body.toChallengeListData(::navigateToChallengeDetail)
+                        _uiState.update { state ->
+                            state.copy(
+                                challengeRoom = if (option == ORIGINAL) _uiState.value.challengeRoom + uiData.result else uiData.result,
+                                hasNext = uiData.hasNext,
+                                page = uiData.page + 1,
+                                getChallengeRoomState = BaseState.Success,
+                                loading = LoadingState.IsLoading(false)
+                            )
+                        }
+                    }
+                } else {
+                    val error =
+                        Gson().fromJson(response.errorBody()?.string(), ErrorResponse::class.java)
 
-            _uiState.update {
-                it.copy(
-                    loading = LoadingState.IsLoading(false)
-                )
+                    _uiState.update { state ->
+                        state.copy(
+                            getChallengeRoomState = BaseState.Error(error.message),
+                            loading = LoadingState.IsLoading(false)
+                        )
+                    }
+                }
             }
         }
     }
 
-    private fun navigateToChallengeDetail(id: String) {
+    private fun navigateToChallengeDetail(id: Int) {
         viewModelScope.launch {
             _events.emit(ChallengeListEvents.NavigateToChallengeDetail(id))
         }
     }
 
-    fun navigateToCreateChallenge(){
-        viewModelScope.launch{
+    fun navigateToCreateChallenge() {
+        viewModelScope.launch {
             _events.emit(ChallengeListEvents.NavigateToCreateChallenge)
         }
     }
 
-    fun showBottomSheet(){
-        viewModelScope.launch{
+    fun showBottomSheet() {
+        viewModelScope.launch {
             _events.emit(ChallengeListEvents.ShowBottomSheet)
         }
     }
 
-    fun setSortType(type: ChallengeSortType){
+    fun setSortType(type: ChallengeSortType) {
+        _uiState.value = _uiState.value.copy(
+            hasNext = true,
+            sortType = type,
+            page = 0
+        )
+        getChallengeList(SORT)
+    }
 
+    fun setCategory(type: String) {
+        category = type
     }
 }
 
-enum class ChallengeSortType(val text: String){
-    RECENT("최신순"),
-    MANY_PEOPLE("인원 많은순"),
-    LESS_PEOPLE("인원 적은순")
+enum class ChallengeSortType(val text: String, val value: String) {
+    DESC("최신순", "DESC"),
+    ASC("오래된 순", "ASC"),
+    GREATEST("인원 많은 순", "GREATEST"),
+    LEAST("인원 적은 순", "LEAST")
 }

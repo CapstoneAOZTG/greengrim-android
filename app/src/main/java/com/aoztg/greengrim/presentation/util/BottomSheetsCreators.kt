@@ -21,37 +21,48 @@ internal fun getSortSheet(
     dialog.setContentView(binding.root)
 
     when (curPosition) {
-        ChallengeSortType.RECENT -> binding.btnRecent.setTextColor(
+        ChallengeSortType.DESC -> binding.btnDesc.setTextColor(
             ContextCompat.getColor(
                 App.context(),
                 R.color.white
             )
         )
 
-        ChallengeSortType.MANY_PEOPLE -> binding.btnManyPeople.setTextColor(
+        ChallengeSortType.ASC -> binding.btnAsc.setTextColor(
             ContextCompat.getColor(
                 App.context(),
                 R.color.white
             )
         )
 
-        ChallengeSortType.LESS_PEOPLE -> binding.btnLessPeople.setTextColor(
+        ChallengeSortType.GREATEST -> binding.btnGreatest.setTextColor(
+            ContextCompat.getColor(
+                App.context(),
+                R.color.white
+            )
+        )
+
+        ChallengeSortType.LEAST -> binding.btnLeast.setTextColor(
             ContextCompat.getColor(
                 App.context(),
                 R.color.white
             )
         )
     }
-    binding.btnRecent.setOnClickListener {
-        onClickListener(ChallengeSortType.RECENT)
+    binding.btnDesc.setOnClickListener {
+        onClickListener(ChallengeSortType.DESC)
         dialog.dismiss()
     }
-    binding.btnManyPeople.setOnClickListener {
-        onClickListener(ChallengeSortType.MANY_PEOPLE)
+    binding.btnAsc.setOnClickListener {
+        onClickListener(ChallengeSortType.ASC)
         dialog.dismiss()
     }
-    binding.btnLessPeople.setOnClickListener {
-        onClickListener(ChallengeSortType.LESS_PEOPLE)
+    binding.btnGreatest.setOnClickListener {
+        onClickListener(ChallengeSortType.GREATEST)
+        dialog.dismiss()
+    }
+    binding.btnLeast.setOnClickListener {
+        onClickListener(ChallengeSortType.LEAST)
         dialog.dismiss()
     }
 

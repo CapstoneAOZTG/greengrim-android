@@ -24,7 +24,7 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
     private val parentViewModel: MainViewModel by activityViewModels()
     private val viewModel: ChatRoomViewModel by viewModels()
     private val args: ChatRoomFragmentArgs by navArgs()
-    private val chatId by lazy { args.id }
+    private val chatId by lazy { args.chatId }
     private val popupLocation = IntArray(2)
     private var isPopupShowing = false
 
@@ -108,7 +108,7 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
         findNavController().navigateUp()
     }
 
-    private fun NavController.toMakeCertification(id: String) {
+    private fun NavController.toMakeCertification(id: Int) {
         val action = ChatRoomFragmentDirections.actionChatRoomFragmentToMakeCertificationFragment(id)
         this.navigate(action)
     }

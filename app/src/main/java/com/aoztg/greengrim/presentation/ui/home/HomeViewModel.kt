@@ -2,14 +2,23 @@ package com.aoztg.greengrim.presentation.ui.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.aoztg.greengrim.data.model.ErrorResponse
+import com.aoztg.greengrim.data.repository.HomeRepository
+import com.aoztg.greengrim.presentation.ui.BaseState
 import com.aoztg.greengrim.presentation.ui.LoadingState
+import com.aoztg.greengrim.presentation.ui.challenge.list.ChallengeListEvents
+import com.aoztg.greengrim.presentation.ui.home.mapper.toHotChallenge
 import com.aoztg.greengrim.presentation.ui.home.model.HotChallenge
 import com.aoztg.greengrim.presentation.ui.home.model.HotNft
 import com.aoztg.greengrim.presentation.ui.home.model.MoreActivity
+import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -17,13 +26,23 @@ import javax.inject.Inject
 
 data class HomeUiState(
     val loading: LoadingState = LoadingState.Empty,
+    val apiState: BaseState = BaseState.Empty
 )
 
+sealed class HomeEvents{
+    data class NavigateToChallengeDetail(val id : Int): HomeEvents()
+}
+
 @HiltViewModel
-class HomeViewModel @Inject constructor() : ViewModel() {
+class HomeViewModel @Inject constructor(
+    private val homeRepository: HomeRepository
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow(HomeUiState())
     val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
+
+    private val _events = MutableSharedFlow<HomeEvents>()
+    val events: SharedFlow<HomeEvents> = _events.asSharedFlow()
 
     private val _hotChallengeList = MutableStateFlow<List<HotChallenge>>(emptyList())
     val hotChallengeList: StateFlow<List<HotChallenge>> = _hotChallengeList.asStateFlow()
@@ -41,11 +60,26 @@ class HomeViewModel @Inject constructor() : ViewModel() {
                     loading = LoadingState.IsLoading(true)
                 )
             }
-            _hotChallengeList.value = listOf(
-                HotChallenge("", "쓰레기 줍고 지구 살리기", listOf("줍킹", "남은 티켓 5개", "#줍다")),
-                HotChallenge("", "카페에서 항상 종이빨대!!", listOf("에코 제품 사용", "남은 티콋 6개", "#먹다")),
-                HotChallenge("", "전기자동차 인증팟!", listOf("아아", "sdf", "asdf"))
-            )
+
+            val response = homeRepository.getHotChallenges()
+
+            if(response.isSuccessful){
+                response.body()?.let{
+                    val uiModel = it.hotChallengeInfos.map{ data ->
+                        data.toHotChallenge(::navigateToChallengeDetail)
+                    }
+                    _hotChallengeList.value = uiModel
+                }
+            } else {
+                val error =
+                    Gson().fromJson(response.errorBody()?.string(), ErrorResponse::class.java)
+
+                _uiState.update { state ->
+                    state.copy(
+                        apiState = BaseState.Error(error.message)
+                    )
+                }
+            }
 
             _moreActivityList.value = listOf(
                 MoreActivity("", "쓰레기 잡기", "지금 플레이하면", "+ 10 G"),
@@ -65,7 +99,12 @@ class HomeViewModel @Inject constructor() : ViewModel() {
                 )
             }
         }
+    }
 
+    private fun navigateToChallengeDetail(id: Int) {
+        viewModelScope.launch {
+            _events.emit(HomeEvents.NavigateToChallengeDetail(id))
+        }
     }
 
 }

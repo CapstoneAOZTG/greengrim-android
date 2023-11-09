@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="10dp"
         android:layout_marginVertical="10dp"
-        android:onClick="@{() -> item.onItemClicked.invoke(item.title)}">
+        android:onClick="@{() -> item.onItemClicked.invoke(item.id)}">
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/iv_image"
@@ -51,7 +51,7 @@
             android:layout_marginHorizontal="8dp"
             android:layout_marginTop="2dp"
             android:layout_marginBottom="10dp"
-            app:colorChipList="@{item.keywords}"
+            app:challengeListChips="@{item.keywords}"
             app:chipSpacingVertical="4dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

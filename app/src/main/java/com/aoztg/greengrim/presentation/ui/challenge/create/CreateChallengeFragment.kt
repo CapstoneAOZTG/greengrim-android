@@ -11,6 +11,7 @@ import com.aoztg.greengrim.databinding.FragmentCreateChallengeBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
 import com.aoztg.greengrim.presentation.ui.challenge.adapter.ChallengeCategoryAdapter
 import com.aoztg.greengrim.presentation.ui.challenge.adapter.OnCategoryItemClickListener
+import com.aoztg.greengrim.presentation.ui.challenge.model.CategoryName
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -45,7 +46,7 @@ class CreateChallengeFragment :
         }
     }
 
-    override fun onItemClicked(view: View, category: String) {
+    override fun onItemClicked(view: View, category: CategoryName) {
         if (isCurViewExists) {
             curView.setBackgroundResource(R.drawable.shape_darkfill_nostroke_radius10)
         }
@@ -55,8 +56,8 @@ class CreateChallengeFragment :
         viewModel.setSelectedCategory(category)
     }
 
-    private fun NavController.toCreateChallengeDetail(category: String) {
-        val action = CreateChallengeFragmentDirections.actionCreateChallengeFragmentToCreateChallengeDetailFragment(category)
+    private fun NavController.toCreateChallengeDetail(category: CategoryName) {
+        val action = CreateChallengeFragmentDirections.actionCreateChallengeFragmentToCreateChallengeDetailFragment(category.text, category.value)
         this.navigate(action)
     }
 }

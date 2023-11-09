@@ -9,7 +9,7 @@ internal fun NavController.toAttendCheck() {
     this.navigate(action)
 }
 
-internal fun NavController.toChallengeDetail(id: String) {
+internal fun NavController.toChallengeDetail(id: Int) {
     val action = MainNavDirections.actionGlobalToChallengeDetailFragment(id)
     this.navigate(action)
 }
