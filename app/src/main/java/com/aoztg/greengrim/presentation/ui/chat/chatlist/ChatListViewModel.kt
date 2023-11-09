@@ -20,7 +20,7 @@ data class ChatListUiState(
 )
 
 sealed class ChatListEvents {
-    data class NavigateToChatRoom(val id: String) : ChatListEvents()
+    data class NavigateToChatRoom(val id: Int) : ChatListEvents()
 }
 
 
@@ -38,7 +38,7 @@ class ChatListViewModel @Inject constructor() : ViewModel() {
             state.copy(
                 chatListItem = listOf(
                     ChatListItem(
-                        id = "test",
+                        id = 0,
                         "https://greengrim-bucket.s3.ap-northeast-2.amazonaws.com/19836b51-2b6f-4e43-9e90-e86e331e9077.jpg",
                         title = "인하대학교 쓰레기 줍기",
                         recentChat = "인증 하셨나요 다들 ㅋㅋㅋ",
@@ -47,7 +47,7 @@ class ChatListViewModel @Inject constructor() : ViewModel() {
                         ::navigateToChatRoom
                     ),
                     ChatListItem(
-                        id = "test",
+                        id = 0,
                         "https://greengrim-bucket.s3.ap-northeast-2.amazonaws.com/19836b51-2b6f-4e43-9e90-e86e331e9077.jpg",
                         title = "인하대학교 쓰레기 줍기",
                         recentChat = "인증 하셨나요 다들 ㅋㅋㅋ",
@@ -56,7 +56,7 @@ class ChatListViewModel @Inject constructor() : ViewModel() {
                         ::navigateToChatRoom
                     ),
                     ChatListItem(
-                        id = "test",
+                        id = 0,
                         "https://greengrim-bucket.s3.ap-northeast-2.amazonaws.com/19836b51-2b6f-4e43-9e90-e86e331e9077.jpg",
                         title = "인하대학교 쓰레기 줍기",
                         recentChat = "인증 하셨나요 다들 ㅋㅋㅋ",
@@ -65,7 +65,7 @@ class ChatListViewModel @Inject constructor() : ViewModel() {
                         ::navigateToChatRoom
                     ),
                     ChatListItem(
-                        id = "test",
+                        id = 0,
                         "https://greengrim-bucket.s3.ap-northeast-2.amazonaws.com/19836b51-2b6f-4e43-9e90-e86e331e9077.jpg",
                         title = "인하대학교 쓰레기 줍기",
                         recentChat = "인증 하셨나요 다들 ㅋㅋㅋ",
@@ -79,7 +79,7 @@ class ChatListViewModel @Inject constructor() : ViewModel() {
         }
     }
 
-    private fun navigateToChatRoom(id: String) {
+    private fun navigateToChatRoom(id: Int) {
         viewModelScope.launch {
             _events.emit(ChatListEvents.NavigateToChatRoom(id))
         }
