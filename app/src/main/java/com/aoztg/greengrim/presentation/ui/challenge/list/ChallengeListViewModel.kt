@@ -30,19 +30,25 @@ data class ChallengeListUiState(
     val sortType: ChallengeSortType = ChallengeSortType.DESC,
     val page: Int = 0,
     val hasNext: Boolean = true,
-    val getChallengeRoomState : BaseState = BaseState.Empty
+    val getChallengeRoomState: BaseState = BaseState.Empty
 )
 
 sealed class ChallengeListEvents {
     data class NavigateToChallengeDetail(val id: String) : ChallengeListEvents()
     object NavigateToCreateChallenge : ChallengeListEvents()
     object ShowBottomSheet : ChallengeListEvents()
+    object ScrollToTop : ChallengeListEvents()
 }
 
 @HiltViewModel
 class ChallengeListViewModel @Inject constructor(
     private val challengeRepository: ChallengeRepository
 ) : ViewModel() {
+
+    companion object {
+        const val SORT = 0
+        const val ORIGINAL = 1
+    }
 
     private val _uiState = MutableStateFlow(ChallengeListUiState())
     val uiState: StateFlow<ChallengeListUiState> = _uiState.asStateFlow()
@@ -52,9 +58,9 @@ class ChallengeListViewModel @Inject constructor(
 
     private var category = ""
 
-    fun getChallengeList() {
+    fun getChallengeList(option: Int) {
 
-        if(_uiState.value.hasNext){
+        if (_uiState.value.hasNext) {
             viewModelScope.launch {
 
                 _uiState.update {
@@ -77,10 +83,11 @@ class ChallengeListViewModel @Inject constructor(
                         val uiData = body.toChallengeListData(::navigateToChallengeDetail)
                         _uiState.update { state ->
                             state.copy(
-                                challengeRoom = uiData.result,
+                                challengeRoom = if (option == ORIGINAL) _uiState.value.challengeRoom + uiData.result else uiData.result,
                                 hasNext = uiData.hasNext,
                                 page = uiData.page + 1,
-                                getChallengeRoomState = BaseState.Success
+                                getChallengeRoomState = BaseState.Success,
+                                loading = LoadingState.IsLoading(false)
                             )
                         }
                     }
@@ -90,15 +97,11 @@ class ChallengeListViewModel @Inject constructor(
 
                     _uiState.update { state ->
                         state.copy(
-                            getChallengeRoomState = BaseState.Error(error.message)
+                            getChallengeRoomState = BaseState.Error(error.message),
+                            loading = LoadingState.IsLoading(false)
                         )
                     }
                 }
-
-                delay(1000)
-                _uiState.value = _uiState.value.copy(
-                    loading = LoadingState.IsLoading(false)
-                )
             }
         }
     }
@@ -122,14 +125,12 @@ class ChallengeListViewModel @Inject constructor(
     }
 
     fun setSortType(type: ChallengeSortType) {
-        _uiState.update { state ->
-            state.copy(
-                hasNext = true,
-                sortType = type,
-                page = 0
-            )
-        }
-        getChallengeList()
+        _uiState.value = _uiState.value.copy(
+            hasNext = true,
+            sortType = type,
+            page = 0
+        )
+        getChallengeList(SORT)
     }
 
     fun setCategory(type: String) {

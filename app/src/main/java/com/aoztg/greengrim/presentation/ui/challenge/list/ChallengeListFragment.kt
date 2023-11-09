@@ -16,6 +16,7 @@ import com.aoztg.greengrim.presentation.base.BaseFragment
 import com.aoztg.greengrim.presentation.ui.BaseState
 import com.aoztg.greengrim.presentation.ui.LoadingState
 import com.aoztg.greengrim.presentation.ui.challenge.adapter.ChallengeRoomAdapter
+import com.aoztg.greengrim.presentation.ui.challenge.list.ChallengeListViewModel.Companion.ORIGINAL
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 import com.aoztg.greengrim.presentation.ui.toChallengeDetail
 import com.aoztg.greengrim.presentation.util.Constants.TAG
@@ -42,7 +43,7 @@ class ChallengeListFragment :
         binding.tvTitle.text = categoryText
         viewModel.setCategory(categoryValue)
         binding.rvChallengeList.adapter = ChallengeRoomAdapter()
-        viewModel.getChallengeList()
+        viewModel.getChallengeList(ORIGINAL)
         initStateObserver()
         initEventObserver()
         setScrollEventListener()
@@ -86,6 +87,7 @@ class ChallengeListFragment :
 
                     is ChallengeListEvents.NavigateToCreateChallenge -> findNavController().toCreateChallenge()
                     is ChallengeListEvents.ShowBottomSheet -> showBottomSheet()
+                    is ChallengeListEvents.ScrollToTop -> binding.rvChallengeList.smoothScrollToPosition(0)
                 }
             }
         }
@@ -102,7 +104,7 @@ class ChallengeListFragment :
                 val itemTotalCount = recyclerView.adapter?.itemCount?.minus(1)
 
                 if (lastVisibleItemPosition == itemTotalCount) {
-                    viewModel.getChallengeList()
+                    viewModel.getChallengeList(ORIGINAL)
                 }
             }
         })
