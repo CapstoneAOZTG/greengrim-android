@@ -14,6 +14,6 @@ data class ChallengeRoom(
     val imgUrl: String,
     val title: String,
     val keywords: ChallengeSimpleTags,
-    val onItemClicked: (String) -> Unit,
+    val onItemClicked: (Int) -> Unit,
 )
 

@@ -67,7 +67,7 @@
         android:label="ChallengeDetail">
         <argument
             android:name="id"
-            app:argType="string" />
+            app:argType="int" />
         <action
             android:id="@+id/action_challenge_detail_fragment_to_chat_room_fragment"
             app:destination="@id/chat_room_fragment" />

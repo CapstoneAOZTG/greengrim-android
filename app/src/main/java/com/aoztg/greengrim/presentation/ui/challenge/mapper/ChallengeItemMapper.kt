@@ -5,7 +5,7 @@ import com.aoztg.greengrim.presentation.ui.challenge.model.ChallengeListData
 import com.aoztg.greengrim.presentation.ui.challenge.model.ChallengeRoom
 
 
-fun ChallengeListResponse.toChallengeListData(onItemClicked: (String) -> Unit): ChallengeListData{
+fun ChallengeListResponse.toChallengeListData(onItemClicked: (Int) -> Unit): ChallengeListData{
     return ChallengeListData(
         hasNext = hasNext,
         page = page,

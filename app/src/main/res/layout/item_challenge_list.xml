@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="10dp"
         android:layout_marginVertical="10dp"
-        android:onClick="@{() -> item.onItemClicked.invoke(item.title)}">
+        android:onClick="@{() -> item.onItemClicked.invoke(item.id)}">
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/iv_image"
