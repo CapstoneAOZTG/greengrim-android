@@ -59,12 +59,14 @@ class ChallengeListFragment :
 
                 when (it.loading) {
                     is LoadingState.IsLoading -> {
-                        loadingState = if (it.loading.state) {
-                            showLoading(requireContext())
-                            true
-                        } else {
+                        if(it.loading.state){
+                            if(!loadingState){
+                                showLoading(requireContext())
+                                loadingState = true
+                            }
+                        } else{
                             dismissLoading()
-                            false
+                            loadingState = false
                         }
                     }
 

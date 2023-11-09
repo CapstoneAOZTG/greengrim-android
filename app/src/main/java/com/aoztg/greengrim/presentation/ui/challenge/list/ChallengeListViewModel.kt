@@ -80,8 +80,7 @@ class ChallengeListViewModel @Inject constructor(
                                 challengeRoom = uiData.result,
                                 hasNext = uiData.hasNext,
                                 page = uiData.page + 1,
-                                getChallengeRoomState = BaseState.Success,
-                                loading = LoadingState.Empty
+                                getChallengeRoomState = BaseState.Success
                             )
                         }
                     }
@@ -91,8 +90,7 @@ class ChallengeListViewModel @Inject constructor(
 
                     _uiState.update { state ->
                         state.copy(
-                            getChallengeRoomState = BaseState.Error(error.message),
-                            loading = LoadingState.Empty
+                            getChallengeRoomState = BaseState.Error(error.message)
                         )
                     }
                 }
