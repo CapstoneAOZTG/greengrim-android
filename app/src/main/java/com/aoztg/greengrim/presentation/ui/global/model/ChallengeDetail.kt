@@ -7,6 +7,6 @@ data class ChallengeDetail(
     val imgUrl: String = "",
     val title: String = "",
     val description: String = "",
-    val keywords: ChallengeDetailTags?=null,
+    val keywords: ChallengeDetailTags? = null,
     val date: String = "",
 )

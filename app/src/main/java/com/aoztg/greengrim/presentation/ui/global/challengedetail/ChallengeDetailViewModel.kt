@@ -2,10 +2,14 @@ package com.aoztg.greengrim.presentation.ui.global.challengedetail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.aoztg.greengrim.data.model.ChallengeDetailTags
+import com.aoztg.greengrim.data.model.ErrorResponse
 import com.aoztg.greengrim.data.repository.ChallengeRepository
+import com.aoztg.greengrim.presentation.ui.BaseState
 import com.aoztg.greengrim.presentation.ui.LoadingState
 import com.aoztg.greengrim.presentation.ui.global.mapper.toChallengeDetail
 import com.aoztg.greengrim.presentation.ui.global.model.ChallengeDetail
+import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -20,14 +24,15 @@ import javax.inject.Inject
 
 data class ChallengeDetailUiState(
     val loading: LoadingState = LoadingState.Empty,
-    val challengeDetail: ChallengeDetail = ChallengeDetail()
+    val challengeDetail: ChallengeDetail = ChallengeDetail(),
+    val getChallengeDetailState: BaseState = BaseState.Empty
 )
 
 sealed class ChallengeDetailEvents {
     object NavigateBack : ChallengeDetailEvents()
     object PopUpMenu : ChallengeDetailEvents()
     object RootClicked : ChallengeDetailEvents()
-    data class NavigateChatRoom(val id: String) : ChallengeDetailEvents()
+    data class NavigateChatRoom(val id: Int) : ChallengeDetailEvents()
 }
 
 @HiltViewModel
@@ -59,15 +64,23 @@ class ChallengeDetailViewModel @Inject constructor(
                     val uiData = it.toChallengeDetail()
                     _uiState.update { state ->
                         state.copy(
-                            challengeDetail = uiData
+                            challengeDetail = uiData,
+                            getChallengeDetailState = BaseState.Success
                         )
                     }
                 }
             } else {
+                val error =
+                    Gson().fromJson(response.errorBody()?.string(), ErrorResponse::class.java)
 
+                _uiState.update { state ->
+                    state.copy(
+                        getChallengeDetailState = BaseState.Error(error.message)
+                    )
+                }
             }
 
-            delay(1000)
+            delay(500)
 
             _uiState.update {
                 it.copy(
@@ -95,7 +108,7 @@ class ChallengeDetailViewModel @Inject constructor(
         }
     }
 
-    fun navigateToChatRoom(id: String) {
+    fun navigateToChatRoom(id: Int) {
         viewModelScope.launch {
             _events.emit(ChallengeDetailEvents.NavigateChatRoom(id))
         }
