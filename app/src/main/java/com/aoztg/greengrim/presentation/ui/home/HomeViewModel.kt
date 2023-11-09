@@ -2,6 +2,7 @@ package com.aoztg.greengrim.presentation.ui.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.aoztg.greengrim.data.repository.HomeRepository
 import com.aoztg.greengrim.presentation.ui.LoadingState
 import com.aoztg.greengrim.presentation.ui.home.model.HotChallenge
 import com.aoztg.greengrim.presentation.ui.home.model.HotNft
@@ -20,7 +21,9 @@ data class HomeUiState(
 )
 
 @HiltViewModel
-class HomeViewModel @Inject constructor() : ViewModel() {
+class HomeViewModel @Inject constructor(
+    private val homeRepository: HomeRepository
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow(HomeUiState())
     val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
@@ -41,11 +44,14 @@ class HomeViewModel @Inject constructor() : ViewModel() {
                     loading = LoadingState.IsLoading(true)
                 )
             }
-            _hotChallengeList.value = listOf(
-                HotChallenge("", "쓰레기 줍고 지구 살리기", listOf("줍킹", "남은 티켓 5개", "#줍다")),
-                HotChallenge("", "카페에서 항상 종이빨대!!", listOf("에코 제품 사용", "남은 티콋 6개", "#먹다")),
-                HotChallenge("", "전기자동차 인증팟!", listOf("아아", "sdf", "asdf"))
-            )
+
+            val response = homeRepository.getHotChallenges()
+
+            if(response.isSuccessful){
+
+            } else {
+
+            }
 
             _moreActivityList.value = listOf(
                 MoreActivity("", "쓰레기 잡기", "지금 플레이하면", "+ 10 G"),

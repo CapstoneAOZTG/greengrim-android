@@ -12,9 +12,11 @@ import com.aoztg.greengrim.presentation.ui.LoadingState
 import com.aoztg.greengrim.presentation.ui.home.adapter.HotChallengeAdapter
 import com.aoztg.greengrim.presentation.ui.home.adapter.HotNftAdapter
 import com.aoztg.greengrim.presentation.ui.home.adapter.MoreActivityAdapter
+import dagger.hilt.android.AndroidEntryPoint
 import me.relex.circleindicator.CircleIndicator2
 
 
+@AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
     private val viewModel: HomeViewModel by viewModels()
