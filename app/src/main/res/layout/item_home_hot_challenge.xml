@@ -49,6 +49,7 @@
             android:layout_marginTop="4dp"
             android:layout_marginBottom="10dp"
             app:chipSpacingVertical="4dp"
+            app:hotChipList="@{item.keywords}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

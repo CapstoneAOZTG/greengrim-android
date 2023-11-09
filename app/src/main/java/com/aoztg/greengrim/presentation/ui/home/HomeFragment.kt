@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentHomeBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
+import com.aoztg.greengrim.presentation.ui.BaseState
 import com.aoztg.greengrim.presentation.ui.LoadingState
 import com.aoztg.greengrim.presentation.ui.home.adapter.HotChallengeAdapter
 import com.aoztg.greengrim.presentation.ui.home.adapter.HotNftAdapter
@@ -68,6 +69,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
                         else dismissLoading()
                     }
 
+                    else -> {}
+                }
+
+                when (it.apiState) {
+                    is BaseState.Error -> showCustomToast(it.apiState.msg)
                     else -> {}
                 }
             }

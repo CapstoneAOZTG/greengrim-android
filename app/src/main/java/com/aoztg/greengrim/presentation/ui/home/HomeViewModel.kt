@@ -2,11 +2,15 @@ package com.aoztg.greengrim.presentation.ui.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.aoztg.greengrim.data.model.ErrorResponse
 import com.aoztg.greengrim.data.repository.HomeRepository
+import com.aoztg.greengrim.presentation.ui.BaseState
 import com.aoztg.greengrim.presentation.ui.LoadingState
+import com.aoztg.greengrim.presentation.ui.home.mapper.toHotChallenge
 import com.aoztg.greengrim.presentation.ui.home.model.HotChallenge
 import com.aoztg.greengrim.presentation.ui.home.model.HotNft
 import com.aoztg.greengrim.presentation.ui.home.model.MoreActivity
+import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,6 +22,7 @@ import javax.inject.Inject
 
 data class HomeUiState(
     val loading: LoadingState = LoadingState.Empty,
+    val apiState: BaseState = BaseState.Empty
 )
 
 @HiltViewModel
@@ -48,9 +53,21 @@ class HomeViewModel @Inject constructor(
             val response = homeRepository.getHotChallenges()
 
             if(response.isSuccessful){
-
+                response.body()?.let{
+                    val uiModel = it.hotChallengeInfos.map{ data ->
+                        data.toHotChallenge()
+                    }
+                    _hotChallengeList.value = uiModel
+                }
             } else {
+                val error =
+                    Gson().fromJson(response.errorBody()?.string(), ErrorResponse::class.java)
 
+                _uiState.update { state ->
+                    state.copy(
+                        apiState = BaseState.Error(error.message)
+                    )
+                }
             }
 
             _moreActivityList.value = listOf(
