@@ -1,6 +1,7 @@
 package com.aoztg.greengrim.app.di
 
 import com.aoztg.greengrim.data.remote.ChallengeAPI
+import com.aoztg.greengrim.data.remote.HomeAPI
 import com.aoztg.greengrim.data.remote.ImageAPI
 import com.aoztg.greengrim.data.remote.InfoAPI
 import com.aoztg.greengrim.data.remote.IntroAPI
@@ -37,6 +38,12 @@ object ApiModule {
     @Provides
     fun provideChallengeService(retrofit: Retrofit): ChallengeAPI {
         return retrofit.create(ChallengeAPI::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun provideHomeService(retrofit: Retrofit): HomeAPI {
+        return retrofit.create(HomeAPI::class.java)
     }
 
 }
