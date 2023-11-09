@@ -21,4 +21,10 @@ interface ChallengeRepository {
         size: Int,
         sort: String
     ): Response<ChallengeListResponse>
+
+    suspend fun getMyChallenge(
+        page: Int,
+        size: Int,
+        sort: String
+    ): Response<ChallengeListResponse>
 }

@@ -19,5 +19,9 @@ class ChallengeRepositoryImpl @Inject constructor(private val api: ChallengeAPI)
     ): Response<ChallengeListResponse> = api.getChallengeList(category, page, size, sort)
 
     override suspend fun getChallengeDetail(id: Int): Response<ChallengeDetailResponse> = api.getChallengeDetail(id)
-
+    override suspend fun getMyChallenge(
+        page: Int,
+        size: Int,
+        sort: String
+    ): Response<ChallengeListResponse> = api.getMyChallengeList(page,size,sort)
 }
