@@ -8,6 +8,7 @@ import androidx.core.view.children
 import androidx.databinding.BindingAdapter
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.aoztg.greengrim.R
@@ -69,9 +70,7 @@ class CreateChallengeDetailFragment :
             viewModel.events.collect {
                 when (it) {
                     is CreateChallengeDetailEvents.NavigateToBack -> findNavController().navigateUp()
-                    else -> {
-                        // todo 챌린지 생성 성공시, backstack 지운뒤 해당 채팅방으로 이동
-                    }
+                    is CreateChallengeDetailEvents.NavigateToChatList -> findNavController().toChatList()
                 }
             }
         }
@@ -89,6 +88,11 @@ class CreateChallengeDetailFragment :
                 viewModel.setKeyword(curView.text.toString())
             }
         }
+    }
+
+    private fun NavController.toChatList(){
+        val action = CreateChallengeDetailFragmentDirections.actionCreateChallengeDetailFragmentToChatListFragment()
+        this.navigate(action)
     }
 }
 

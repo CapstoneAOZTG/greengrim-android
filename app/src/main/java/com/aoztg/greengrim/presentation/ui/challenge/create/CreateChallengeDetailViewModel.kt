@@ -3,7 +3,10 @@ package com.aoztg.greengrim.presentation.ui.challenge.create
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.data.model.CreateChallengeRequest
+import com.aoztg.greengrim.data.model.ErrorResponse
 import com.aoztg.greengrim.data.repository.ChallengeRepository
+import com.aoztg.greengrim.presentation.ui.BaseState
+import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,7 +28,8 @@ data class CreateChallengeDetailUiState(
     val certificateProgressState: ProgressState = ProgressState.Empty,
     val ticketProgressState: ProgressState = ProgressState.Empty,
     val minCertificateProgressState: ProgressState = ProgressState.Empty,
-    val randomKeywordState: KeywordState = KeywordState.Empty
+    val randomKeywordState: KeywordState = KeywordState.Empty,
+    val createChallengeState: BaseState = BaseState.Empty
 )
 
 sealed class ProgressState {
@@ -40,7 +44,7 @@ sealed class KeywordState {
 
 sealed class CreateChallengeDetailEvents{
     object NavigateToBack : CreateChallengeDetailEvents()
-    data class NavigateToChatRoom(val chatId: Int) : CreateChallengeDetailEvents()
+    object NavigateToChatList : CreateChallengeDetailEvents()
 }
 
 @HiltViewModel
@@ -175,9 +179,16 @@ class CreateChallengeDetailViewModel @Inject constructor(
             )
 
             if(response.isSuccessful){
-                // todo 해당 chatting 방으로 이동
-
+                _events.emit(CreateChallengeDetailEvents.NavigateToChatList)
             } else {
+
+                val error =
+                    Gson().fromJson(response.errorBody()?.string(), ErrorResponse::class.java)
+                _uiState.update { state ->
+                    state.copy(
+                        createChallengeState = BaseState.Error(error.message)
+                    )
+                }
 
             }
         }
