@@ -2,12 +2,11 @@ package com.aoztg.greengrim.presentation.ui.home
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.aoztg.greengrim.MainNavDirections
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentHomeBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
@@ -16,6 +15,8 @@ import com.aoztg.greengrim.presentation.ui.LoadingState
 import com.aoztg.greengrim.presentation.ui.home.adapter.HotChallengeAdapter
 import com.aoztg.greengrim.presentation.ui.home.adapter.HotNftAdapter
 import com.aoztg.greengrim.presentation.ui.home.adapter.MoreActivityAdapter
+import com.aoztg.greengrim.presentation.ui.main.MainViewModel
+import com.aoztg.greengrim.presentation.ui.toChallengeDetail
 import dagger.hilt.android.AndroidEntryPoint
 import me.relex.circleindicator.CircleIndicator2
 
@@ -23,11 +24,14 @@ import me.relex.circleindicator.CircleIndicator2
 @AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
+    private val parentViewModel: MainViewModel by activityViewModels()
+
     private val viewModel: HomeViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        parentViewModel.showBNV()
         binding.vm = viewModel
         initRecycler()
         initStateObserver()
@@ -106,11 +110,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         pagerSnapHelper.attachToRecyclerView(recycler)
 
         indicator.attachToRecyclerView(recycler, pagerSnapHelper)
-    }
-
-    private fun NavController.toChallengeDetail(id: Int) {
-        val action = MainNavDirections.actionGlobalToChallengeDetailFragment(id)
-        this.navigate(action)
     }
 
 }
