@@ -5,9 +5,10 @@ import com.aoztg.greengrim.data.model.CertificationDefaultDataResponse
 import com.aoztg.greengrim.data.model.CertificationDetailResponse
 import com.aoztg.greengrim.data.model.CertificationListResponse
 import com.aoztg.greengrim.data.model.CreateCertificationRequest
+import com.aoztg.greengrim.data.model.MyCertificationListResponse
 import retrofit2.Response
 
-interface ChatRepository {
+interface CertificationRepository {
 
     suspend fun getCertificationDefaultData(
         id: Int
@@ -28,6 +29,16 @@ interface ChatRepository {
         page: Int,
         size: Int
     ): Response<CertificationListResponse>
+
+    suspend fun getMyCertificationDate(
+        month: String
+    ): Response<CertificationDatesResponse>
+
+    suspend fun getMyCertificationList(
+        date: String,
+        page: Int,
+        size: Int
+    ): Response<MyCertificationListResponse>
 
     suspend fun createCertification(
         data: CreateCertificationRequest

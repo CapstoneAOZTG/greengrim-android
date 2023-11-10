@@ -1,7 +1,9 @@
 package com.aoztg.greengrim.data.remote
 
+import com.aoztg.greengrim.data.model.CertificationDatesResponse
 import com.aoztg.greengrim.data.model.ChallengeListResponse
 import com.aoztg.greengrim.data.model.GetProfileResponse
+import com.aoztg.greengrim.data.model.MyCertificationListResponse
 import com.aoztg.greengrim.data.model.PatchProfileRequest
 import retrofit2.Response
 import retrofit2.http.Body
@@ -23,10 +25,4 @@ interface InfoAPI {
     @DELETE("/visitor/delete")
     suspend fun withdrawal(): Response<Unit>
 
-    @GET("/visitor/challenges")
-    suspend fun getMyChallengeList(
-        @Query("page") page: Int,
-        @Query("size") size: Int,
-        @Query("sort") sort: String
-    ): Response<ChallengeListResponse>
 }

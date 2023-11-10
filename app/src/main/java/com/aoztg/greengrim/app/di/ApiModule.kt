@@ -1,7 +1,7 @@
 package com.aoztg.greengrim.app.di
 
 import com.aoztg.greengrim.data.remote.ChallengeAPI
-import com.aoztg.greengrim.data.remote.ChatAPI
+import com.aoztg.greengrim.data.remote.CertificationAPI
 import com.aoztg.greengrim.data.remote.HomeAPI
 import com.aoztg.greengrim.data.remote.ImageAPI
 import com.aoztg.greengrim.data.remote.InfoAPI
@@ -49,8 +49,8 @@ object ApiModule {
 
     @Singleton
     @Provides
-    fun provideChatService(retrofit: Retrofit): ChatAPI {
-        return retrofit.create(ChatAPI::class.java)
+    fun provideCertificationService(retrofit: Retrofit): CertificationAPI {
+        return retrofit.create(CertificationAPI::class.java)
     }
 
 }
