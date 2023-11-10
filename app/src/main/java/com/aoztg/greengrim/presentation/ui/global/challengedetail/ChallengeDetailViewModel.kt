@@ -2,9 +2,9 @@ package com.aoztg.greengrim.presentation.ui.global.challengedetail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.aoztg.greengrim.data.model.ChallengeDetailTags
 import com.aoztg.greengrim.data.model.ErrorResponse
 import com.aoztg.greengrim.data.repository.ChallengeRepository
+import com.aoztg.greengrim.data.repository.ChatRepository
 import com.aoztg.greengrim.presentation.ui.BaseState
 import com.aoztg.greengrim.presentation.ui.LoadingState
 import com.aoztg.greengrim.presentation.ui.global.mapper.toChallengeDetail
@@ -37,7 +37,8 @@ sealed class ChallengeDetailEvents {
 
 @HiltViewModel
 class ChallengeDetailViewModel @Inject constructor(
-    private val challengeRepository: ChallengeRepository
+    private val challengeRepository: ChallengeRepository,
+    private val chatRepository: ChatRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ChallengeDetailUiState())
@@ -110,7 +111,11 @@ class ChallengeDetailViewModel @Inject constructor(
 
     fun navigateToChatRoom(id: Int) {
         viewModelScope.launch {
-            _events.emit(ChallengeDetailEvents.NavigateChatRoom(id))
+            val response = chatRepository.enterChat(id)
+
+            if(response.isSuccessful){
+                _events.emit(ChallengeDetailEvents.NavigateChatRoom(id))
+            }
         }
     }
 
