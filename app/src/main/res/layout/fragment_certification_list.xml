@@ -63,90 +63,91 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <TextView
-            android:id="@+id/tv_challenge_title"
-            style="@style/TextGgMedium"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:paddingStart="@dimen/padding_large"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/layout_toolbar"
-            tools:text="인하대학교 쓰레기 줍기" />
-
-        <TextView
-            android:id="@+id/tv_keyword_category"
-            style="@style/TextGgSmallBlackBold"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:background="@drawable/shape_purplefill_nostroke_radius20"
-            android:paddingHorizontal="8dp"
-            app:layout_constraintBottom_toBottomOf="@id/tv_challenge_title"
-            app:layout_constraintStart_toEndOf="@id/tv_challenge_title"
-            app:layout_constraintTop_toTopOf="@id/tv_challenge_title"
-            tools:text="줍킹" />
-
-        <TextView
-            android:id="@+id/tv_keyword_ticket"
-            style="@style/TextGgSmallBlackBold"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:background="@drawable/shape_greenfill_nostroke_radius20"
-            android:paddingHorizontal="8dp"
-            app:layout_constraintBottom_toBottomOf="@id/tv_challenge_title"
-            app:layout_constraintStart_toEndOf="@id/tv_keyword_category"
-            app:layout_constraintTop_toTopOf="@id/tv_challenge_title"
-            tools:text="티켓 5/30" />
-
-        <TextView
-            android:id="@+id/tv_challenge_description"
-            style="@style/TextGgSmallGrey1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginEnd="32dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_challenge_title"
-            tools:text="함께 쓰레기를 주우며 인증하고 키워드 얻어봐요! 각자 취미에 대해 편안하게 이야기 할 수 있는 챌린지 방입니다. 인하대 후문에서 쓰레기 줍고 있습니다!" />
-
-        <TextView
-            android:id="@+id/tv_date"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:paddingStart="30dp"
-            android:textColor="@color/white"
-            android:textSize="30sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_challenge_description"
-            tools:text="8월 17일, 목요일" />
-
-        <com.google.android.material.divider.MaterialDivider
-            android:id="@+id/divider_date"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            app:dividerColor="@color/gg_dark_Gray"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_date" />
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/divider_date">
+            app:layout_constraintTop_toBottomOf="@id/layout_toolbar">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tv_challenge_title"
+                    style="@style/TextGgMedium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:paddingStart="@dimen/padding_large"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="인하대학교 쓰레기 줍기" />
+
+                <TextView
+                    android:id="@+id/tv_keyword_category"
+                    style="@style/TextGgSmallBlackBold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:background="@drawable/shape_purplefill_nostroke_radius20"
+                    android:paddingHorizontal="8dp"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_challenge_title"
+                    app:layout_constraintStart_toEndOf="@id/tv_challenge_title"
+                    app:layout_constraintTop_toTopOf="@id/tv_challenge_title"
+                    tools:text="줍킹" />
+
+                <TextView
+                    android:id="@+id/tv_keyword_ticket"
+                    style="@style/TextGgSmallBlackBold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:background="@drawable/shape_greenfill_nostroke_radius20"
+                    android:paddingHorizontal="8dp"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_challenge_title"
+                    app:layout_constraintStart_toEndOf="@id/tv_keyword_category"
+                    app:layout_constraintTop_toTopOf="@id/tv_challenge_title"
+                    tools:text="티켓 5/30" />
+
+                <TextView
+                    android:id="@+id/tv_challenge_description"
+                    style="@style/TextGgSmallGrey1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="32dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_challenge_title"
+                    tools:text="함께 쓰레기를 주우며 인증하고 키워드 얻어봐요! 각자 취미에 대해 편안하게 이야기 할 수 있는 챌린지 방입니다. 인하대 후문에서 쓰레기 줍고 있습니다!" />
+
+                <TextView
+                    android:id="@+id/tv_date"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:paddingStart="30dp"
+                    android:textColor="@color/white"
+                    android:textSize="30sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_challenge_description"
+                    tools:text="8월 17일, 목요일" />
+
+                <com.google.android.material.divider.MaterialDivider
+                    android:id="@+id/divider_date"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    app:dividerColor="@color/gg_dark_Gray"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_date" />
 
                 <TextView
                     android:id="@+id/btn_select_month"
@@ -158,7 +159,7 @@
                     android:textColor="@color/gg_calendar_grey"
                     app:drawableEndCompat="@drawable/icon_down"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/divider_date"
                     tools:text="2023년 8월\t" />
 
                 <ImageButton
@@ -212,14 +213,14 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:overScrollMode="never"
                     android:nestedScrollingEnabled="false"
                     android:orientation="vertical"
-                    app:list="@{vm.uiState.certificationList}"
+                    android:overScrollMode="never"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/divider_calendar"
+                    app:list="@{vm.uiState.certificationList}"
                     tools:listitem="@layout/item_certification" />
 
                 <View
