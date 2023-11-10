@@ -77,6 +77,8 @@ class CreateCertificationViewModel @Inject constructor(
 
         viewModelScope.launch {
             val response = certificationRepository.createCertification(
+
+                // 테스트를 위해 닉네임 "노아" 로 입장되어있는 챌린지 326 채팅방 29 로 하드코딩
                 CreateCertificationRequest(
                     challengeId = 326,
                     imgUrl = certificationImgUrl.value,
