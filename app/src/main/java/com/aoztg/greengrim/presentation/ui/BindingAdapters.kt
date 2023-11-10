@@ -12,6 +12,7 @@ import com.aoztg.greengrim.data.model.HotChallengeTags
 import com.aoztg.greengrim.presentation.util.toCategoryText
 import com.bumptech.glide.Glide
 import com.google.android.material.chip.ChipGroup
+import dagger.BindsInstance
 
 @BindingAdapter("imgResource")
 fun bindResource(imageView: ImageView, resource: Int) {
@@ -44,6 +45,11 @@ fun bindImgCheckEmpty(imageView: ImageView, url: String) {
             .load(url)
             .into(imageView)
     }
+}
+
+@BindingAdapter("categoryChip")
+fun bindCategoryChip(textView: TextView, text: String){
+    textView.text = text.toCategoryText()
 }
 
 @BindingAdapter("challengeListChips")

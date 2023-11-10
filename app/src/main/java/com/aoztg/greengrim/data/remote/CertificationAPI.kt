@@ -15,7 +15,7 @@ import retrofit2.http.Query
 
 interface CertificationAPI {
 
-    @GET("/certifications/preview/{id}")
+    @GET("/visitor/challenges/preview/{id}")
     suspend fun getCertificationDefaultData(
         @Path("id") id: Int
     ): Response<CertificationDefaultDataResponse>
