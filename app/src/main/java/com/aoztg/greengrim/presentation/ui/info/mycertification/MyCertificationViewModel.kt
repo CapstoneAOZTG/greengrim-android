@@ -2,6 +2,7 @@ package com.aoztg.greengrim.presentation.ui.info.mycertification
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.aoztg.greengrim.data.repository.CertificationRepository
 import com.aoztg.greengrim.presentation.ui.DateState
 import com.aoztg.greengrim.presentation.ui.MonthState
 import com.aoztg.greengrim.presentation.ui.info.model.MyCertification
@@ -32,7 +33,9 @@ sealed class MyCertificationEvents {
 }
 
 @HiltViewModel
-class MyCertificationViewModel @Inject constructor() : ViewModel() {
+class MyCertificationViewModel @Inject constructor(
+    private val certificationRepository: CertificationRepository
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow(MyCertificationUiState())
     val uiState: StateFlow<MyCertificationUiState> = _uiState.asStateFlow()
@@ -52,6 +55,7 @@ class MyCertificationViewModel @Inject constructor() : ViewModel() {
                 curMonth = MonthState.Changed(stringYearMonth, date)
             )
         }
+        getCertificationDate(curYear.toString() + "-" + if (curMonth < 10) "0$curMonth" else curMonth.toString())
     }
 
     fun selectDate(date: LocalDate) {
@@ -64,15 +68,23 @@ class MyCertificationViewModel @Inject constructor() : ViewModel() {
         getCurDateCertification(date)
     }
 
-    fun getEventList() {
-        _uiState.update { state ->
-            state.copy(
-                eventDateList = listOf(
-                    "2023-10-20".toLocalDate(),
-                    "2023-10-30".toLocalDate(),
-                )
-            )
+    private fun getCertificationDate(yearMonth: String) {
+        viewModelScope.launch {
+            val response = certificationRepository.getMyCertificationDate(yearMonth)
+
+            if (response.isSuccessful) {
+                response.body()?.let { data ->
+                    _uiState.update { state ->
+                        state.copy(
+                            eventDateList = data.date.map { it.toLocalDate() }
+                        )
+                    }
+                }
+            } else {
+
+            }
         }
+
     }
 
     fun showYearMonthDatePicker() {

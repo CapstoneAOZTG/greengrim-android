@@ -49,7 +49,6 @@ class MyCertificationFragment :
         binding.rvCertifications.adapter = MyCertificationAdapter()
         initStateObserver()
         initEventsObserver()
-        viewModel.getEventList()
         initCalenderView()
     }
 
