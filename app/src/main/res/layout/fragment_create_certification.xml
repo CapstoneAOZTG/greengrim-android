@@ -5,6 +5,14 @@
 
     <data>
 
+        <variable
+            name="pvm"
+            type="com.aoztg.greengrim.presentation.ui.main.MainViewModel" />
+
+        <variable
+            name="vm"
+            type="com.aoztg.greengrim.presentation.ui.chat.createcertification.CreateCertificationViewModel" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -51,6 +59,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
+                android:enabled="@{vm.isDataReady()}"
                 android:minWidth="0dp"
                 android:minHeight="0dp"
                 android:text="완료"
@@ -117,7 +126,9 @@
             android:layout_height="0dp"
             android:layout_marginHorizontal="20dp"
             android:layout_marginTop="8dp"
+            android:onClick="@{() -> pvm.goToGallery()}"
             android:src="@drawable/img_add_certification_photo"
+            app:imgUrlCheckEmtpy="@{pvm.image}"
             app:layout_constraintDimensionRatio="942:576"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -144,6 +155,7 @@
             app:layout_constraintBottom_toBottomOf="@id/tv_description"
             app:layout_constraintStart_toEndOf="@id/tv_description"
             app:layout_constraintTop_toTopOf="@id/tv_description"
+            app:textLength="@{vm.description}"
             app:textLimit="@{200}"
             tools:text="(0/200)" />
 
@@ -162,6 +174,7 @@
             android:maxLines="3"
             android:paddingHorizontal="15dp"
             android:paddingVertical="12dp"
+            android:text="@={vm.description}"
             android:textColor="@color/white"
             android:textColorHint="@color/gg_grey5"
             android:textSize="13sp"
