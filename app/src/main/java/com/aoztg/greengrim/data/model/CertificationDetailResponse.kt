@@ -8,6 +8,7 @@ data class CertificationDetailResponse(
 )
 
 data class CertificationInfo(
+    val id: Int,
     val createdAt: String,
     val description: String,
     val imgUrl: String,

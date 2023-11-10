@@ -8,14 +8,19 @@ import android.widget.TextView
 import androidx.core.view.children
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.CalendarDayLayoutBinding
 import com.aoztg.greengrim.databinding.CalendarHeaderBinding
 import com.aoztg.greengrim.databinding.FragmentMyCertificationBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
+import com.aoztg.greengrim.presentation.ui.BaseState
 import com.aoztg.greengrim.presentation.ui.DateState
 import com.aoztg.greengrim.presentation.ui.MonthState
 import com.aoztg.greengrim.presentation.ui.info.adapter.MyCertificationAdapter
+import com.aoztg.greengrim.presentation.ui.info.mycertification.MyCertificationViewModel.Companion.NEXT_PAGE
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 import com.kizitonwose.calendar.core.CalendarDay
 import com.kizitonwose.calendar.core.CalendarMonth
@@ -49,6 +54,7 @@ class MyCertificationFragment :
         binding.rvCertifications.adapter = MyCertificationAdapter()
         initStateObserver()
         initEventsObserver()
+        setScrollEventListener()
         initCalenderView()
     }
 
@@ -103,6 +109,16 @@ class MyCertificationFragment :
 
                     else -> {}
                 }
+
+                when (it.getCertificationDatesState){
+                    is BaseState.Error -> showCustomToast(it.getCertificationDatesState.msg)
+                    else -> {}
+                }
+
+                when (it.getCertificationListState){
+                    is BaseState.Error -> showCustomToast(it.getCertificationListState.msg)
+                    else -> {}
+                }
             }
         }
     }
@@ -123,6 +139,23 @@ class MyCertificationFragment :
                 }
             }
         }
+    }
+
+    private fun setScrollEventListener() {
+
+        binding.rvCertifications.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                val lastVisibleItemPosition = (recyclerView.layoutManager as LinearLayoutManager).findLastCompletelyVisibleItemPosition()
+                val itemTotalCount = recyclerView.adapter?.itemCount?.minus(1)
+
+                if (lastVisibleItemPosition == itemTotalCount) {
+                    viewModel.getCertificationList(NEXT_PAGE)
+                }
+            }
+        })
     }
 
     private fun configureBinders(daysOfWeek: List<DayOfWeek>) {
@@ -164,7 +197,7 @@ class MyCertificationFragment :
                             dateTv.setTextColor(Color.BLACK)
                         }
 
-                        in viewModel.uiState.value.eventDateList -> {
+                        in viewModel.uiState.value.certificationDateList -> {
                             dateTv.setBackgroundResource(R.drawable.shape_calendar_hasevent)
                             dateTv.setTextColor(Color.WHITE)
                         }
