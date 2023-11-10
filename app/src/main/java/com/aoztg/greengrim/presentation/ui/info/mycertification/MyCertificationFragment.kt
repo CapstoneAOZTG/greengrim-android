@@ -143,19 +143,30 @@ class MyCertificationFragment :
 
     private fun setScrollEventListener() {
 
-        binding.rvCertifications.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        // NestedScrollView 안에 RecyclerView 삽입하여서, 마지막 아이템 감지로 페이징하면 안됨
+        // 또한, 최하단 스크롤 감지를, recyclerview 가 아니라 NestedScrollView 로 해야함
 
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
 
-                val lastVisibleItemPosition = (recyclerView.layoutManager as LinearLayoutManager).findLastCompletelyVisibleItemPosition()
-                val itemTotalCount = recyclerView.adapter?.itemCount?.minus(1)
-
-                if (lastVisibleItemPosition == itemTotalCount) {
-                    viewModel.getCertificationList(NEXT_PAGE)
-                }
+        binding.scrollView.setOnScrollChangeListener { v, _, _, _, _ ->
+            if(!v.canScrollVertically(1)){
+                viewModel.getCertificationList(NEXT_PAGE)
             }
-        })
+        }
+
+//        binding.rvCertifications.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+//
+//            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+//                super.onScrolled(recyclerView, dx, dy)
+//
+//                val lastVisibleItemPosition = (recyclerView.layoutManager as LinearLayoutManager).findLastCompletelyVisibleItemPosition()
+//                val itemTotalCount = recyclerView.adapter?.itemCount?.minus(1)
+//
+//                if (lastVisibleItemPosition == itemTotalCount) {
+//                    viewModel.getCertificationList(NEXT_PAGE)
+//                }
+//            }
+//        })
+
     }
 
     private fun configureBinders(daysOfWeek: List<DayOfWeek>) {
