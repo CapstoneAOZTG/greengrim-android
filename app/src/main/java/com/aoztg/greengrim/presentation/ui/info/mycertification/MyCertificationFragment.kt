@@ -10,9 +10,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.aoztg.greengrim.MainNavDirections
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.CalendarDayLayoutBinding
@@ -34,6 +31,7 @@ import com.kizitonwose.calendar.view.MonthDayBinder
 import com.kizitonwose.calendar.view.MonthHeaderFooterBinder
 import com.kizitonwose.calendar.view.ViewContainer
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.YearMonth
@@ -46,6 +44,7 @@ class MyCertificationFragment :
     private val viewModel: MyCertificationViewModel by viewModels()
 
     private var selectedDate: LocalDate? = null
+    private var certificationDateList: List<LocalDate> = listOf()
     private var currentMonth: YearMonth = YearMonth.now()
     private val today = LocalDate.now()
 
@@ -113,12 +112,17 @@ class MyCertificationFragment :
                     else -> {}
                 }
 
-                when (it.getCertificationDatesState){
-                    is BaseState.Error -> showCustomToast(it.getCertificationDatesState.msg)
+                when (it.certificationDateList) {
+                    is MyCertificationDateState.Success -> {
+                        certificationDateList = it.certificationDateList.dates
+                        configureBinders(daysOfWeek())
+                    }
+
+                    is MyCertificationDateState.Error -> showCustomToast(it.certificationDateList.msg)
                     else -> {}
                 }
 
-                when (it.getCertificationListState){
+                when (it.getCertificationListState) {
                     is BaseState.Error -> showCustomToast(it.getCertificationListState.msg)
                     else -> {}
                 }
@@ -139,7 +143,10 @@ class MyCertificationFragment :
                         )
                     }
 
-                    is MyCertificationEvents.NavigateToCertificationDetail -> findNavController().toCertificationDetail(it.certificationId)
+                    is MyCertificationEvents.NavigateToCertificationDetail -> findNavController().toCertificationDetail(
+                        it.certificationId
+                    )
+
                     else -> {}
                 }
             }
@@ -153,7 +160,7 @@ class MyCertificationFragment :
 
 
         binding.scrollView.setOnScrollChangeListener { v, _, _, _, _ ->
-            if(!v.canScrollVertically(1)){
+            if (!v.canScrollVertically(1)) {
                 viewModel.getCertificationList(NEXT_PAGE)
             }
         }
@@ -191,7 +198,6 @@ class MyCertificationFragment :
 
         binding.calendarView.dayBinder = object : MonthDayBinder<DayViewContainer> {
 
-
             override fun create(view: View): DayViewContainer = DayViewContainer(view)
 
             override fun bind(container: DayViewContainer, data: CalendarDay) {
@@ -213,7 +219,7 @@ class MyCertificationFragment :
                             dateTv.setTextColor(Color.BLACK)
                         }
 
-                        in viewModel.uiState.value.certificationDateList -> {
+                        in certificationDateList -> {
                             dateTv.setBackgroundResource(R.drawable.shape_calendar_hasevent)
                             dateTv.setTextColor(Color.WHITE)
                         }
@@ -260,7 +266,7 @@ class MyCertificationFragment :
         binding.calendarView.scrollToMonth(currentMonth)
     }
 
-    private fun NavController.toCertificationDetail(certificationId: Int){
+    private fun NavController.toCertificationDetail(certificationId: Int) {
         val action = MainNavDirections.actionGlobalToCertificationDetail(certificationId)
         this.navigate(action)
     }

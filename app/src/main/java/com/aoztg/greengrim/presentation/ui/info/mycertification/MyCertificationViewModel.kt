@@ -28,13 +28,18 @@ import javax.inject.Inject
 data class MyCertificationUiState(
     val curMonth: MonthState = MonthState.Empty,
     val curDate: DateState = DateState.Empty,
-    val certificationDateList: List<LocalDate> = emptyList(),
+    val certificationDateList: MyCertificationDateState = MyCertificationDateState.Empty,
     val certificationList: List<MyCertification> = emptyList(),
     val page: Int = 0,
     val hasNext: Boolean = true,
     val getCertificationListState: BaseState = BaseState.Empty,
-    val getCertificationDatesState: BaseState = BaseState.Empty
 )
+
+sealed class MyCertificationDateState {
+    object Empty : MyCertificationDateState()
+    data class Success(val dates: List<LocalDate>) : MyCertificationDateState()
+    data class Error(val msg: String) : MyCertificationDateState()
+}
 
 sealed class MyCertificationEvents {
     data class ShowYearMonthPicker(val curYear: Int, val curMonth: Int) : MyCertificationEvents()
@@ -46,7 +51,7 @@ class MyCertificationViewModel @Inject constructor(
     private val certificationRepository: CertificationRepository
 ) : ViewModel() {
 
-    companion object{
+    companion object {
         const val NEXT_PAGE = 0
         const val NEW_DATE = 1
     }
@@ -92,7 +97,7 @@ class MyCertificationViewModel @Inject constructor(
                 response.body()?.let { data ->
                     _uiState.update { state ->
                         state.copy(
-                            certificationDateList = data.date.map { it.toLocalDate() }
+                            certificationDateList = MyCertificationDateState.Success(data.date.map { it.toLocalDate() })
                         )
                     }
                 }
@@ -102,7 +107,7 @@ class MyCertificationViewModel @Inject constructor(
 
                 _uiState.update { state ->
                     state.copy(
-                        getCertificationDatesState = BaseState.Error(error.message)
+                        certificationDateList = MyCertificationDateState.Error(error.message)
                     )
                 }
             }
@@ -123,7 +128,7 @@ class MyCertificationViewModel @Inject constructor(
 
     fun getCertificationList(option: Int) {
 
-        if(_uiState.value.hasNext){
+        if (_uiState.value.hasNext) {
             viewModelScope.launch {
 
 
@@ -139,19 +144,19 @@ class MyCertificationViewModel @Inject constructor(
                     20
                 )
 
-                if(response.isSuccessful){
-                    response.body()?.let{ body ->
+                if (response.isSuccessful) {
+                    response.body()?.let { body ->
                         val uiData = body.toMyCertificationListData(::navigateToCertificationDetail)
                         _uiState.update { state ->
                             state.copy(
-                                certificationList = if(option == NEXT_PAGE) _uiState.value.certificationList + uiData.result else uiData.result,
+                                certificationList = if (option == NEXT_PAGE) _uiState.value.certificationList + uiData.result else uiData.result,
                                 hasNext = uiData.hasNext,
                                 page = uiData.page + 1,
                                 getCertificationListState = BaseState.Success
                             )
                         }
                     }
-                } else{
+                } else {
                     val error =
                         Gson().fromJson(response.errorBody()?.string(), ErrorResponse::class.java)
 
@@ -166,7 +171,7 @@ class MyCertificationViewModel @Inject constructor(
         }
     }
 
-    private fun navigateToCertificationDetail(certificationId: Int){
+    private fun navigateToCertificationDetail(certificationId: Int) {
         viewModelScope.launch {
             _events.emit(MyCertificationEvents.NavigateToCertificationDetail(certificationId))
         }
