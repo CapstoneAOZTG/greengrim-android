@@ -1,16 +1,12 @@
 package com.aoztg.greengrim.data.remote
 
-import com.aoztg.greengrim.data.model.CertificationDatesResponse
-import com.aoztg.greengrim.data.model.ChallengeListResponse
 import com.aoztg.greengrim.data.model.GetProfileResponse
-import com.aoztg.greengrim.data.model.MyCertificationListResponse
 import com.aoztg.greengrim.data.model.PatchProfileRequest
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.PATCH
-import retrofit2.http.Query
 
 interface InfoAPI {
 
