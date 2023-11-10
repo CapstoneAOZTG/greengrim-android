@@ -159,7 +159,7 @@
                 android:layout_gravity="bottom|end"
                 android:layout_marginEnd="20dp"
                 android:background="@android:color/transparent"
-                android:onClick="@{() -> vm.navigateToMakeCertification()}"
+                android:onClick="@{() -> vm.navigateToCreateCertification()}"
                 android:scaleType="fitCenter"
                 android:src="@drawable/icon_plus"
                 app:layout_constraintStart_toStartOf="parent"

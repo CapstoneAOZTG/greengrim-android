@@ -27,7 +27,7 @@ sealed class ChatRoomEvents {
     object NavigateBack : ChatRoomEvents()
     object ShowPopupMenu : ChatRoomEvents()
     object DismissPopupMenu : ChatRoomEvents()
-    data class NavigateToMakeCertification(val id: Int) : ChatRoomEvents()
+    data class NavigateToCreateCertification(val id: Int) : ChatRoomEvents()
     data class NavigateToCertificationList(val id: Int) : ChatRoomEvents()
 }
 
@@ -98,9 +98,9 @@ class ChatRoomViewModel @Inject constructor() : ViewModel() {
         }
     }
 
-    fun navigateToMakeCertification() {
+    fun navigateToCreateCertification() {
         viewModelScope.launch {
-            _events.emit(ChatRoomEvents.NavigateToMakeCertification(chatRoomId))
+            _events.emit(ChatRoomEvents.NavigateToCreateCertification(chatRoomId))
         }
     }
 

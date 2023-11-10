@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.core.view.children
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.navArgs
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.CalendarDayLayoutBinding
 import com.aoztg.greengrim.databinding.CalendarHeaderBinding
@@ -25,14 +26,19 @@ import com.kizitonwose.calendar.core.firstDayOfWeekFromLocale
 import com.kizitonwose.calendar.view.MonthDayBinder
 import com.kizitonwose.calendar.view.MonthHeaderFooterBinder
 import com.kizitonwose.calendar.view.ViewContainer
+import dagger.hilt.android.AndroidEntryPoint
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.YearMonth
 
+@AndroidEntryPoint
 class CertificationListFragment : BaseFragment<FragmentCertificationListBinding>(R.layout.fragment_certification_list) {
 
     private val parentViewModel: MainViewModel by activityViewModels()
     private val viewModel: CertificationListViewModel by viewModels()
+
+    private val args: CertificationListFragmentArgs by navArgs()
+    private val challengeId by lazy { args.challengeId }
 
     private var selectedDate: LocalDate? = null
     private var currentMonth: YearMonth = YearMonth.now()

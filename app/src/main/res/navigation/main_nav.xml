@@ -87,14 +87,17 @@
         android:name="com.aoztg.greengrim.presentation.ui.chat.chatroom.ChatRoomFragment"
         android:label="ChatRoom">
         <argument
-            android:name="chatId"
+            android:name="challengeId"
             app:argType="integer" />
         <action
             android:id="@+id/action_chat_room_fragment_to_certification_list_fragment"
             app:destination="@id/certification_list_fragment" />
         <action
             android:id="@+id/action_chat_room_fragment_to_make_certification_fragment"
-            app:destination="@id/make_certification_fragment" />
+            app:destination="@id/create_certification_fragment" />
+        <action
+            android:id="@+id/action_chat_room_fragment_to_create_certification_fragment"
+            app:destination="@id/create_certification_fragment" />
     </fragment>
 
     <fragment
@@ -103,16 +106,16 @@
         android:label="CertificationList">
 
         <argument
-            android:name="certificationId"
+            android:name="challengeId"
             app:argType="integer" />
     </fragment>
 
     <fragment
-        android:id="@+id/make_certification_fragment"
-        android:name="com.aoztg.greengrim.presentation.ui.chat.makecertification.MakeCertificationFragment"
-        android:label="MakeCertification">
+        android:id="@+id/create_certification_fragment"
+        android:name="com.aoztg.greengrim.presentation.ui.chat.createcertification.CreateCertificationFragment"
+        android:label="CreateCertification">
         <argument
-            android:name="certificationId"
+            android:name="challengeId"
             app:argType="integer" />
     </fragment>
 

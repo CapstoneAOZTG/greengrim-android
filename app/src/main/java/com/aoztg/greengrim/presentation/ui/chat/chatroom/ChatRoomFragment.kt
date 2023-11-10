@@ -24,7 +24,7 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
     private val parentViewModel: MainViewModel by activityViewModels()
     private val viewModel: ChatRoomViewModel by viewModels()
     private val args: ChatRoomFragmentArgs by navArgs()
-    private val chatId by lazy { args.chatId }
+    private val challengeId by lazy { args.challengeId }
     private val popupLocation = IntArray(2)
     private var isPopupShowing = false
 
@@ -34,7 +34,7 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
         binding.vm = viewModel
         parentViewModel.hideBNV()
         binding.rvChat.adapter = ChatMessageAdapter()
-        viewModel.setChatId(chatId)
+        viewModel.setChatId(challengeId)
         initEventsObserver()
         viewModel.newChatMessage()
         viewModel.newMyChatMessage()
@@ -54,20 +54,24 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
                         isPopupShowing = if (isPopupShowing) {
                             dismissFourPopup()
                             false
-                        } else{
+                        } else {
                             showPopup()
                             true
                         }
                     }
+
                     is ChatRoomEvents.DismissPopupMenu -> {
-                        if(isPopupShowing){
+                        if (isPopupShowing) {
                             dismissFourPopup()
                             isPopupShowing = false
                         }
                     }
+
                     is ChatRoomEvents.NavigateBack -> findNavController().navigateUp()
                     is ChatRoomEvents.NavigateToCertificationList -> navigateToCertificationList()
-                    is ChatRoomEvents.NavigateToMakeCertification -> findNavController().toMakeCertification(it.id)
+                    is ChatRoomEvents.NavigateToCreateCertification -> findNavController().toCreateCertification(
+                        it.id
+                    )
                 }
             }
         }
@@ -95,7 +99,8 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
     }
 
     private fun navigateToCertificationList() {
-        val action = ChatRoomFragmentDirections.actionChatRoomFragmentToCertificationListFragment(viewModel.chatRoomId)
+        val action =
+            ChatRoomFragmentDirections.actionChatRoomFragmentToCertificationListFragment(viewModel.chatRoomId)
         findNavController().navigate(action)
     }
 
@@ -108,8 +113,9 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
         findNavController().navigateUp()
     }
 
-    private fun NavController.toMakeCertification(id: Int) {
-        val action = ChatRoomFragmentDirections.actionChatRoomFragmentToMakeCertificationFragment(id)
+    private fun NavController.toCreateCertification(id: Int) {
+        val action =
+            ChatRoomFragmentDirections.actionChatRoomFragmentToCreateCertificationFragment(id)
         this.navigate(action)
     }
 
@@ -117,7 +123,7 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
 
 @BindingAdapter("chatImgUrl")
 fun bindChatImg(imageView: ImageView, url: String?) {
-    if(url.isNullOrBlank()){
+    if (url.isNullOrBlank()) {
         imageView.visibility = View.GONE
     } else {
         Glide.with(imageView.context)
