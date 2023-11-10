@@ -1,5 +1,7 @@
 package com.aoztg.greengrim.presentation.ui
 
+import android.view.View
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
@@ -44,6 +46,24 @@ fun bindImgCheckEmpty(imageView: ImageView, url: String) {
         Glide.with(imageView.context)
             .load(url)
             .into(imageView)
+    }
+}
+
+@BindingAdapter("checkBtnState")
+fun bindCheckBtnState(button: Button, verified: Boolean){
+    if(verified){
+        button.visibility = View.INVISIBLE
+    } else {
+        button.visibility = View.VISIBLE
+    }
+}
+
+@BindingAdapter("checkCompleteViewState")
+fun bindCheckCompleteViewState(textView: TextView, verified: Boolean){
+    if(verified){
+        textView.visibility = View.VISIBLE
+    } else {
+        textView.visibility = View.INVISIBLE
     }
 }
 

@@ -2,9 +2,17 @@ package com.aoztg.greengrim.data.model
 
 data class CertificationDetailResponse(
     val certificationInfo: CertificationInfo,
-    val challengeInfo: ChallengeInfo,
+    val challengeInfo: ChallengeShortInfo,
     val memberSimpleInfo: MemberSimpleInfo,
     val verified: Boolean
+)
+
+data class ChallengeShortInfo(
+    val id: Int,
+    val title: String,
+    val description: String,
+    val category: String,
+    val ticketCount: String
 )
 
 data class CertificationInfo(
