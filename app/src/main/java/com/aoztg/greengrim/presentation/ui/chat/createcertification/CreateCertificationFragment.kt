@@ -29,6 +29,7 @@ class CreateCertificationFragment: BaseFragment<FragmentCreateCertificationBindi
         binding.pvm = parentViewModel
         binding.vm = viewModel
         viewModel.getCertificationDefaultData()
+        viewModel.setChallengeId(challengeId)
         initImgObserver()
         initEventObserver()
     }

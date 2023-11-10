@@ -3,6 +3,7 @@ package com.aoztg.greengrim.presentation.ui.chat.createcertification
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.data.model.CertificationDefaultDataResponse
+import com.aoztg.greengrim.data.model.CreateCertificationRequest
 import com.aoztg.greengrim.data.repository.CertificationRepository
 import com.aoztg.greengrim.presentation.ui.BaseState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -42,6 +43,7 @@ class CreateCertificationViewModel @Inject constructor(
 
     val description = MutableStateFlow("")
     private val certificationImgUrl = MutableStateFlow("")
+    private var challengeId = -1
 
     val isDataReady = combine(description, certificationImgUrl){ description, imgUrl ->
         description.isNotBlank() && imgUrl.isNotBlank()
@@ -71,8 +73,32 @@ class CreateCertificationViewModel @Inject constructor(
         }
     }
 
+    fun createCertification(){
+
+        viewModelScope.launch {
+            val response = certificationRepository.createCertification(
+                CreateCertificationRequest(
+                    challengeId = 326,
+                    imgUrl = certificationImgUrl.value,
+                    description = description.value,
+                    round = _uiState.value.certificationDefaultData.round
+                )
+            )
+
+            if(response.isSuccessful){
+                _events.emit(CreateCertificationEvents.NavigateToBack)
+            } else {
+
+            }
+        }
+    }
+
     fun setImgUrl(url: String){
         certificationImgUrl.value = url
+    }
+
+    fun setChallengeId(id: Int){
+        challengeId = id
     }
 
     fun navigateBack(){
