@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentCreateCertificationBinding
@@ -26,6 +27,7 @@ class CreateCertificationFragment: BaseFragment<FragmentCreateCertificationBindi
         binding.pvm = parentViewModel
         binding.vm = viewModel
         initImgObserver()
+        initEventObserver()
     }
 
     private fun initImgObserver(){
@@ -33,6 +35,16 @@ class CreateCertificationFragment: BaseFragment<FragmentCreateCertificationBindi
             parentViewModel.image.collect {
                 if (it.isNotBlank()) {
                     viewModel.setImgUrl(it)
+                }
+            }
+        }
+    }
+
+    private fun initEventObserver(){
+        repeatOnStarted {
+            viewModel.events.collect{
+                when(it){
+                    is CreateCertificationEvents.NavigateToBack -> findNavController().navigateUp()
                 }
             }
         }
