@@ -14,5 +14,6 @@ data class MyCertification (
     val certificationImg: String,
     val certificationCount: String,
     val date: String,
-    val description: String
+    val description: String,
+    val onItemClickListener: (Int) -> Unit
 )

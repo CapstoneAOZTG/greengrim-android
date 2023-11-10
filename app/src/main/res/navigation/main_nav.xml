@@ -122,7 +122,11 @@
     <fragment
         android:id="@+id/certification_detail_fragment"
         android:name="com.aoztg.greengrim.presentation.ui.global.certificationdetail.CertificationDetailFragment"
-        android:label="CertificationDetail" />
+        android:label="CertificationDetail" >
+        <argument
+            android:name="certificationId"
+            app:argType="integer" />
+    </fragment>
 
     <fragment
         android:id="@+id/market_fragment"

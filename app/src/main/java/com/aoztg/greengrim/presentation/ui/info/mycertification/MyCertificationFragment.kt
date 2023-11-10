@@ -8,9 +8,12 @@ import android.widget.TextView
 import androidx.core.view.children
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.aoztg.greengrim.MainNavDirections
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.CalendarDayLayoutBinding
 import com.aoztg.greengrim.databinding.CalendarHeaderBinding
@@ -136,6 +139,8 @@ class MyCertificationFragment :
                         )
                     }
 
+                    is MyCertificationEvents.NavigateToCertificationDetail -> findNavController().toCertificationDetail(it.certificationId)
+                    else -> {}
                 }
             }
         }
@@ -253,5 +258,10 @@ class MyCertificationFragment :
     private fun yearMonthDatePickerConfirmListener(year: Int, month: Int) {
         currentMonth = YearMonth.of(year, month)
         binding.calendarView.scrollToMonth(currentMonth)
+    }
+
+    private fun NavController.toCertificationDetail(certificationId: Int){
+        val action = MainNavDirections.actionGlobalToCertificationDetail(certificationId)
+        this.navigate(action)
     }
 }

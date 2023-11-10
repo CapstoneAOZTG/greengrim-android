@@ -38,6 +38,7 @@ data class MyCertificationUiState(
 
 sealed class MyCertificationEvents {
     data class ShowYearMonthPicker(val curYear: Int, val curMonth: Int) : MyCertificationEvents()
+    data class NavigateToCertificationDetail(val certificationId: Int) : MyCertificationEvents()
 }
 
 @HiltViewModel
@@ -140,7 +141,7 @@ class MyCertificationViewModel @Inject constructor(
 
                 if(response.isSuccessful){
                     response.body()?.let{ body ->
-                        val uiData = body.toMyCertificationListData()
+                        val uiData = body.toMyCertificationListData(::navigateToCertificationDetail)
                         _uiState.update { state ->
                             state.copy(
                                 certificationList = if(option == NEXT_PAGE) _uiState.value.certificationList + uiData.result else uiData.result,
@@ -162,6 +163,12 @@ class MyCertificationViewModel @Inject constructor(
 
                 }
             }
+        }
+    }
+
+    private fun navigateToCertificationDetail(certificationId: Int){
+        viewModelScope.launch {
+            _events.emit(MyCertificationEvents.NavigateToCertificationDetail(certificationId))
         }
     }
 
