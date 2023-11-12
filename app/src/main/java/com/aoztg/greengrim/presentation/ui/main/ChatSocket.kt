@@ -41,7 +41,11 @@ class ChatSocket(){
     private val jwt = App.sharedPreferences.getString(Constants.X_ACCESS_TOKEN, null)
     private lateinit var stompClient : StompClient
 
-    fun connectChat() {
+    init{
+        connectServer()
+    }
+
+    private fun connectServer() {
 
         stompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, url)
         val headerList = arrayListOf<StompHeader>()
