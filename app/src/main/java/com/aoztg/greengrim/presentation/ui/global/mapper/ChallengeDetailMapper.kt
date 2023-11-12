@@ -11,6 +11,7 @@ fun ChallengeDetailResponse.toChallengeDetail(): ChallengeDetail{
         title = this.challengeInfo.title,
         description = this.challengeInfo.description,
         keywords = this.challengeTags,
-        date = this.createdAt
+        date = this.createdAt,
+        entered = this.entered
     )
 }

@@ -2,6 +2,8 @@ package com.aoztg.greengrim.presentation.ui.global.challengedetail
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
+import androidx.databinding.BindingAdapter
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
@@ -12,6 +14,7 @@ import com.aoztg.greengrim.databinding.FragmentChallengeDetailBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
 import com.aoztg.greengrim.presentation.ui.BaseState
 import com.aoztg.greengrim.presentation.ui.LoadingState
+import com.aoztg.greengrim.presentation.ui.global.model.ChallengeDetail
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -118,5 +121,17 @@ class ChallengeDetailFragment :
         dismissOnePopup()
         isPopupShowing = false
         showCustomToast("신고하기로 이동 구현 전")
+    }
+}
+
+@BindingAdapter("challengeDetailBtnText")
+fun bindChallengeDetailBtnText(button: Button, data: ChallengeDetail){
+
+    if( data.entered ){
+        button.text = "이미 참여중인 챌린지 입니다"
+        button.isEnabled = false
+    } else {
+        button.text = "입장하기"
+        button.isEnabled = true
     }
 }
