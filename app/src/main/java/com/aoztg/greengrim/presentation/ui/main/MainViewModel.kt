@@ -18,6 +18,8 @@ sealed class MainEvent {
     object ShowBottomNav : MainEvent()
     object ShowPhotoBottomSheet : MainEvent()
     object Logout: MainEvent()
+    data class ConnectNewChat(val chatId: Int): MainEvent()
+    data class SendChat(val chatId: Int, val message: String): MainEvent()
 }
 
 @HiltViewModel
@@ -66,6 +68,18 @@ class MainViewModel @Inject constructor(private val imageRepository: ImageReposi
     fun logout(){
         viewModelScope.launch {
             _events.emit(MainEvent.Logout)
+        }
+    }
+
+    fun connectNewChat(chatId: Int){
+        viewModelScope.launch {
+            _events.emit(MainEvent.ConnectNewChat(chatId))
+        }
+    }
+
+    fun sendMessage(chatId: Int, message: String){
+        viewModelScope.launch {
+            _events.emit(MainEvent.SendChat(chatId, message))
         }
     }
 

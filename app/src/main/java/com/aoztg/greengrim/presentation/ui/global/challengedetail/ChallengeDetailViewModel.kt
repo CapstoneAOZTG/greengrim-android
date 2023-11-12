@@ -114,7 +114,9 @@ class ChallengeDetailViewModel @Inject constructor(
             val response = chatRepository.enterChat(id)
 
             if(response.isSuccessful){
-                _events.emit(ChallengeDetailEvents.NavigateChatRoom(id))
+                response.body()?.let{
+                    _events.emit(ChallengeDetailEvents.NavigateChatRoom(it.id))
+                }
             }
         }
     }

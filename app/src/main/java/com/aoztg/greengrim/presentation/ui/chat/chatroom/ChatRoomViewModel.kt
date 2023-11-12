@@ -29,6 +29,7 @@ sealed class ChatRoomEvents {
     object DismissPopupMenu : ChatRoomEvents()
     data class NavigateToCreateCertification(val id: Int) : ChatRoomEvents()
     data class NavigateToCertificationList(val id: Int) : ChatRoomEvents()
+    data class SendMessage(val chatId: Int, val message: String) : ChatRoomEvents()
 }
 
 @HiltViewModel
@@ -123,6 +124,13 @@ class ChatRoomViewModel @Inject constructor() : ViewModel() {
     fun onRootClicked(){
         viewModelScope.launch {
             _events.emit(ChatRoomEvents.DismissPopupMenu)
+        }
+    }
+
+    fun sendMessage(){
+        viewModelScope.launch{
+            _events.emit(ChatRoomEvents.SendMessage(chatRoomId,chatMessage.value))
+            chatMessage.emit("")
         }
     }
 }

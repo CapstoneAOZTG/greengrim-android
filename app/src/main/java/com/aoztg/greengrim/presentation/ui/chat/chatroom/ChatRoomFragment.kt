@@ -72,6 +72,7 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
                     is ChatRoomEvents.NavigateToCreateCertification -> findNavController().toCreateCertification(
                         it.id
                     )
+                    is ChatRoomEvents.SendMessage -> parentViewModel.sendMessage(it.chatId, it.message)
                 }
             }
         }

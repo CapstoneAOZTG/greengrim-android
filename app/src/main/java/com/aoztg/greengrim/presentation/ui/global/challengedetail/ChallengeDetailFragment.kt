@@ -86,7 +86,10 @@ class ChallengeDetailFragment :
                         }
                     }
 
-                    is ChallengeDetailEvents.NavigateChatRoom -> findNavController().toChatRoom(it.id)
+                    is ChallengeDetailEvents.NavigateChatRoom -> {
+                        parentViewModel.connectNewChat(it.id)
+                        findNavController().toChatRoom(it.id)
+                    }
                 }
             }
         }

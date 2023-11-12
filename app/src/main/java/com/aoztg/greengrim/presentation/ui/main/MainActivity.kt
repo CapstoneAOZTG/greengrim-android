@@ -37,6 +37,7 @@ import com.aoztg.greengrim.presentation.util.Constants.STORAGE_PERMISSION
 import com.aoztg.greengrim.presentation.util.getPhotoSheet
 import com.aoztg.greengrim.presentation.util.toMultiPart
 import dagger.hilt.android.AndroidEntryPoint
+import org.json.JSONObject
 import java.net.ServerSocket
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -62,6 +63,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     private val cameraPermission = Manifest.permission.CAMERA
 
     private lateinit var tempCameraUri: Uri
+    private val chatSocket = ChatSocket()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -115,6 +117,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                     is MainEvent.ShowBottomNav -> binding.layoutBnv.visibility = View.VISIBLE
                     is MainEvent.ShowPhotoBottomSheet -> showPhotoBottomSheet()
                     is MainEvent.Logout -> logout()
+                    is MainEvent.ConnectNewChat -> chatSocket.subscribeChat(it.chatId)
+                    is MainEvent.SendChat -> chatSocket.sendMessage(it.chatId, it.message)
                 }
             }
         }
