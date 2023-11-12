@@ -1,5 +1,6 @@
 package com.aoztg.greengrim.presentation.ui.global.challengedetail
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
@@ -130,8 +131,10 @@ fun bindChallengeDetailBtnText(button: Button, data: ChallengeDetail){
     if( data.entered ){
         button.text = "이미 참여중인 챌린지 입니다"
         button.isEnabled = false
+        button.setTextColor(Color.WHITE)
     } else {
         button.text = "입장하기"
         button.isEnabled = true
+        button.setTextColor(Color.BLACK)
     }
 }
