@@ -9,4 +9,5 @@ data class ChallengeDetail(
     val description: String = "",
     val keywords: ChallengeDetailTags? = null,
     val date: String = "",
+    val isEntered: Boolean = false,
 )

@@ -2,6 +2,8 @@ package com.aoztg.greengrim.presentation.ui.chat.chatlist
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.aoztg.greengrim.data.repository.ChatRepository
+import com.aoztg.greengrim.presentation.ui.chat.mapper.toChatListItem
 import com.aoztg.greengrim.presentation.ui.chat.model.ChatListItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -25,7 +27,9 @@ sealed class ChatListEvents {
 
 
 @HiltViewModel
-class ChatListViewModel @Inject constructor() : ViewModel() {
+class ChatListViewModel @Inject constructor(
+    private val chatRepository: ChatRepository
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ChatListUiState())
     val uiState: StateFlow<ChatListUiState> = _uiState.asStateFlow()
@@ -34,48 +38,24 @@ class ChatListViewModel @Inject constructor() : ViewModel() {
     val events: SharedFlow<ChatListEvents> = _events.asSharedFlow()
 
     fun getChatList() {
-        _uiState.update { state ->
-            state.copy(
-                chatListItem = listOf(
-                    ChatListItem(
-                        id = 0,
-                        "https://greengrim-bucket.s3.ap-northeast-2.amazonaws.com/19836b51-2b6f-4e43-9e90-e86e331e9077.jpg",
-                        title = "인하대학교 쓰레기 줍기",
-                        recentChat = "인증 하셨나요 다들 ㅋㅋㅋ",
-                        recentTime = "오전 5:31",
-                        creationDday = "오늘",
-                        ::navigateToChatRoom
-                    ),
-                    ChatListItem(
-                        id = 0,
-                        "https://greengrim-bucket.s3.ap-northeast-2.amazonaws.com/19836b51-2b6f-4e43-9e90-e86e331e9077.jpg",
-                        title = "인하대학교 쓰레기 줍기",
-                        recentChat = "인증 하셨나요 다들 ㅋㅋㅋ",
-                        recentTime = "오전 5:31",
-                        creationDday = "오늘",
-                        ::navigateToChatRoom
-                    ),
-                    ChatListItem(
-                        id = 0,
-                        "https://greengrim-bucket.s3.ap-northeast-2.amazonaws.com/19836b51-2b6f-4e43-9e90-e86e331e9077.jpg",
-                        title = "인하대학교 쓰레기 줍기",
-                        recentChat = "인증 하셨나요 다들 ㅋㅋㅋ",
-                        recentTime = "오전 5:31",
-                        creationDday = "3일 전",
-                        ::navigateToChatRoom
-                    ),
-                    ChatListItem(
-                        id = 0,
-                        "https://greengrim-bucket.s3.ap-northeast-2.amazonaws.com/19836b51-2b6f-4e43-9e90-e86e331e9077.jpg",
-                        title = "인하대학교 쓰레기 줍기",
-                        recentChat = "인증 하셨나요 다들 ㅋㅋㅋ",
-                        recentTime = "오전 5:31",
-                        creationDday = "1달 전",
-                        ::navigateToChatRoom
-                    )
+        viewModelScope.launch {
 
-                )
-            )
+            val response = chatRepository.getChatRooms()
+
+            if( response.isSuccessful ){
+                response.body()?.let{ body ->
+
+                    _uiState.update { state ->
+                        state.copy(
+                            chatListItem = body.map{
+                                it.toChatListItem(::navigateToChatRoom)
+                            }
+                        )
+                    }
+                }
+            } else {
+
+            }
         }
     }
 

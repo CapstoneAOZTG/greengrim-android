@@ -1,5 +1,6 @@
 package com.aoztg.greengrim.data.remote
 
+import com.aoztg.greengrim.data.model.ChatRoomsResponse
 import com.aoztg.greengrim.data.model.EnterChatResponse
 import retrofit2.Response
 import retrofit2.http.GET
@@ -13,4 +14,6 @@ interface ChatAPI {
         @Query("id") challengeId: Int
     ): Response<EnterChatResponse>
 
+    @GET("visitor/challenges/chatrooms")
+    suspend fun getChatList(): Response<List<ChatRoomsResponse>>
 }
