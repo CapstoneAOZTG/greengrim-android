@@ -72,6 +72,8 @@ class BearerInterceptor : Interceptor {
                     .addHeader("Authorization", accessToken)
                     .build()
 
+                response.close()
+
                 return chain.proceed(newRequest)
             } else {
                 // 해당 특정 에러코드가 그대로 내려간다면, IntroActivity로 이동. 세션 만료 처리
