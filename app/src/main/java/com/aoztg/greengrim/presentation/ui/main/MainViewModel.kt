@@ -19,7 +19,7 @@ sealed class MainEvent {
     object ShowPhotoBottomSheet : MainEvent()
     object Logout: MainEvent()
     data class ConnectNewChat(val chatId: Int): MainEvent()
-    data class SendChat(val chatId: Int, val message: String): MainEvent()
+    data class SendChat(val memberId: Long, val chatId: Int, val message: String): MainEvent()
 }
 
 @HiltViewModel
@@ -31,6 +31,8 @@ class MainViewModel @Inject constructor(private val imageRepository: ImageReposi
 
     private val _image = MutableStateFlow("")
     val image: StateFlow<String> = _image.asStateFlow()
+
+    private var memberId: Long = 0
 
     fun goToGallery() {
         viewModelScope.launch {
@@ -79,8 +81,12 @@ class MainViewModel @Inject constructor(private val imageRepository: ImageReposi
 
     fun sendMessage(chatId: Int, message: String){
         viewModelScope.launch {
-            _events.emit(MainEvent.SendChat(chatId, message))
+            _events.emit(MainEvent.SendChat(memberId,chatId, message))
         }
+    }
+
+    fun setMemberId(id: Long){
+        memberId = id
     }
 
 }

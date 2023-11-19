@@ -179,6 +179,7 @@ class CreateChallengeDetailViewModel @Inject constructor(
             )
 
             if(response.isSuccessful){
+                // todo chatId 로컬에 저장
                 _events.emit(CreateChallengeDetailEvents.NavigateToChatList)
             } else {
 

@@ -68,10 +68,23 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        setChatRooms()
         setBottomNavigation()
         setBottomNavigationListener()
         initEventObserver()
+    }
 
+    private fun setChatRooms(){
+        // todo 로컬에 저장된 chatRoom Id 들을 구독
+        chatSocket.subscribeChat(2)
+        
+        // todo memberId MainViewModel 에 저장
+        val memberId: String? = App.sharedPreferences.getString(Constants.MEMBER_ID, null)
+        memberId?.let{
+            viewModel.setMemberId(it.toLong())
+        } ?: run{
+
+        }
     }
 
     private fun setBottomNavigation() {
@@ -118,7 +131,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                     is MainEvent.ShowPhotoBottomSheet -> showPhotoBottomSheet()
                     is MainEvent.Logout -> logout()
                     is MainEvent.ConnectNewChat -> chatSocket.subscribeChat(it.chatId)
-                    is MainEvent.SendChat -> chatSocket.sendMessage(it.chatId, it.message)
+                    is MainEvent.SendChat -> chatSocket.sendMessage(it.memberId, it.chatId, it.message)
                 }
             }
         }

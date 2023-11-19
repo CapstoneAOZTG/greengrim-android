@@ -8,6 +8,8 @@ object Constants {
     const val X_ACCESS_TOKEN = "X-ACCESS-TOKEN"
     const val X_REFRESH_TOKEN = "X_REFRESH_TOKEN"
 
+    const val MEMBER_ID = "MEMBER_ID"
+
     const val STORAGE_PERMISSION = 1000
     const val CAMERA_PERMISSION = 1001
 
