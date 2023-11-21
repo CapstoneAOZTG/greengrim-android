@@ -5,18 +5,13 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ContentValues
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Rect
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
-import android.view.MotionEvent
 import android.view.View
-import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.app.ActivityCompat
@@ -37,8 +32,6 @@ import com.aoztg.greengrim.presentation.util.Constants.STORAGE_PERMISSION
 import com.aoztg.greengrim.presentation.util.getPhotoSheet
 import com.aoztg.greengrim.presentation.util.toMultiPart
 import dagger.hilt.android.AndroidEntryPoint
-import org.json.JSONObject
-import java.net.ServerSocket
 import java.text.SimpleDateFormat
 import java.util.Date
 
@@ -77,14 +70,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     private fun setChatRooms(){
         // todo 로컬에 저장된 chatRoom Id 들을 구독
         chatSocket.subscribeChat(2)
-        
-        // todo memberId MainViewModel 에 저장
-        val memberId: String? = App.sharedPreferences.getString(Constants.MEMBER_ID, null)
-        memberId?.let{
-            viewModel.setMemberId(it.toLong())
-        } ?: run{
 
-        }
     }
 
     private fun setBottomNavigation() {

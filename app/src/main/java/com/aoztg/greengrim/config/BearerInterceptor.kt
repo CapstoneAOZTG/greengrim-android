@@ -54,7 +54,7 @@ class BearerInterceptor : Interceptor {
                             sharedPreferences.edit()
                                 .putString(X_ACCESS_TOKEN, body.accessToken)
                                 .putString(X_REFRESH_TOKEN, body.refreshToken)
-                                .putInt(MEMBER_ID, body.memberId)
+                                .putLong(MEMBER_ID, body.memberId)
                                 .apply()
 
                             isRefreshed = true

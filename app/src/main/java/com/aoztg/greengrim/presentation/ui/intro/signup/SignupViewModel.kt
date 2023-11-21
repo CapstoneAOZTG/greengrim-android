@@ -124,7 +124,7 @@ class SignupViewModel @Inject constructor(private val introRepository: IntroRepo
                     sharedPreferences.edit()
                         .putString(X_ACCESS_TOKEN, it.accessToken)
                         .putString(X_REFRESH_TOKEN, it.refreshToken)
-                        .putInt(Constants.MEMBER_ID, it.memberId)
+                        .putLong(Constants.MEMBER_ID, it.memberId)
                         .apply()
                 }
 
