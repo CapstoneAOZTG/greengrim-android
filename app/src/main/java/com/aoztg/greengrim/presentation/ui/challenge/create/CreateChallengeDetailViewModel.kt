@@ -2,9 +2,11 @@ package com.aoztg.greengrim.presentation.ui.challenge.create
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.aoztg.greengrim.data.local.ChatIdEntity
 import com.aoztg.greengrim.data.model.CreateChallengeRequest
 import com.aoztg.greengrim.data.model.ErrorResponse
 import com.aoztg.greengrim.data.repository.ChallengeRepository
+import com.aoztg.greengrim.data.repository.ChatRepository
 import com.aoztg.greengrim.presentation.ui.BaseState
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -49,7 +51,8 @@ sealed class CreateChallengeDetailEvents{
 
 @HiltViewModel
 class CreateChallengeDetailViewModel @Inject constructor(
-    private val challengeRepository: ChallengeRepository
+    private val challengeRepository: ChallengeRepository,
+    private val chatRepository: ChatRepository
 ) : ViewModel() {
 
     companion object {
@@ -179,7 +182,9 @@ class CreateChallengeDetailViewModel @Inject constructor(
             )
 
             if(response.isSuccessful){
-                // todo chatId 로컬에 저장
+                response.body()?.let{
+                    chatRepository.addChatId(ChatIdEntity(it.id))
+                }
                 _events.emit(CreateChallengeDetailEvents.NavigateToChatList)
             } else {
 
