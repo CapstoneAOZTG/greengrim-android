@@ -61,6 +61,7 @@ class LoginViewModel @Inject constructor(private val introRepository: IntroRepos
                     App.sharedPreferences.edit()
                         .putString(Constants.X_ACCESS_TOKEN, it.accessToken)
                         .putString(Constants.X_REFRESH_TOKEN, it.refreshToken)
+                        .putInt(Constants.MEMBER_ID, it.memberId)
                         .apply()
                 }
 

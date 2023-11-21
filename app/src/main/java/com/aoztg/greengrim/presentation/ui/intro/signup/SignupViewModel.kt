@@ -9,6 +9,7 @@ import com.aoztg.greengrim.data.model.SignupRequest
 import com.aoztg.greengrim.data.repository.IntroRepository
 import com.aoztg.greengrim.presentation.ui.BaseState
 import com.aoztg.greengrim.presentation.ui.intro.EmailData
+import com.aoztg.greengrim.presentation.util.Constants
 import com.aoztg.greengrim.presentation.util.Constants.X_ACCESS_TOKEN
 import com.aoztg.greengrim.presentation.util.Constants.X_REFRESH_TOKEN
 import com.google.gson.Gson
@@ -123,6 +124,7 @@ class SignupViewModel @Inject constructor(private val introRepository: IntroRepo
                     sharedPreferences.edit()
                         .putString(X_ACCESS_TOKEN, it.accessToken)
                         .putString(X_REFRESH_TOKEN, it.refreshToken)
+                        .putInt(Constants.MEMBER_ID, it.memberId)
                         .apply()
                 }
 

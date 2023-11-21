@@ -7,7 +7,9 @@ import com.aoztg.greengrim.app.App.Companion.sharedPreferences
 import com.aoztg.greengrim.data.model.ErrorResponse
 import com.aoztg.greengrim.data.remote.RefreshAPI
 import com.aoztg.greengrim.presentation.ui.intro.IntroActivity
+import com.aoztg.greengrim.presentation.util.Constants
 import com.aoztg.greengrim.presentation.util.Constants.BASE_DEV_URL
+import com.aoztg.greengrim.presentation.util.Constants.MEMBER_ID
 import com.aoztg.greengrim.presentation.util.Constants.TAG
 import com.aoztg.greengrim.presentation.util.Constants.X_ACCESS_TOKEN
 import com.aoztg.greengrim.presentation.util.Constants.X_REFRESH_TOKEN
@@ -52,6 +54,7 @@ class BearerInterceptor : Interceptor {
                             sharedPreferences.edit()
                                 .putString(X_ACCESS_TOKEN, body.accessToken)
                                 .putString(X_REFRESH_TOKEN, body.refreshToken)
+                                .putInt(MEMBER_ID, body.memberId)
                                 .apply()
 
                             isRefreshed = true
