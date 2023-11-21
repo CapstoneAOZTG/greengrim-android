@@ -3,6 +3,7 @@ package com.aoztg.greengrim.presentation.ui.main
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.app.App
+import com.aoztg.greengrim.data.repository.ChatRepository
 import com.aoztg.greengrim.data.repository.ImageRepository
 import com.aoztg.greengrim.presentation.util.Constants
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,11 +22,15 @@ sealed class MainEvent {
     object ShowPhotoBottomSheet : MainEvent()
     object Logout : MainEvent()
     data class ConnectNewChat(val chatId: Int) : MainEvent()
+    data class SubscribeMyChats(val myChatIds: List<Int>) : MainEvent()
     data class SendChat(val memberId: Long, val chatId: Int, val message: String) : MainEvent()
 }
 
 @HiltViewModel
-class MainViewModel @Inject constructor(private val imageRepository: ImageRepository) :
+class MainViewModel @Inject constructor(
+    private val imageRepository: ImageRepository,
+    private val chatRepository: ChatRepository
+) :
     ViewModel() {
 
     private val _events: MutableSharedFlow<MainEvent> = MutableSharedFlow()
@@ -38,6 +43,7 @@ class MainViewModel @Inject constructor(private val imageRepository: ImageReposi
 
     init {
         setMemberId()
+        getMyChatIds()
     }
 
     private fun setMemberId() {
@@ -46,6 +52,13 @@ class MainViewModel @Inject constructor(private val imageRepository: ImageReposi
             this.memberId = memberId
         } else {
 
+        }
+    }
+
+    private fun getMyChatIds() {
+        viewModelScope.launch {
+            val response = chatRepository.getAllChatId()
+            _events.emit(MainEvent.SubscribeMyChats(response.map { it.chatId }))
         }
     }
 
