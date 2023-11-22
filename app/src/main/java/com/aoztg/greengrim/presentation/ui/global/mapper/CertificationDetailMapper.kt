@@ -1,6 +1,6 @@
 package com.aoztg.greengrim.presentation.ui.global.mapper
 
-import com.aoztg.greengrim.data.model.CertificationDetailResponse
+import com.aoztg.greengrim.data.model.response.CertificationDetailResponse
 import com.aoztg.greengrim.presentation.ui.global.model.CertificationDetail
 
 

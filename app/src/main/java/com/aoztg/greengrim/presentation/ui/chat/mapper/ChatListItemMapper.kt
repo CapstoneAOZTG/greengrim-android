@@ -1,6 +1,6 @@
 package com.aoztg.greengrim.presentation.ui.chat.mapper
 
-import com.aoztg.greengrim.data.model.ChatRoomsResponse
+import com.aoztg.greengrim.data.model.response.ChatRoomsResponse
 import com.aoztg.greengrim.presentation.ui.chat.model.ChatListItem
 
 

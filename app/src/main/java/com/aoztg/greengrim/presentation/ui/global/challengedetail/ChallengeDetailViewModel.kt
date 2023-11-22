@@ -2,8 +2,6 @@ package com.aoztg.greengrim.presentation.ui.global.challengedetail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.aoztg.greengrim.app.App
-import com.aoztg.greengrim.data.local.ChatIdEntity
 import com.aoztg.greengrim.data.model.ErrorResponse
 import com.aoztg.greengrim.data.repository.ChallengeRepository
 import com.aoztg.greengrim.data.repository.ChatRepository
@@ -11,7 +9,6 @@ import com.aoztg.greengrim.presentation.ui.BaseState
 import com.aoztg.greengrim.presentation.ui.LoadingState
 import com.aoztg.greengrim.presentation.ui.global.mapper.toChallengeDetail
 import com.aoztg.greengrim.presentation.ui.global.model.ChallengeDetail
-import com.aoztg.greengrim.presentation.util.Constants
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
@@ -118,7 +115,6 @@ class ChallengeDetailViewModel @Inject constructor(
 
             if(response.isSuccessful){
                 response.body()?.let{
-                    chatRepository.addChatId(ChatIdEntity(it.id))
                     _events.emit(ChallengeDetailEvents.NavigateChatRoom(it.id))
                 }
             }

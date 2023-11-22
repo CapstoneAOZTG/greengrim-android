@@ -8,13 +8,12 @@ import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.aoztg.greengrim.R
-import com.aoztg.greengrim.data.model.ChallengeDetailTags
-import com.aoztg.greengrim.data.model.ChallengeSimpleTags
-import com.aoztg.greengrim.data.model.HotChallengeTags
+import com.aoztg.greengrim.data.model.response.ChallengeDetailTags
+import com.aoztg.greengrim.data.model.response.ChallengeSimpleTags
+import com.aoztg.greengrim.data.model.response.HotChallengeTags
 import com.aoztg.greengrim.presentation.util.toCategoryText
 import com.bumptech.glide.Glide
 import com.google.android.material.chip.ChipGroup
-import dagger.BindsInstance
 
 @BindingAdapter("imgResource")
 fun bindResource(imageView: ImageView, resource: Int) {

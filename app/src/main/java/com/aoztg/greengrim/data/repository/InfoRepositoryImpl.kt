@@ -1,7 +1,7 @@
 package com.aoztg.greengrim.data.repository
 
-import com.aoztg.greengrim.data.model.GetProfileResponse
-import com.aoztg.greengrim.data.model.PatchProfileRequest
+import com.aoztg.greengrim.data.model.response.GetProfileResponse
+import com.aoztg.greengrim.data.model.request.PatchProfileRequest
 import com.aoztg.greengrim.data.remote.InfoAPI
 import retrofit2.Response
 import javax.inject.Inject

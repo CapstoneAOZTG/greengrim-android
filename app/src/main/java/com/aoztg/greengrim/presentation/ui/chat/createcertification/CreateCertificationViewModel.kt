@@ -2,8 +2,8 @@ package com.aoztg.greengrim.presentation.ui.chat.createcertification
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.aoztg.greengrim.data.model.CertificationDefaultDataResponse
-import com.aoztg.greengrim.data.model.CreateCertificationRequest
+import com.aoztg.greengrim.data.model.response.CertificationDefaultDataResponse
+import com.aoztg.greengrim.data.model.request.CreateCertificationRequest
 import com.aoztg.greengrim.data.repository.CertificationRepository
 import com.aoztg.greengrim.presentation.ui.BaseState
 import dagger.hilt.android.lifecycle.HiltViewModel

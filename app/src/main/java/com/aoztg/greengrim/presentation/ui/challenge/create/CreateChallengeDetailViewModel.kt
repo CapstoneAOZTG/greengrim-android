@@ -2,8 +2,7 @@ package com.aoztg.greengrim.presentation.ui.challenge.create
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.aoztg.greengrim.data.local.ChatIdEntity
-import com.aoztg.greengrim.data.model.CreateChallengeRequest
+import com.aoztg.greengrim.data.model.request.CreateChallengeRequest
 import com.aoztg.greengrim.data.model.ErrorResponse
 import com.aoztg.greengrim.data.repository.ChallengeRepository
 import com.aoztg.greengrim.data.repository.ChatRepository
@@ -46,7 +45,7 @@ sealed class KeywordState {
 
 sealed class CreateChallengeDetailEvents{
     object NavigateToBack : CreateChallengeDetailEvents()
-    object NavigateToChatList : CreateChallengeDetailEvents()
+    data class NavigateToChatList(val chatId: Int) : CreateChallengeDetailEvents()
 }
 
 @HiltViewModel
@@ -183,9 +182,8 @@ class CreateChallengeDetailViewModel @Inject constructor(
 
             if(response.isSuccessful){
                 response.body()?.let{
-                    chatRepository.addChatId(ChatIdEntity(it.id))
+                    _events.emit(CreateChallengeDetailEvents.NavigateToChatList(it.id))
                 }
-                _events.emit(CreateChallengeDetailEvents.NavigateToChatList)
             } else {
 
                 val error =

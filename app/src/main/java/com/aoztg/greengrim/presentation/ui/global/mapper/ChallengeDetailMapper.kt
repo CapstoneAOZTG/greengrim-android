@@ -1,6 +1,6 @@
 package com.aoztg.greengrim.presentation.ui.global.mapper
 
-import com.aoztg.greengrim.data.model.ChallengeDetailResponse
+import com.aoztg.greengrim.data.model.response.ChallengeDetailResponse
 import com.aoztg.greengrim.presentation.ui.global.model.ChallengeDetail
 
 

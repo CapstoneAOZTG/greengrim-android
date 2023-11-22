@@ -1,6 +1,6 @@
-package com.aoztg.greengrim.data.model
+package com.aoztg.greengrim.data.model.response
 
-data class SignupResponse(
+data class LoginResponse(
     val accessToken: String,
     val refreshToken: String,
     val memberId: Long

@@ -1,4 +1,4 @@
-package com.aoztg.greengrim.data.model
+package com.aoztg.greengrim.data.model.response
 
 data class MyCertificationListResponse(
     val hasNext: Boolean,

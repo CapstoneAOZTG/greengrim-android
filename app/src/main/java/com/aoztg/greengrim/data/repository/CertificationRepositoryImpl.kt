@@ -1,11 +1,11 @@
 package com.aoztg.greengrim.data.repository
 
-import com.aoztg.greengrim.data.model.CertificationDatesResponse
-import com.aoztg.greengrim.data.model.CertificationDefaultDataResponse
-import com.aoztg.greengrim.data.model.CertificationDetailResponse
-import com.aoztg.greengrim.data.model.CertificationListResponse
-import com.aoztg.greengrim.data.model.CreateCertificationRequest
-import com.aoztg.greengrim.data.model.MyCertificationListResponse
+import com.aoztg.greengrim.data.model.response.CertificationDatesResponse
+import com.aoztg.greengrim.data.model.response.CertificationDefaultDataResponse
+import com.aoztg.greengrim.data.model.response.CertificationDetailResponse
+import com.aoztg.greengrim.data.model.response.CertificationListResponse
+import com.aoztg.greengrim.data.model.request.CreateCertificationRequest
+import com.aoztg.greengrim.data.model.response.MyCertificationListResponse
 import com.aoztg.greengrim.data.remote.CertificationAPI
 import retrofit2.Response
 import javax.inject.Inject

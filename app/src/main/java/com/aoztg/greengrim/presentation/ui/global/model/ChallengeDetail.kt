@@ -1,6 +1,6 @@
 package com.aoztg.greengrim.presentation.ui.global.model
 
-import com.aoztg.greengrim.data.model.ChallengeDetailTags
+import com.aoztg.greengrim.data.model.response.ChallengeDetailTags
 
 data class ChallengeDetail(
     val id: Int = -1,

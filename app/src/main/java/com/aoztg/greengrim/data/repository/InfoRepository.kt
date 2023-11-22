@@ -1,7 +1,7 @@
 package com.aoztg.greengrim.data.repository
 
-import com.aoztg.greengrim.data.model.GetProfileResponse
-import com.aoztg.greengrim.data.model.PatchProfileRequest
+import com.aoztg.greengrim.data.model.response.GetProfileResponse
+import com.aoztg.greengrim.data.model.request.PatchProfileRequest
 import retrofit2.Response
 
 interface InfoRepository {

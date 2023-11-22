@@ -2,9 +2,9 @@ package com.aoztg.greengrim.presentation.ui.info.editprofile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.aoztg.greengrim.data.model.CheckNickRequest
+import com.aoztg.greengrim.data.model.request.CheckNickRequest
 import com.aoztg.greengrim.data.model.ErrorResponse
-import com.aoztg.greengrim.data.model.PatchProfileRequest
+import com.aoztg.greengrim.data.model.request.PatchProfileRequest
 import com.aoztg.greengrim.data.repository.InfoRepository
 import com.aoztg.greengrim.data.repository.IntroRepository
 import com.aoztg.greengrim.presentation.ui.BaseState

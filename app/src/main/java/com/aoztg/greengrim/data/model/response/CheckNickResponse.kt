@@ -1,4 +1,4 @@
-package com.aoztg.greengrim.data.model
+package com.aoztg.greengrim.data.model.response
 
 data class CheckNickResponse(
     val used: Boolean
