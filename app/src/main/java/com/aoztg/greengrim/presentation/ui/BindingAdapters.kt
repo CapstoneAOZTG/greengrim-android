@@ -49,6 +49,15 @@ fun bindImgCheckEmpty(imageView: ImageView, url: String) {
     }
 }
 
+@BindingAdapter("noListState")
+fun <T> bindNoList(view: ImageView, list: List<T>){
+    if(list.isEmpty()){
+        view.visibility = View.VISIBLE
+    } else {
+        view.visibility = View.INVISIBLE
+    }
+}
+
 @SuppressLint("SetTextI18n")
 @BindingAdapter("textLength", "textLimit")
 fun bindTextLength(view: TextView, text: String, limit: Int) {
