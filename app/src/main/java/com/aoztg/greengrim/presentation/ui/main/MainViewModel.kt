@@ -1,11 +1,15 @@
 package com.aoztg.greengrim.presentation.ui.main
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.app.App
+import com.aoztg.greengrim.data.model.ChatResponse
 import com.aoztg.greengrim.data.repository.ChatRepository
 import com.aoztg.greengrim.data.repository.ImageRepository
 import com.aoztg.greengrim.presentation.util.Constants
+import com.aoztg.greengrim.presentation.util.Constants.TAG
+import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -39,6 +43,9 @@ class MainViewModel @Inject constructor(
     private val _image = MutableStateFlow("")
     val image: StateFlow<String> = _image.asStateFlow()
 
+    private val _newChat = MutableStateFlow(ChatResponse())
+    val newChat: StateFlow<ChatResponse> = _newChat.asStateFlow()
+
     private var memberId: Long = 0
 
     init {
@@ -55,10 +62,21 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    private fun getMyChatIds() {
+    private fun getMyChatIds(){
         viewModelScope.launch {
-            val response = chatRepository.getAllChatId()
-            _events.emit(MainEvent.SubscribeMyChats(response.map { it.chatId }))
+            val response = chatRepository.getChatRooms()
+
+            if(response.isSuccessful){
+                response.body()?.let{ body ->
+                    _events.emit(MainEvent.SubscribeMyChats(
+                        body.map {
+                            it.id
+                        }
+                    ))
+                }
+            } else {
+
+            }
         }
     }
 
@@ -87,7 +105,6 @@ class MainViewModel @Inject constructor(
             val response = imageRepository.imageToUrl(file)
 
             if (response.isSuccessful) {
-
                 response.body()?.let {
                     _image.value = it.imgUrl
                 }
@@ -113,4 +130,10 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    fun receiveMessage(payload: String){
+        val chatResponse = Gson().fromJson(payload, ChatResponse::class.java)
+        if(chatResponse.senderId != memberId){
+            _newChat.value = chatResponse
+        }
+    }
 }

@@ -4,6 +4,8 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.presentation.ui.chat.model.ChatMessage
+import com.aoztg.greengrim.presentation.util.Constants.MY_CHAT
+import com.aoztg.greengrim.presentation.util.Constants.OTHER_CHAT
 import com.aoztg.greengrim.presentation.util.Constants.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -50,25 +52,32 @@ class ChatRoomViewModel @Inject constructor() : ViewModel() {
         observeChatMessage()
     }
 
-    fun newChatMessage(){
+    fun newChatMessage(
+        nick: String,
+        profileImg: String,
+        message: String
+    ){
+        Log.d(TAG,message)
         _uiState.update { state ->
             state.copy(
                 chatMessages = state.chatMessages + ChatMessage(
-                    nick = "킹보라",
-                    profileImg = "https://greengrim-bucket.s3.ap-northeast-2.amazonaws.com/e0aab34a-c95d-4128-b8b5-1fea618b3236.jpg",
-                    message = "아하하하하하하하하하ㅏㅎ",
-                    type = 1
+                    nick = nick,
+                    profileImg = profileImg,
+                    message = message,
+                    type = OTHER_CHAT
                 )
             )
         }
     }
 
-    fun newMyChatMessage(){
+    private fun newMyChatMessage(
+        message: String
+    ){
         _uiState.update { state ->
             state.copy(
                 chatMessages = state.chatMessages + ChatMessage(
-                    message = "히히히히히히히히",
-                    type = 0
+                    message = message,
+                    type = MY_CHAT
                 )
             )
         }
@@ -130,6 +139,7 @@ class ChatRoomViewModel @Inject constructor() : ViewModel() {
     fun sendMessage(){
         viewModelScope.launch{
             _events.emit(ChatRoomEvents.SendMessage(chatRoomId,chatMessage.value))
+            newMyChatMessage(chatMessage.value)
             chatMessage.emit("")
         }
     }

@@ -1,7 +1,7 @@
 package com.aoztg.greengrim.data.remote
 
-import com.aoztg.greengrim.data.model.ChatRoomsResponse
-import com.aoztg.greengrim.data.model.EnterChatResponse
+import com.aoztg.greengrim.data.model.response.ChatRoomsResponse
+import com.aoztg.greengrim.data.model.response.EnterChatResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.POST

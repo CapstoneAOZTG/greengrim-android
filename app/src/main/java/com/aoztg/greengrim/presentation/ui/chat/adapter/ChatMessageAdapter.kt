@@ -7,15 +7,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.aoztg.greengrim.databinding.ItemChatBinding
 import com.aoztg.greengrim.databinding.ItemMyChatBinding
 import com.aoztg.greengrim.presentation.ui.chat.model.ChatMessage
+import com.aoztg.greengrim.presentation.util.Constants.MY_CHAT
+import com.aoztg.greengrim.presentation.util.Constants.OTHER_CHAT
 import com.aoztg.greengrim.presentation.util.DefaultDiffUtil
 
 class ChatMessageAdapter :
     ListAdapter<ChatMessage, RecyclerView.ViewHolder>(DefaultDiffUtil<ChatMessage>()) {
-
-    companion object {
-        private const val MY_CHAT = 0
-        private const val OTHER_CHAT = 1
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         if (viewType == MY_CHAT) {

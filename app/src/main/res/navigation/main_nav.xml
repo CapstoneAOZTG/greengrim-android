@@ -87,7 +87,7 @@
         android:name="com.aoztg.greengrim.presentation.ui.chat.chatroom.ChatRoomFragment"
         android:label="ChatRoom">
         <argument
-            android:name="challengeId"
+            android:name="chatId"
             app:argType="integer" />
         <action
             android:id="@+id/action_chat_room_fragment_to_certification_list_fragment"

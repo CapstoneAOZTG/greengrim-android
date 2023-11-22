@@ -1,6 +1,7 @@
 package com.aoztg.greengrim.presentation.ui.chat.chatroom
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
@@ -15,6 +16,7 @@ import com.aoztg.greengrim.databinding.FragmentChatRoomBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
 import com.aoztg.greengrim.presentation.ui.chat.adapter.ChatMessageAdapter
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
+import com.aoztg.greengrim.presentation.util.Constants.TAG
 import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -24,7 +26,7 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
     private val parentViewModel: MainViewModel by activityViewModels()
     private val viewModel: ChatRoomViewModel by viewModels()
     private val args: ChatRoomFragmentArgs by navArgs()
-    private val challengeId by lazy { args.challengeId }
+    private val chatId by lazy { args.chatId }
     private val popupLocation = IntArray(2)
     private var isPopupShowing = false
 
@@ -34,16 +36,9 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
         binding.vm = viewModel
         parentViewModel.hideBNV()
         binding.rvChat.adapter = ChatMessageAdapter()
-        viewModel.setChatId(challengeId)
+        viewModel.setChatId(chatId)
         initEventsObserver()
-        viewModel.newChatMessage()
-        viewModel.newMyChatMessage()
-        viewModel.newChatMessage()
-        viewModel.newMyChatMessage()
-        viewModel.newChatMessage()
-        viewModel.newMyChatMessage()
-        viewModel.newChatMessage()
-        viewModel.newMyChatMessage()
+        initChatMessageObserver()
     }
 
     private fun initEventsObserver() {
@@ -72,7 +67,25 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
                     is ChatRoomEvents.NavigateToCreateCertification -> findNavController().toCreateCertification(
                         it.id
                     )
-                    is ChatRoomEvents.SendMessage -> parentViewModel.sendMessage(it.chatId, it.message)
+
+                    is ChatRoomEvents.SendMessage -> parentViewModel.sendMessage(
+                        it.chatId,
+                        it.message
+                    )
+                }
+            }
+        }
+    }
+
+    private fun initChatMessageObserver() {
+        repeatOnStarted {
+            parentViewModel.newChat.collect {
+                if (it.roomId == chatId) {
+                    viewModel.newChatMessage(
+                        nick = it.nickName,
+                        profileImg = it.profileImg,
+                        message = it.message
+                    )
                 }
             }
         }

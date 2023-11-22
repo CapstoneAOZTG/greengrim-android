@@ -1,15 +1,15 @@
 package com.aoztg.greengrim.presentation.ui.main
 
 import android.annotation.SuppressLint
-import android.util.Log
 import com.aoztg.greengrim.app.App
 import com.aoztg.greengrim.presentation.util.Constants
-import com.aoztg.greengrim.presentation.util.Constants.TAG
 import org.json.JSONObject
 import ua.naiksoftware.stomp.Stomp
 import ua.naiksoftware.stomp.dto.StompHeader
 
-class ChatSocket() {
+class ChatSocket(
+    private val acceptChat: (String) -> Unit
+) {
 
     private val url = "wss://dev.greengrim.store/ws"
     private val jwt = App.sharedPreferences.getString(Constants.X_ACCESS_TOKEN, null)
@@ -35,9 +35,8 @@ class ChatSocket() {
 
     @SuppressLint("CheckResult")
     fun subscribeChat(chatId: Int) {
-
         stompClient.topic("/sub/chat/room/$chatId").subscribe { topicMessage ->
-            Log.d(TAG, topicMessage.toString())
+            acceptChat(topicMessage.payload)
         }
     }
 
@@ -49,7 +48,6 @@ class ChatSocket() {
         data.put("message", message)
         stompClient.send("/pub/chat/message", data.toString()).subscribe()
     }
-
 }
 
 
