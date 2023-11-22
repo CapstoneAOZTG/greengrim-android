@@ -2,7 +2,7 @@ package com.aoztg.greengrim.app.di
 
 import android.content.Context
 import androidx.room.Room
-import com.aoztg.greengrim.data.local.ChatIdDao
+import com.aoztg.greengrim.data.local.ChatDao
 import com.aoztg.greengrim.data.local.GreenGrimDatabase
 import dagger.Module
 import dagger.Provides
@@ -25,7 +25,7 @@ object DatabaseModule {
 
     @Provides
     @Singleton
-    fun provideChatIdDao(database: GreenGrimDatabase): ChatIdDao {
-        return database.chatIdDao()
+    fun provideChatDao(database: GreenGrimDatabase): ChatDao {
+        return database.chatDao()
     }
 }
