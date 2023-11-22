@@ -9,7 +9,6 @@ import androidx.navigation.fragment.findNavController
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentInfoBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
-import com.aoztg.greengrim.presentation.ui.BaseState
 import com.aoztg.greengrim.presentation.ui.SocialLoginType
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 import com.aoztg.greengrim.presentation.ui.toAttendCheck
@@ -37,7 +36,7 @@ class InfoFragment : BaseFragment<FragmentInfoBinding>(R.layout.fragment_info) {
         parentViewModel.showBNV()
         binding.vm = viewModel
         initEventObserver()
-        initStateObserver()
+        viewModel.getProfileInfo()
     }
 
     private fun initEventObserver() {
@@ -50,18 +49,7 @@ class InfoFragment : BaseFragment<FragmentInfoBinding>(R.layout.fragment_info) {
                     is InfoEvents.NavigateToAttendCheck -> findNavController().toAttendCheck()
                     is InfoEvents.NavigateToMyChallenge -> findNavController().toMyChallenge()
                     is InfoEvents.NavigateToMyCertification -> findNavController().toMyCertification()
-                }
-            }
-        }
-    }
-
-    private fun initStateObserver() {
-        repeatOnStarted {
-            viewModel.uiState.collect {
-                when (it.withdrawalState) {
-                    is BaseState.Success -> goToIntroActivity()
-                    is BaseState.Error -> showCustomToast(it.withdrawalState.msg)
-                    else -> {}
+                    is InfoEvents.ShowToastMessage -> showCustomToast(it.msg)
                 }
             }
         }
