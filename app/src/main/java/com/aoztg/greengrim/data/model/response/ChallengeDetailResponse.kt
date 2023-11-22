@@ -1,9 +1,10 @@
-package com.aoztg.greengrim.data.model
+package com.aoztg.greengrim.data.model.response
 
 data class ChallengeDetailResponse(
     val challengeInfo: ChallengeDetailInfo,
     val challengeTags: ChallengeDetailTags,
-    val createdAt: String
+    val createdAt: String,
+    val entered: Boolean
 )
 
 data class ChallengeDetailInfo(

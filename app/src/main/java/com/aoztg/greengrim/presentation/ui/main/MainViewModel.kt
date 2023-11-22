@@ -1,14 +1,23 @@
 package com.aoztg.greengrim.presentation.ui.main
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.aoztg.greengrim.app.App
+import com.aoztg.greengrim.data.model.ChatResponse
+import com.aoztg.greengrim.data.repository.ChatRepository
 import com.aoztg.greengrim.data.repository.ImageRepository
+import com.aoztg.greengrim.presentation.util.Constants
+import com.aoztg.greengrim.presentation.util.Constants.TAG
+import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
 import javax.inject.Inject
@@ -17,11 +26,17 @@ sealed class MainEvent {
     object HideBottomNav : MainEvent()
     object ShowBottomNav : MainEvent()
     object ShowPhotoBottomSheet : MainEvent()
-    object Logout: MainEvent()
+    object Logout : MainEvent()
+    data class ConnectNewChat(val chatId: Int) : MainEvent()
+    data class SubscribeMyChats(val myChatIds: List<Int>) : MainEvent()
+    data class SendChat(val memberId: Long, val chatId: Int, val message: String) : MainEvent()
 }
 
 @HiltViewModel
-class MainViewModel @Inject constructor(private val imageRepository: ImageRepository) :
+class MainViewModel @Inject constructor(
+    private val imageRepository: ImageRepository,
+    private val chatRepository: ChatRepository
+) :
     ViewModel() {
 
     private val _events: MutableSharedFlow<MainEvent> = MutableSharedFlow()
@@ -29,6 +44,43 @@ class MainViewModel @Inject constructor(private val imageRepository: ImageReposi
 
     private val _image = MutableStateFlow("")
     val image: StateFlow<String> = _image.asStateFlow()
+
+    private val _newChat = MutableSharedFlow<ChatResponse>()
+    val newChat: SharedFlow<ChatResponse> = _newChat.asSharedFlow()
+
+    private var memberId: Long = 0
+
+    init {
+        setMemberId()
+        getMyChatIds()
+    }
+
+    private fun setMemberId() {
+        val memberId: Long = App.sharedPreferences.getLong(Constants.MEMBER_ID, -1L)
+        if (memberId != -1L) {
+            this.memberId = memberId
+        } else {
+
+        }
+    }
+
+    private fun getMyChatIds(){
+        viewModelScope.launch {
+            val response = chatRepository.getChatRooms()
+
+            if(response.isSuccessful){
+                response.body()?.let{ body ->
+                    _events.emit(MainEvent.SubscribeMyChats(
+                        body.map {
+                            it.id
+                        }
+                    ))
+                }
+            } else {
+
+            }
+        }
+    }
 
     fun goToGallery() {
         viewModelScope.launch {
@@ -55,7 +107,6 @@ class MainViewModel @Inject constructor(private val imageRepository: ImageReposi
             val response = imageRepository.imageToUrl(file)
 
             if (response.isSuccessful) {
-
                 response.body()?.let {
                     _image.value = it.imgUrl
                 }
@@ -63,10 +114,31 @@ class MainViewModel @Inject constructor(private val imageRepository: ImageReposi
         }
     }
 
-    fun logout(){
+    fun logout() {
         viewModelScope.launch {
             _events.emit(MainEvent.Logout)
         }
     }
 
+    fun connectNewChat(chatId: Int) {
+        viewModelScope.launch {
+            _events.emit(MainEvent.ConnectNewChat(chatId))
+        }
+    }
+
+    fun sendMessage(chatId: Int, message: String) {
+        viewModelScope.launch {
+            _events.emit(MainEvent.SendChat(memberId, chatId, message))
+        }
+    }
+
+    fun receiveMessage(payload: String){
+        Log.d(TAG,"Main ViewModel received!!")
+        val chatResponse = Gson().fromJson(payload, ChatResponse::class.java)
+        if(chatResponse.senderId != memberId) {
+            viewModelScope.launch {
+                _newChat.emit(chatResponse)
+            }
+        }
+    }
 }

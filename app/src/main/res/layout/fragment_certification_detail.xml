@@ -70,6 +70,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:paddingStart="@dimen/padding_large"
+            android:text="@{vm.uiState.certificationDetail.challengeTitle}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/layout_toolbar"
             tools:text="인하대학교 쓰레기 줍기" />
@@ -82,6 +83,8 @@
             android:layout_marginStart="12dp"
             android:background="@drawable/shape_purplefill_nostroke_radius20"
             android:paddingHorizontal="8dp"
+            android:paddingVertical="2dp"
+            app:categoryChip="@{vm.uiState.certificationDetail.category}"
             app:layout_constraintBottom_toBottomOf="@id/tv_title"
             app:layout_constraintStart_toEndOf="@id/tv_title"
             app:layout_constraintTop_toTopOf="@id/tv_title"
@@ -95,6 +98,8 @@
             android:layout_marginStart="8dp"
             android:background="@drawable/shape_greenfill_nostroke_radius20"
             android:paddingHorizontal="8dp"
+            android:paddingVertical="2dp"
+            android:text="@{vm.uiState.certificationDetail.ticketCount}"
             app:layout_constraintBottom_toBottomOf="@id/tv_title"
             app:layout_constraintStart_toEndOf="@id/tv_keyword_category"
             app:layout_constraintTop_toTopOf="@id/tv_title"
@@ -108,6 +113,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="12dp"
             android:layout_marginEnd="32dp"
+            android:text="@{vm.uiState.certificationDetail.challengeDescription}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_title"
@@ -122,6 +128,7 @@
             android:scaleType="centerCrop"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_description"
+            app:profileImgUrl="@{vm.uiState.certificationDetail.profileUrl}"
             app:shapeAppearanceOverlay="@style/All16RadiusImageView"
             tools:src="@drawable/test" />
 
@@ -131,6 +138,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
+            android:text="@{vm.uiState.certificationDetail.nickName}"
             app:layout_constraintBottom_toBottomOf="@id/iv_profile"
             app:layout_constraintStart_toEndOf="@id/iv_profile"
             app:layout_constraintTop_toTopOf="@id/iv_profile"
@@ -142,6 +150,7 @@
             android:layout_height="0dp"
             android:layout_marginTop="16dp"
             android:scaleType="centerCrop"
+            app:imgUrl="@{vm.uiState.certificationDetail.certificationImgUrl}"
             app:layout_constraintDimensionRatio="3:2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -155,6 +164,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
+            android:text="@{vm.uiState.certificationDetail.certificationTitle}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/iv_certification_photo"
             tools:text="[14회차 인증]" />
@@ -165,6 +175,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="20dp"
+            android:text="@{vm.uiState.certificationDetail.date}"
             app:layout_constraintBottom_toBottomOf="@id/tv_certification_count"
             app:layout_constraintEnd_toEndOf="parent"
             tools:text="2023년 9월 26일" />
@@ -175,6 +186,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:text="@{vm.uiState.certificationDetail.certificationDescription}"
             app:layout_constraintStart_toStartOf="@id/tv_certification_count"
             app:layout_constraintTop_toBottomOf="@id/tv_certification_count"
             tools:text="쓰레기도 줍고 치킨도 주웠다." />
@@ -213,6 +225,7 @@
             android:minHeight="0dp"
             android:paddingVertical="10dp"
             android:text="올바르지 않은 사진이에요"
+            app:checkBtnState="@{vm.uiState.certificationDetail.verified}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/btn_true"
             app:layout_constraintStart_toStartOf="parent" />
@@ -227,6 +240,7 @@
             android:minHeight="0dp"
             android:paddingVertical="10dp"
             android:text="올바른 사진이에요"
+            app:checkBtnState="@{vm.uiState.certificationDetail.verified}"
             app:layout_constraintBottom_toBottomOf="@id/btn_false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/btn_false" />
@@ -244,6 +258,7 @@
             android:text="참여 완료"
             android:textAlignment="center"
             android:visibility="invisible"
+            app:checkCompleteViewState="@{vm.uiState.certificationDetail.verified}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

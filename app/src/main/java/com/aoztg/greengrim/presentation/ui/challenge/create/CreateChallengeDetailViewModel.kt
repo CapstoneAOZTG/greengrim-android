@@ -2,9 +2,10 @@ package com.aoztg.greengrim.presentation.ui.challenge.create
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.aoztg.greengrim.data.model.CreateChallengeRequest
+import com.aoztg.greengrim.data.model.request.CreateChallengeRequest
 import com.aoztg.greengrim.data.model.ErrorResponse
 import com.aoztg.greengrim.data.repository.ChallengeRepository
+import com.aoztg.greengrim.data.repository.ChatRepository
 import com.aoztg.greengrim.presentation.ui.BaseState
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -44,12 +45,13 @@ sealed class KeywordState {
 
 sealed class CreateChallengeDetailEvents{
     object NavigateToBack : CreateChallengeDetailEvents()
-    object NavigateToChatList : CreateChallengeDetailEvents()
+    data class NavigateToChatList(val chatId: Int) : CreateChallengeDetailEvents()
 }
 
 @HiltViewModel
 class CreateChallengeDetailViewModel @Inject constructor(
-    private val challengeRepository: ChallengeRepository
+    private val challengeRepository: ChallengeRepository,
+    private val chatRepository: ChatRepository
 ) : ViewModel() {
 
     companion object {
@@ -179,7 +181,9 @@ class CreateChallengeDetailViewModel @Inject constructor(
             )
 
             if(response.isSuccessful){
-                _events.emit(CreateChallengeDetailEvents.NavigateToChatList)
+                response.body()?.let{
+                    _events.emit(CreateChallengeDetailEvents.NavigateToChatList(it.id))
+                }
             } else {
 
                 val error =

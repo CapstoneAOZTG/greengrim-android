@@ -1,6 +1,6 @@
 package com.aoztg.greengrim.presentation.ui.challenge.model
 
-import com.aoztg.greengrim.data.model.ChallengeSimpleTags
+import com.aoztg.greengrim.data.model.response.ChallengeSimpleTags
 
 
 data class ChallengeListData(

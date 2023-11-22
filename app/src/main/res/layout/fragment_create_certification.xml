@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="pvm"
+            type="com.aoztg.greengrim.presentation.ui.main.MainViewModel" />
+
+        <variable
+            name="vm"
+            type="com.aoztg.greengrim.presentation.ui.chat.createcertification.CreateCertificationViewModel" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="@dimen/padding_large"
+            android:paddingVertical="@dimen/padding_middle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_scrollFlags="scroll|enterAlways">
+
+            <ImageButton
+                android:id="@+id/btn_back"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginEnd="12dp"
+                android:background="@android:color/transparent"
+                android:onClick="@{() -> vm.navigateBack()}"
+                android:scaleType="fitCenter"
+                android:src="@drawable/icon_back"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_header"
+                style="@style/TextHeader"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                app:certificationRoundText="@{vm.uiState.certificationDefaultData.round}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="14회차 인증" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_complete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:enabled="@{vm.isDataReady()}"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:onClick="@{() -> vm.createCertification()}"
+                android:text="완료"
+                android:textColor="@color/selector_complete_text"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/tv_title"
+            style="@style/TextGgMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:paddingStart="@dimen/padding_large"
+            android:text="@{vm.uiState.certificationDefaultData.title}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/layout_toolbar"
+            tools:text="인하대학교 쓰레기 줍기" />
+
+        <TextView
+            android:id="@+id/tv_keyword_category"
+            style="@style/TextGgSmallBlackBold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:background="@drawable/shape_purplefill_nostroke_radius20"
+            android:paddingHorizontal="8dp"
+            app:categoryChip="@{vm.uiState.certificationDefaultData.category}"
+            app:layout_constraintBottom_toBottomOf="@id/tv_title"
+            app:layout_constraintStart_toEndOf="@id/tv_title"
+            app:layout_constraintTop_toTopOf="@id/tv_title"
+            tools:text="줍킹" />
+
+        <TextView
+            android:id="@+id/tv_keyword_ticket"
+            style="@style/TextGgSmallBlackBold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/shape_greenfill_nostroke_radius20"
+            android:paddingHorizontal="8dp"
+            android:text="@{vm.uiState.certificationDefaultData.ticketCount}"
+            app:layout_constraintBottom_toBottomOf="@id/tv_title"
+            app:layout_constraintStart_toEndOf="@id/tv_keyword_category"
+            app:layout_constraintTop_toTopOf="@id/tv_title"
+            tools:text="티켓 5/30" />
+
+        <TextView
+            android:id="@+id/tv_photo_label"
+            style="@style/TextFormLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="20dp"
+            android:text="인증 사진"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_title" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iv_add_photo"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="8dp"
+            android:onClick="@{() -> pvm.goToGallery()}"
+            android:src="@drawable/img_add_certification_photo"
+            app:imgUrlCheckEmtpy="@{pvm.image}"
+            app:layout_constraintDimensionRatio="942:576"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_photo_label"
+            app:shapeAppearanceOverlay="@style/All10RadiusImageView" />
+
+        <TextView
+            android:id="@+id/tv_description"
+            style="@style/TextFormLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="30dp"
+            android:text="인증 설명"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_add_photo" />
+
+        <TextView
+            android:id="@+id/tv_description_count"
+            style="@style/TextFormLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            app:layout_constraintBottom_toBottomOf="@id/tv_description"
+            app:layout_constraintStart_toEndOf="@id/tv_description"
+            app:layout_constraintTop_toTopOf="@id/tv_description"
+            app:textLength="@{vm.description}"
+            app:textLimit="@{200}"
+            tools:text="(0/200)" />
+
+        <EditText
+            android:id="@+id/et_description"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/shape_darkfill_grey5stroke_radius10"
+            android:gravity="top"
+            android:hint="간단히 설명해주세요"
+            android:lineSpacingExtra="5dp"
+            android:lines="3"
+            android:maxLength="200"
+            android:maxLines="3"
+            android:paddingHorizontal="15dp"
+            android:paddingVertical="12dp"
+            android:text="@={vm.description}"
+            android:textColor="@color/white"
+            android:textColorHint="@color/gg_grey5"
+            android:textSize="13sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_description" />
+
+        <TextView
+            android:id="@+id/tv_warning"
+            style="@style/TextGgSmallGrey5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="20dp"
+            android:text="※ 기준에 맞지 않은 사진을 등록 시 GREEN POINT 지급이 취소될 수 있으며, 서비스 이용에 불이익이 있을 수 있습니다."
+            android:textColor="@color/gg_red"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/et_description" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -1,6 +1,6 @@
 package com.aoztg.greengrim.data.remote
 
-import com.aoztg.greengrim.data.model.HotChallengeResponse
+import com.aoztg.greengrim.data.model.response.HotChallengeResponse
 import retrofit2.Response
 import retrofit2.http.GET
 

@@ -1,8 +1,9 @@
 package com.aoztg.greengrim.data.remote
 
-import com.aoztg.greengrim.data.model.ChallengeDetailResponse
-import com.aoztg.greengrim.data.model.ChallengeListResponse
-import com.aoztg.greengrim.data.model.CreateChallengeRequest
+import com.aoztg.greengrim.data.model.response.ChallengeDetailResponse
+import com.aoztg.greengrim.data.model.response.ChallengeListResponse
+import com.aoztg.greengrim.data.model.request.CreateChallengeRequest
+import com.aoztg.greengrim.data.model.response.CreateChallengeResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -15,7 +16,7 @@ interface ChallengeAPI {
     @POST("/visitor/challenges")
     suspend fun createChallenge(
         @Body params: CreateChallengeRequest
-    ): Response<Unit>
+    ): Response<CreateChallengeResponse>
 
     @GET("/challenges/{id}")
     suspend fun getChallengeDetail(

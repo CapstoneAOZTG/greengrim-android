@@ -5,18 +5,14 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ContentValues
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Rect
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
-import android.view.MotionEvent
+import android.util.Log
 import android.view.View
-import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.app.ActivityCompat
@@ -27,6 +23,8 @@ import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.app.App
+import com.aoztg.greengrim.data.model.ChatResponse
+import com.aoztg.greengrim.data.model.ErrorResponse
 import com.aoztg.greengrim.databinding.ActivityMainBinding
 import com.aoztg.greengrim.presentation.base.BaseActivity
 import com.aoztg.greengrim.presentation.ui.home.HomeFragmentDirections
@@ -34,10 +32,11 @@ import com.aoztg.greengrim.presentation.ui.intro.IntroActivity
 import com.aoztg.greengrim.presentation.util.Constants
 import com.aoztg.greengrim.presentation.util.Constants.CAMERA_PERMISSION
 import com.aoztg.greengrim.presentation.util.Constants.STORAGE_PERMISSION
+import com.aoztg.greengrim.presentation.util.Constants.TAG
 import com.aoztg.greengrim.presentation.util.getPhotoSheet
 import com.aoztg.greengrim.presentation.util.toMultiPart
+import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
-import java.net.ServerSocket
 import java.text.SimpleDateFormat
 import java.util.Date
 
@@ -62,6 +61,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     private val cameraPermission = Manifest.permission.CAMERA
 
     private lateinit var tempCameraUri: Uri
+    private val chatSocket = ChatSocket(::receiveChat)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,7 +69,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         setBottomNavigation()
         setBottomNavigationListener()
         initEventObserver()
-
     }
 
     private fun setBottomNavigation() {
@@ -115,6 +114,13 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                     is MainEvent.ShowBottomNav -> binding.layoutBnv.visibility = View.VISIBLE
                     is MainEvent.ShowPhotoBottomSheet -> showPhotoBottomSheet()
                     is MainEvent.Logout -> logout()
+                    is MainEvent.ConnectNewChat -> chatSocket.subscribeChat(it.chatId)
+                    is MainEvent.SubscribeMyChats -> {
+                        it.myChatIds.forEach {  id ->
+                            chatSocket.subscribeChat(id)
+                        }
+                    }
+                    is MainEvent.SendChat -> chatSocket.sendMessage(it.memberId, it.chatId, it.message)
                 }
             }
         }
@@ -251,22 +257,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         }
     }
 
-    override fun dispatchTouchEvent(event: MotionEvent?): Boolean {
-        if (event?.action === MotionEvent.ACTION_DOWN) {
-            val v = currentFocus
-            if (v is EditText) {
-                val outRect = Rect()
-                v.getGlobalVisibleRect(outRect)
-                if (!outRect.contains(event.rawX.toInt(), event.rawY.toInt())) {
-                    v.clearFocus()
-                    val imm: InputMethodManager =
-                        getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0)
-                }
-            }
-        }
-        return super.dispatchTouchEvent(event)
+    private fun receiveChat(message: String){
+        viewModel.receiveMessage(message)
     }
-
 
 }

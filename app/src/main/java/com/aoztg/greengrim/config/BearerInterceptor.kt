@@ -1,10 +1,15 @@
 package com.aoztg.greengrim.config
 
+import android.content.Intent
 import android.util.Log
+import com.aoztg.greengrim.app.App.Companion.context
 import com.aoztg.greengrim.app.App.Companion.sharedPreferences
 import com.aoztg.greengrim.data.model.ErrorResponse
 import com.aoztg.greengrim.data.remote.RefreshAPI
+import com.aoztg.greengrim.presentation.ui.intro.IntroActivity
+import com.aoztg.greengrim.presentation.util.Constants
 import com.aoztg.greengrim.presentation.util.Constants.BASE_DEV_URL
+import com.aoztg.greengrim.presentation.util.Constants.MEMBER_ID
 import com.aoztg.greengrim.presentation.util.Constants.TAG
 import com.aoztg.greengrim.presentation.util.Constants.X_ACCESS_TOKEN
 import com.aoztg.greengrim.presentation.util.Constants.X_REFRESH_TOKEN
@@ -49,6 +54,7 @@ class BearerInterceptor : Interceptor {
                             sharedPreferences.edit()
                                 .putString(X_ACCESS_TOKEN, body.accessToken)
                                 .putString(X_REFRESH_TOKEN, body.refreshToken)
+                                .putLong(MEMBER_ID, body.memberId)
                                 .apply()
 
                             isRefreshed = true
@@ -69,7 +75,19 @@ class BearerInterceptor : Interceptor {
                     .addHeader("Authorization", accessToken)
                     .build()
 
+                response.close()
+
                 return chain.proceed(newRequest)
+            } else {
+                // 해당 특정 에러코드가 그대로 내려간다면, IntroActivity로 이동. 세션 만료 처리
+                sharedPreferences.edit()
+                    .remove(X_ACCESS_TOKEN)
+                    .remove(X_REFRESH_TOKEN)
+                    .apply()
+
+                val intent = Intent(context(), IntroActivity::class.java)
+                    .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                context().startActivity(intent)
             }
         }
 

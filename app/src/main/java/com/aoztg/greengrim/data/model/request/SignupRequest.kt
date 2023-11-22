@@ -1,4 +1,4 @@
-package com.aoztg.greengrim.data.model
+package com.aoztg.greengrim.data.model.request
 
 data class SignupRequest(
     val email: String,

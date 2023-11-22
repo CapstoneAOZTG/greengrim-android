@@ -137,16 +137,16 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:layout_marginBottom="40dp"
-            android:background="@drawable/shape_greenfill_nostroke_radius10"
+            android:background="@drawable/selector_next_btn"
             android:onClick="@{() -> vm.navigateToChatRoom(vm.uiState.challengeDetail.id)}"
             android:text="입장하기"
             android:textColor="@color/black"
             android:textSize="16sp"
             android:textStyle="bold"
+            app:challengeDetailBtnText="@{vm.uiState.challengeDetail}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_date" />
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

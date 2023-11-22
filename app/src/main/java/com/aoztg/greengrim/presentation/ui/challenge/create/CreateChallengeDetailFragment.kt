@@ -70,7 +70,10 @@ class CreateChallengeDetailFragment :
             viewModel.events.collect {
                 when (it) {
                     is CreateChallengeDetailEvents.NavigateToBack -> findNavController().navigateUp()
-                    is CreateChallengeDetailEvents.NavigateToChatList -> findNavController().toChatList()
+                    is CreateChallengeDetailEvents.NavigateToChatList -> {
+                        parentViewModel.connectNewChat(it.chatId)
+                        findNavController().toChatList()
+                    }
                 }
             }
         }

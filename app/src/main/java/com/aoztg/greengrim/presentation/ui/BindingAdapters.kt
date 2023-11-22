@@ -1,14 +1,16 @@
 package com.aoztg.greengrim.presentation.ui
 
+import android.view.View
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.aoztg.greengrim.R
-import com.aoztg.greengrim.data.model.ChallengeDetailTags
-import com.aoztg.greengrim.data.model.ChallengeSimpleTags
-import com.aoztg.greengrim.data.model.HotChallengeTags
+import com.aoztg.greengrim.data.model.response.ChallengeDetailTags
+import com.aoztg.greengrim.data.model.response.ChallengeSimpleTags
+import com.aoztg.greengrim.data.model.response.HotChallengeTags
 import com.aoztg.greengrim.presentation.util.toCategoryText
 import com.bumptech.glide.Glide
 import com.google.android.material.chip.ChipGroup
@@ -44,6 +46,29 @@ fun bindImgCheckEmpty(imageView: ImageView, url: String) {
             .load(url)
             .into(imageView)
     }
+}
+
+@BindingAdapter("checkBtnState")
+fun bindCheckBtnState(button: Button, verified: Boolean){
+    if(verified){
+        button.visibility = View.INVISIBLE
+    } else {
+        button.visibility = View.VISIBLE
+    }
+}
+
+@BindingAdapter("checkCompleteViewState")
+fun bindCheckCompleteViewState(textView: TextView, verified: Boolean){
+    if(verified){
+        textView.visibility = View.VISIBLE
+    } else {
+        textView.visibility = View.INVISIBLE
+    }
+}
+
+@BindingAdapter("categoryChip")
+fun bindCategoryChip(textView: TextView, text: String){
+    textView.text = text.toCategoryText()
 }
 
 @BindingAdapter("challengeListChips")
@@ -183,4 +208,5 @@ fun bindHotChips(chipGroup: ChipGroup, chips: HotChallengeTags) {
 fun <T, VH : RecyclerView.ViewHolder> bindList(recyclerView: RecyclerView, list: List<T>) {
     val adapter = recyclerView.adapter as ListAdapter<T, VH>
     adapter.submitList(list)
+
 }

@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.app.App
 import com.aoztg.greengrim.data.model.ErrorResponse
-import com.aoztg.greengrim.data.model.LoginRequest
+import com.aoztg.greengrim.data.model.request.LoginRequest
 import com.aoztg.greengrim.data.repository.IntroRepository
 import com.aoztg.greengrim.presentation.util.Constants
 import com.google.gson.Gson
@@ -61,6 +61,7 @@ class LoginViewModel @Inject constructor(private val introRepository: IntroRepos
                     App.sharedPreferences.edit()
                         .putString(Constants.X_ACCESS_TOKEN, it.accessToken)
                         .putString(Constants.X_REFRESH_TOKEN, it.refreshToken)
+                        .putLong(Constants.MEMBER_ID, it.memberId)
                         .apply()
                 }
 

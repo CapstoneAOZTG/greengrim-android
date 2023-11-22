@@ -1,6 +1,6 @@
 package com.aoztg.greengrim.presentation.ui.home.model
 
-import com.aoztg.greengrim.data.model.HotChallengeTags
+import com.aoztg.greengrim.data.model.response.HotChallengeTags
 
 data class HotChallenge(
     val id: Int,

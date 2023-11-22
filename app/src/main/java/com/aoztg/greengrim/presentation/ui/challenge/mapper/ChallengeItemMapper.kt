@@ -1,6 +1,6 @@
 package com.aoztg.greengrim.presentation.ui.challenge.mapper
 
-import com.aoztg.greengrim.data.model.ChallengeListResponse
+import com.aoztg.greengrim.data.model.response.ChallengeListResponse
 import com.aoztg.greengrim.presentation.ui.challenge.model.ChallengeListData
 import com.aoztg.greengrim.presentation.ui.challenge.model.ChallengeRoom
 

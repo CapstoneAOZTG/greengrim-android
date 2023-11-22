@@ -1,15 +1,16 @@
 package com.aoztg.greengrim.data.repository
 
-import com.aoztg.greengrim.data.model.ChallengeDetailResponse
-import com.aoztg.greengrim.data.model.ChallengeListResponse
-import com.aoztg.greengrim.data.model.CreateChallengeRequest
+import com.aoztg.greengrim.data.model.response.ChallengeDetailResponse
+import com.aoztg.greengrim.data.model.response.ChallengeListResponse
+import com.aoztg.greengrim.data.model.request.CreateChallengeRequest
+import com.aoztg.greengrim.data.model.response.CreateChallengeResponse
 import retrofit2.Response
 
 interface ChallengeRepository {
 
     suspend fun createChallenge(
         data: CreateChallengeRequest
-    ): Response<Unit>
+    ): Response<CreateChallengeResponse>
 
     suspend fun getChallengeDetail(
         id: Int

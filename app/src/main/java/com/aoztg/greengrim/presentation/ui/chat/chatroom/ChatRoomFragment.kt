@@ -1,20 +1,24 @@
 package com.aoztg.greengrim.presentation.ui.chat.chatroom
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
+import android.widget.LinearLayout
 import androidx.databinding.BindingAdapter
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.aoztg.greengrim.MainNavDirections
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentChatRoomBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
 import com.aoztg.greengrim.presentation.ui.chat.adapter.ChatMessageAdapter
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
+import com.aoztg.greengrim.presentation.util.Constants.TAG
 import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -36,14 +40,7 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
         binding.rvChat.adapter = ChatMessageAdapter()
         viewModel.setChatId(chatId)
         initEventsObserver()
-        viewModel.newChatMessage()
-        viewModel.newMyChatMessage()
-        viewModel.newChatMessage()
-        viewModel.newMyChatMessage()
-        viewModel.newChatMessage()
-        viewModel.newMyChatMessage()
-        viewModel.newChatMessage()
-        viewModel.newMyChatMessage()
+        initChatMessageObserver()
     }
 
     private fun initEventsObserver() {
@@ -54,24 +51,60 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
                         isPopupShowing = if (isPopupShowing) {
                             dismissFourPopup()
                             false
-                        } else{
+                        } else {
                             showPopup()
                             true
                         }
                     }
+
                     is ChatRoomEvents.DismissPopupMenu -> {
-                        if(isPopupShowing){
+                        if (isPopupShowing) {
                             dismissFourPopup()
                             isPopupShowing = false
                         }
                     }
+
                     is ChatRoomEvents.NavigateBack -> findNavController().navigateUp()
                     is ChatRoomEvents.NavigateToCertificationList -> navigateToCertificationList()
-                    is ChatRoomEvents.NavigateToMakeCertification -> findNavController().toMakeCertification(it.id)
+                    is ChatRoomEvents.NavigateToCreateCertification -> findNavController().toCreateCertification(
+                        it.id
+                    )
+
+                    is ChatRoomEvents.SendMessage -> parentViewModel.sendMessage(
+                        it.chatId,
+                        it.message
+                    )
+                    is ChatRoomEvents.ScrollBottom -> scrollRecyclerViewBottom()
                 }
             }
         }
     }
+
+    private fun initChatMessageObserver() {
+        repeatOnStarted {
+            parentViewModel.newChat.collect {
+                if (it.roomId == chatId) {
+                    viewModel.newChatMessage(
+                        nick = it.nickName,
+                        profileImg = it.profileImg,
+                        message = it.message
+                    )
+                    scrollRecyclerViewBottom()
+                }
+            }
+        }
+    }
+
+    private fun scrollRecyclerViewBottom(){
+        val lastVisibleItemPosition = (binding.rvChat.layoutManager as LinearLayoutManager).findLastCompletelyVisibleItemPosition()
+        val itemTotalCount = binding.rvChat.adapter?.itemCount?.minus(1)
+        itemTotalCount?.let{
+            if(lastVisibleItemPosition != itemTotalCount){
+                binding.rvChat.smoothScrollToPosition(it + 1)
+            }
+        }
+    }
+
 
     private fun showPopup() {
         val moreBtn = binding.btnMore
@@ -95,7 +128,8 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
     }
 
     private fun navigateToCertificationList() {
-        val action = ChatRoomFragmentDirections.actionChatRoomFragmentToCertificationListFragment(viewModel.chatRoomId)
+        val action =
+            ChatRoomFragmentDirections.actionChatRoomFragmentToCertificationListFragment(viewModel.chatRoomId)
         findNavController().navigate(action)
     }
 
@@ -108,8 +142,9 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
         findNavController().navigateUp()
     }
 
-    private fun NavController.toMakeCertification(id: Int) {
-        val action = ChatRoomFragmentDirections.actionChatRoomFragmentToMakeCertificationFragment(id)
+    private fun NavController.toCreateCertification(id: Int) {
+        val action =
+            ChatRoomFragmentDirections.actionChatRoomFragmentToCreateCertificationFragment(id)
         this.navigate(action)
     }
 
@@ -117,7 +152,7 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
 
 @BindingAdapter("chatImgUrl")
 fun bindChatImg(imageView: ImageView, url: String?) {
-    if(url.isNullOrBlank()){
+    if (url.isNullOrBlank()) {
         imageView.visibility = View.GONE
     } else {
         Glide.with(imageView.context)

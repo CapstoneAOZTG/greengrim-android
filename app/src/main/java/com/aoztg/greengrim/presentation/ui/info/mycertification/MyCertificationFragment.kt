@@ -8,14 +8,19 @@ import android.widget.TextView
 import androidx.core.view.children
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
+import com.aoztg.greengrim.MainNavDirections
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.CalendarDayLayoutBinding
 import com.aoztg.greengrim.databinding.CalendarHeaderBinding
 import com.aoztg.greengrim.databinding.FragmentMyCertificationBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
+import com.aoztg.greengrim.presentation.ui.BaseState
 import com.aoztg.greengrim.presentation.ui.DateState
 import com.aoztg.greengrim.presentation.ui.MonthState
 import com.aoztg.greengrim.presentation.ui.info.adapter.MyCertificationAdapter
+import com.aoztg.greengrim.presentation.ui.info.mycertification.MyCertificationViewModel.Companion.NEXT_PAGE
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 import com.kizitonwose.calendar.core.CalendarDay
 import com.kizitonwose.calendar.core.CalendarMonth
@@ -26,6 +31,7 @@ import com.kizitonwose.calendar.view.MonthDayBinder
 import com.kizitonwose.calendar.view.MonthHeaderFooterBinder
 import com.kizitonwose.calendar.view.ViewContainer
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.YearMonth
@@ -38,6 +44,7 @@ class MyCertificationFragment :
     private val viewModel: MyCertificationViewModel by viewModels()
 
     private var selectedDate: LocalDate? = null
+    private var certificationDateList: List<LocalDate> = listOf()
     private var currentMonth: YearMonth = YearMonth.now()
     private val today = LocalDate.now()
 
@@ -49,7 +56,7 @@ class MyCertificationFragment :
         binding.rvCertifications.adapter = MyCertificationAdapter()
         initStateObserver()
         initEventsObserver()
-        viewModel.getEventList()
+        setScrollEventListener()
         initCalenderView()
     }
 
@@ -104,6 +111,21 @@ class MyCertificationFragment :
 
                     else -> {}
                 }
+
+                when (it.certificationDateList) {
+                    is MyCertificationDateState.Success -> {
+                        certificationDateList = it.certificationDateList.dates
+                        configureBinders(daysOfWeek())
+                    }
+
+                    is MyCertificationDateState.Error -> showCustomToast(it.certificationDateList.msg)
+                    else -> {}
+                }
+
+                when (it.getCertificationListState) {
+                    is BaseState.Error -> showCustomToast(it.getCertificationListState.msg)
+                    else -> {}
+                }
             }
         }
     }
@@ -121,9 +143,42 @@ class MyCertificationFragment :
                         )
                     }
 
+                    is MyCertificationEvents.NavigateToCertificationDetail -> findNavController().toCertificationDetail(
+                        it.certificationId
+                    )
+
+                    else -> {}
                 }
             }
         }
+    }
+
+    private fun setScrollEventListener() {
+
+        // NestedScrollView 안에 RecyclerView 삽입하여서, 마지막 아이템 감지로 페이징하면 안됨
+        // 또한, 최하단 스크롤 감지를, recyclerview 가 아니라 NestedScrollView 로 해야함
+
+
+        binding.scrollView.setOnScrollChangeListener { v, _, _, _, _ ->
+            if (!v.canScrollVertically(1)) {
+                viewModel.getCertificationList(NEXT_PAGE)
+            }
+        }
+
+//        binding.rvCertifications.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+//
+//            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+//                super.onScrolled(recyclerView, dx, dy)
+//
+//                val lastVisibleItemPosition = (recyclerView.layoutManager as LinearLayoutManager).findLastCompletelyVisibleItemPosition()
+//                val itemTotalCount = recyclerView.adapter?.itemCount?.minus(1)
+//
+//                if (lastVisibleItemPosition == itemTotalCount) {
+//                    viewModel.getCertificationList(NEXT_PAGE)
+//                }
+//            }
+//        })
+
     }
 
     private fun configureBinders(daysOfWeek: List<DayOfWeek>) {
@@ -142,7 +197,6 @@ class MyCertificationFragment :
         }
 
         binding.calendarView.dayBinder = object : MonthDayBinder<DayViewContainer> {
-
 
             override fun create(view: View): DayViewContainer = DayViewContainer(view)
 
@@ -165,7 +219,7 @@ class MyCertificationFragment :
                             dateTv.setTextColor(Color.BLACK)
                         }
 
-                        in viewModel.uiState.value.eventDateList -> {
+                        in certificationDateList -> {
                             dateTv.setBackgroundResource(R.drawable.shape_calendar_hasevent)
                             dateTv.setTextColor(Color.WHITE)
                         }
@@ -210,5 +264,10 @@ class MyCertificationFragment :
     private fun yearMonthDatePickerConfirmListener(year: Int, month: Int) {
         currentMonth = YearMonth.of(year, month)
         binding.calendarView.scrollToMonth(currentMonth)
+    }
+
+    private fun NavController.toCertificationDetail(certificationId: Int) {
+        val action = MainNavDirections.actionGlobalToCertificationDetail(certificationId)
+        this.navigate(action)
     }
 }

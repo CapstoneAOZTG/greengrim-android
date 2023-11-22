@@ -1,6 +1,6 @@
 package com.aoztg.greengrim.presentation.ui.global.mapper
 
-import com.aoztg.greengrim.data.model.ChallengeDetailResponse
+import com.aoztg.greengrim.data.model.response.ChallengeDetailResponse
 import com.aoztg.greengrim.presentation.ui.global.model.ChallengeDetail
 
 
@@ -11,6 +11,7 @@ fun ChallengeDetailResponse.toChallengeDetail(): ChallengeDetail{
         title = this.challengeInfo.title,
         description = this.challengeInfo.description,
         keywords = this.challengeTags,
-        date = this.createdAt
+        date = this.createdAt,
+        entered = this.entered
     )
 }

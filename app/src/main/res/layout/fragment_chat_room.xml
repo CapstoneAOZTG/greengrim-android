@@ -132,14 +132,17 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_chat"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_marginHorizontal="16dp"
+            android:clipToPadding="false"
             android:orientation="vertical"
-            app:list="@{vm.uiState.chatMessages}"
+            android:paddingBottom="10dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toTopOf="@id/layout_edit_text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/layout_chatroom_announce" />
+            app:layout_constraintTop_toBottomOf="@id/layout_chatroom_announce"
+            app:list="@{vm.uiState.chatMessages}" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_edit_text"
@@ -159,7 +162,7 @@
                 android:layout_gravity="bottom|end"
                 android:layout_marginEnd="20dp"
                 android:background="@android:color/transparent"
-                android:onClick="@{() -> vm.navigateToMakeCertification()}"
+                android:onClick="@{() -> vm.navigateToCreateCertification()}"
                 android:scaleType="fitCenter"
                 android:src="@drawable/icon_plus"
                 app:layout_constraintStart_toStartOf="parent"
@@ -190,6 +193,7 @@
                 android:enabled="@{vm.uiState.editTextState}"
                 android:minWidth="0dp"
                 android:minHeight="0dp"
+                android:onClick="@{() -> vm.sendMessage()}"
                 android:padding="6dp"
                 android:text="전송"
                 android:textColor="@color/selector_chat_send_text"

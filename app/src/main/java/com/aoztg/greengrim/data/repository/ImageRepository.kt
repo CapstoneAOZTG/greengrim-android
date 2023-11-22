@@ -1,6 +1,6 @@
 package com.aoztg.greengrim.data.repository
 
-import com.aoztg.greengrim.data.model.ImageResponse
+import com.aoztg.greengrim.data.model.response.ImageResponse
 import okhttp3.MultipartBody
 import retrofit2.Response
 

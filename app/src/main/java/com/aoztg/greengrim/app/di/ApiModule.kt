@@ -1,6 +1,8 @@
 package com.aoztg.greengrim.app.di
 
 import com.aoztg.greengrim.data.remote.ChallengeAPI
+import com.aoztg.greengrim.data.remote.CertificationAPI
+import com.aoztg.greengrim.data.remote.ChatAPI
 import com.aoztg.greengrim.data.remote.HomeAPI
 import com.aoztg.greengrim.data.remote.ImageAPI
 import com.aoztg.greengrim.data.remote.InfoAPI
@@ -44,6 +46,18 @@ object ApiModule {
     @Provides
     fun provideHomeService(retrofit: Retrofit): HomeAPI {
         return retrofit.create(HomeAPI::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun provideCertificationService(retrofit: Retrofit): CertificationAPI {
+        return retrofit.create(CertificationAPI::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun provideChatService(retrofit: Retrofit): ChatAPI {
+        return retrofit.create(ChatAPI::class.java)
     }
 
 }
