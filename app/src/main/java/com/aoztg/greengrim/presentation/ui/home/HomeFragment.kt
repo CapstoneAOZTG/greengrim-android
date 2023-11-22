@@ -25,8 +25,11 @@ import me.relex.circleindicator.CircleIndicator2
 class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
     private val parentViewModel: MainViewModel by activityViewModels()
-
     private val viewModel: HomeViewModel by viewModels()
+
+    private var isHotChallengeSet: Boolean = false
+    private var isMoreActivitySet: Boolean = false
+    private var isHotNftSet: Boolean = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -36,33 +39,28 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         initRecycler()
         initStateObserver()
         initEventObserver()
-        viewModel.getHomeList()
+        viewModel.getHomeData()
     }
 
     private fun initRecycler() {
         repeatOnStarted {
-            viewModel.hotChallengeList.collect {
-                if (it.isNotEmpty()) {
-                    binding.rvHotChallenge.adapter = HotChallengeAdapter(it)
+            viewModel.uiState.collect{
+                if(it.hotChallengeList.isNotEmpty() && !isHotChallengeSet){
+                    binding.rvHotChallenge.adapter = HotChallengeAdapter(it.hotChallengeList)
                     recyclerToViewPager(binding.rvHotChallenge, binding.indicatorHotChallenge)
+                    isHotChallengeSet = true
                 }
-            }
-        }
 
-        repeatOnStarted {
-            viewModel.hotNftList.collect {
-                if (it.isNotEmpty()) {
-                    binding.rvHotNft.adapter = HotNftAdapter(it)
-                    recyclerToViewPager(binding.rvHotNft, binding.indicatorHotNft)
-                }
-            }
-        }
-
-        repeatOnStarted {
-            viewModel.moreActivityList.collect {
-                if (it.isNotEmpty()) {
-                    binding.rvMoreActivity.adapter = MoreActivityAdapter(it)
+                if(it.moreActivityList.isNotEmpty() && !isMoreActivitySet){
+                    binding.rvMoreActivity.adapter = MoreActivityAdapter(it.moreActivityList)
                     recyclerToViewPager(binding.rvMoreActivity, binding.indicatorMoreActivity)
+                    isMoreActivitySet = true
+                }
+
+                if(it.hotNftList.isNotEmpty() && !isHotNftSet){
+                    binding.rvHotNft.adapter = HotNftAdapter(it.hotNftList)
+                    recyclerToViewPager(binding.rvHotNft, binding.indicatorHotNft)
+                    isHotNftSet = true
                 }
             }
         }
@@ -79,11 +77,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
                     else -> {}
                 }
-
-                when (it.apiState) {
-                    is BaseState.Error -> showCustomToast(it.apiState.msg)
-                    else -> {}
-                }
             }
         }
     }
@@ -95,6 +88,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
                     is HomeEvents.NavigateToChallengeDetail -> findNavController().toChallengeDetail(
                         it.id
                     )
+                    is HomeEvents.ShowToastMessage -> showCustomToast(it.msg)
                 }
             }
         }

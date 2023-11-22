@@ -2,4 +2,7 @@
     <string name="app_name">greengrim</string>
     <string name="challenge_to_protect_the_environment">환경을 지키는 챌린지</string>
     <string name="my_chatting_room">나의 채팅방 💬</string>
+    <string name="hot_challenge">Hot Challenge 🔥</string>
+    <string name="more_activity">More Activity 🌈</string>
+    <string name="hot_nft">Hot NFT 🍀</string>
 </resources>
