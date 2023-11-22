@@ -4,12 +4,14 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
+import android.widget.LinearLayout
 import androidx.databinding.BindingAdapter
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.aoztg.greengrim.MainNavDirections
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentChatRoomBinding
@@ -94,8 +96,13 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
     }
 
     private fun scrollRecyclerViewBottom(){
-        val lastItemIndex = viewModel.uiState.value.chatMessages.size - 1
-        binding.rvChat.smoothScrollToPosition(lastItemIndex)
+        val lastVisibleItemPosition = (binding.rvChat.layoutManager as LinearLayoutManager).findLastCompletelyVisibleItemPosition()
+        val itemTotalCount = binding.rvChat.adapter?.itemCount?.minus(1)
+        itemTotalCount?.let{
+            if(lastVisibleItemPosition != itemTotalCount){
+                binding.rvChat.smoothScrollToPosition(it + 1)
+            }
+        }
     }
 
 
