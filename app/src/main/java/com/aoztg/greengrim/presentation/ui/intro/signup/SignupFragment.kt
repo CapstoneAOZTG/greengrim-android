@@ -67,10 +67,6 @@ class SignupFragment : BaseFragment<FragmentSignupBinding>(R.layout.fragment_sig
     }
 }
 
-@SuppressLint("SetTextI18n")
-@BindingAdapter("textLength", "textLimit")
-fun bindTextLength(view: TextView, text: String, limit: Int) {
-    view.text = "(${text.length}/$limit)"
-}
+
 
 
