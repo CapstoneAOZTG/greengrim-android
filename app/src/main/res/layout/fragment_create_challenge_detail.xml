@@ -36,8 +36,8 @@
                 android:layout_height="24dp"
                 android:layout_marginEnd="12dp"
                 android:background="@android:color/transparent"
-                android:scaleType="fitCenter"
                 android:onClick="@{() -> vm.navigateToBack()}"
+                android:scaleType="fitCenter"
                 android:src="@drawable/icon_back"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -102,7 +102,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/tv_title_label" />
+                    app:layout_constraintTop_toTopOf="@id/tv_title_label"
+                    app:textLength="@{vm.title}"
+                    app:textLimit="@{50}" />
 
                 <EditText
                     android:id="@+id/et_title"
@@ -137,6 +139,8 @@
                 <TextView
                     android:id="@+id/tv_introduce_count"
                     style="@style/TextFormLabel"
+                    textLength="@{vm.description}"
+                    textLimit="@{200}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -412,9 +416,9 @@
                     android:id="@+id/btn_refresh_keyword"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:padding="2dp"
                     android:background="@android:color/transparent"
                     android:onClick="@{() -> vm.setRandomKeywords()}"
+                    android:padding="2dp"
                     android:scaleType="fitCenter"
                     android:src="@drawable/icon_refresh"
                     app:layout_constraintBottom_toBottomOf="@id/tv_keyword_label"

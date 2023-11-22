@@ -1,5 +1,6 @@
 package com.aoztg.greengrim.presentation.ui
 
+import android.annotation.SuppressLint
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
@@ -46,6 +47,12 @@ fun bindImgCheckEmpty(imageView: ImageView, url: String) {
             .load(url)
             .into(imageView)
     }
+}
+
+@SuppressLint("SetTextI18n")
+@BindingAdapter("textLength", "textLimit")
+fun bindTextLength(view: TextView, text: String, limit: Int) {
+    view.text = "(${text.length}/$limit)"
 }
 
 @BindingAdapter("checkBtnState")

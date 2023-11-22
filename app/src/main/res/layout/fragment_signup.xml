@@ -134,7 +134,6 @@
             android:background="@drawable/shape_darkfill_grey5stroke_radius10"
             android:hint="자기소개를 입력해주세요"
             android:lineSpacingExtra="5dp"
-            android:lines="3"
             android:maxLength="20"
             android:maxLines="1"
             android:paddingHorizontal="15dp"
