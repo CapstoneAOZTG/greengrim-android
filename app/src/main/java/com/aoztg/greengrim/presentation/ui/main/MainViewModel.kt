@@ -15,7 +15,9 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
 import javax.inject.Inject
@@ -43,8 +45,8 @@ class MainViewModel @Inject constructor(
     private val _image = MutableStateFlow("")
     val image: StateFlow<String> = _image.asStateFlow()
 
-    private val _newChat = MutableStateFlow(ChatResponse())
-    val newChat: StateFlow<ChatResponse> = _newChat.asStateFlow()
+    private val _newChat = MutableSharedFlow<ChatResponse>()
+    val newChat: SharedFlow<ChatResponse> = _newChat.asSharedFlow()
 
     private var memberId: Long = 0
 
@@ -131,9 +133,12 @@ class MainViewModel @Inject constructor(
     }
 
     fun receiveMessage(payload: String){
+        Log.d(TAG,"Main ViewModel received!!")
         val chatResponse = Gson().fromJson(payload, ChatResponse::class.java)
-        if(chatResponse.senderId != memberId){
-            _newChat.value = chatResponse
+        if(chatResponse.senderId != memberId) {
+            viewModelScope.launch {
+                _newChat.emit(chatResponse)
+            }
         }
     }
 }

@@ -3,6 +3,7 @@ package com.aoztg.greengrim.presentation.ui.chat.chatroom
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.aoztg.greengrim.data.model.ChatResponse
 import com.aoztg.greengrim.presentation.ui.chat.model.ChatMessage
 import com.aoztg.greengrim.presentation.util.Constants.MY_CHAT
 import com.aoztg.greengrim.presentation.util.Constants.OTHER_CHAT
@@ -32,6 +33,7 @@ sealed class ChatRoomEvents {
     data class NavigateToCreateCertification(val id: Int) : ChatRoomEvents()
     data class NavigateToCertificationList(val id: Int) : ChatRoomEvents()
     data class SendMessage(val chatId: Int, val message: String) : ChatRoomEvents()
+    object ScrollBottom: ChatRoomEvents()
 }
 
 @HiltViewModel
@@ -141,6 +143,7 @@ class ChatRoomViewModel @Inject constructor() : ViewModel() {
             _events.emit(ChatRoomEvents.SendMessage(chatRoomId,chatMessage.value))
             newMyChatMessage(chatMessage.value)
             chatMessage.emit("")
+            _events.emit(ChatRoomEvents.ScrollBottom)
         }
     }
 }

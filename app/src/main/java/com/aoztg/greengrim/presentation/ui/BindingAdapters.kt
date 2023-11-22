@@ -208,4 +208,5 @@ fun bindHotChips(chipGroup: ChipGroup, chips: HotChallengeTags) {
 fun <T, VH : RecyclerView.ViewHolder> bindList(recyclerView: RecyclerView, list: List<T>) {
     val adapter = recyclerView.adapter as ListAdapter<T, VH>
     adapter.submitList(list)
+
 }

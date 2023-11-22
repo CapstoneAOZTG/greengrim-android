@@ -72,6 +72,7 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
                         it.chatId,
                         it.message
                     )
+                    is ChatRoomEvents.ScrollBottom -> scrollRecyclerViewBottom()
                 }
             }
         }
@@ -86,10 +87,17 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
                         profileImg = it.profileImg,
                         message = it.message
                     )
+                    scrollRecyclerViewBottom()
                 }
             }
         }
     }
+
+    private fun scrollRecyclerViewBottom(){
+        val lastItemIndex = viewModel.uiState.value.chatMessages.size - 1
+        binding.rvChat.smoothScrollToPosition(lastItemIndex)
+    }
+
 
     private fun showPopup() {
         val moreBtn = binding.btnMore
