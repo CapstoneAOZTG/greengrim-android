@@ -17,6 +17,7 @@ import com.aoztg.greengrim.presentation.ui.info.adapter.MyCertificationAdapter
 import com.aoztg.greengrim.presentation.ui.info.mycertification.MyCertificationViewModel.Companion.NEXT_PAGE
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 import com.aoztg.greengrim.presentation.util.CustomCalendar
+import com.kizitonwose.calendar.core.yearMonth
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.LocalDate
 import java.time.YearMonth
@@ -86,9 +87,10 @@ class MyCertificationFragment :
                         )
                     }
 
-                    is MyCertificationEvents.NavigateToCertificationDetail -> findNavController().toCertificationDetail(
-                        it.certificationId
-                    )
+                    is MyCertificationEvents.NavigateToCertificationDetail -> {
+                        MyCertificationTempDate.setTempDate(customCalendar.selectedDate)
+                        findNavController().toCertificationDetail(it.certificationId)
+                    }
                     is MyCertificationEvents.ShowToastMessage -> showCustomToast(it.msg)
                     is MyCertificationEvents.ShowCalendar -> customCalendar.setDateWithDataList(
                         viewModel.uiState.value.certificationDateList
@@ -98,10 +100,6 @@ class MyCertificationFragment :
                 }
             }
         }
-    }
-
-    private fun yearMonthDatePickerConfirmListener(year:Int, month:Int){
-        customCalendar.yearMonthDatePickerConfirmListener(year, month)
     }
 
     private fun setScrollEventListener() {
@@ -142,10 +140,13 @@ class MyCertificationFragment :
     }
 
     private fun initCustomCalendar(){
+        val tempDate = MyCertificationTempDate.getTempDate()
         customCalendar = CustomCalendar(
             binding.calendarView,
             ::monthScrollListener,
             ::dateSelectListener,
+            selectedMonth = tempDate.yearMonth,
+            selectedDate = tempDate
         )
     }
 
@@ -155,6 +156,10 @@ class MyCertificationFragment :
 
     private fun dateSelectListener(data: LocalDate){
         viewModel.selectDate(data)
+    }
+
+    private fun yearMonthDatePickerConfirmListener(year:Int, month:Int){
+        customCalendar.yearMonthDatePickerConfirmListener(year, month)
     }
 
     private fun NavController.toCertificationDetail(certificationId: Int) {

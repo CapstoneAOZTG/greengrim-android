@@ -25,12 +25,16 @@ class CustomCalendar(
     private val calendarView: CalendarView,
     private val monthScrollListener: (YearMonth) -> Unit,
     private val dateSelectListener: (LocalDate) -> Unit,
-    private var currentMonth: YearMonth = YearMonth.now(),
-    private var selectedDate: LocalDate? = null
+    var selectedMonth: YearMonth = YearMonth.now(),
+    var selectedDate: LocalDate = LocalDate.now()
 ) {
 
-    private var dataWithDateList = listOf<LocalDate>()
+
     private val today = LocalDate.now()
+    private val currentMonth = YearMonth.now()
+
+    private var dateWithDataList = listOf<LocalDate>()
+    private var initState = true
 
     init{
         initCalenderView()
@@ -44,14 +48,24 @@ class CustomCalendar(
             val endMonth = currentMonth.plusMonths(100)
             val firstDayOfWeek = firstDayOfWeekFromLocale()
             val daysOfWeek = daysOfWeek()
-
             setup(startMonth, endMonth, firstDayOfWeek)
-            scrollToMonth(currentMonth)
 
+            scrollToMonth(selectedMonth)
             monthScrollListener = {
-                selectDate(it.yearMonth.atDay(1))
+                if(initState){
+                    selectDate(it.yearMonth.atDay(selectedDate.dayOfMonth))
+                    initState = false
+                } else {
+                    if(it.yearMonth == YearMonth.now()){
+                        selectDate(it.yearMonth.atDay(today.dayOfMonth))
+                    } else {
+                        selectDate(it.yearMonth.atDay(1))
+                    }
+                }
+
                 monthScrollListener(it.yearMonth)
             }
+
 
             configureBinders(daysOfWeek)
         }
@@ -91,7 +105,7 @@ class CustomCalendar(
                             dateTv.setTextColor(Color.BLACK)
                         }
 
-                        in dataWithDateList -> {
+                        in dateWithDataList -> {
                             dateTv.setBackgroundResource(R.drawable.shape_calendar_hasevent)
                             dateTv.setTextColor(Color.WHITE)
                         }
@@ -132,7 +146,7 @@ class CustomCalendar(
     private fun selectDate(date: LocalDate) {
         if (selectedDate != date) {
             val oldDate = selectedDate
-            oldDate?.let { calendarView.notifyDateChanged(it) }
+            oldDate.let { calendarView.notifyDateChanged(it) }
             calendarView.notifyDateChanged(date)
             selectedDate = date
             dateSelectListener(date)
@@ -140,24 +154,24 @@ class CustomCalendar(
     }
 
     fun setDateWithDataList(dateList: List<LocalDate>){
-        dataWithDateList = dateList
+        dateWithDataList = dateList
         dateList.forEach{
             calendarView.notifyDateChanged(it)
         }
     }
 
     fun goToNextMonth(){
-        currentMonth = currentMonth.plusMonths(1)
-        calendarView.smoothScrollToMonth(currentMonth)
+        selectedMonth = selectedMonth.plusMonths(1)
+        calendarView.smoothScrollToMonth(selectedMonth)
     }
 
     fun goToPreviousMonth(){
-        currentMonth = currentMonth.minusMonths(1)
-        calendarView.smoothScrollToMonth(currentMonth)
+        selectedMonth = selectedMonth.minusMonths(1)
+        calendarView.smoothScrollToMonth(selectedMonth)
     }
 
     fun yearMonthDatePickerConfirmListener(year: Int, month: Int) {
-        currentMonth = YearMonth.of(year, month)
-        calendarView.scrollToMonth(currentMonth)
+        selectedMonth = YearMonth.of(year, month)
+        calendarView.scrollToMonth(selectedMonth)
     }
 }
