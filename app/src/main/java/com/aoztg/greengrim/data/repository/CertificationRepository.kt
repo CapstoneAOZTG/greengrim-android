@@ -5,6 +5,7 @@ import com.aoztg.greengrim.data.model.response.CertificationDefaultDataResponse
 import com.aoztg.greengrim.data.model.response.CertificationDetailResponse
 import com.aoztg.greengrim.data.model.response.CertificationListResponse
 import com.aoztg.greengrim.data.model.request.CreateCertificationRequest
+import com.aoztg.greengrim.data.model.request.VerificationsRequest
 import com.aoztg.greengrim.data.model.response.MyCertificationListResponse
 import retrofit2.Response
 
@@ -36,6 +37,10 @@ interface CertificationRepository {
         page: Int,
         size: Int
     ): Response<MyCertificationListResponse>
+
+    suspend fun verifyCertification(
+        data: VerificationsRequest
+    ): Response<Unit>
 
     suspend fun createCertification(
         data: CreateCertificationRequest

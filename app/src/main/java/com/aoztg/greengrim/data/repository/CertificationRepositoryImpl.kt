@@ -1,6 +1,7 @@
 package com.aoztg.greengrim.data.repository
 
 import com.aoztg.greengrim.data.model.request.CreateCertificationRequest
+import com.aoztg.greengrim.data.model.request.VerificationsRequest
 import com.aoztg.greengrim.data.model.response.CertificationDatesResponse
 import com.aoztg.greengrim.data.model.response.CertificationDefaultDataResponse
 import com.aoztg.greengrim.data.model.response.CertificationDetailResponse
@@ -12,9 +13,6 @@ import javax.inject.Inject
 
 class CertificationRepositoryImpl @Inject constructor(private val api: CertificationAPI): CertificationRepository {
 
-    override suspend fun createCertification(data: CreateCertificationRequest): Response<Unit> = api.createCertification(data)
-
-    override suspend fun deleteCertification(id: Int): Response<Unit> = api.deleteCertification(id)
 
     override suspend fun getCertificationDefaultData(id: Int): Response<CertificationDefaultDataResponse> = api.getCertificationDefaultData(id)
 
@@ -38,5 +36,11 @@ class CertificationRepositoryImpl @Inject constructor(private val api: Certifica
         page: Int,
         size: Int
     ): Response<MyCertificationListResponse> = api.getMyCertificationList(date, page, size)
+
+    override suspend fun verifyCertification(data: VerificationsRequest): Response<Unit> = api.verifyCertification(data)
+
+    override suspend fun createCertification(data: CreateCertificationRequest): Response<Unit> = api.createCertification(data)
+
+    override suspend fun deleteCertification(id: Int): Response<Unit> = api.deleteCertification(id)
 
 }

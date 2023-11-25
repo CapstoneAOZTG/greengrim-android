@@ -6,16 +6,17 @@ import com.aoztg.greengrim.presentation.ui.global.model.CertificationDetail
 
 internal fun CertificationDetailResponse.toCertificationDetail(): CertificationDetail {
     return CertificationDetail(
-        challengeTitle = this.challengeInfo.title,
-        category = this.challengeInfo.category,
-        ticketCount = this.challengeInfo.ticketCount,
-        challengeDescription = this.challengeInfo.description,
-        profileUrl = this.memberSimpleInfo.profileImgUrl,
-        nickName = this.memberSimpleInfo.nickName,
-        certificationImgUrl = this.certificationInfo.imgUrl,
-        certificationTitle = this.certificationInfo.title,
-        date = this.certificationInfo.createdAt,
-        certificationDescription = this.certificationInfo.description,
-        isVerified = this.isVerified
+        certificationId = certificationInfo.id,
+        challengeTitle = challengeInfo.title,
+        category = challengeInfo.category,
+        ticketCount = challengeInfo.ticketCount,
+        challengeDescription = challengeInfo.description,
+        profileUrl = memberSimpleInfo.profileImgUrl,
+        nickName = memberSimpleInfo.nickName,
+        certificationImgUrl = certificationInfo.imgUrl,
+        certificationTitle = certificationInfo.title,
+        date = certificationInfo.createdAt,
+        certificationDescription = certificationInfo.description,
+        isVerified = isVerified
     )
 }

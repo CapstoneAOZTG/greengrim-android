@@ -64,6 +64,15 @@ fun bindTextLength(view: TextView, text: String, limit: Int) {
     view.text = "(${text.length}/$limit)"
 }
 
+@BindingAdapter("checkAnnounceViewState")
+fun bindCheckAnnounceViewState(textView: TextView, isVerified: String){
+    if(isVerified == "DEACTIVATION"){
+        textView.visibility = View.INVISIBLE
+    } else {
+        textView.visibility = View.VISIBLE
+    }
+}
+
 @BindingAdapter("checkBtnState")
 fun bindCheckBtnState(button: Button, isVerified: String){
     if(isVerified == "FALSE"){

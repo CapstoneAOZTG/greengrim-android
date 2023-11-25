@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentAttendCheckBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
@@ -17,7 +18,21 @@ class AttendCheckFragment : BaseFragment<FragmentAttendCheckBinding>(R.layout.fr
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.vm = viewModel
         parentViewModel.hideBNV()
+        binding.vm = viewModel
+        viewModel.getCertificationForVerify()
+        initEventObserver()
+    }
+
+    private fun initEventObserver(){
+        repeatOnStarted {
+            viewModel.events.collect{
+                when(it){
+                    is AttendCheckEvents.ShowToastMessage -> showCustomToast(it.msg)
+                    is AttendCheckEvents.NavigateToBack -> findNavController().navigateUp()
+                    else -> {}
+                }
+            }
+        }
     }
 }
