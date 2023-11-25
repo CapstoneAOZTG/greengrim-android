@@ -9,6 +9,7 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
 import java.time.LocalDate
+import java.time.YearMonth
 import java.time.format.DateTimeFormatter
 
 
@@ -61,3 +62,5 @@ internal fun String.toCategoryText(): String{
     }
     return ""
 }
+
+internal fun YearMonth.toText() = year.toString() + "년 " + monthValue + "월"

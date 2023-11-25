@@ -39,29 +39,13 @@ class CertificationListFragment : BaseFragment<FragmentCertificationListBinding>
         parentViewModel.hideBNV()
         binding.vm = viewModel
         viewModel.setChallengeId(challengeId)
-        initStateObserver()
+        viewModel.getChallengeInfo()
         initEventsObserver()
         setScrollEventListener()
         initCustomCalendar()
         setBtnClickListener()
         binding.rvCertifications.adapter = CertificationListAdapter()
         viewModel.getCertificationDate()
-    }
-
-    private fun initStateObserver() {
-        repeatOnStarted {
-            viewModel.uiState.collect {
-                when (it.curDate) {
-                    is DateState.Changed -> binding.tvDate.text = it.curDate.stringDate
-                    else -> {}
-                }
-
-                when (it.curMonth) {
-                    is MonthState.Changed -> binding.btnSelectMonth.text = it.curMonth.stringMonth
-                    else -> {}
-                }
-            }
-        }
     }
 
     private fun initEventsObserver() {
@@ -151,6 +135,5 @@ class CertificationListFragment : BaseFragment<FragmentCertificationListBinding>
     private fun yearMonthDatePickerConfirmListener(year:Int, month:Int){
         customCalendar.yearMonthDatePickerConfirmListener(year, month)
     }
-
 
 }

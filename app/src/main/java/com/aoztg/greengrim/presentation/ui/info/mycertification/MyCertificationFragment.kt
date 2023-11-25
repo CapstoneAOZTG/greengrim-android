@@ -4,15 +4,10 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
-import com.aoztg.greengrim.MainNavDirections
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentMyCertificationBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
-import com.aoztg.greengrim.presentation.ui.BaseState
-import com.aoztg.greengrim.presentation.ui.DateState
-import com.aoztg.greengrim.presentation.ui.MonthState
 import com.aoztg.greengrim.presentation.ui.info.adapter.MyCertificationAdapter
 import com.aoztg.greengrim.presentation.ui.info.mycertification.MyCertificationViewModel.Companion.NEXT_PAGE
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
@@ -37,29 +32,12 @@ class MyCertificationFragment :
 
         parentViewModel.hideBNV()
         binding.vm = viewModel
-        initStateObserver()
         initEventsObserver()
         setScrollEventListener()
         initCustomCalendar()
         setBtnClickListener()
         binding.rvCertifications.adapter = MyCertificationAdapter()
         viewModel.getCertificationDate()
-    }
-
-    private fun initStateObserver() {
-        repeatOnStarted {
-            viewModel.uiState.collect {
-                when (it.curDate) {
-                    is DateState.Changed -> binding.tvDate.text = it.curDate.stringDate
-                    else -> {}
-                }
-
-                when (it.curMonth) {
-                    is MonthState.Changed -> binding.btnSelectMonth.text = it.curMonth.stringMonth
-                    else -> {}
-                }
-            }
-        }
     }
 
     private fun initEventsObserver() {

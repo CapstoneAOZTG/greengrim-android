@@ -4,13 +4,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.data.model.ErrorResponse
 import com.aoztg.greengrim.data.repository.CertificationRepository
-import com.aoztg.greengrim.presentation.ui.BaseState
-import com.aoztg.greengrim.presentation.ui.DateState
-import com.aoztg.greengrim.presentation.ui.MonthState
 import com.aoztg.greengrim.presentation.ui.chat.mapper.toCertificationListData
+import com.aoztg.greengrim.presentation.ui.chat.mapper.toChallengeSimpleInfo
 import com.aoztg.greengrim.presentation.ui.chat.model.CertificationListItem
+import com.aoztg.greengrim.presentation.ui.chat.model.ChallengeSimpleInfo
 import com.aoztg.greengrim.presentation.util.toHeaderText
 import com.aoztg.greengrim.presentation.util.toLocalDate
+import com.aoztg.greengrim.presentation.util.toText
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -27,8 +27,10 @@ import javax.inject.Inject
 
 
 data class CertificationListUiState(
-    val curMonth: MonthState = MonthState.Empty,
-    val curDate: DateState = DateState.Empty,
+    val challengeInfo: ChallengeSimpleInfo = ChallengeSimpleInfo(),
+    val curMonthString: String = YearMonth.now().toText(),
+    val curDateString: String = LocalDate.now().toHeaderText(),
+    val curDate: LocalDate = LocalDate.now(),
     val certificationDateList: List<LocalDate> = emptyList(),
     val certificationList: List<CertificationListItem> = emptyList(),
     val page: Int = 0,
@@ -64,12 +66,9 @@ class CertificationListViewModel @Inject constructor(
     private var curMonth = 1
 
     fun scrollMonth(date: YearMonth) {
-        curYear = date.year
-        curMonth = date.monthValue
-        val stringYearMonth = curYear.toString() + "년 " + curMonth + "월"
         _uiState.update { state ->
             state.copy(
-                curMonth = MonthState.Changed(stringYearMonth, date)
+                curMonthString = date.toText()
             )
         }
     }
@@ -77,7 +76,8 @@ class CertificationListViewModel @Inject constructor(
     fun selectDate(date: LocalDate) {
         _uiState.update { state ->
             state.copy(
-                curDate = DateState.Changed(date.toHeaderText(), date),
+                curDateString = date.toHeaderText(),
+                curDate = date,
                 hasNext = true,
                 page = 0
             )
@@ -85,6 +85,26 @@ class CertificationListViewModel @Inject constructor(
 
         getCertificationList(NEW_DATE)
     }
+
+    fun getChallengeInfo(){
+        viewModelScope.launch {
+            val response = certificationRepository.getCertificationDetail(challengeId)
+
+            if(response.isSuccessful){
+                response.body()?.let { data ->
+                    _uiState.update { state ->
+                        state.copy(
+                            challengeInfo = data.toChallengeSimpleInfo()
+                        )
+                    }
+                }
+            } else {
+                val error = Gson().fromJson(response.errorBody()?.string(), ErrorResponse::class.java)
+                _events.emit(CertificationListEvents.ShowToastMessage(error.message))
+            }
+        }
+    }
+
 
     fun getCertificationDate() {
         viewModelScope.launch {
@@ -119,7 +139,7 @@ class CertificationListViewModel @Inject constructor(
 
                 val response = certificationRepository.getCertificationList(
                     challengeId,
-                    (_uiState.value.curDate as DateState.Changed).originDate.toString(),
+                    _uiState.value.curDate.toString(),
                     _uiState.value.page,
                     20
                 )
@@ -156,6 +176,12 @@ class CertificationListViewModel @Inject constructor(
 
     fun setChallengeId(id: Int){
         challengeId = id
+    }
+
+    fun navigateToBack(){
+        viewModelScope.launch {
+            _events.emit(CertificationListEvents.NavigateToBack)
+        }
     }
 
     private fun navigateToCertificationDetail(certificationId: Int) {

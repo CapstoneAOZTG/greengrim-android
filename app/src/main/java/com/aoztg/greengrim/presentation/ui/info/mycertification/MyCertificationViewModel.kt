@@ -4,12 +4,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.data.model.ErrorResponse
 import com.aoztg.greengrim.data.repository.CertificationRepository
-import com.aoztg.greengrim.presentation.ui.DateState
-import com.aoztg.greengrim.presentation.ui.MonthState
 import com.aoztg.greengrim.presentation.ui.info.mapper.toMyCertificationListData
 import com.aoztg.greengrim.presentation.ui.info.model.MyCertification
 import com.aoztg.greengrim.presentation.util.toHeaderText
 import com.aoztg.greengrim.presentation.util.toLocalDate
+import com.aoztg.greengrim.presentation.util.toText
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -25,8 +24,9 @@ import java.time.YearMonth
 import javax.inject.Inject
 
 data class MyCertificationUiState(
-    val curMonth: MonthState = MonthState.Empty,
-    val curDate: DateState = DateState.Empty,
+    val curMonthString: String = YearMonth.now().toText(),
+    val curDateString: String = LocalDate.now().toHeaderText(),
+    val curDate: LocalDate = LocalDate.now(),
     val certificationDateList: List<LocalDate> = emptyList(),
     val certificationList: List<MyCertification> = emptyList(),
     val page: Int = 0,
@@ -61,12 +61,9 @@ class MyCertificationViewModel @Inject constructor(
     private var curMonth = 1
 
     fun scrollMonth(date: YearMonth) {
-        curYear = date.year
-        curMonth = date.monthValue
-        val stringYearMonth = curYear.toString() + "년 " + curMonth + "월"
         _uiState.update { state ->
             state.copy(
-                curMonth = MonthState.Changed(stringYearMonth, date)
+                curMonthString = date.toText()
             )
         }
     }
@@ -74,7 +71,8 @@ class MyCertificationViewModel @Inject constructor(
     fun selectDate(date: LocalDate) {
         _uiState.update { state ->
             state.copy(
-                curDate = DateState.Changed(date.toHeaderText(), date),
+                curDate = date,
+                curDateString = date.toHeaderText(),
                 hasNext = true,
                 page = 0
             )
@@ -128,7 +126,7 @@ class MyCertificationViewModel @Inject constructor(
                 }
 
                 val response = certificationRepository.getMyCertificationList(
-                    (_uiState.value.curDate as DateState.Changed).originDate.toString(),
+                    _uiState.value.curDate.toString(),
                     _uiState.value.page,
                     20
                 )
