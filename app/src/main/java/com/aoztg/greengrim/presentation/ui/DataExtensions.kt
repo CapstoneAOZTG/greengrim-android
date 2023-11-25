@@ -1,4 +1,4 @@
-package com.aoztg.greengrim.presentation.util
+package com.aoztg.greengrim.presentation.ui
 
 import android.content.Context
 import android.net.Uri

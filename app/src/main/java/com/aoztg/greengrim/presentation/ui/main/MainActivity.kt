@@ -11,7 +11,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -23,8 +22,6 @@ import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.app.App
-import com.aoztg.greengrim.data.model.ChatResponse
-import com.aoztg.greengrim.data.model.ErrorResponse
 import com.aoztg.greengrim.databinding.ActivityMainBinding
 import com.aoztg.greengrim.presentation.base.BaseActivity
 import com.aoztg.greengrim.presentation.ui.home.HomeFragmentDirections
@@ -32,10 +29,8 @@ import com.aoztg.greengrim.presentation.ui.intro.IntroActivity
 import com.aoztg.greengrim.presentation.util.Constants
 import com.aoztg.greengrim.presentation.util.Constants.CAMERA_PERMISSION
 import com.aoztg.greengrim.presentation.util.Constants.STORAGE_PERMISSION
-import com.aoztg.greengrim.presentation.util.Constants.TAG
 import com.aoztg.greengrim.presentation.util.getPhotoSheet
-import com.aoztg.greengrim.presentation.util.toMultiPart
-import com.google.gson.Gson
+import com.aoztg.greengrim.presentation.ui.toMultiPart
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.util.Date

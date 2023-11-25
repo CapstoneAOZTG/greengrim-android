@@ -8,9 +8,9 @@ import com.aoztg.greengrim.presentation.ui.chat.mapper.toCertificationListData
 import com.aoztg.greengrim.presentation.ui.chat.mapper.toChallengeSimpleInfo
 import com.aoztg.greengrim.presentation.ui.chat.model.CertificationListItem
 import com.aoztg.greengrim.presentation.ui.chat.model.ChallengeSimpleInfo
-import com.aoztg.greengrim.presentation.util.toHeaderText
-import com.aoztg.greengrim.presentation.util.toLocalDate
-import com.aoztg.greengrim.presentation.util.toText
+import com.aoztg.greengrim.presentation.ui.toHeaderText
+import com.aoztg.greengrim.presentation.ui.toLocalDate
+import com.aoztg.greengrim.presentation.ui.toText
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow

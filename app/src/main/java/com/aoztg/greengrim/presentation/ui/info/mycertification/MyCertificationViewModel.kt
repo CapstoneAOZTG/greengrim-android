@@ -6,9 +6,9 @@ import com.aoztg.greengrim.data.model.ErrorResponse
 import com.aoztg.greengrim.data.repository.CertificationRepository
 import com.aoztg.greengrim.presentation.ui.info.mapper.toMyCertificationListData
 import com.aoztg.greengrim.presentation.ui.info.model.MyCertification
-import com.aoztg.greengrim.presentation.util.toHeaderText
-import com.aoztg.greengrim.presentation.util.toLocalDate
-import com.aoztg.greengrim.presentation.util.toText
+import com.aoztg.greengrim.presentation.ui.toHeaderText
+import com.aoztg.greengrim.presentation.ui.toLocalDate
+import com.aoztg.greengrim.presentation.ui.toText
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow

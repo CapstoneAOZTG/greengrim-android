@@ -12,7 +12,6 @@ import com.aoztg.greengrim.R
 import com.aoztg.greengrim.data.model.response.ChallengeDetailTags
 import com.aoztg.greengrim.data.model.response.ChallengeSimpleTags
 import com.aoztg.greengrim.data.model.response.HotChallengeTags
-import com.aoztg.greengrim.presentation.util.toCategoryText
 import com.bumptech.glide.Glide
 import com.google.android.material.chip.ChipGroup
 

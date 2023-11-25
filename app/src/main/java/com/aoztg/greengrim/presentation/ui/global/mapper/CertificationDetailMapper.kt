@@ -2,7 +2,7 @@ package com.aoztg.greengrim.presentation.ui.global.mapper
 
 import com.aoztg.greengrim.data.model.response.CertificationDetailResponse
 import com.aoztg.greengrim.presentation.ui.global.model.CertificationDetail
-import com.aoztg.greengrim.presentation.util.toCategoryText
+import com.aoztg.greengrim.presentation.ui.toCategoryText
 
 
 internal fun CertificationDetailResponse.toCertificationDetail(): CertificationDetail {
