@@ -25,6 +25,7 @@ data class AttendCheckUiState(
 )
 
 sealed class AttendCheckEvents{
+    object ShowSnackBar: AttendCheckEvents()
     data class ShowToastMessage(val msg: String): AttendCheckEvents()
     object NavigateToBack: AttendCheckEvents()
 }
@@ -43,6 +44,7 @@ class AttendCheckViewModel @Inject constructor(
 
     fun getCertificationForVerify(){
         viewModelScope.launch {
+
             val response = attendCheckRepository.getCertificationForVerify()
 
             if(response.isSuccessful){
@@ -62,6 +64,7 @@ class AttendCheckViewModel @Inject constructor(
 
     fun verifyCertification(state: Boolean){
         viewModelScope.launch {
+
             val response = attendCheckRepository.verifyCertification(
                 VerificationsRequest(
                     _uiState.value.certificationDetail.certificationId,
@@ -77,6 +80,7 @@ class AttendCheckViewModel @Inject constructor(
                         )
                     )
                 }
+                _events.emit(AttendCheckEvents.ShowSnackBar)
             } else {
                 val error = Gson().fromJson(response.errorBody()?.string(), ErrorResponse::class.java)
                 _events.emit(AttendCheckEvents.ShowToastMessage(error.message))

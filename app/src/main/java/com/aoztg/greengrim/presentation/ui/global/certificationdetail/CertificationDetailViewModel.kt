@@ -6,6 +6,7 @@ import com.aoztg.greengrim.data.model.ErrorResponse
 import com.aoztg.greengrim.data.model.request.VerificationsRequest
 import com.aoztg.greengrim.data.repository.CertificationRepository
 import com.aoztg.greengrim.presentation.ui.chat.certificationlist.CertificationListEvents
+import com.aoztg.greengrim.presentation.ui.global.attendcheck.AttendCheckEvents
 import com.aoztg.greengrim.presentation.ui.global.mapper.toCertificationDetail
 import com.aoztg.greengrim.presentation.ui.global.model.CertificationDetail
 import com.google.gson.Gson
@@ -27,6 +28,7 @@ data class CertificationDetailUiState(
 sealed class CertificationDetailEvents{
     data class ShowToastMessage(val msg: String): CertificationDetailEvents()
     object NavigateToBack: CertificationDetailEvents()
+    object ShowSnackBar: CertificationDetailEvents()
 }
 
 @HiltViewModel
@@ -78,6 +80,7 @@ class CertificationDetailViewModel @Inject constructor(
                         )
                     )
                 }
+                _events.emit(CertificationDetailEvents.ShowSnackBar)
             } else {
                 val error = Gson().fromJson(response.errorBody()?.string(), ErrorResponse::class.java)
                 _events.emit(CertificationDetailEvents.ShowToastMessage(error.message))

@@ -12,6 +12,7 @@ import androidx.navigation.fragment.navArgs
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentCertificationDetailBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
+import com.aoztg.greengrim.presentation.customview.VerifySnackBar
 import com.aoztg.greengrim.presentation.ui.global.challengedetail.ChallengeDetailFragmentArgs
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -43,6 +44,7 @@ class CertificationDetailFragment: BaseFragment<FragmentCertificationDetailBindi
                 when(it){
                     is CertificationDetailEvents.ShowToastMessage -> showCustomToast(it.msg)
                     is CertificationDetailEvents.NavigateToBack -> findNavController().navigateUp()
+                    is CertificationDetailEvents.ShowSnackBar -> VerifySnackBar.make(binding.tvDescription).show()
                     else -> {}
                 }
             }
