@@ -15,7 +15,7 @@ import com.aoztg.greengrim.presentation.ui.toAttendCheck
 import com.aoztg.greengrim.presentation.util.Constants.GOOGLE
 import com.aoztg.greengrim.presentation.util.Constants.KAKAO
 import com.aoztg.greengrim.presentation.util.Constants.NAVER
-import com.aoztg.greengrim.presentation.util.getInfoSettingSheet
+import com.aoztg.greengrim.presentation.customview.getInfoSettingSheet
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.kakao.sdk.user.UserApiClient

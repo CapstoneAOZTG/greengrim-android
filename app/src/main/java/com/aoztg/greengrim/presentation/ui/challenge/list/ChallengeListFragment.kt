@@ -1,7 +1,6 @@
 package com.aoztg.greengrim.presentation.ui.challenge.list
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -19,8 +18,7 @@ import com.aoztg.greengrim.presentation.ui.challenge.adapter.ChallengeRoomAdapte
 import com.aoztg.greengrim.presentation.ui.challenge.list.ChallengeListViewModel.Companion.ORIGINAL
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 import com.aoztg.greengrim.presentation.ui.toChallengeDetail
-import com.aoztg.greengrim.presentation.util.Constants.TAG
-import com.aoztg.greengrim.presentation.util.getSortSheet
+import com.aoztg.greengrim.presentation.customview.getSortSheet
 import dagger.hilt.android.AndroidEntryPoint
 
 

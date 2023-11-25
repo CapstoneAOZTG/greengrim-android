@@ -29,7 +29,7 @@ import com.aoztg.greengrim.presentation.ui.intro.IntroActivity
 import com.aoztg.greengrim.presentation.util.Constants
 import com.aoztg.greengrim.presentation.util.Constants.CAMERA_PERMISSION
 import com.aoztg.greengrim.presentation.util.Constants.STORAGE_PERMISSION
-import com.aoztg.greengrim.presentation.util.getPhotoSheet
+import com.aoztg.greengrim.presentation.customview.getPhotoSheet
 import com.aoztg.greengrim.presentation.ui.toMultiPart
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat

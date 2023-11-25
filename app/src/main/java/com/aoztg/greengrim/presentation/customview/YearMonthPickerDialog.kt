@@ -1,4 +1,4 @@
-package com.aoztg.greengrim.presentation.util
+package com.aoztg.greengrim.presentation.customview
 
 import android.app.Dialog
 import android.content.Context

@@ -12,7 +12,7 @@ import com.aoztg.greengrim.presentation.ui.info.adapter.MyCertificationAdapter
 import com.aoztg.greengrim.presentation.ui.info.mycertification.MyCertificationViewModel.Companion.NEXT_PAGE
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 import com.aoztg.greengrim.presentation.ui.toCertificationDetail
-import com.aoztg.greengrim.presentation.util.CustomCalendar
+import com.aoztg.greengrim.presentation.customview.CustomCalendar
 import com.kizitonwose.calendar.core.yearMonth
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.LocalDate

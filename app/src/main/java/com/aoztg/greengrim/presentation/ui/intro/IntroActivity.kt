@@ -18,7 +18,7 @@ import com.aoztg.greengrim.databinding.ActivityIntroBinding
 import com.aoztg.greengrim.presentation.base.BaseActivity
 import com.aoztg.greengrim.presentation.ui.main.MainActivity
 import com.aoztg.greengrim.presentation.util.Constants
-import com.aoztg.greengrim.presentation.util.getPhotoSheet
+import com.aoztg.greengrim.presentation.customview.getPhotoSheet
 import com.aoztg.greengrim.presentation.ui.toMultiPart
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat

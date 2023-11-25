@@ -9,14 +9,11 @@ import androidx.navigation.fragment.navArgs
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentCertificationListBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
-import com.aoztg.greengrim.presentation.ui.DateState
-import com.aoztg.greengrim.presentation.ui.MonthState
 import com.aoztg.greengrim.presentation.ui.chat.adapter.CertificationListAdapter
-import com.aoztg.greengrim.presentation.ui.info.mycertification.MyCertificationTempDate
 import com.aoztg.greengrim.presentation.ui.info.mycertification.MyCertificationViewModel
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 import com.aoztg.greengrim.presentation.ui.toCertificationDetail
-import com.aoztg.greengrim.presentation.util.CustomCalendar
+import com.aoztg.greengrim.presentation.customview.CustomCalendar
 import com.kizitonwose.calendar.core.yearMonth
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.LocalDate
