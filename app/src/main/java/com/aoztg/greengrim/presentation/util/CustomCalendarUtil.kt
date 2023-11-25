@@ -24,11 +24,11 @@ import java.time.YearMonth
 class CustomCalendar(
     private val calendarView: CalendarView,
     private val monthScrollListener: (YearMonth) -> Unit,
-    private val dateSelectListener: (LocalDate) -> Unit
+    private val dateSelectListener: (LocalDate) -> Unit,
+    private var currentMonth: YearMonth = YearMonth.now(),
+    private var selectedDate: LocalDate? = null
 ) {
 
-    private var selectedDate: LocalDate? = null
-    private var currentMonth: YearMonth = YearMonth.now()
     private var dataWithDateList = listOf<LocalDate>()
     private val today = LocalDate.now()
 

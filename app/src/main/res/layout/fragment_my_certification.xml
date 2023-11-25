@@ -32,6 +32,7 @@
                 android:layout_height="24dp"
                 android:background="@android:color/transparent"
                 android:scaleType="fitCenter"
+                android:onClick="@{() -> vm.navigateToBack()}"
                 android:src="@drawable/icon_back"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

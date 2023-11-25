@@ -93,6 +93,7 @@ class MyCertificationFragment :
                     is MyCertificationEvents.ShowCalendar -> customCalendar.setDateWithDataList(
                         viewModel.uiState.value.certificationDateList
                     )
+                    is MyCertificationEvents.NavigateToBack -> findNavController().navigateUp()
                     else -> {}
                 }
             }
@@ -144,7 +145,7 @@ class MyCertificationFragment :
         customCalendar = CustomCalendar(
             binding.calendarView,
             ::monthScrollListener,
-            ::dateSelectListener
+            ::dateSelectListener,
         )
     }
 
