@@ -86,10 +86,6 @@ class CustomCalendar(
                 } else {
                     dateTv.visibility = View.VISIBLE
                     when (data.date) {
-                        today -> {
-                            dateTv.setTextColor(Color.GRAY)
-                        }
-
                         selectedDate -> {
                             dateTv.setBackgroundResource(R.drawable.shape_calendar_selected)
                             dateTv.setTextColor(Color.BLACK)
@@ -98,6 +94,11 @@ class CustomCalendar(
                         in dataWithDateList -> {
                             dateTv.setBackgroundResource(R.drawable.shape_calendar_hasevent)
                             dateTv.setTextColor(Color.WHITE)
+                        }
+
+                        today -> {
+                            dateTv.background = null
+                            dateTv.setTextColor(Color.GRAY)
                         }
 
                         else -> {
@@ -133,6 +134,7 @@ class CustomCalendar(
             val oldDate = selectedDate
             oldDate?.let { calendarView.notifyDateChanged(it) }
             calendarView.notifyDateChanged(date)
+            selectedDate = date
             dateSelectListener(date)
         }
     }
