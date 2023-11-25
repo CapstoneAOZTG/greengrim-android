@@ -30,6 +30,7 @@ class OnePopupMenu(
     }
 
     fun show(xPosition: Int, yPosition: Int) {
+        popUp.isOutsideTouchable = true
         popUp.showAtLocation(binding.root, Gravity.NO_GRAVITY, xPosition, yPosition)
     }
 

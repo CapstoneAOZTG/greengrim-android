@@ -3,7 +3,6 @@ package com.aoztg.greengrim.presentation.ui.chat.chatroom
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.aoztg.greengrim.data.model.ChatResponse
 import com.aoztg.greengrim.presentation.ui.chat.model.ChatMessage
 import com.aoztg.greengrim.presentation.util.Constants.MY_CHAT
 import com.aoztg.greengrim.presentation.util.Constants.OTHER_CHAT
@@ -29,7 +28,6 @@ data class ChatRoomUiState(
 sealed class ChatRoomEvents {
     object NavigateBack : ChatRoomEvents()
     object ShowPopupMenu : ChatRoomEvents()
-    object DismissPopupMenu : ChatRoomEvents()
     data class NavigateToCreateCertification(val id: Int) : ChatRoomEvents()
     data class NavigateToCertificationList(val id: Int) : ChatRoomEvents()
     data class SendMessage(val chatId: Int, val message: String) : ChatRoomEvents()
@@ -125,12 +123,6 @@ class ChatRoomViewModel @Inject constructor() : ViewModel() {
     fun setIds(chatIdData: Int, challengeIdData: Int) {
         chatRoomId = chatIdData
         challengeId = challengeIdData
-    }
-
-    fun onRootClicked(){
-        viewModelScope.launch {
-            _events.emit(ChatRoomEvents.DismissPopupMenu)
-        }
     }
 
     fun sendMessage(){

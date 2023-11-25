@@ -2,6 +2,7 @@ package com.aoztg.greengrim.presentation.customview
 
 import android.content.Context
 import android.content.res.Resources
+import android.graphics.drawable.BitmapDrawable
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.widget.PopupWindow
@@ -50,6 +51,7 @@ class FourPopupMenu(
     }
 
     fun show(xPosition: Int, yPosition: Int) {
+        popUp.isOutsideTouchable = true
         popUp.showAtLocation(binding.root, Gravity.NO_GRAVITY, xPosition, yPosition)
     }
 

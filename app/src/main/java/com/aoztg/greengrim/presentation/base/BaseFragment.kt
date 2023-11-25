@@ -29,8 +29,8 @@ abstract class BaseFragment<B : ViewDataBinding>(
     protected val binding get() = _binding!!
 
     private lateinit var loadingDialog: LoadingDialog
-    private lateinit var onePopupMenu: OnePopupMenu
-    private lateinit var fourPopupMenu: FourPopupMenu
+    private var onePopupMenu: OnePopupMenu? = null
+    private var fourPopupMenu: FourPopupMenu? = null
     private lateinit var yearMonthPickerDialog: YearMonthPickerDialog
 
     override fun onCreateView(
@@ -67,11 +67,11 @@ abstract class BaseFragment<B : ViewDataBinding>(
         yPosition: Int
     ) {
         onePopupMenu = OnePopupMenu(context, onClickListener)
-        onePopupMenu.show(xPosition, yPosition)
+        onePopupMenu?.show(xPosition, yPosition)
     }
 
     fun dismissOnePopup() {
-        onePopupMenu.dismiss()
+        onePopupMenu?.dismiss()
     }
 
     fun showFourPopup(
@@ -84,11 +84,11 @@ abstract class BaseFragment<B : ViewDataBinding>(
         yPosition: Int
     ){
         fourPopupMenu = FourPopupMenu(context, onClickChallengeInfo, onClickCertificationList, onClickAccusation, onClickExit)
-        fourPopupMenu.show(xPosition,yPosition)
+        fourPopupMenu?.show(xPosition,yPosition)
     }
 
     fun dismissFourPopup(){
-        fourPopupMenu.dismiss()
+        fourPopupMenu?.dismiss()
     }
 
     fun showYearMonthDialog(

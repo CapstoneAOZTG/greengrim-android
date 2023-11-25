@@ -31,7 +31,6 @@ data class ChallengeDetailUiState(
 sealed class ChallengeDetailEvents {
     object NavigateBack : ChallengeDetailEvents()
     object PopUpMenu : ChallengeDetailEvents()
-    object RootClicked : ChallengeDetailEvents()
     data class NavigateChatRoom(val chatId: Int) : ChallengeDetailEvents()
 }
 
@@ -100,12 +99,6 @@ class ChallengeDetailViewModel @Inject constructor(
     fun popUpMenu() {
         viewModelScope.launch {
             _events.emit(ChallengeDetailEvents.PopUpMenu)
-        }
-    }
-
-    fun rootClicked() {
-        viewModelScope.launch {
-            _events.emit(ChallengeDetailEvents.RootClicked)
         }
     }
 
