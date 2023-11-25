@@ -16,6 +16,7 @@ import com.aoztg.greengrim.presentation.ui.MonthState
 import com.aoztg.greengrim.presentation.ui.info.adapter.MyCertificationAdapter
 import com.aoztg.greengrim.presentation.ui.info.mycertification.MyCertificationViewModel.Companion.NEXT_PAGE
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
+import com.aoztg.greengrim.presentation.ui.toCertificationDetail
 import com.aoztg.greengrim.presentation.util.CustomCalendar
 import com.kizitonwose.calendar.core.yearMonth
 import dagger.hilt.android.AndroidEntryPoint
@@ -29,7 +30,6 @@ class MyCertificationFragment :
     private val parentViewModel: MainViewModel by activityViewModels()
     private val viewModel: MyCertificationViewModel by viewModels()
 
-    private var selectedDate: LocalDate? = null
     private lateinit var customCalendar: CustomCalendar
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -37,10 +37,10 @@ class MyCertificationFragment :
 
         parentViewModel.hideBNV()
         binding.vm = viewModel
-        initCustomCalendar()
         initStateObserver()
         initEventsObserver()
         setScrollEventListener()
+        initCustomCalendar()
         setBtnClickListener()
         binding.rvCertifications.adapter = MyCertificationAdapter()
         viewModel.getCertificationDate()
@@ -50,24 +50,12 @@ class MyCertificationFragment :
         repeatOnStarted {
             viewModel.uiState.collect {
                 when (it.curDate) {
-                    is DateState.Changed -> {
-                        selectedDate = it.curDate.originDate
-                        binding.tvDate.text = it.curDate.stringDate
-                    }
-
+                    is DateState.Changed -> binding.tvDate.text = it.curDate.stringDate
                     else -> {}
                 }
 
                 when (it.curMonth) {
-                    is MonthState.Changed -> {
-                        binding.btnSelectMonth.text = it.curMonth.stringMonth
-                    }
-
-                    else -> {}
-                }
-
-                when (it.getCertificationListState) {
-                    is BaseState.Error -> showCustomToast(it.getCertificationListState.msg)
+                    is MonthState.Changed -> binding.btnSelectMonth.text = it.curMonth.stringMonth
                     else -> {}
                 }
             }
@@ -129,15 +117,6 @@ class MyCertificationFragment :
 //        })
     }
 
-    private fun setBtnClickListener(){
-        binding.btnNextMonth.setOnClickListener{
-            customCalendar.goToNextMonth()
-        }
-
-        binding.btnPreviousMonth.setOnClickListener{
-            customCalendar.goToPreviousMonth()
-        }
-    }
 
     private fun initCustomCalendar(){
         val tempDate = MyCertificationTempDate.getTempDate()
@@ -150,6 +129,16 @@ class MyCertificationFragment :
         )
     }
 
+    private fun setBtnClickListener(){
+        binding.btnNextMonth.setOnClickListener{
+            customCalendar.goToNextMonth()
+        }
+
+        binding.btnPreviousMonth.setOnClickListener{
+            customCalendar.goToPreviousMonth()
+        }
+    }
+
     private fun monthScrollListener(data: YearMonth){
         viewModel.scrollMonth(data)
     }
@@ -160,10 +149,5 @@ class MyCertificationFragment :
 
     private fun yearMonthDatePickerConfirmListener(year:Int, month:Int){
         customCalendar.yearMonthDatePickerConfirmListener(year, month)
-    }
-
-    private fun NavController.toCertificationDetail(certificationId: Int) {
-        val action = MainNavDirections.actionGlobalToCertificationDetail(certificationId)
-        this.navigate(action)
     }
 }

@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.data.model.ErrorResponse
 import com.aoztg.greengrim.data.repository.CertificationRepository
-import com.aoztg.greengrim.presentation.ui.BaseState
 import com.aoztg.greengrim.presentation.ui.DateState
 import com.aoztg.greengrim.presentation.ui.MonthState
 import com.aoztg.greengrim.presentation.ui.info.mapper.toMyCertificationListData
@@ -32,7 +31,6 @@ data class MyCertificationUiState(
     val certificationList: List<MyCertification> = emptyList(),
     val page: Int = 0,
     val hasNext: Boolean = true,
-    val getCertificationListState: BaseState = BaseState.Empty,
 )
 
 sealed class MyCertificationEvents {
@@ -143,20 +141,12 @@ class MyCertificationViewModel @Inject constructor(
                                 certificationList = if (option == NEXT_PAGE) _uiState.value.certificationList + uiData.result else uiData.result,
                                 hasNext = uiData.hasNext,
                                 page = uiData.page + 1,
-                                getCertificationListState = BaseState.Success
                             )
                         }
                     }
                 } else {
-                    val error =
-                        Gson().fromJson(response.errorBody()?.string(), ErrorResponse::class.java)
-
-                    _uiState.update { state ->
-                        state.copy(
-                            getCertificationListState = BaseState.Error(error.message)
-                        )
-                    }
-
+                    val error = Gson().fromJson(response.errorBody()?.string(), ErrorResponse::class.java)
+                    _events.emit(MyCertificationEvents.ShowToastMessage(error.message))
                 }
             }
         }
