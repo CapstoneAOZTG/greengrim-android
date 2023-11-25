@@ -11,5 +11,5 @@ data class CertificationDetail(
     val certificationTitle: String = "",
     val date: String = "",
     val certificationDescription: String = "",
-    val verified: Boolean = false
+    val isVerified: String = ""
 )

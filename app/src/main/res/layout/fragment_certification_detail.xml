@@ -225,7 +225,7 @@
             android:minHeight="0dp"
             android:paddingVertical="10dp"
             android:text="올바르지 않은 사진이에요"
-            app:checkBtnState="@{vm.uiState.certificationDetail.verified}"
+            app:checkBtnState="@{vm.uiState.certificationDetail.isVerified}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/btn_true"
             app:layout_constraintStart_toStartOf="parent" />
@@ -240,7 +240,7 @@
             android:minHeight="0dp"
             android:paddingVertical="10dp"
             android:text="올바른 사진이에요"
-            app:checkBtnState="@{vm.uiState.certificationDetail.verified}"
+            app:checkBtnState="@{vm.uiState.certificationDetail.isVerified}"
             app:layout_constraintBottom_toBottomOf="@id/btn_false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/btn_false" />
@@ -258,7 +258,7 @@
             android:text="참여 완료"
             android:textAlignment="center"
             android:visibility="invisible"
-            app:checkCompleteViewState="@{vm.uiState.certificationDetail.verified}"
+            app:checkCompleteViewState="@{vm.uiState.certificationDetail.isVerified}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

@@ -65,8 +65,8 @@ fun bindTextLength(view: TextView, text: String, limit: Int) {
 }
 
 @BindingAdapter("checkBtnState")
-fun bindCheckBtnState(button: Button, verified: Boolean){
-    if(verified){
+fun bindCheckBtnState(button: Button, isVerified: String){
+    if(isVerified == "FALSE"){
         button.visibility = View.INVISIBLE
     } else {
         button.visibility = View.VISIBLE
@@ -74,8 +74,8 @@ fun bindCheckBtnState(button: Button, verified: Boolean){
 }
 
 @BindingAdapter("checkCompleteViewState")
-fun bindCheckCompleteViewState(textView: TextView, verified: Boolean){
-    if(verified){
+fun bindCheckCompleteViewState(textView: TextView, isVerified: String){
+    if(isVerified == "TRUE"){
         textView.visibility = View.VISIBLE
     } else {
         textView.visibility = View.INVISIBLE

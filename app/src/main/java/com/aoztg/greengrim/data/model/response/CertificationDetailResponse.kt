@@ -4,7 +4,7 @@ data class CertificationDetailResponse(
     val certificationInfo: CertificationInfo,
     val challengeInfo: ChallengeShortInfo,
     val memberSimpleInfo: MemberSimpleInfo,
-    val verified: Boolean
+    val isVerified: String
 )
 
 data class ChallengeShortInfo(

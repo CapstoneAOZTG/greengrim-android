@@ -16,6 +16,6 @@ internal fun CertificationDetailResponse.toCertificationDetail(): CertificationD
         certificationTitle = this.certificationInfo.title,
         date = this.certificationInfo.createdAt,
         certificationDescription = this.certificationInfo.description,
-        verified = this.verified
+        isVerified = this.isVerified
     )
 }
