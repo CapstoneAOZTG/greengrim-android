@@ -35,16 +35,11 @@ data class MyCertificationUiState(
     val getCertificationListState: BaseState = BaseState.Empty,
 )
 
-//sealed class MyCertificationDateState {
-//    object Empty : MyCertificationDateState()
-//    data class Success(val dates: List<LocalDate>) : MyCertificationDateState()
-//    data class Error(val msg: String) : MyCertificationDateState()
-//}
-
 sealed class MyCertificationEvents {
     data class ShowYearMonthPicker(val curYear: Int, val curMonth: Int) : MyCertificationEvents()
     data class NavigateToCertificationDetail(val certificationId: Int) : MyCertificationEvents()
     data class ShowToastMessage(val msg: String) : MyCertificationEvents()
+    object ShowCalendar: MyCertificationEvents()
 }
 
 @HiltViewModel
@@ -75,7 +70,6 @@ class MyCertificationViewModel @Inject constructor(
                 curMonth = MonthState.Changed(stringYearMonth, date)
             )
         }
-        getCertificationDate(curYear.toString() + "-" + if (curMonth < 10) "0$curMonth" else curMonth.toString())
     }
 
     fun selectDate(date: LocalDate) {
@@ -90,22 +84,21 @@ class MyCertificationViewModel @Inject constructor(
         getCertificationList(NEW_DATE)
     }
 
-    private fun getCertificationDate(yearMonth: String) {
+    fun getCertificationDate() {
         viewModelScope.launch {
-            val response = certificationRepository.getMyCertificationDate(yearMonth)
+            val response = certificationRepository.getMyCertificationDate()
 
             if (response.isSuccessful) {
                 response.body()?.let { data ->
                     _uiState.update { state ->
                         state.copy(
-                            certificationDateList = (_uiState.value.certificationDateList + data.date.map { it.toLocalDate() }).toSet().toList()
+                            certificationDateList = data.date.map { it.toLocalDate() }
                         )
                     }
                 }
+                _events.emit(MyCertificationEvents.ShowCalendar)
             } else {
-                val error =
-                    Gson().fromJson(response.errorBody()?.string(), ErrorResponse::class.java)
-
+                val error = Gson().fromJson(response.errorBody()?.string(), ErrorResponse::class.java)
                 _events.emit(MyCertificationEvents.ShowToastMessage(error.message))
             }
         }

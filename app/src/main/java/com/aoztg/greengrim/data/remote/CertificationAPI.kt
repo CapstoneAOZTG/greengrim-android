@@ -27,8 +27,7 @@ interface CertificationAPI {
 
     @GET("/certifications/month")
     suspend fun getCertificationDate(
-        @Query("challengeId") challengeId: Int,
-        @Query("month") month: String
+        @Query("challengeId") challengeId: Int
     ): Response<CertificationDatesResponse>
 
     @GET("/certifications/date")
@@ -41,7 +40,6 @@ interface CertificationAPI {
 
     @GET("/visitor/certifications/month")
     suspend fun getMyCertificationDate(
-        @Query("month") month: String
     ): Response<CertificationDatesResponse>
 
     @GET("/visitor/certifications/date")

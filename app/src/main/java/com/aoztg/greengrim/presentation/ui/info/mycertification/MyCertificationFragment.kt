@@ -52,42 +52,10 @@ class MyCertificationFragment :
         parentViewModel.hideBNV()
         binding.vm = viewModel
         binding.rvCertifications.adapter = MyCertificationAdapter()
+        viewModel.getCertificationDate()
         initStateObserver()
         initEventsObserver()
         setScrollEventListener()
-        initCalenderView()
-    }
-
-    @SuppressLint("SetTextI18n")
-    private fun initCalenderView() {
-        with(binding.calendarView) {
-
-            val startMonth = currentMonth.minusMonths(100)
-            val endMonth = currentMonth.plusMonths(100)
-            val firstDayOfWeek = firstDayOfWeekFromLocale()
-            val daysOfWeek = daysOfWeek()
-
-            setup(startMonth, endMonth, firstDayOfWeek)
-            scrollToMonth(currentMonth)
-
-            monthScrollListener = {
-                selectDate(it.yearMonth.atDay(1))
-                viewModel.scrollMonth(it.yearMonth)
-            }
-
-            binding.btnNextMonth.setOnClickListener {
-                currentMonth = currentMonth.plusMonths(1)
-                smoothScrollToMonth(currentMonth)
-            }
-
-            binding.btnPreviousMonth.setOnClickListener {
-                currentMonth = currentMonth.minusMonths(1)
-                smoothScrollToMonth(currentMonth)
-            }
-
-            configureBinders(daysOfWeek)
-        }
-
     }
 
     private fun initStateObserver() {
@@ -136,11 +104,43 @@ class MyCertificationFragment :
                     )
 
                     is MyCertificationEvents.ShowToastMessage -> showCustomToast(it.msg)
-
+                    is MyCertificationEvents.ShowCalendar -> initCalenderView()
                     else -> {}
                 }
             }
         }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun initCalenderView() {
+        with(binding.calendarView) {
+
+            val startMonth = currentMonth.minusMonths(100)
+            val endMonth = currentMonth.plusMonths(100)
+            val firstDayOfWeek = firstDayOfWeekFromLocale()
+            val daysOfWeek = daysOfWeek()
+
+            setup(startMonth, endMonth, firstDayOfWeek)
+            scrollToMonth(currentMonth)
+
+            monthScrollListener = {
+                selectDate(it.yearMonth.atDay(1))
+                viewModel.scrollMonth(it.yearMonth)
+            }
+
+            binding.btnNextMonth.setOnClickListener {
+                currentMonth = currentMonth.plusMonths(1)
+                smoothScrollToMonth(currentMonth)
+            }
+
+            binding.btnPreviousMonth.setOnClickListener {
+                currentMonth = currentMonth.minusMonths(1)
+                smoothScrollToMonth(currentMonth)
+            }
+
+            configureBinders(daysOfWeek)
+        }
+
     }
 
     private fun setScrollEventListener() {

@@ -20,7 +20,6 @@ interface CertificationRepository {
 
     suspend fun getCertificationDate(
         challengeId: Int,
-        month: String
     ): Response<CertificationDatesResponse>
 
     suspend fun getCertificationList(
@@ -30,9 +29,7 @@ interface CertificationRepository {
         size: Int
     ): Response<CertificationListResponse>
 
-    suspend fun getMyCertificationDate(
-        month: String
-    ): Response<CertificationDatesResponse>
+    suspend fun getMyCertificationDate(): Response<CertificationDatesResponse>
 
     suspend fun getMyCertificationList(
         date: String,
