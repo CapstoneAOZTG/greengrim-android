@@ -31,6 +31,7 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:background="@android:color/transparent"
+                android:onClick="@{() -> vm.navigateToBack()}"
                 android:scaleType="fitCenter"
                 android:src="@drawable/icon_back"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -69,6 +70,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:paddingStart="30dp"
+            android:text="@{vm.uiState.curDateString}"
             android:textColor="@color/white"
             android:textSize="30sp"
             android:textStyle="bold"
@@ -106,6 +108,7 @@
                     android:layout_marginStart="30dp"
                     android:layout_marginTop="20dp"
                     android:onClick="@{() -> vm.showYearMonthDatePicker()}"
+                    android:text="@{vm.uiState.curMonthString}"
                     android:textColor="@color/gg_calendar_grey"
                     app:drawableEndCompat="@drawable/icon_down"
                     app:layout_constraintStart_toStartOf="parent"
@@ -158,20 +161,21 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/calendarView" />
 
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_certifications"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
+                    android:nestedScrollingEnabled="false"
                     android:orientation="vertical"
+                    android:overScrollMode="never"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:overScrollMode="never"
-                    android:nestedScrollingEnabled="false"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/divider_calendar"
                     app:list="@{vm.uiState.certificationList}"
-                    tools:listitem="@layout/item_my_certification" />
+                    tools:listitem="@layout/item_certification" />
 
                 <View
                     android:layout_width="0dp"
@@ -183,6 +187,24 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.core.widget.NestedScrollView>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_announce"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.7" />
+
+        <ImageView
+            android:id="@+id/iv_no_certification"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/icon_no_certification"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/guideline_announce"
+            app:noListState="@{vm.uiState.certificationList}" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

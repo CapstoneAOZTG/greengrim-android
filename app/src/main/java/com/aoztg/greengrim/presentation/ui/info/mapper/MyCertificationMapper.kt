@@ -4,7 +4,7 @@ package com.aoztg.greengrim.presentation.ui.info.mapper
 import com.aoztg.greengrim.data.model.response.MyCertificationListResponse
 import com.aoztg.greengrim.presentation.ui.info.model.MyCertification
 import com.aoztg.greengrim.presentation.ui.info.model.MyCertificationListData
-import com.aoztg.greengrim.presentation.util.toCategoryText
+import com.aoztg.greengrim.presentation.ui.toCategoryText
 
 
 internal fun MyCertificationListResponse.toMyCertificationListData(onItemClickListener: (Int) -> Unit): MyCertificationListData{

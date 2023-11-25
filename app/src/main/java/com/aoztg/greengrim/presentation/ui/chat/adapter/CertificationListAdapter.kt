@@ -32,6 +32,9 @@ class CertificationViewHolder(private val binding: ItemCertificationBinding) :
 
     fun bind(item: CertificationListItem) {
         binding.item = item
+        binding.root.setOnClickListener {
+            item.onItemClickListener(item.id)
+        }
     }
 
 }

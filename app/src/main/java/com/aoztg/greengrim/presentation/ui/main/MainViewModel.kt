@@ -17,7 +17,6 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
 import javax.inject.Inject
@@ -72,7 +71,7 @@ class MainViewModel @Inject constructor(
                 response.body()?.let{ body ->
                     _events.emit(MainEvent.SubscribeMyChats(
                         body.map {
-                            it.id
+                            it.chatroomId
                         }
                     ))
                 }

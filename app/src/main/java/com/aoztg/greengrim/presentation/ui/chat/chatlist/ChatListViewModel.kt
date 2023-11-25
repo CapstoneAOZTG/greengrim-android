@@ -22,7 +22,7 @@ data class ChatListUiState(
 )
 
 sealed class ChatListEvents {
-    data class NavigateToChatRoom(val id: Int) : ChatListEvents()
+    data class NavigateToChatRoom(val chatId: Int, val challengeId: Int) : ChatListEvents()
 }
 
 
@@ -39,7 +39,6 @@ class ChatListViewModel @Inject constructor(
 
     fun getChatList() {
         viewModelScope.launch {
-
             val response = chatRepository.getChatRooms()
 
             if( response.isSuccessful ){
@@ -59,9 +58,9 @@ class ChatListViewModel @Inject constructor(
         }
     }
 
-    private fun navigateToChatRoom(id: Int) {
+    private fun navigateToChatRoom(chatId: Int, challengeId: Int) {
         viewModelScope.launch {
-            _events.emit(ChatListEvents.NavigateToChatRoom(id))
+            _events.emit(ChatListEvents.NavigateToChatRoom(chatId, challengeId))
         }
     }
 }

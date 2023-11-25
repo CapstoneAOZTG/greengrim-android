@@ -33,7 +33,7 @@ class ChatListViewHolder(private val binding: ItemChatListBinding) :
     fun bind(item: ChatListItem) {
         binding.item = item
         binding.root.setOnClickListener {
-            item.onClickListener(item.id)
+            item.onClickListener(item.chatId, item.challengeId)
         }
     }
 

@@ -89,6 +89,9 @@
         <argument
             android:name="chatId"
             app:argType="integer" />
+        <argument
+            android:name="challengeId"
+            app:argType="integer" />
         <action
             android:id="@+id/action_chat_room_fragment_to_certification_list_fragment"
             app:destination="@id/certification_list_fragment" />

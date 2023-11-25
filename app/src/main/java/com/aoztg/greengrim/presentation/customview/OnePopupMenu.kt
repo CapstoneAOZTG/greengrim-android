@@ -1,4 +1,4 @@
-package com.aoztg.greengrim.presentation.util
+package com.aoztg.greengrim.presentation.customview
 
 import android.content.Context
 import android.content.res.Resources
@@ -6,6 +6,7 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.widget.PopupWindow
 import com.aoztg.greengrim.databinding.DialogOnePopupMenuBinding
+import com.aoztg.greengrim.presentation.util.Constants
 import kotlin.math.roundToInt
 
 class OnePopupMenu(
@@ -29,6 +30,7 @@ class OnePopupMenu(
     }
 
     fun show(xPosition: Int, yPosition: Int) {
+        popUp.isOutsideTouchable = true
         popUp.showAtLocation(binding.root, Gravity.NO_GRAVITY, xPosition, yPosition)
     }
 

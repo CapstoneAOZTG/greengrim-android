@@ -2,11 +2,16 @@ package com.aoztg.greengrim.presentation.ui.chat.certificationlist
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.aoztg.greengrim.presentation.ui.DateState
-import com.aoztg.greengrim.presentation.ui.MonthState
+import com.aoztg.greengrim.data.model.ErrorResponse
+import com.aoztg.greengrim.data.repository.CertificationRepository
+import com.aoztg.greengrim.presentation.ui.chat.mapper.toCertificationListData
+import com.aoztg.greengrim.presentation.ui.chat.mapper.toChallengeSimpleInfo
 import com.aoztg.greengrim.presentation.ui.chat.model.CertificationListItem
-import com.aoztg.greengrim.presentation.util.toHeaderText
-import com.aoztg.greengrim.presentation.util.toLocalDate
+import com.aoztg.greengrim.presentation.ui.chat.model.ChallengeSimpleInfo
+import com.aoztg.greengrim.presentation.ui.toHeaderText
+import com.aoztg.greengrim.presentation.ui.toLocalDate
+import com.aoztg.greengrim.presentation.ui.toText
+import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,18 +27,33 @@ import javax.inject.Inject
 
 
 data class CertificationListUiState(
-    val curMonth: MonthState = MonthState.Empty,
-    val curDate: DateState = DateState.Empty,
-    val eventDateList: List<LocalDate> = emptyList(),
-    val certificationList: List<CertificationListItem> = emptyList()
+    val challengeInfo: ChallengeSimpleInfo = ChallengeSimpleInfo(),
+    val curMonthString: String = YearMonth.now().toText(),
+    val curDateString: String = LocalDate.now().toHeaderText(),
+    val curDate: LocalDate = LocalDate.now(),
+    val certificationDateList: List<LocalDate> = emptyList(),
+    val certificationList: List<CertificationListItem> = emptyList(),
+    val page: Int = 0,
+    val hasNext: Boolean = true,
 )
 
 sealed class CertificationListEvents {
     data class ShowYearMonthPicker(val curYear: Int, val curMonth: Int) : CertificationListEvents()
+    data class ShowToastMessage(val msg: String) : CertificationListEvents()
+    object ShowCalendar: CertificationListEvents()
+    data class NavigateToCertificationDetail(val certificationId: Int) : CertificationListEvents()
+    object NavigateToBack: CertificationListEvents()
 }
 
 @HiltViewModel
-class CertificationListViewModel @Inject constructor() : ViewModel() {
+class CertificationListViewModel @Inject constructor(
+    private val certificationRepository: CertificationRepository
+) : ViewModel() {
+
+    companion object {
+        const val NEXT_PAGE = 0
+        const val NEW_DATE = 1
+    }
 
     private val _uiState = MutableStateFlow(CertificationListUiState())
     val uiState: StateFlow<CertificationListUiState> = _uiState.asStateFlow()
@@ -41,16 +61,14 @@ class CertificationListViewModel @Inject constructor() : ViewModel() {
     private val _events = MutableSharedFlow<CertificationListEvents>()
     val events: SharedFlow<CertificationListEvents> = _events.asSharedFlow()
 
+    private var challengeId = -1
     private var curYear = 1980
     private var curMonth = 1
 
     fun scrollMonth(date: YearMonth) {
-        curYear = date.year
-        curMonth = date.monthValue
-        val stringYearMonth = curYear.toString() + "년 " + curMonth + "월"
         _uiState.update { state ->
             state.copy(
-                curMonth = MonthState.Changed(stringYearMonth, date)
+                curMonthString = date.toText()
             )
         }
     }
@@ -58,21 +76,90 @@ class CertificationListViewModel @Inject constructor() : ViewModel() {
     fun selectDate(date: LocalDate) {
         _uiState.update { state ->
             state.copy(
-                curDate = DateState.Changed(date.toHeaderText(), date)
+                curDateString = date.toHeaderText(),
+                curDate = date,
+                hasNext = true,
+                page = 0
             )
         }
 
-        getCurDateCertification(date)
+        getCertificationList(NEW_DATE)
     }
 
-    fun getEventList() {
-        _uiState.update { state ->
-            state.copy(
-                eventDateList = listOf(
-                    "2023-10-20".toLocalDate(),
-                    "2023-10-30".toLocalDate(),
+    fun getChallengeInfo(){
+        viewModelScope.launch {
+            val response = certificationRepository.getCertificationDetail(challengeId)
+
+            if(response.isSuccessful){
+                response.body()?.let { data ->
+                    _uiState.update { state ->
+                        state.copy(
+                            challengeInfo = data.toChallengeSimpleInfo()
+                        )
+                    }
+                }
+            } else {
+                val error = Gson().fromJson(response.errorBody()?.string(), ErrorResponse::class.java)
+                _events.emit(CertificationListEvents.ShowToastMessage(error.message))
+            }
+        }
+    }
+
+
+    fun getCertificationDate() {
+        viewModelScope.launch {
+            val response = certificationRepository.getCertificationDate(challengeId)
+
+            if(response.isSuccessful){
+                response.body()?.let { data ->
+                    _uiState.update { state ->
+                        state.copy(
+                            certificationDateList = data.date.map { it.toLocalDate() }
+                        )
+                    }
+                }
+                _events.emit(CertificationListEvents.ShowCalendar)
+            } else {
+                val error = Gson().fromJson(response.errorBody()?.string(), ErrorResponse::class.java)
+                _events.emit(CertificationListEvents.ShowToastMessage(error.message))
+            }
+        }
+    }
+
+    fun getCertificationList(option: Int) {
+
+        if (_uiState.value.hasNext) {
+            viewModelScope.launch {
+
+                _uiState.update { state ->
+                    state.copy(
+                        page = state.page
+                    )
+                }
+
+                val response = certificationRepository.getCertificationList(
+                    challengeId,
+                    _uiState.value.curDate.toString(),
+                    _uiState.value.page,
+                    20
                 )
-            )
+
+                if (response.isSuccessful) {
+                    response.body()?.let { body ->
+                        val uiData = body.toCertificationListData(::navigateToCertificationDetail)
+                        _uiState.update { state ->
+                            state.copy(
+                                certificationList = if (option == NEXT_PAGE) _uiState.value.certificationList + uiData.result else uiData.result,
+                                hasNext = uiData.hasNext,
+                                page = uiData.page + 1,
+                            )
+                        }
+                    }
+                } else {
+                    val error = Gson().fromJson(response.errorBody()?.string(), ErrorResponse::class.java)
+                    _events.emit(CertificationListEvents.ShowToastMessage(error.message))
+                }
+            }
         }
     }
 
@@ -87,46 +174,19 @@ class CertificationListViewModel @Inject constructor() : ViewModel() {
         }
     }
 
+    fun setChallengeId(id: Int){
+        challengeId = id
+    }
 
-    private fun getCurDateCertification(date: LocalDate) {
-        _uiState.update { state ->
-            state.copy(
-                certificationList = listOf(
-                    CertificationListItem(
-                        "https://greengrim-bucket.s3.ap-northeast-2.amazonaws.com/19836b51-2b6f-4e43-9e90-e86e331e9077.jpg",
-                        nick = "킹노아",
-                        certificationImg = "https://greengrim-bucket.s3.ap-northeast-2.amazonaws.com/19836b51-2b6f-4e43-9e90-e86e331e9077.jpg",
-                        certificationCount = "[14회차 인증]",
-                        date = "2023년 8월 17일",
-                        description = "치킨도 줍고 치킨도 주웠다"
-                    ),
-                    CertificationListItem(
-                        "https://greengrim-bucket.s3.ap-northeast-2.amazonaws.com/19836b51-2b6f-4e43-9e90-e86e331e9077.jpg",
-                        nick = "킹노아",
-                        certificationImg = "https://greengrim-bucket.s3.ap-northeast-2.amazonaws.com/19836b51-2b6f-4e43-9e90-e86e331e9077.jpg",
-                        certificationCount = "[14회차 인증]",
-                        date = "2023년 8월 17일",
-                        description = "치킨도 줍고 치킨도 주웠다"
-                    ),
-                    CertificationListItem(
-                        "https://greengrim-bucket.s3.ap-northeast-2.amazonaws.com/19836b51-2b6f-4e43-9e90-e86e331e9077.jpg",
-                        nick = "킹노아",
-                        certificationImg = "https://greengrim-bucket.s3.ap-northeast-2.amazonaws.com/19836b51-2b6f-4e43-9e90-e86e331e9077.jpg",
-                        certificationCount = "[14회차 인증]",
-                        date = "2023년 8월 17일",
-                        description = "치킨도 줍고 치킨도 주웠다"
-                    ),
-                    CertificationListItem(
-                        "https://greengrim-bucket.s3.ap-northeast-2.amazonaws.com/19836b51-2b6f-4e43-9e90-e86e331e9077.jpg",
-                        nick = "킹노아",
-                        certificationImg = "https://greengrim-bucket.s3.ap-northeast-2.amazonaws.com/19836b51-2b6f-4e43-9e90-e86e331e9077.jpg",
-                        certificationCount = "[14회차 인증]",
-                        date = "2023년 8월 17일",
-                        description = "치킨도 줍고 치킨도 주웠다"
-                    ),
-                )
-            )
+    fun navigateToBack(){
+        viewModelScope.launch {
+            _events.emit(CertificationListEvents.NavigateToBack)
         }
+    }
 
+    private fun navigateToCertificationDetail(certificationId: Int) {
+        viewModelScope.launch {
+            _events.emit(CertificationListEvents.NavigateToCertificationDetail(certificationId))
+        }
     }
 }

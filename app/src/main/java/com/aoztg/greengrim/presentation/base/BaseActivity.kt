@@ -11,7 +11,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.aoztg.greengrim.presentation.util.LoadingDialog
+import com.aoztg.greengrim.presentation.customview.LoadingDialog
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 

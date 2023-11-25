@@ -124,22 +124,20 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/tv_introduce_label"
             app:textLength="@{vm.introduce}"
-            app:textLimit="@{200}" />
+            app:textLimit="@{20}" />
 
         <EditText
             android:id="@+id/et_introduce"
             android:layout_width="0dp"
-            android:layout_height="100dp"
+            android:layout_height="50dp"
             android:layout_marginTop="8dp"
             android:background="@drawable/shape_darkfill_grey5stroke_radius10"
-            android:gravity="top"
             android:hint="자기소개를 입력해주세요"
             android:lineSpacingExtra="5dp"
-            android:lines="3"
-            android:maxLength="200"
-            android:maxLines="3"
+            android:maxLength="20"
+            android:maxLines="1"
             android:paddingHorizontal="15dp"
-            android:paddingVertical="12dp"
+            android:paddingVertical="8dp"
             android:text="@={vm.introduce}"
             android:textColor="@color/white"
             android:textColorHint="@color/gg_grey5"

@@ -5,6 +5,7 @@ import com.aoztg.greengrim.data.model.response.CertificationDefaultDataResponse
 import com.aoztg.greengrim.data.model.response.CertificationDetailResponse
 import com.aoztg.greengrim.data.model.response.CertificationListResponse
 import com.aoztg.greengrim.data.model.request.CreateCertificationRequest
+import com.aoztg.greengrim.data.model.request.VerificationsRequest
 import com.aoztg.greengrim.data.model.response.MyCertificationListResponse
 import retrofit2.Response
 import retrofit2.http.Body
@@ -27,8 +28,7 @@ interface CertificationAPI {
 
     @GET("/certifications/month")
     suspend fun getCertificationDate(
-        @Query("challengeId") challengeId: Int,
-        @Query("month") month: String
+        @Query("challengeId") challengeId: Int
     ): Response<CertificationDatesResponse>
 
     @GET("/certifications/date")
@@ -41,7 +41,6 @@ interface CertificationAPI {
 
     @GET("/visitor/certifications/month")
     suspend fun getMyCertificationDate(
-        @Query("month") month: String
     ): Response<CertificationDatesResponse>
 
     @GET("/visitor/certifications/date")
@@ -50,6 +49,11 @@ interface CertificationAPI {
         @Query("page") page: Int,
         @Query("size") size: Int
     ): Response<MyCertificationListResponse>
+
+    @POST("/visitor/verifications")
+    suspend fun verifyCertification(
+        @Body params: VerificationsRequest
+    ): Response<Unit>
 
     @POST("/visitor/certifications")
     suspend fun createCertification(

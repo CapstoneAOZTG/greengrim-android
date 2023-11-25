@@ -31,8 +31,7 @@ data class ChallengeDetailUiState(
 sealed class ChallengeDetailEvents {
     object NavigateBack : ChallengeDetailEvents()
     object PopUpMenu : ChallengeDetailEvents()
-    object RootClicked : ChallengeDetailEvents()
-    data class NavigateChatRoom(val id: Int) : ChallengeDetailEvents()
+    data class NavigateChatRoom(val chatId: Int) : ChallengeDetailEvents()
 }
 
 @HiltViewModel
@@ -47,7 +46,7 @@ class ChallengeDetailViewModel @Inject constructor(
     private val _events = MutableSharedFlow<ChallengeDetailEvents>()
     val events: SharedFlow<ChallengeDetailEvents> = _events.asSharedFlow()
 
-    private var id = -1
+    private var challengeId = -1
 
     fun getChallengeDetailInfo() {
         viewModelScope.launch {
@@ -58,7 +57,7 @@ class ChallengeDetailViewModel @Inject constructor(
                 )
             }
 
-            val response = challengeRepository.getChallengeDetail(id)
+            val response = challengeRepository.getChallengeDetail(challengeId)
 
             if(response.isSuccessful){
                 response.body()?.let{
@@ -103,12 +102,6 @@ class ChallengeDetailViewModel @Inject constructor(
         }
     }
 
-    fun rootClicked() {
-        viewModelScope.launch {
-            _events.emit(ChallengeDetailEvents.RootClicked)
-        }
-    }
-
     fun navigateToChatRoom(id: Int) {
         viewModelScope.launch {
             val response = chatRepository.enterChat(id)
@@ -121,8 +114,8 @@ class ChallengeDetailViewModel @Inject constructor(
         }
     }
 
-    fun setId(data: Int){
-        id = data
+    fun setChallengeId(data: Int){
+        challengeId = data
     }
 
 }

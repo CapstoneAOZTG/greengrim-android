@@ -1,5 +1,7 @@
 package com.aoztg.greengrim.app.di
 
+import com.aoztg.greengrim.data.repository.AttendCheckRepository
+import com.aoztg.greengrim.data.repository.AttendCheckRepositoryImpl
 import com.aoztg.greengrim.data.repository.CertificationRepository
 import com.aoztg.greengrim.data.repository.CertificationRepositoryImpl
 import com.aoztg.greengrim.data.repository.ChallengeRepository
@@ -66,4 +68,10 @@ abstract class RepositoryModule {
     abstract fun bindChatRepository(
         chatRepositoryImpl: ChatRepositoryImpl
     ): ChatRepository
+
+    @Singleton
+    @Binds
+    abstract fun bindAttendCheckRepository(
+        attendCheckRepositoryImpl: AttendCheckRepositoryImpl
+    ): AttendCheckRepository
 }

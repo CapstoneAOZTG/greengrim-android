@@ -1,5 +1,6 @@
 package com.aoztg.greengrim.presentation.ui
 
+import android.annotation.SuppressLint
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
@@ -11,7 +12,6 @@ import com.aoztg.greengrim.R
 import com.aoztg.greengrim.data.model.response.ChallengeDetailTags
 import com.aoztg.greengrim.data.model.response.ChallengeSimpleTags
 import com.aoztg.greengrim.data.model.response.HotChallengeTags
-import com.aoztg.greengrim.presentation.util.toCategoryText
 import com.bumptech.glide.Glide
 import com.google.android.material.chip.ChipGroup
 
@@ -48,9 +48,33 @@ fun bindImgCheckEmpty(imageView: ImageView, url: String) {
     }
 }
 
+@BindingAdapter("noListState")
+fun <T> bindNoList(view: ImageView, list: List<T>) {
+    if (list.isEmpty()) {
+        view.visibility = View.VISIBLE
+    } else {
+        view.visibility = View.INVISIBLE
+    }
+}
+
+@SuppressLint("SetTextI18n")
+@BindingAdapter("textLength", "textLimit")
+fun bindTextLength(view: TextView, text: String, limit: Int) {
+    view.text = "(${text.length}/$limit)"
+}
+
+@BindingAdapter("checkAnnounceViewState")
+fun bindCheckAnnounceViewState(textView: TextView, isVerified: String) {
+    if (isVerified == "DEACTIVATION") {
+        textView.visibility = View.INVISIBLE
+    } else {
+        textView.visibility = View.VISIBLE
+    }
+}
+
 @BindingAdapter("checkBtnState")
-fun bindCheckBtnState(button: Button, verified: Boolean){
-    if(verified){
+fun bindCheckBtnState(button: Button, isVerified: String) {
+    if (isVerified == "TRUE") {
         button.visibility = View.INVISIBLE
     } else {
         button.visibility = View.VISIBLE
@@ -58,8 +82,8 @@ fun bindCheckBtnState(button: Button, verified: Boolean){
 }
 
 @BindingAdapter("checkCompleteViewState")
-fun bindCheckCompleteViewState(textView: TextView, verified: Boolean){
-    if(verified){
+fun bindCheckCompleteViewState(textView: TextView, isVerified: String) {
+    if (isVerified == "TRUE") {
         textView.visibility = View.VISIBLE
     } else {
         textView.visibility = View.INVISIBLE
@@ -67,7 +91,7 @@ fun bindCheckCompleteViewState(textView: TextView, verified: Boolean){
 }
 
 @BindingAdapter("categoryChip")
-fun bindCategoryChip(textView: TextView, text: String){
+fun bindCategoryChip(textView: TextView, text: String) {
     textView.text = text.toCategoryText()
 }
 
@@ -112,7 +136,7 @@ fun bindChallengeListChips(chipGroup: ChipGroup, chips: ChallengeSimpleTags) {
 fun bindDetailMainChips(chipGroup: ChipGroup, chips: ChallengeDetailTags?) {
 
 
-    if(chips != null){
+    if (chips != null) {
         chipGroup.removeAllViews()
 
         val chipList = mutableListOf<TextView>()
@@ -141,7 +165,7 @@ fun bindDetailMainChips(chipGroup: ChipGroup, chips: ChallengeDetailTags?) {
 @BindingAdapter("subChipList")
 fun bindDetailSubChips(chipGroup: ChipGroup, chips: ChallengeDetailTags?) {
 
-    if(chips != null){
+    if (chips != null) {
         chipGroup.removeAllViews()
 
         val chipList = mutableListOf<TextView>()
@@ -173,7 +197,7 @@ fun bindDetailSubChips(chipGroup: ChipGroup, chips: ChallengeDetailTags?) {
 @BindingAdapter("hotChipList")
 fun bindHotChips(chipGroup: ChipGroup, chips: HotChallengeTags) {
 
-    if(chips != null){
+    if (chips != null) {
         chipGroup.removeAllViews()
 
         val chipList = mutableListOf<TextView>()

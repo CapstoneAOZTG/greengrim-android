@@ -28,14 +28,13 @@ class ChallengeDetailFragment :
     private val args: ChallengeDetailFragmentArgs by navArgs()
     private val challengeId by lazy { args.challengeId }
     private val popupLocation = IntArray(2)
-    private var isPopupShowing = false
     private var loadingState = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         parentViewModel.hideBNV()
         binding.vm = viewModel
-        viewModel.setId(challengeId)
+        viewModel.setChallengeId(challengeId)
         viewModel.getChallengeDetailInfo()
         initStateObserver()
         initEventObserver()
@@ -73,26 +72,10 @@ class ChallengeDetailFragment :
             viewModel.events.collect {
                 when (it) {
                     is ChallengeDetailEvents.NavigateBack -> findNavController().navigateUp()
-                    is ChallengeDetailEvents.PopUpMenu -> {
-                        isPopupShowing = if (isPopupShowing) {
-                            dismissOnePopup()
-                            false
-                        } else{
-                            showPopup()
-                            true
-                        }
-                    }
-
-                    is ChallengeDetailEvents.RootClicked -> {
-                        if (isPopupShowing) {
-                            dismissOnePopup()
-                            isPopupShowing = false
-                        }
-                    }
-
+                    is ChallengeDetailEvents.PopUpMenu -> showPopup()
                     is ChallengeDetailEvents.NavigateChatRoom -> {
-                        parentViewModel.connectNewChat(it.id)
-                        findNavController().toChatRoom(it.id)
+                        parentViewModel.connectNewChat(it.chatId)
+                        findNavController().toChatRoom(it.chatId)
                     }
                 }
             }
@@ -112,15 +95,17 @@ class ChallengeDetailFragment :
         )
     }
 
-    private fun NavController.toChatRoom(id: Int) {
-        val action =
-            ChallengeDetailFragmentDirections.actionChallengeDetailFragmentToChatRoomFragment(id)
+    private fun NavController.toChatRoom(chatId: Int) {
+        val action = ChallengeDetailFragmentDirections.actionChallengeDetailFragmentToChatRoomFragment(chatId, challengeId)
         this.navigate(action)
     }
 
-    private fun navigateToAccusation() {
+    override fun onDestroyView() {
+        super.onDestroyView()
         dismissOnePopup()
-        isPopupShowing = false
+    }
+
+    private fun navigateToAccusation() {
         showCustomToast("신고하기로 이동 구현 전")
     }
 }

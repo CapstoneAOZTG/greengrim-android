@@ -13,3 +13,8 @@ internal fun NavController.toChallengeDetail(id: Int) {
     val action = MainNavDirections.actionGlobalToChallengeDetailFragment(id)
     this.navigate(action)
 }
+
+internal fun NavController.toCertificationDetail(certificationId: Int) {
+    val action = MainNavDirections.actionGlobalToCertificationDetail(certificationId)
+    this.navigate(action)
+}

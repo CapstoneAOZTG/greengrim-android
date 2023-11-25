@@ -4,7 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.data.model.ErrorResponse
 import com.aoztg.greengrim.data.repository.InfoRepository
-import com.aoztg.greengrim.presentation.ui.BaseState
+import com.aoztg.greengrim.presentation.ui.info.mapper.toMyProfileInfo
+import com.aoztg.greengrim.presentation.ui.info.model.MyProfileInfo
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -19,7 +20,7 @@ import javax.inject.Inject
 
 
 data class InfoUiState(
-    val withdrawalState : BaseState = BaseState.Empty
+    val myProfileInfo: MyProfileInfo = MyProfileInfo()
 )
 
 sealed class InfoEvents {
@@ -29,6 +30,7 @@ sealed class InfoEvents {
     object NavigateToAttendCheck: InfoEvents()
     object NavigateToMyChallenge: InfoEvents()
     object NavigateToMyCertification: InfoEvents()
+    data class ShowToastMessage(val msg: String): InfoEvents()
 }
 
 @HiltViewModel
@@ -48,6 +50,25 @@ class InfoViewModel @Inject constructor(
         }
     }
 
+    fun getProfileInfo(){
+        viewModelScope.launch {
+            val response = infoRepository.getProfile()
+
+            if(response.isSuccessful){
+                response.body()?.let{ body ->
+                    _uiState.update { state ->
+                        state.copy(
+                            myProfileInfo = body.toMyProfileInfo()
+                        )
+                    }
+                }
+            } else {
+                val error = Gson().fromJson(response.errorBody()?.string(), ErrorResponse::class.java)
+                _events.emit(InfoEvents.ShowToastMessage(error.message))
+            }
+        }
+    }
+
     fun withdrawal() {
         viewModelScope.launch {
             val response = infoRepository.withdrawal()
@@ -55,14 +76,8 @@ class InfoViewModel @Inject constructor(
             if (response.isSuccessful) {
                 _events.emit(InfoEvents.GoToIntroActivity)
             } else {
-                val error =
-                    Gson().fromJson(response.errorBody()?.string(), ErrorResponse::class.java)
-
-                _uiState.update { state ->
-                    state.copy(
-                        withdrawalState = BaseState.Error(error.message)
-                    )
-                }
+                val error = Gson().fromJson(response.errorBody()?.string(), ErrorResponse::class.java)
+                _events.emit(InfoEvents.ShowToastMessage(error.message))
             }
         }
     }
