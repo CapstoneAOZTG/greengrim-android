@@ -9,7 +9,9 @@ import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentAttendCheckBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class AttendCheckFragment : BaseFragment<FragmentAttendCheckBinding>(R.layout.fragment_attend_check) {
 
     private val parentViewModel: MainViewModel by activityViewModels()

@@ -50,8 +50,8 @@ fun bindImgCheckEmpty(imageView: ImageView, url: String) {
 }
 
 @BindingAdapter("noListState")
-fun <T> bindNoList(view: ImageView, list: List<T>){
-    if(list.isEmpty()){
+fun <T> bindNoList(view: ImageView, list: List<T>) {
+    if (list.isEmpty()) {
         view.visibility = View.VISIBLE
     } else {
         view.visibility = View.INVISIBLE
@@ -65,8 +65,8 @@ fun bindTextLength(view: TextView, text: String, limit: Int) {
 }
 
 @BindingAdapter("checkAnnounceViewState")
-fun bindCheckAnnounceViewState(textView: TextView, isVerified: String){
-    if(isVerified == "DEACTIVATION"){
+fun bindCheckAnnounceViewState(textView: TextView, isVerified: String) {
+    if (isVerified == "DEACTIVATION") {
         textView.visibility = View.INVISIBLE
     } else {
         textView.visibility = View.VISIBLE
@@ -74,8 +74,8 @@ fun bindCheckAnnounceViewState(textView: TextView, isVerified: String){
 }
 
 @BindingAdapter("checkBtnState")
-fun bindCheckBtnState(button: Button, isVerified: String){
-    if(isVerified == "FALSE"){
+fun bindCheckBtnState(button: Button, isVerified: String) {
+    if (isVerified == "TRUE") {
         button.visibility = View.INVISIBLE
     } else {
         button.visibility = View.VISIBLE
@@ -83,8 +83,8 @@ fun bindCheckBtnState(button: Button, isVerified: String){
 }
 
 @BindingAdapter("checkCompleteViewState")
-fun bindCheckCompleteViewState(textView: TextView, isVerified: String){
-    if(isVerified == "TRUE"){
+fun bindCheckCompleteViewState(textView: TextView, isVerified: String) {
+    if (isVerified == "TRUE") {
         textView.visibility = View.VISIBLE
     } else {
         textView.visibility = View.INVISIBLE
@@ -92,7 +92,7 @@ fun bindCheckCompleteViewState(textView: TextView, isVerified: String){
 }
 
 @BindingAdapter("categoryChip")
-fun bindCategoryChip(textView: TextView, text: String){
+fun bindCategoryChip(textView: TextView, text: String) {
     textView.text = text.toCategoryText()
 }
 
@@ -137,7 +137,7 @@ fun bindChallengeListChips(chipGroup: ChipGroup, chips: ChallengeSimpleTags) {
 fun bindDetailMainChips(chipGroup: ChipGroup, chips: ChallengeDetailTags?) {
 
 
-    if(chips != null){
+    if (chips != null) {
         chipGroup.removeAllViews()
 
         val chipList = mutableListOf<TextView>()
@@ -166,7 +166,7 @@ fun bindDetailMainChips(chipGroup: ChipGroup, chips: ChallengeDetailTags?) {
 @BindingAdapter("subChipList")
 fun bindDetailSubChips(chipGroup: ChipGroup, chips: ChallengeDetailTags?) {
 
-    if(chips != null){
+    if (chips != null) {
         chipGroup.removeAllViews()
 
         val chipList = mutableListOf<TextView>()
@@ -198,7 +198,7 @@ fun bindDetailSubChips(chipGroup: ChipGroup, chips: ChallengeDetailTags?) {
 @BindingAdapter("hotChipList")
 fun bindHotChips(chipGroup: ChipGroup, chips: HotChallengeTags) {
 
-    if(chips != null){
+    if (chips != null) {
         chipGroup.removeAllViews()
 
         val chipList = mutableListOf<TextView>()
