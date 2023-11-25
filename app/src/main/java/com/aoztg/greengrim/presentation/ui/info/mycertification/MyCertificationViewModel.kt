@@ -28,22 +28,23 @@ import javax.inject.Inject
 data class MyCertificationUiState(
     val curMonth: MonthState = MonthState.Empty,
     val curDate: DateState = DateState.Empty,
-    val certificationDateList: MyCertificationDateState = MyCertificationDateState.Empty,
+    val certificationDateList: List<LocalDate> = emptyList(),
     val certificationList: List<MyCertification> = emptyList(),
     val page: Int = 0,
     val hasNext: Boolean = true,
     val getCertificationListState: BaseState = BaseState.Empty,
 )
 
-sealed class MyCertificationDateState {
-    object Empty : MyCertificationDateState()
-    data class Success(val dates: List<LocalDate>) : MyCertificationDateState()
-    data class Error(val msg: String) : MyCertificationDateState()
-}
+//sealed class MyCertificationDateState {
+//    object Empty : MyCertificationDateState()
+//    data class Success(val dates: List<LocalDate>) : MyCertificationDateState()
+//    data class Error(val msg: String) : MyCertificationDateState()
+//}
 
 sealed class MyCertificationEvents {
     data class ShowYearMonthPicker(val curYear: Int, val curMonth: Int) : MyCertificationEvents()
     data class NavigateToCertificationDetail(val certificationId: Int) : MyCertificationEvents()
+    data class ShowToastMessage(val msg: String) : MyCertificationEvents()
 }
 
 @HiltViewModel
@@ -97,7 +98,7 @@ class MyCertificationViewModel @Inject constructor(
                 response.body()?.let { data ->
                     _uiState.update { state ->
                         state.copy(
-                            certificationDateList = MyCertificationDateState.Success(data.date.map { it.toLocalDate() })
+                            certificationDateList = (_uiState.value.certificationDateList + data.date.map { it.toLocalDate() }).toSet().toList()
                         )
                     }
                 }
@@ -105,11 +106,7 @@ class MyCertificationViewModel @Inject constructor(
                 val error =
                     Gson().fromJson(response.errorBody()?.string(), ErrorResponse::class.java)
 
-                _uiState.update { state ->
-                    state.copy(
-                        certificationDateList = MyCertificationDateState.Error(error.message)
-                    )
-                }
+                _events.emit(MyCertificationEvents.ShowToastMessage(error.message))
             }
         }
 

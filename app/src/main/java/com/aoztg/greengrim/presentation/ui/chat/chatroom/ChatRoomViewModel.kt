@@ -112,13 +112,7 @@ class ChatRoomViewModel @Inject constructor() : ViewModel() {
 
     fun navigateToCreateCertification() {
         viewModelScope.launch {
-            _events.emit(ChatRoomEvents.NavigateToCreateCertification(chatRoomId))
-        }
-    }
-
-    fun navigateToCertificationList() {
-        viewModelScope.launch {
-            _events.emit(ChatRoomEvents.NavigateToCertificationList(chatRoomId))
+            _events.emit(ChatRoomEvents.NavigateToCreateCertification(challengeId))
         }
     }
 
@@ -128,8 +122,9 @@ class ChatRoomViewModel @Inject constructor() : ViewModel() {
         }
     }
 
-    fun setChatId(id: Int) {
-        chatRoomId = id
+    fun setIds(chatIdData: Int, challengeIdData: Int) {
+        chatRoomId = chatIdData
+        challengeId = challengeIdData
     }
 
     fun onRootClicked(){

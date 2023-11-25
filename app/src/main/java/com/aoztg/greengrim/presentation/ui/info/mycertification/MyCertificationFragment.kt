@@ -31,7 +31,6 @@ import com.kizitonwose.calendar.view.MonthDayBinder
 import com.kizitonwose.calendar.view.MonthHeaderFooterBinder
 import com.kizitonwose.calendar.view.ViewContainer
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.YearMonth
@@ -44,7 +43,6 @@ class MyCertificationFragment :
     private val viewModel: MyCertificationViewModel by viewModels()
 
     private var selectedDate: LocalDate? = null
-    private var certificationDateList: List<LocalDate> = listOf()
     private var currentMonth: YearMonth = YearMonth.now()
     private val today = LocalDate.now()
 
@@ -112,16 +110,6 @@ class MyCertificationFragment :
                     else -> {}
                 }
 
-                when (it.certificationDateList) {
-                    is MyCertificationDateState.Success -> {
-                        certificationDateList = it.certificationDateList.dates
-                        configureBinders(daysOfWeek())
-                    }
-
-                    is MyCertificationDateState.Error -> showCustomToast(it.certificationDateList.msg)
-                    else -> {}
-                }
-
                 when (it.getCertificationListState) {
                     is BaseState.Error -> showCustomToast(it.getCertificationListState.msg)
                     else -> {}
@@ -146,6 +134,8 @@ class MyCertificationFragment :
                     is MyCertificationEvents.NavigateToCertificationDetail -> findNavController().toCertificationDetail(
                         it.certificationId
                     )
+
+                    is MyCertificationEvents.ShowToastMessage -> showCustomToast(it.msg)
 
                     else -> {}
                 }
@@ -219,7 +209,7 @@ class MyCertificationFragment :
                             dateTv.setTextColor(Color.BLACK)
                         }
 
-                        in certificationDateList -> {
+                        in viewModel.uiState.value.certificationDateList -> {
                             dateTv.setBackgroundResource(R.drawable.shape_calendar_hasevent)
                             dateTv.setTextColor(Color.WHITE)
                         }

@@ -35,7 +35,7 @@ class ChallengeDetailFragment :
         super.onViewCreated(view, savedInstanceState)
         parentViewModel.hideBNV()
         binding.vm = viewModel
-        viewModel.setId(challengeId)
+        viewModel.setChallengeId(challengeId)
         viewModel.getChallengeDetailInfo()
         initStateObserver()
         initEventObserver()
@@ -91,8 +91,8 @@ class ChallengeDetailFragment :
                     }
 
                     is ChallengeDetailEvents.NavigateChatRoom -> {
-                        parentViewModel.connectNewChat(it.id)
-                        findNavController().toChatRoom(it.id)
+                        parentViewModel.connectNewChat(it.chatId)
+                        findNavController().toChatRoom(it.chatId)
                     }
                 }
             }
@@ -112,9 +112,8 @@ class ChallengeDetailFragment :
         )
     }
 
-    private fun NavController.toChatRoom(id: Int) {
-        val action =
-            ChallengeDetailFragmentDirections.actionChallengeDetailFragmentToChatRoomFragment(id)
+    private fun NavController.toChatRoom(chatId: Int) {
+        val action = ChallengeDetailFragmentDirections.actionChallengeDetailFragmentToChatRoomFragment(chatId, challengeId)
         this.navigate(action)
     }
 

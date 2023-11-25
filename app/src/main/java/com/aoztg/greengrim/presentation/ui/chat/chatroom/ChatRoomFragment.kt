@@ -29,6 +29,7 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
     private val viewModel: ChatRoomViewModel by viewModels()
     private val args: ChatRoomFragmentArgs by navArgs()
     private val chatId by lazy { args.chatId }
+    private val challengeId by lazy { args.challengeId }
     private val popupLocation = IntArray(2)
     private var isPopupShowing = false
 
@@ -38,7 +39,7 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
         binding.vm = viewModel
         parentViewModel.hideBNV()
         binding.rvChat.adapter = ChatMessageAdapter()
-        viewModel.setChatId(chatId)
+        viewModel.setIds(chatId, challengeId)
         initEventsObserver()
         initChatMessageObserver()
     }
@@ -128,8 +129,7 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
     }
 
     private fun navigateToCertificationList() {
-        val action =
-            ChatRoomFragmentDirections.actionChatRoomFragmentToCertificationListFragment(viewModel.chatRoomId)
+        val action = ChatRoomFragmentDirections.actionChatRoomFragmentToCertificationListFragment(viewModel.chatRoomId)
         findNavController().navigate(action)
     }
 
@@ -143,8 +143,7 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
     }
 
     private fun NavController.toCreateCertification(id: Int) {
-        val action =
-            ChatRoomFragmentDirections.actionChatRoomFragmentToCreateCertificationFragment(id)
+        val action = ChatRoomFragmentDirections.actionChatRoomFragmentToCreateCertificationFragment(id)
         this.navigate(action)
     }
 

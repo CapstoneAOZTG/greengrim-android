@@ -35,14 +35,14 @@ class ChatListFragment : BaseFragment<FragmentChatListBinding>(R.layout.fragment
         repeatOnStarted {
             viewModel.events.collect {
                 when (it) {
-                    is ChatListEvents.NavigateToChatRoom -> findNavController().toChatRoom(it.id)
+                    is ChatListEvents.NavigateToChatRoom -> findNavController().toChatRoom(it.chatId, it.challengeId)
                 }
             }
         }
     }
 
-    private fun NavController.toChatRoom(id: Int) {
-        val action = ChatListFragmentDirections.actionChatListFragmentToChatRoomFragment(id)
+    private fun NavController.toChatRoom(chatId: Int, challengeId: Int) {
+        val action = ChatListFragmentDirections.actionChatListFragmentToChatRoomFragment(chatId, challengeId)
         this.navigate(action)
     }
 }
