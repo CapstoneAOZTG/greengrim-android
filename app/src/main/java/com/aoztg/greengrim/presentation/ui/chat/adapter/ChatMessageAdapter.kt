@@ -6,13 +6,13 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.aoztg.greengrim.databinding.ItemChatBinding
 import com.aoztg.greengrim.databinding.ItemMyChatBinding
-import com.aoztg.greengrim.presentation.ui.chat.model.ChatMessage
+import com.aoztg.greengrim.presentation.ui.chat.model.UiChatMessage
 import com.aoztg.greengrim.presentation.util.Constants.MY_CHAT
 import com.aoztg.greengrim.presentation.util.Constants.OTHER_CHAT
 import com.aoztg.greengrim.presentation.util.DefaultDiffUtil
 
 class ChatMessageAdapter :
-    ListAdapter<ChatMessage, RecyclerView.ViewHolder>(DefaultDiffUtil<ChatMessage>()) {
+    ListAdapter<UiChatMessage, RecyclerView.ViewHolder>(DefaultDiffUtil<UiChatMessage>()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         if (viewType == MY_CHAT) {
@@ -47,14 +47,14 @@ class ChatMessageAdapter :
 }
 
 class OtherChatViewHolder(private val binding: ItemChatBinding) : RecyclerView.ViewHolder(binding.root) {
-    fun bind(item: ChatMessage) {
+    fun bind(item: UiChatMessage) {
         binding.item = item
     }
 
 }
 
 class MyChatViewHolder(private val binding: ItemMyChatBinding) : RecyclerView.ViewHolder(binding.root) {
-    fun bind(item: ChatMessage){
+    fun bind(item: UiChatMessage){
         binding.item = item
     }
 }

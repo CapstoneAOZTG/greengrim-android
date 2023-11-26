@@ -1,14 +1,11 @@
 package com.aoztg.greengrim.presentation.ui.main
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.app.App
-import com.aoztg.greengrim.data.model.ChatResponse
 import com.aoztg.greengrim.data.repository.ChatRepository
 import com.aoztg.greengrim.data.repository.ImageRepository
 import com.aoztg.greengrim.presentation.util.Constants
-import com.aoztg.greengrim.presentation.util.Constants.TAG
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -28,7 +25,9 @@ sealed class MainEvent {
     object Logout : MainEvent()
     data class ConnectNewChat(val chatId: Int) : MainEvent()
     data class SubscribeMyChats(val myChatIds: List<Int>) : MainEvent()
+
     data class SendChat(val memberId: Long, val chatId: Int, val message: String) : MainEvent()
+    data class SendCertification(val memberId: Long, val chatId: Int, val message: String, val certId: Int, val certImg: String): MainEvent()
 }
 
 @HiltViewModel
@@ -44,8 +43,8 @@ class MainViewModel @Inject constructor(
     private val _image = MutableSharedFlow<String>()
     val image: SharedFlow<String> = _image.asSharedFlow()
 
-    private val _newChat = MutableSharedFlow<ChatResponse>()
-    val newChat: SharedFlow<ChatResponse> = _newChat.asSharedFlow()
+    private val _newChat = MutableSharedFlow<ChatMessage>()
+    val newChat: SharedFlow<ChatMessage> = _newChat.asSharedFlow()
 
     private val _firstConnect = MutableStateFlow(false)
     val firstConnect: StateFlow<Boolean> = _firstConnect.asStateFlow()
@@ -135,13 +134,16 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    fun sendCertificationMessage(chatId: Int, message: String, certId: Int, certImg: String) {
+        viewModelScope.launch {
+            _events.emit(MainEvent.SendCertification(memberId, chatId, message, certId, certImg))
+        }
+    }
+
     fun receiveMessage(payload: String){
-        Log.d(TAG,"Main ViewModel received!!")
-        val chatResponse = Gson().fromJson(payload, ChatResponse::class.java)
-        if(chatResponse.senderId != memberId) {
-            viewModelScope.launch {
-                _newChat.emit(chatResponse)
-            }
+        val chatMessage = Gson().fromJson(payload, ChatMessage::class.java)
+        viewModelScope.launch {
+            _newChat.emit(chatMessage)
         }
     }
 }

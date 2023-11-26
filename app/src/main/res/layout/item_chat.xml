@@ -7,7 +7,7 @@
 
         <variable
             name="item"
-            type="com.aoztg.greengrim.presentation.ui.chat.model.ChatMessage" />
+            type="com.aoztg.greengrim.presentation.ui.chat.model.UiChatMessage" />
 
     </data>
 
@@ -32,12 +32,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
-            android:text="@{item.nick}"
+            android:text="@{item.nickName}"
             app:layout_constraintStart_toEndOf="@id/iv_profile"
             app:layout_constraintTop_toTopOf="@id/iv_profile"
             tools:text="킹노아" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
@@ -51,11 +52,11 @@
                 android:id="@+id/iv_image"
                 android:layout_width="120dp"
                 android:layout_height="120dp"
+                android:paddingBottom="12dp"
                 android:scaleType="centerCrop"
-                app:chatImgUrl="@{item.img}"
+                app:chatImgUrl="@{item.certImg}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:paddingBottom="12dp"
                 tools:src="@drawable/test" />
 
             <TextView
@@ -64,11 +65,22 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@{item.message}"
+                android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/iv_image"
                 tools:text="우왕 개이득 ㅋㅋㅋㅋ" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            style="@style/TextGgSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:text="@{item.sentTime}"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="@id/layout_message"
+            app:layout_constraintStart_toEndOf="@id/layout_message" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -24,13 +24,13 @@ import com.aoztg.greengrim.R
 import com.aoztg.greengrim.app.App
 import com.aoztg.greengrim.databinding.ActivityMainBinding
 import com.aoztg.greengrim.presentation.base.BaseActivity
+import com.aoztg.greengrim.presentation.customview.getPhotoSheet
 import com.aoztg.greengrim.presentation.ui.home.HomeFragmentDirections
 import com.aoztg.greengrim.presentation.ui.intro.IntroActivity
+import com.aoztg.greengrim.presentation.ui.toMultiPart
 import com.aoztg.greengrim.presentation.util.Constants
 import com.aoztg.greengrim.presentation.util.Constants.CAMERA_PERMISSION
 import com.aoztg.greengrim.presentation.util.Constants.STORAGE_PERMISSION
-import com.aoztg.greengrim.presentation.customview.getPhotoSheet
-import com.aoztg.greengrim.presentation.ui.toMultiPart
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -115,7 +115,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                             chatSocket.subscribeChat(id)
                         }
                     }
+
                     is MainEvent.SendChat -> chatSocket.sendMessage(it.memberId, it.chatId, it.message)
+                    is MainEvent.SendCertification -> chatSocket.sendCertification(it.memberId, it.chatId, it.message, it.certId, it.certImg)
+
                     else -> {}
                 }
             }

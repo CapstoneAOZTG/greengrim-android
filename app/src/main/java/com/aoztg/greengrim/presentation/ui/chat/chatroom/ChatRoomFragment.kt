@@ -67,11 +67,7 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
         repeatOnStarted {
             parentViewModel.newChat.collect {
                 if (it.roomId == chatId) {
-                    viewModel.newChatMessage(
-                        nick = it.nickName,
-                        profileImg = it.profileImg,
-                        message = it.message
-                    )
+                    viewModel.newChatMessage(it)
                     scrollRecyclerViewBottom()
                 }
             }
