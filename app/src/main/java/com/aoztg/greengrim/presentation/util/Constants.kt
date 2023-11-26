@@ -14,6 +14,7 @@ object Constants {
 
     const val MY_CHAT = 0
     const val OTHER_CHAT = 1
+    const val DATE = 2
 
     const val ONE_POPUP_WIDTH_DP = 220
     const val ONE_POPUP_HEIGHT_DP = 40

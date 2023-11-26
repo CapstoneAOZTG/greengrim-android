@@ -54,6 +54,7 @@ class ChatRoomViewModel @Inject constructor() : ViewModel() {
     val chatMessage = MutableStateFlow("")
 
     private var memberId: Long = 0
+    private var lastDate: String = ""
 
     init {
         setMemberId()
@@ -124,6 +125,14 @@ class ChatRoomViewModel @Inject constructor() : ViewModel() {
                     )
                 }
             }
+        }
+    }
+
+    private fun checkDate(){
+        // todo chat message 의 날짜를 비교해서, 날짜 헤더 삽입 로직.
+        // todo UiChatMessage(sentDate="", type="DATE") 이런식으로
+        _uiState.value.chatMessages.forEach {
+
         }
     }
 
