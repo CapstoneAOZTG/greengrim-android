@@ -46,7 +46,7 @@ class CreateCertificationViewModel @Inject constructor(
     val events: SharedFlow<CreateCertificationEvents> = _events.asSharedFlow()
 
     val description = MutableStateFlow("")
-    private val certificationImgUrl = MutableStateFlow("")
+    val certificationImgUrl = MutableStateFlow("")
     private var challengeId = -1
 
     val isDataReady = combine(description, certificationImgUrl) { description, imgUrl ->

@@ -61,7 +61,7 @@ class EditProfileViewModel @Inject constructor(
 
     val nickname = MutableStateFlow("")
     val introduce = MutableStateFlow("")
-    private val profileUrl = MutableStateFlow("")
+    val profileUrl = MutableStateFlow("")
 
     private val isNicknameValid = MutableStateFlow(false)
 

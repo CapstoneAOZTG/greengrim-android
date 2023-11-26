@@ -17,7 +17,6 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
 import javax.inject.Inject
@@ -42,8 +41,8 @@ class MainViewModel @Inject constructor(
     private val _events: MutableSharedFlow<MainEvent> = MutableSharedFlow()
     val event: SharedFlow<MainEvent> = _events
 
-    private val _image = MutableStateFlow("")
-    val image: StateFlow<String> = _image.asStateFlow()
+    private val _image = MutableSharedFlow<String>()
+    val image: SharedFlow<String> = _image.asSharedFlow()
 
     private val _newChat = MutableSharedFlow<ChatResponse>()
     val newChat: SharedFlow<ChatResponse> = _newChat.asSharedFlow()
@@ -112,7 +111,7 @@ class MainViewModel @Inject constructor(
 
             if (response.isSuccessful) {
                 response.body()?.let {
-                    _image.value = it.imgUrl
+                    _image.emit(it.imgUrl)
                 }
             }
         }
