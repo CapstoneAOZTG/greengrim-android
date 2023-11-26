@@ -116,6 +116,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                         }
                     }
                     is MainEvent.SendChat -> chatSocket.sendMessage(it.memberId, it.chatId, it.message)
+                    else -> {}
                 }
             }
         }

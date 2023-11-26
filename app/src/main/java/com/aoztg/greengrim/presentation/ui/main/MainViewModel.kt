@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
 import javax.inject.Inject
@@ -47,6 +48,9 @@ class MainViewModel @Inject constructor(
     private val _newChat = MutableSharedFlow<ChatResponse>()
     val newChat: SharedFlow<ChatResponse> = _newChat.asSharedFlow()
 
+    private val _firstConnect = MutableStateFlow(false)
+    val firstConnect: StateFlow<Boolean> = _firstConnect.asStateFlow()
+
     private var memberId: Long = 0
 
     init {
@@ -75,8 +79,9 @@ class MainViewModel @Inject constructor(
                         }
                     ))
                 }
+                _firstConnect.value = true
             } else {
-
+                _firstConnect.value = true
             }
         }
     }

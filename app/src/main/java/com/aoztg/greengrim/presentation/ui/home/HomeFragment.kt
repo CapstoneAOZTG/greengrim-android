@@ -17,6 +17,7 @@ import com.aoztg.greengrim.presentation.ui.home.adapter.MoreActivityAdapter
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 import com.aoztg.greengrim.presentation.ui.toChallengeDetail
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 import me.relex.circleindicator.CircleIndicator2
 
 
@@ -37,7 +38,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         initRecycler()
         initStateObserver()
         initEventObserver()
-        viewModel.getHomeData()
+        initParentObserver()
     }
 
     private fun initRecycler() {
@@ -89,6 +90,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
                     is HomeEvents.ShowToastMessage -> showCustomToast(it.msg)
                 }
+            }
+        }
+    }
+
+    private fun initParentObserver(){
+        repeatOnStarted {
+            parentViewModel.firstConnect.collectLatest {
+                if(it)viewModel.getHomeData()
             }
         }
     }
