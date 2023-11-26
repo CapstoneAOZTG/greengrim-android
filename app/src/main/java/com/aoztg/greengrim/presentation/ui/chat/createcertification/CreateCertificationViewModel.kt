@@ -97,7 +97,7 @@ class CreateCertificationViewModel @Inject constructor(
             if (response.isSuccessful) {
                 response.body()?.let{ body ->
                     _events.emit(CreateCertificationEvents.SendCertificationMessage(
-                        message = "[${_uiState.value.certificationDefaultData.round}회차 인증]",
+                        message = "[${_uiState.value.certificationDefaultData.round}회차] ${body.date}\n${description.value}",
                         certId =  body.certId,
                         certImg = body.certImg
                     ))
