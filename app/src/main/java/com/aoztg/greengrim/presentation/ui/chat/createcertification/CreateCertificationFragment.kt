@@ -52,6 +52,12 @@ class CreateCertificationFragment :
                 when (it) {
                     is CreateCertificationEvents.NavigateToBack -> findNavController().navigateUp()
                     is CreateCertificationEvents.ShowToastMessage -> showCustomToast(it.msg)
+                    is CreateCertificationEvents.SendCertificationMessage -> parentViewModel.sendCertificationMessage(
+                        chatId = chatId,
+                        message = it.message,
+                        certId = it.certId,
+                        certImg = it.certImg
+                    )
                     else -> {}
                 }
             }
