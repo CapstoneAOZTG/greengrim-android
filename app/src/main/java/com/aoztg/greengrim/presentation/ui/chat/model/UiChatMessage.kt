@@ -9,4 +9,5 @@ data class UiChatMessage(
     val profileImg: String = "",
     val certId: Int = -1,
     val certImg: String = "",
+    val onCertClickListener: (Int) -> Unit
 )

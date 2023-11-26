@@ -4,7 +4,7 @@ import com.aoztg.greengrim.presentation.ui.main.ChatMessage
 import com.aoztg.greengrim.presentation.ui.chat.model.UiChatMessage
 
 
-internal fun ChatMessage.toUiChatMessage(msgType: Int) = UiChatMessage(
+internal fun ChatMessage.toUiChatMessage(msgType: Int, onCertClickListener: (Int) -> Unit) = UiChatMessage(
     type = msgType,
     message = message,
     nickName = nickName,
@@ -12,5 +12,6 @@ internal fun ChatMessage.toUiChatMessage(msgType: Int) = UiChatMessage(
     sentTime = sentTime,
     profileImg = profileImg,
     certId = certId,
-    certImg = certImg
+    certImg = certImg,
+    onCertClickListener = onCertClickListener
 )

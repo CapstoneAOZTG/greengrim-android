@@ -16,6 +16,7 @@ import com.aoztg.greengrim.databinding.FragmentChatRoomBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
 import com.aoztg.greengrim.presentation.ui.chat.adapter.ChatMessageAdapter
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
+import com.aoztg.greengrim.presentation.ui.toCertificationDetail
 import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -48,9 +49,8 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
                     is ChatRoomEvents.ShowPopupMenu -> showPopup()
                     is ChatRoomEvents.NavigateBack -> findNavController().navigateUp()
                     is ChatRoomEvents.NavigateToCertificationList -> navigateToCertificationList()
-                    is ChatRoomEvents.NavigateToCreateCertification -> findNavController().toCreateCertification(
-                        it.id
-                    )
+                    is ChatRoomEvents.NavigateToCreateCertification -> findNavController().toCreateCertification(it.id)
+                    is ChatRoomEvents.NavigateToCertificationDetail -> findNavController().toCertificationDetail(it.id)
 
                     is ChatRoomEvents.SendMessage -> parentViewModel.sendMessage(
                         it.chatId,

@@ -34,6 +34,7 @@ sealed class ChatRoomEvents {
     object ShowPopupMenu : ChatRoomEvents()
     data class NavigateToCreateCertification(val id: Int) : ChatRoomEvents()
     data class NavigateToCertificationList(val id: Int) : ChatRoomEvents()
+    data class NavigateToCertificationDetail(val id: Int) : ChatRoomEvents()
     data class SendMessage(val chatId: Int, val message: String) : ChatRoomEvents()
     object ScrollBottom: ChatRoomEvents()
 }
@@ -92,17 +93,36 @@ class ChatRoomViewModel @Inject constructor() : ViewModel() {
     ){
         if(message.senderId == memberId){
             // 내 채팅
-            _uiState.update { state ->
-                state.copy(
-                    chatMessages = state.chatMessages + message.toUiChatMessage(MY_CHAT)
-                )
+            if(message.certId == -1){
+                _uiState.update { state ->
+                    state.copy(
+                        chatMessages = state.chatMessages + message.toUiChatMessage(MY_CHAT){}
+                    )
+                }
+            } else {
+                // 인증 채팅
+                _uiState.update { state ->
+                    state.copy(
+                        chatMessages = state.chatMessages + message.toUiChatMessage(MY_CHAT, ::navigateToCertificationDetail)
+                    )
+                }
             }
+
         } else {
             // 남 채팅
-            _uiState.update { state ->
-                state.copy(
-                    chatMessages = state.chatMessages + message.toUiChatMessage(OTHER_CHAT)
-                )
+            if(message.certId == -1){
+                _uiState.update { state ->
+                    state.copy(
+                        chatMessages = state.chatMessages + message.toUiChatMessage(OTHER_CHAT){}
+                    )
+                }
+            } else {
+                // 인증 채팅
+                _uiState.update { state ->
+                    state.copy(
+                        chatMessages = state.chatMessages + message.toUiChatMessage(OTHER_CHAT, ::navigateToCertificationDetail)
+                    )
+                }
             }
         }
     }
@@ -116,6 +136,12 @@ class ChatRoomViewModel @Inject constructor() : ViewModel() {
     fun navigateToCreateCertification() {
         viewModelScope.launch {
             _events.emit(ChatRoomEvents.NavigateToCreateCertification(challengeId))
+        }
+    }
+
+    fun navigateToCertificationDetail(certId: Int) {
+        viewModelScope.launch {
+            _events.emit(ChatRoomEvents.NavigateToCertificationDetail(certId))
         }
     }
 

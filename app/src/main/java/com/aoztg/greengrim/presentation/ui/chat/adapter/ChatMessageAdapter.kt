@@ -49,6 +49,9 @@ class ChatMessageAdapter :
 class OtherChatViewHolder(private val binding: ItemChatBinding) : RecyclerView.ViewHolder(binding.root) {
     fun bind(item: UiChatMessage) {
         binding.item = item
+        binding.ivImage.setOnClickListener {
+            item.onCertClickListener(item.certId)
+        }
     }
 
 }
@@ -56,5 +59,8 @@ class OtherChatViewHolder(private val binding: ItemChatBinding) : RecyclerView.V
 class MyChatViewHolder(private val binding: ItemMyChatBinding) : RecyclerView.ViewHolder(binding.root) {
     fun bind(item: UiChatMessage){
         binding.item = item
+        binding.ivImage.setOnClickListener {
+            item.onCertClickListener(item.certId)
+        }
     }
 }
