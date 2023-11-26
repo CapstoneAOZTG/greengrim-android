@@ -2,10 +2,13 @@ package com.aoztg.greengrim.presentation.ui.chat.createcertification
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.aoztg.greengrim.data.model.ErrorResponse
 import com.aoztg.greengrim.data.model.response.CertificationDefaultDataResponse
 import com.aoztg.greengrim.data.model.request.CreateCertificationRequest
 import com.aoztg.greengrim.data.repository.CertificationRepository
 import com.aoztg.greengrim.presentation.ui.BaseState
+import com.aoztg.greengrim.presentation.ui.home.HomeEvents
+import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,14 +29,15 @@ data class CreateCertificationUiState(
     val certificationDefaultData: CertificationDefaultDataResponse = CertificationDefaultDataResponse()
 )
 
-sealed class CreateCertificationEvents{
+sealed class CreateCertificationEvents {
     object NavigateToBack : CreateCertificationEvents()
+    data class ShowToastMessage(val msg: String) : CreateCertificationEvents()
 }
 
 @HiltViewModel
 class CreateCertificationViewModel @Inject constructor(
     private val certificationRepository: CertificationRepository
-): ViewModel() {
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow(CreateCertificationUiState())
     val uiState: StateFlow<CreateCertificationUiState> = _uiState.asStateFlow()
@@ -45,7 +49,7 @@ class CreateCertificationViewModel @Inject constructor(
     private val certificationImgUrl = MutableStateFlow("")
     private var challengeId = -1
 
-    val isDataReady = combine(description, certificationImgUrl){ description, imgUrl ->
+    val isDataReady = combine(description, certificationImgUrl) { description, imgUrl ->
         description.isNotBlank() && imgUrl.isNotBlank()
     }.stateIn(
         viewModelScope,
@@ -53,14 +57,13 @@ class CreateCertificationViewModel @Inject constructor(
         false
     )
 
-    fun getCertificationDefaultData(){
+    fun getCertificationDefaultData() {
         viewModelScope.launch {
 
-            // 테스트를 위해 닉네임 "노아" 로 입장되어있는 챌린지 326 채팅방 29 로 하드코딩
-            val response = certificationRepository.getCertificationDefaultData(326)
+            val response = certificationRepository.getCertificationDefaultData(challengeId)
 
-            if(response.isSuccessful){
-                response.body()?.let{ body ->
+            if (response.isSuccessful) {
+                response.body()?.let { body ->
                     _uiState.update { state ->
                         state.copy(
                             certificationDefaultData = body
@@ -68,42 +71,43 @@ class CreateCertificationViewModel @Inject constructor(
                     }
                 }
             } else {
-
+                val error = Gson().fromJson(response.errorBody()?.string(), ErrorResponse::class.java)
+                _events.emit(CreateCertificationEvents.ShowToastMessage(error.message))
             }
         }
     }
 
-    fun createCertification(){
+    fun createCertification() {
 
         viewModelScope.launch {
             val response = certificationRepository.createCertification(
 
-                // 테스트를 위해 닉네임 "노아" 로 입장되어있는 챌린지 326 채팅방 29 로 하드코딩
                 CreateCertificationRequest(
-                    challengeId = 326,
+                    challengeId = challengeId,
                     imgUrl = certificationImgUrl.value,
                     description = description.value,
                     round = _uiState.value.certificationDefaultData.round
                 )
             )
 
-            if(response.isSuccessful){
+            if (response.isSuccessful) {
                 _events.emit(CreateCertificationEvents.NavigateToBack)
             } else {
-
+                val error = Gson().fromJson(response.errorBody()?.string(), ErrorResponse::class.java)
+                _events.emit(CreateCertificationEvents.ShowToastMessage(error.message))
             }
         }
     }
 
-    fun setImgUrl(url: String){
+    fun setImgUrl(url: String) {
         certificationImgUrl.value = url
     }
 
-    fun setChallengeId(id: Int){
+    fun setChallengeId(id: Int) {
         challengeId = id
     }
 
-    fun navigateBack(){
+    fun navigateBack() {
         viewModelScope.launch {
             _events.emit(CreateCertificationEvents.NavigateToBack)
         }
