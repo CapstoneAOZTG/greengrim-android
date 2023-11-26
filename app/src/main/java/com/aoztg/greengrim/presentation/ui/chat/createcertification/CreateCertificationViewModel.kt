@@ -31,6 +31,11 @@ data class CreateCertificationUiState(
 
 sealed class CreateCertificationEvents {
     object NavigateToBack : CreateCertificationEvents()
+    data class SendCertificationMessage(
+        val message : String,
+        val certId: Int,
+        var certImg: String
+    ) : CreateCertificationEvents()
     data class ShowToastMessage(val msg: String) : CreateCertificationEvents()
 }
 
@@ -81,7 +86,6 @@ class CreateCertificationViewModel @Inject constructor(
 
         viewModelScope.launch {
             val response = certificationRepository.createCertification(
-
                 CreateCertificationRequest(
                     challengeId = challengeId,
                     imgUrl = certificationImgUrl.value,
@@ -91,7 +95,15 @@ class CreateCertificationViewModel @Inject constructor(
             )
 
             if (response.isSuccessful) {
-                _events.emit(CreateCertificationEvents.NavigateToBack)
+                response.body()?.let{ body ->
+                    _events.emit(CreateCertificationEvents.SendCertificationMessage(
+                        message = "[${_uiState.value.certificationDefaultData.round}회차 인증]",
+                        certId =  body.certId,
+                        certImg = body.certImg
+                    ))
+                    _events.emit(CreateCertificationEvents.NavigateToBack)
+                }
+
             } else {
                 val error = Gson().fromJson(response.errorBody()?.string(), ErrorResponse::class.java)
                 _events.emit(CreateCertificationEvents.ShowToastMessage(error.message))
@@ -103,8 +115,8 @@ class CreateCertificationViewModel @Inject constructor(
         certificationImgUrl.value = url
     }
 
-    fun setChallengeId(id: Int) {
-        challengeId = id
+    fun setIds(challengeIdData: Int) {
+        challengeId = challengeIdData
     }
 
     fun navigateBack() {

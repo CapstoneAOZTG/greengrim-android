@@ -32,7 +32,7 @@ data class ChatRoomUiState(
 sealed class ChatRoomEvents {
     object NavigateBack : ChatRoomEvents()
     object ShowPopupMenu : ChatRoomEvents()
-    data class NavigateToCreateCertification(val id: Int) : ChatRoomEvents()
+    object NavigateToCreateCertification : ChatRoomEvents()
     data class NavigateToCertificationList(val id: Int) : ChatRoomEvents()
     data class NavigateToCertificationDetail(val id: Int) : ChatRoomEvents()
     data class SendMessage(val chatId: Int, val message: String) : ChatRoomEvents()
@@ -135,11 +135,11 @@ class ChatRoomViewModel @Inject constructor() : ViewModel() {
 
     fun navigateToCreateCertification() {
         viewModelScope.launch {
-            _events.emit(ChatRoomEvents.NavigateToCreateCertification(challengeId))
+            _events.emit(ChatRoomEvents.NavigateToCreateCertification)
         }
     }
 
-    fun navigateToCertificationDetail(certId: Int) {
+    private fun navigateToCertificationDetail(certId: Int) {
         viewModelScope.launch {
             _events.emit(ChatRoomEvents.NavigateToCertificationDetail(certId))
         }

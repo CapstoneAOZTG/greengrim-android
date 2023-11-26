@@ -49,7 +49,7 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
                     is ChatRoomEvents.ShowPopupMenu -> showPopup()
                     is ChatRoomEvents.NavigateBack -> findNavController().navigateUp()
                     is ChatRoomEvents.NavigateToCertificationList -> navigateToCertificationList()
-                    is ChatRoomEvents.NavigateToCreateCertification -> findNavController().toCreateCertification(it.id)
+                    is ChatRoomEvents.NavigateToCreateCertification -> findNavController().toCreateCertification()
                     is ChatRoomEvents.NavigateToCertificationDetail -> findNavController().toCertificationDetail(it.id)
 
                     is ChatRoomEvents.SendMessage -> parentViewModel.sendMessage(
@@ -120,8 +120,8 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
         findNavController().navigateUp()
     }
 
-    private fun NavController.toCreateCertification(id: Int) {
-        val action = ChatRoomFragmentDirections.actionChatRoomFragmentToCreateCertificationFragment(id)
+    private fun NavController.toCreateCertification() {
+        val action = ChatRoomFragmentDirections.actionChatRoomFragmentToCreateCertificationFragment(challengeId, chatId)
         this.navigate(action)
     }
 

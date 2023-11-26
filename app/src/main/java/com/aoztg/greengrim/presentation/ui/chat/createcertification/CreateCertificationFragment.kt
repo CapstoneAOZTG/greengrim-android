@@ -23,11 +23,12 @@ class CreateCertificationFragment :
 
     private val args: CreateCertificationFragmentArgs by navArgs()
     private val challengeId by lazy { args.challengeId }
+    private val chatId by lazy { args.chatId }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.setChallengeId(challengeId)
+        viewModel.setIds(challengeId)
         binding.pvm = parentViewModel
         binding.vm = viewModel
         viewModel.getCertificationDefaultData()

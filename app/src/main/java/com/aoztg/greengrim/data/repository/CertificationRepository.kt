@@ -6,6 +6,7 @@ import com.aoztg.greengrim.data.model.response.CertificationDetailResponse
 import com.aoztg.greengrim.data.model.response.CertificationListResponse
 import com.aoztg.greengrim.data.model.request.CreateCertificationRequest
 import com.aoztg.greengrim.data.model.request.VerificationsRequest
+import com.aoztg.greengrim.data.model.response.CreateCertificationResponse
 import com.aoztg.greengrim.data.model.response.MyCertificationListResponse
 import retrofit2.Response
 
@@ -44,7 +45,7 @@ interface CertificationRepository {
 
     suspend fun createCertification(
         data: CreateCertificationRequest
-    ): Response<Unit>
+    ): Response<CreateCertificationResponse>
 
     suspend fun deleteCertification(
         id: Int
