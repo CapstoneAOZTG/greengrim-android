@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentHomeBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
-import com.aoztg.greengrim.presentation.ui.BaseState
 import com.aoztg.greengrim.presentation.ui.LoadingState
 import com.aoztg.greengrim.presentation.ui.home.adapter.HotChallengeAdapter
 import com.aoztg.greengrim.presentation.ui.home.adapter.HotNftAdapter
@@ -33,7 +32,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         parentViewModel.showBNV()
         binding.vm = viewModel
         initRecycler()
@@ -44,20 +42,20 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
     private fun initRecycler() {
         repeatOnStarted {
-            viewModel.uiState.collect{
-                if(it.hotChallengeList.isNotEmpty() && !isHotChallengeSet){
+            viewModel.uiState.collect {
+                if (it.hotChallengeList.isNotEmpty() && !isHotChallengeSet) {
                     binding.rvHotChallenge.adapter = HotChallengeAdapter(it.hotChallengeList)
                     recyclerToViewPager(binding.rvHotChallenge, binding.indicatorHotChallenge)
                     isHotChallengeSet = true
                 }
 
-                if(it.moreActivityList.isNotEmpty() && !isMoreActivitySet){
+                if (it.moreActivityList.isNotEmpty() && !isMoreActivitySet) {
                     binding.rvMoreActivity.adapter = MoreActivityAdapter(it.moreActivityList)
                     recyclerToViewPager(binding.rvMoreActivity, binding.indicatorMoreActivity)
                     isMoreActivitySet = true
                 }
 
-                if(it.hotNftList.isNotEmpty() && !isHotNftSet){
+                if (it.hotNftList.isNotEmpty() && !isHotNftSet) {
                     binding.rvHotNft.adapter = HotNftAdapter(it.hotNftList)
                     recyclerToViewPager(binding.rvHotNft, binding.indicatorHotNft)
                     isHotNftSet = true
@@ -88,6 +86,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
                     is HomeEvents.NavigateToChallengeDetail -> findNavController().toChallengeDetail(
                         it.id
                     )
+
                     is HomeEvents.ShowToastMessage -> showCustomToast(it.msg)
                 }
             }
@@ -104,6 +103,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         pagerSnapHelper.attachToRecyclerView(recycler)
 
         indicator.attachToRecyclerView(recycler, pagerSnapHelper)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        isHotChallengeSet = false
+        isHotNftSet = false
+        isMoreActivitySet = false
     }
 
 }
