@@ -15,26 +15,28 @@ import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class CreateCertificationFragment: BaseFragment<FragmentCreateCertificationBinding>(R.layout.fragment_create_certification) {
+class CreateCertificationFragment :
+    BaseFragment<FragmentCreateCertificationBinding>(R.layout.fragment_create_certification) {
 
     private val parentViewModel: MainViewModel by activityViewModels()
     private val viewModel: CreateCertificationViewModel by viewModels()
 
     private val args: CreateCertificationFragmentArgs by navArgs()
     private val challengeId by lazy { args.challengeId }
+    private val chatId by lazy { args.chatId }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewModel.setIds(challengeId)
         binding.pvm = parentViewModel
         binding.vm = viewModel
         viewModel.getCertificationDefaultData()
-        viewModel.setChallengeId(challengeId)
         initImgObserver()
         initEventObserver()
     }
 
-    private fun initImgObserver(){
+    private fun initImgObserver() {
         repeatOnStarted {
             parentViewModel.image.collect {
                 if (it.isNotBlank()) {
@@ -44,11 +46,19 @@ class CreateCertificationFragment: BaseFragment<FragmentCreateCertificationBindi
         }
     }
 
-    private fun initEventObserver(){
+    private fun initEventObserver() {
         repeatOnStarted {
-            viewModel.events.collect{
-                when(it){
+            viewModel.events.collect {
+                when (it) {
                     is CreateCertificationEvents.NavigateToBack -> findNavController().navigateUp()
+                    is CreateCertificationEvents.ShowToastMessage -> showCustomToast(it.msg)
+                    is CreateCertificationEvents.SendCertificationMessage -> parentViewModel.sendCertificationMessage(
+                        chatId = chatId,
+                        message = it.message,
+                        certId = it.certId,
+                        certImg = it.certImg
+                    )
+                    else -> {}
                 }
             }
         }
@@ -56,6 +66,6 @@ class CreateCertificationFragment: BaseFragment<FragmentCreateCertificationBindi
 }
 
 @BindingAdapter("certificationRoundText")
-fun bindCertificationRoundText(textView: TextView, round: Int){
+fun bindCertificationRoundText(textView: TextView, round: Int) {
     textView.text = "${round}회차 인증"
 }

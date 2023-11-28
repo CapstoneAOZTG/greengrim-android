@@ -3,7 +3,12 @@ package com.aoztg.greengrim.presentation.ui.chat.chatroom
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.aoztg.greengrim.presentation.ui.chat.model.ChatMessage
+import com.aoztg.greengrim.app.App
+import com.aoztg.greengrim.presentation.ui.chat.mapper.toUiChatMessage
+import com.aoztg.greengrim.presentation.ui.main.ChatMessage
+import com.aoztg.greengrim.presentation.ui.chat.model.UiChatMessage
+import com.aoztg.greengrim.presentation.ui.main.KeyboardState
+import com.aoztg.greengrim.presentation.util.Constants
 import com.aoztg.greengrim.presentation.util.Constants.MY_CHAT
 import com.aoztg.greengrim.presentation.util.Constants.OTHER_CHAT
 import com.aoztg.greengrim.presentation.util.Constants.TAG
@@ -22,14 +27,15 @@ import javax.inject.Inject
 
 data class ChatRoomUiState(
     val editTextState: Boolean = false,
-    val chatMessages: List<ChatMessage> = emptyList()
+    val chatMessages: List<UiChatMessage> = emptyList()
 )
 
 sealed class ChatRoomEvents {
     object NavigateBack : ChatRoomEvents()
     object ShowPopupMenu : ChatRoomEvents()
-    data class NavigateToCreateCertification(val id: Int) : ChatRoomEvents()
+    object NavigateToCreateCertification : ChatRoomEvents()
     data class NavigateToCertificationList(val id: Int) : ChatRoomEvents()
+    data class NavigateToCertificationDetail(val id: Int) : ChatRoomEvents()
     data class SendMessage(val chatId: Int, val message: String) : ChatRoomEvents()
     object ScrollBottom: ChatRoomEvents()
 }
@@ -48,38 +54,20 @@ class ChatRoomViewModel @Inject constructor() : ViewModel() {
 
     val chatMessage = MutableStateFlow("")
 
+    private var memberId: Long = 0
+    private var lastDate: String = ""
+
     init {
+        setMemberId()
         observeChatMessage()
     }
 
-    fun newChatMessage(
-        nick: String,
-        profileImg: String,
-        message: String
-    ){
-        Log.d(TAG,message)
-        _uiState.update { state ->
-            state.copy(
-                chatMessages = state.chatMessages + ChatMessage(
-                    nick = nick,
-                    profileImg = profileImg,
-                    message = message,
-                    type = OTHER_CHAT
-                )
-            )
-        }
-    }
+    private fun setMemberId() {
+        val memberId: Long = App.sharedPreferences.getLong(Constants.MEMBER_ID, -1L)
+        if (memberId != -1L) {
+            this.memberId = memberId
+        } else {
 
-    private fun newMyChatMessage(
-        message: String
-    ){
-        _uiState.update { state ->
-            state.copy(
-                chatMessages = state.chatMessages + ChatMessage(
-                    message = message,
-                    type = MY_CHAT
-                )
-            )
         }
     }
 
@@ -102,6 +90,53 @@ class ChatRoomViewModel @Inject constructor() : ViewModel() {
         }.launchIn(viewModelScope)
     }
 
+    fun newChatMessage(
+        message: ChatMessage
+    ){
+        if(message.senderId == memberId){
+            // 내 채팅
+            if(message.certId == -1){
+                _uiState.update { state ->
+                    state.copy(
+                        chatMessages = state.chatMessages + message.toUiChatMessage(MY_CHAT){}
+                    )
+                }
+            } else {
+                // 인증 채팅
+                _uiState.update { state ->
+                    state.copy(
+                        chatMessages = state.chatMessages + message.toUiChatMessage(MY_CHAT, ::navigateToCertificationDetail)
+                    )
+                }
+            }
+
+        } else {
+            // 남 채팅
+            if(message.certId == -1){
+                _uiState.update { state ->
+                    state.copy(
+                        chatMessages = state.chatMessages + message.toUiChatMessage(OTHER_CHAT){}
+                    )
+                }
+            } else {
+                // 인증 채팅
+                _uiState.update { state ->
+                    state.copy(
+                        chatMessages = state.chatMessages + message.toUiChatMessage(OTHER_CHAT, ::navigateToCertificationDetail)
+                    )
+                }
+            }
+        }
+    }
+
+    private fun checkDate(){
+        // todo chat message 의 날짜를 비교해서, 날짜 헤더 삽입 로직.
+        // todo UiChatMessage(sentDate="", type="DATE") 이런식으로
+        _uiState.value.chatMessages.forEach {
+
+        }
+    }
+
     fun navigateBack() {
         viewModelScope.launch {
             _events.emit(ChatRoomEvents.NavigateBack)
@@ -110,7 +145,13 @@ class ChatRoomViewModel @Inject constructor() : ViewModel() {
 
     fun navigateToCreateCertification() {
         viewModelScope.launch {
-            _events.emit(ChatRoomEvents.NavigateToCreateCertification(challengeId))
+            _events.emit(ChatRoomEvents.NavigateToCreateCertification)
+        }
+    }
+
+    private fun navigateToCertificationDetail(certId: Int) {
+        viewModelScope.launch {
+            _events.emit(ChatRoomEvents.NavigateToCertificationDetail(certId))
         }
     }
 
@@ -127,10 +168,13 @@ class ChatRoomViewModel @Inject constructor() : ViewModel() {
 
     fun sendMessage(){
         viewModelScope.launch{
-            _events.emit(ChatRoomEvents.SendMessage(chatRoomId,chatMessage.value))
-            newMyChatMessage(chatMessage.value)
+            _events.emit(ChatRoomEvents.SendMessage(
+                chatRoomId,
+                chatMessage.value,
+            ))
             chatMessage.emit("")
             _events.emit(ChatRoomEvents.ScrollBottom)
         }
     }
+
 }

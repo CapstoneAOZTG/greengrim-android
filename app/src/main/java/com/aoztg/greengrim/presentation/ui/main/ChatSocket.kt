@@ -48,6 +48,17 @@ class ChatSocket(
         data.put("message", message)
         stompClient.send("/pub/chat/message", data.toString()).subscribe()
     }
+
+    fun sendCertification(memberId: Long, chatId: Int, message: String, certId: Int, certImg: String, ) {
+        val data = JSONObject()
+        data.put("senderId", memberId)
+        data.put("type", "CERT")
+        data.put("roomId", chatId)
+        data.put("message", message)
+        data.put("certId", certId)
+        data.put("certImg", certImg)
+        stompClient.send("/pub/chat/message", data.toString()).subscribe()
+    }
 }
 
 

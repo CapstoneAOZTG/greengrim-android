@@ -1,5 +1,6 @@
 package com.aoztg.greengrim.presentation.ui.home
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.data.model.ErrorResponse
@@ -11,8 +12,10 @@ import com.aoztg.greengrim.presentation.ui.home.model.HomeInfo
 import com.aoztg.greengrim.presentation.ui.home.model.HotChallenge
 import com.aoztg.greengrim.presentation.ui.home.model.HotNft
 import com.aoztg.greengrim.presentation.ui.home.model.MoreActivity
+import com.aoztg.greengrim.presentation.util.Constants.TAG
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -56,7 +59,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun getHomeInfo(){
-        viewModelScope.launch {
+        viewModelScope.async {
             val response = homeRepository.getHomeInfo()
 
             if(response.isSuccessful){

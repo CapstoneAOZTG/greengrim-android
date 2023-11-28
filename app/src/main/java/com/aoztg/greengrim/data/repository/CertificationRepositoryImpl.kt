@@ -6,6 +6,7 @@ import com.aoztg.greengrim.data.model.response.CertificationDatesResponse
 import com.aoztg.greengrim.data.model.response.CertificationDefaultDataResponse
 import com.aoztg.greengrim.data.model.response.CertificationDetailResponse
 import com.aoztg.greengrim.data.model.response.CertificationListResponse
+import com.aoztg.greengrim.data.model.response.CreateCertificationResponse
 import com.aoztg.greengrim.data.model.response.MyCertificationListResponse
 import com.aoztg.greengrim.data.remote.CertificationAPI
 import retrofit2.Response
@@ -39,7 +40,7 @@ class CertificationRepositoryImpl @Inject constructor(private val api: Certifica
 
     override suspend fun verifyCertification(data: VerificationsRequest): Response<Unit> = api.verifyCertification(data)
 
-    override suspend fun createCertification(data: CreateCertificationRequest): Response<Unit> = api.createCertification(data)
+    override suspend fun createCertification(data: CreateCertificationRequest): Response<CreateCertificationResponse> = api.createCertification(data)
 
     override suspend fun deleteCertification(id: Int): Response<Unit> = api.deleteCertification(id)
 

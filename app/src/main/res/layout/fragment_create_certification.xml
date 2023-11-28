@@ -134,7 +134,7 @@
             android:layout_marginTop="8dp"
             android:onClick="@{() -> pvm.goToGallery()}"
             android:src="@drawable/img_add_certification_photo"
-            app:imgUrlCheckEmtpy="@{pvm.image}"
+            app:imgUrlCheckEmtpy="@{vm.certificationImgUrl}"
             app:layout_constraintDimensionRatio="942:576"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

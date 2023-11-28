@@ -1,5 +1,6 @@
 package com.aoztg.greengrim.presentation.ui.chat.chatroom
 
+import android.graphics.Rect
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
@@ -16,6 +17,7 @@ import com.aoztg.greengrim.databinding.FragmentChatRoomBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
 import com.aoztg.greengrim.presentation.ui.chat.adapter.ChatMessageAdapter
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
+import com.aoztg.greengrim.presentation.ui.toCertificationDetail
 import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -39,6 +41,7 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
         viewModel.setIds(chatId, challengeId)
         initEventsObserver()
         initChatMessageObserver()
+        setKeyboardListener()
     }
 
     private fun initEventsObserver() {
@@ -48,9 +51,8 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
                     is ChatRoomEvents.ShowPopupMenu -> showPopup()
                     is ChatRoomEvents.NavigateBack -> findNavController().navigateUp()
                     is ChatRoomEvents.NavigateToCertificationList -> navigateToCertificationList()
-                    is ChatRoomEvents.NavigateToCreateCertification -> findNavController().toCreateCertification(
-                        it.id
-                    )
+                    is ChatRoomEvents.NavigateToCreateCertification -> findNavController().toCreateCertification()
+                    is ChatRoomEvents.NavigateToCertificationDetail -> findNavController().toCertificationDetail(it.id)
 
                     is ChatRoomEvents.SendMessage -> parentViewModel.sendMessage(
                         it.chatId,
@@ -67,13 +69,22 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
         repeatOnStarted {
             parentViewModel.newChat.collect {
                 if (it.roomId == chatId) {
-                    viewModel.newChatMessage(
-                        nick = it.nickName,
-                        profileImg = it.profileImg,
-                        message = it.message
-                    )
+                    viewModel.newChatMessage(it)
                     scrollRecyclerViewBottom()
                 }
+            }
+        }
+    }
+
+    private fun setKeyboardListener(){
+        binding.root.viewTreeObserver.addOnGlobalLayoutListener {
+            val rec = Rect()
+            binding.root.getWindowVisibleDisplayFrame(rec)
+            val screenHeight = binding.root.rootView.height
+            val keypadHeight = screenHeight - rec.bottom
+
+            if (keypadHeight > screenHeight * 0.15) {
+                scrollRecyclerViewBottom()
             }
         }
     }
@@ -87,7 +98,6 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
             }
         }
     }
-
 
     private fun showPopup() {
         val moreBtn = binding.btnMore
@@ -124,8 +134,8 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
         findNavController().navigateUp()
     }
 
-    private fun NavController.toCreateCertification(id: Int) {
-        val action = ChatRoomFragmentDirections.actionChatRoomFragmentToCreateCertificationFragment(id)
+    private fun NavController.toCreateCertification() {
+        val action = ChatRoomFragmentDirections.actionChatRoomFragmentToCreateCertificationFragment(challengeId, chatId)
         this.navigate(action)
     }
 
@@ -133,7 +143,6 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
         super.onDestroyView()
         dismissFourPopup()
     }
-
 }
 
 @BindingAdapter("chatImgUrl")

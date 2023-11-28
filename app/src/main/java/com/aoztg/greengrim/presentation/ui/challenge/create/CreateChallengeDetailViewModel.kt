@@ -81,7 +81,7 @@ class CreateChallengeDetailViewModel @Inject constructor(
 
     val isDataReady = combine(title, description, imageUrl, keyword, category) {
             title, description, img, keyword, category ->
-        title.isNotBlank() && description.isNotBlank()
+        title.length >= 2 && description.length >= 2
                 && img.isNotBlank() && keyword.isNotBlank() && category.isNotBlank()
     }.stateIn(
         viewModelScope,

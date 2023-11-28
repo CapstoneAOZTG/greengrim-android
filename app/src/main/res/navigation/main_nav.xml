@@ -120,6 +120,9 @@
         <argument
             android:name="challengeId"
             app:argType="integer" />
+        <argument
+            android:name="chatId"
+            app:argType="integer" />
     </fragment>
 
     <fragment
