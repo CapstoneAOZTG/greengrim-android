@@ -2,13 +2,12 @@ package com.aoztg.greengrim.config
 
 import android.content.Intent
 import android.util.Log
+import com.aoztg.greengrim.BuildConfig
 import com.aoztg.greengrim.app.App.Companion.context
 import com.aoztg.greengrim.app.App.Companion.sharedPreferences
 import com.aoztg.greengrim.data.model.ErrorResponse
 import com.aoztg.greengrim.data.remote.RefreshAPI
 import com.aoztg.greengrim.presentation.ui.intro.IntroActivity
-import com.aoztg.greengrim.presentation.util.Constants
-import com.aoztg.greengrim.presentation.util.Constants.BASE_DEV_URL
 import com.aoztg.greengrim.presentation.util.Constants.MEMBER_ID
 import com.aoztg.greengrim.presentation.util.Constants.TAG
 import com.aoztg.greengrim.presentation.util.Constants.X_ACCESS_TOKEN
@@ -20,7 +19,6 @@ import okhttp3.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.IOException
-import javax.inject.Inject
 
 class BearerInterceptor : Interceptor {
 
@@ -42,7 +40,7 @@ class BearerInterceptor : Interceptor {
                     Log.d(TAG, refresh)
                     // refresh API 호출
                     val result = Retrofit.Builder()
-                        .baseUrl(BASE_DEV_URL)
+                        .baseUrl(BuildConfig.BASE_DEV_URL)
                         .addConverterFactory(GsonConverterFactory.create())
                         .build()
                         .create(RefreshAPI::class.java).refreshToken(refresh)
