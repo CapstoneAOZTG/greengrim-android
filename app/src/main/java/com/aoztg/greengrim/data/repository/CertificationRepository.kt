@@ -1,5 +1,6 @@
 package com.aoztg.greengrim.data.repository
 
+import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.model.response.CertificationDatesResponse
 import com.aoztg.greengrim.data.model.response.CertificationDefaultDataResponse
 import com.aoztg.greengrim.data.model.response.CertificationDetailResponse
@@ -14,40 +15,40 @@ interface CertificationRepository {
 
     suspend fun getCertificationDefaultData(
         id: Int
-    ): Response<CertificationDefaultDataResponse>
+    ): BaseState<CertificationDefaultDataResponse>
 
     suspend fun getCertificationDetail(
         id: Int
-    ): Response<CertificationDetailResponse>
+    ): BaseState<CertificationDetailResponse>
 
     suspend fun getCertificationDate(
         challengeId: Int,
-    ): Response<CertificationDatesResponse>
+    ): BaseState<CertificationDatesResponse>
 
     suspend fun getCertificationList(
         challengeId: Int,
         date: String,
         page: Int,
         size: Int
-    ): Response<CertificationListResponse>
+    ): BaseState<CertificationListResponse>
 
-    suspend fun getMyCertificationDate(): Response<CertificationDatesResponse>
+    suspend fun getMyCertificationDate(): BaseState<CertificationDatesResponse>
 
     suspend fun getMyCertificationList(
         date: String,
         page: Int,
         size: Int
-    ): Response<MyCertificationListResponse>
+    ): BaseState<MyCertificationListResponse>
 
     suspend fun verifyCertification(
         data: VerificationsRequest
-    ): Response<Unit>
+    ): BaseState<Unit>
 
     suspend fun createCertification(
         data: CreateCertificationRequest
-    ): Response<CreateCertificationResponse>
+    ): BaseState<CreateCertificationResponse>
 
     suspend fun deleteCertification(
         id: Int
-    ): Response<Unit>
+    ): BaseState<Unit>
 }
