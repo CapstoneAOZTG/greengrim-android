@@ -36,6 +36,7 @@ class ChatListFragment : BaseFragment<FragmentChatListBinding>(R.layout.fragment
             viewModel.events.collect {
                 when (it) {
                     is ChatListEvents.NavigateToChatRoom -> findNavController().toChatRoom(it.chatId, it.challengeId)
+                    is ChatListEvents.ShowToastMessage -> showCustomToast(it.msg)
                 }
             }
         }

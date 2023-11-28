@@ -34,6 +34,7 @@ android {
         buildConfigField "String", "KAKAO_API_KEY", properties['kakaoAppKey']
         buildConfigField "String", "BASE_DEV_URL", properties["baseDevUrl"]
         buildConfigField "String", "BASE_PROD_URL", properties["baseProdUrl"]
+        buildConfigField "String", "SOCKET_URL", properties["socketUrl"]
         manifestPlaceholders = [KAKAO_API_KEY: properties["kakaoAppKey"]]
     }
 

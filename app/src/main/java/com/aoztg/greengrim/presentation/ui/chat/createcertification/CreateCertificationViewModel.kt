@@ -2,13 +2,11 @@ package com.aoztg.greengrim.presentation.ui.chat.createcertification
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.aoztg.greengrim.data.model.ErrorResponse
-import com.aoztg.greengrim.data.model.response.CertificationDefaultDataResponse
+import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.model.request.CreateCertificationRequest
+import com.aoztg.greengrim.data.model.response.CertificationDefaultDataResponse
 import com.aoztg.greengrim.data.repository.CertificationRepository
-import com.aoztg.greengrim.presentation.ui.BaseState
-import com.aoztg.greengrim.presentation.ui.home.HomeEvents
-import com.google.gson.Gson
+import com.aoztg.greengrim.presentation.ui.BaseUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,17 +23,18 @@ import javax.inject.Inject
 
 
 data class CreateCertificationUiState(
-    val nextBtnState: BaseState = BaseState.Empty,
+    val nextBtnState: BaseUiState = BaseUiState.Empty,
     val certificationDefaultData: CertificationDefaultDataResponse = CertificationDefaultDataResponse()
 )
 
 sealed class CreateCertificationEvents {
     object NavigateToBack : CreateCertificationEvents()
     data class SendCertificationMessage(
-        val message : String,
+        val message: String,
         val certId: Int,
         var certImg: String
     ) : CreateCertificationEvents()
+
     data class ShowToastMessage(val msg: String) : CreateCertificationEvents()
 }
 
@@ -65,48 +64,53 @@ class CreateCertificationViewModel @Inject constructor(
     fun getCertificationDefaultData() {
         viewModelScope.launch {
 
-            val response = certificationRepository.getCertificationDefaultData(challengeId)
+            certificationRepository.getCertificationDefaultData(challengeId)
+                .let {
+                    when (it) {
+                        is BaseState.Success -> {
+                            _uiState.update { state ->
+                                state.copy(
+                                    certificationDefaultData = it.body
+                                )
+                            }
+                        }
 
-            if (response.isSuccessful) {
-                response.body()?.let { body ->
-                    _uiState.update { state ->
-                        state.copy(
-                            certificationDefaultData = body
-                        )
+                        is BaseState.Error -> {
+                            _events.emit(CreateCertificationEvents.ShowToastMessage(it.msg))
+                        }
                     }
                 }
-            } else {
-                val error = Gson().fromJson(response.errorBody()?.string(), ErrorResponse::class.java)
-                _events.emit(CreateCertificationEvents.ShowToastMessage(error.message))
-            }
+
         }
     }
 
     fun createCertification() {
 
         viewModelScope.launch {
-            val response = certificationRepository.createCertification(
+            certificationRepository.createCertification(
                 CreateCertificationRequest(
                     challengeId = challengeId,
                     imgUrl = certificationImgUrl.value,
                     description = description.value,
                     round = _uiState.value.certificationDefaultData.round
                 )
-            )
+            ).let {
+                when (it) {
+                    is BaseState.Success -> {
+                        _events.emit(
+                            CreateCertificationEvents.SendCertificationMessage(
+                                message = "[${_uiState.value.certificationDefaultData.round}회차] ${it.body.date}\n${description.value}",
+                                certId = it.body.certId,
+                                certImg = it.body.certImg
+                            )
+                        )
+                        _events.emit(CreateCertificationEvents.NavigateToBack)
+                    }
 
-            if (response.isSuccessful) {
-                response.body()?.let{ body ->
-                    _events.emit(CreateCertificationEvents.SendCertificationMessage(
-                        message = "[${_uiState.value.certificationDefaultData.round}회차] ${body.date}\n${description.value}",
-                        certId =  body.certId,
-                        certImg = body.certImg
-                    ))
-                    _events.emit(CreateCertificationEvents.NavigateToBack)
+                    is BaseState.Error -> {
+                        _events.emit(CreateCertificationEvents.ShowToastMessage(it.msg))
+                    }
                 }
-
-            } else {
-                val error = Gson().fromJson(response.errorBody()?.string(), ErrorResponse::class.java)
-                _events.emit(CreateCertificationEvents.ShowToastMessage(error.message))
             }
         }
     }

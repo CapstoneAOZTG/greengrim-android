@@ -7,6 +7,7 @@ import android.app.Activity
 import android.content.ContentValues
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Rect
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -64,6 +65,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         setBottomNavigation()
         setBottomNavigationListener()
         initEventObserver()
+        setKeyboardListener()
     }
 
     private fun setBottomNavigation() {
@@ -118,7 +120,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
                     is MainEvent.SendChat -> chatSocket.sendMessage(it.memberId, it.chatId, it.message)
                     is MainEvent.SendCertification -> chatSocket.sendCertification(it.memberId, it.chatId, it.message, it.certId, it.certImg)
-
+                    is MainEvent.ShowToastMessage -> showCustomToast(it.msg)
                     else -> {}
                 }
             }
@@ -241,6 +243,21 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                 viewModel.imageToUrl(tempCameraUri.toMultiPart(this))
             }
         }
+
+    private fun setKeyboardListener(){
+        binding.root.viewTreeObserver.addOnGlobalLayoutListener {
+            val rec = Rect()
+            binding.root.getWindowVisibleDisplayFrame(rec)
+            val screenHeight = binding.root.rootView.height
+            val keypadHeight = screenHeight - rec.bottom
+
+            if (keypadHeight > screenHeight * 0.15) {
+                viewModel.showKeyboard()
+            } else {
+                viewModel.hideKeyboard()
+            }
+        }
+    }
 
     private fun logout() {
         App.sharedPreferences.edit()

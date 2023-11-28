@@ -2,6 +2,7 @@ package com.aoztg.greengrim.presentation.ui.intro
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.repository.ImageRepository
 import com.aoztg.greengrim.data.repository.IntroRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,6 +18,7 @@ import javax.inject.Inject
 sealed class IntroEvent {
     object ShowPhotoBottomSheet : IntroEvent()
     object GoToMainActivity : IntroEvent()
+    data class ShowToastMessage(val msg: String) : IntroEvent()
 }
 
 @HiltViewModel
@@ -50,12 +52,15 @@ class IntroViewModel @Inject constructor(
 
     fun imageToUrl(file: MultipartBody.Part) {
         viewModelScope.launch {
-            val response = imageRepository.imageToUrl(file)
+            imageRepository.imageToUrl(file).let {
+                when (it) {
+                    is BaseState.Success -> {
+                        _profileImg.value = it.body.imgUrl
+                    }
 
-            if (response.isSuccessful) {
-
-                response.body()?.let {
-                    _profileImg.value = it.imgUrl
+                    is BaseState.Error -> {
+                        _events.emit(IntroEvent.ShowToastMessage(it.msg))
+                    }
                 }
             }
         }

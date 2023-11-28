@@ -1,9 +1,8 @@
 package com.aoztg.greengrim.presentation.ui.home
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.aoztg.greengrim.data.model.ErrorResponse
+import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.repository.HomeRepository
 import com.aoztg.greengrim.presentation.ui.LoadingState
 import com.aoztg.greengrim.presentation.ui.home.mapper.toHomeInfo
@@ -12,11 +11,8 @@ import com.aoztg.greengrim.presentation.ui.home.model.HomeInfo
 import com.aoztg.greengrim.presentation.ui.home.model.HotChallenge
 import com.aoztg.greengrim.presentation.ui.home.model.HotNft
 import com.aoztg.greengrim.presentation.ui.home.model.MoreActivity
-import com.aoztg.greengrim.presentation.util.Constants.TAG
-import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -35,9 +31,9 @@ data class HomeUiState(
     val homeInfo: HomeInfo = HomeInfo()
 )
 
-sealed class HomeEvents{
-    data class NavigateToChallengeDetail(val id : Int): HomeEvents()
-    data class ShowToastMessage(val msg: String): HomeEvents()
+sealed class HomeEvents {
+    data class NavigateToChallengeDetail(val id: Int) : HomeEvents()
+    data class ShowToastMessage(val msg: String) : HomeEvents()
 }
 
 @HiltViewModel
@@ -51,54 +47,57 @@ class HomeViewModel @Inject constructor(
     private val _events = MutableSharedFlow<HomeEvents>()
     val events: SharedFlow<HomeEvents> = _events.asSharedFlow()
 
-    fun getHomeData(){
+    fun getHomeData() {
         getHomeInfo()
         getHotChallenges()
         getMoreActivity()
         getHotNft()
     }
 
-    private fun getHomeInfo(){
+    private fun getHomeInfo() {
         viewModelScope.async {
-            val response = homeRepository.getHomeInfo()
+            homeRepository.getHomeInfo().let {
+                when (it) {
+                    is BaseState.Success -> {
+                        _uiState.update { state ->
+                            state.copy(
+                                homeInfo = it.body.toHomeInfo()
+                            )
+                        }
+                    }
 
-            if(response.isSuccessful){
-                response.body()?.let{
-                    _uiState.update { state ->
-                        state.copy(
-                            homeInfo = it.toHomeInfo()
-                        )
+                    is BaseState.Error -> {
+                        _events.emit(HomeEvents.ShowToastMessage(it.msg))
                     }
                 }
-            } else {
-                val error = Gson().fromJson(response.errorBody()?.string(), ErrorResponse::class.java)
-                _events.emit(HomeEvents.ShowToastMessage(error.message))
             }
         }
     }
 
     private fun getHotChallenges() {
         viewModelScope.launch {
-            val response = homeRepository.getHotChallenges()
-            if(response.isSuccessful){
-                response.body()?.let{
-                    val uiModel = it.hotChallengeInfos.map{ data ->
-                        data.toHotChallenge(::navigateToChallengeDetail)
+            homeRepository.getHotChallenges().let {
+                when (it) {
+                    is BaseState.Success -> {
+                        val uiModel = it.body.hotChallengeInfos.map { data ->
+                            data.toHotChallenge(::navigateToChallengeDetail)
+                        }
+                        _uiState.update { state ->
+                            state.copy(
+                                hotChallengeList = uiModel
+                            )
+                        }
                     }
-                    _uiState.update { state ->
-                        state.copy(
-                            hotChallengeList = uiModel
-                        )
+
+                    is BaseState.Error -> {
+                        _events.emit(HomeEvents.ShowToastMessage(it.msg))
                     }
                 }
-            } else {
-                val error = Gson().fromJson(response.errorBody()?.string(), ErrorResponse::class.java)
-                _events.emit(HomeEvents.ShowToastMessage(error.message))
             }
         }
     }
 
-    private fun getMoreActivity(){
+    private fun getMoreActivity() {
         _uiState.update { state ->
             state.copy(
                 moreActivityList = listOf(
@@ -109,7 +108,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun getHotNft(){
+    private fun getHotNft() {
         _uiState.update { state ->
             state.copy(
                 hotNftList = listOf(

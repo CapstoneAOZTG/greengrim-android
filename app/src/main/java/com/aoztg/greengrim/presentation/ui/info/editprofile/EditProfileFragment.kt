@@ -8,7 +8,7 @@ import androidx.navigation.fragment.findNavController
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentEditProfileBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
-import com.aoztg.greengrim.presentation.ui.BaseState
+import com.aoztg.greengrim.presentation.ui.BaseUiState
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
@@ -35,24 +35,18 @@ class EditProfileFragment :
         repeatOnStarted {
             viewModel.uiState.collect {
                 when (it.completeBtnState) {
-                    is BaseState.Success -> binding.btnComplete.isEnabled = true
-                    is BaseState.Failure -> binding.btnComplete.isEnabled = false
+                    is BaseUiState.Success -> binding.btnComplete.isEnabled = true
+                    is BaseUiState.Failure -> binding.btnComplete.isEnabled = false
                     else -> {}
                 }
 
                 when (it.nickState) {
-                    is BaseState.Success -> binding.tvWarning.visibility = View.INVISIBLE
-                    is BaseState.Error -> {
+                    is BaseUiState.Success -> binding.tvWarning.visibility = View.INVISIBLE
+                    is BaseUiState.Error -> {
                         binding.tvWarning.visibility = View.VISIBLE
                         binding.tvWarning.text = it.nickState.msg
                     }
 
-                    else -> {}
-                }
-
-                when (it.editProfileState) {
-                    is BaseState.Success -> findNavController().navigateUp()
-                    is BaseState.Error -> showCustomToast(it.editProfileState.msg)
                     else -> {}
                 }
 
@@ -70,6 +64,7 @@ class EditProfileFragment :
             viewModel.events.collect{
                 when(it){
                     is EditProfileEvents.NavigateToBack -> findNavController().navigateUp()
+                    is EditProfileEvents.ShowToastMessage -> showCustomToast(it.msg)
                 }
             }
         }

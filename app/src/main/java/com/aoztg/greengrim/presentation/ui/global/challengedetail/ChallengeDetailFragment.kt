@@ -13,7 +13,6 @@ import androidx.navigation.fragment.navArgs
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentChallengeDetailBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
-import com.aoztg.greengrim.presentation.ui.BaseState
 import com.aoztg.greengrim.presentation.ui.LoadingState
 import com.aoztg.greengrim.presentation.ui.global.model.ChallengeDetail
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
@@ -43,11 +42,6 @@ class ChallengeDetailFragment :
     private fun initStateObserver() {
         repeatOnStarted {
             viewModel.uiState.collect{
-                when(it.getChallengeDetailState){
-                    is BaseState.Error -> showCustomToast(it.getChallengeDetailState.msg)
-                    else -> {}
-                }
-
                 when(it.loading){
                     is LoadingState.IsLoading -> {
                         if(it.loading.state){
@@ -77,6 +71,7 @@ class ChallengeDetailFragment :
                         parentViewModel.connectNewChat(it.chatId)
                         findNavController().toChatRoom(it.chatId)
                     }
+                    is ChallengeDetailEvents.ShowToastMessage -> showCustomToast(it.msg)
                 }
             }
         }

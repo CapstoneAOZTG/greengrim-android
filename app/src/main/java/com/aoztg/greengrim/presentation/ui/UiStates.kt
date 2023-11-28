@@ -9,11 +9,11 @@ sealed class LoadingState {
     data class IsLoading(val state: Boolean) : LoadingState()
 }
 
-sealed class BaseState {
-    object Empty : BaseState()
-    object Success : BaseState()
-    object Failure : BaseState()
-    data class Error(val msg: String) : BaseState()
+sealed class BaseUiState {
+    object Empty : BaseUiState()
+    object Success : BaseUiState()
+    object Failure : BaseUiState()
+    data class Error(val msg: String) : BaseUiState()
 }
 
 sealed class MonthState {

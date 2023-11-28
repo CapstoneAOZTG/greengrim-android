@@ -10,14 +10,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentMyChallengeBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
-import com.aoztg.greengrim.presentation.ui.BaseState
+import com.aoztg.greengrim.presentation.customview.getSortSheet
 import com.aoztg.greengrim.presentation.ui.LoadingState
 import com.aoztg.greengrim.presentation.ui.challenge.adapter.ChallengeRoomAdapter
 import com.aoztg.greengrim.presentation.ui.challenge.list.ChallengeSortType
 import com.aoztg.greengrim.presentation.ui.info.mychallenge.MyChallengeViewModel.Companion.ORIGINAL
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 import com.aoztg.greengrim.presentation.ui.toChallengeDetail
-import com.aoztg.greengrim.presentation.customview.getSortSheet
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -43,11 +42,6 @@ class MyChallengeFragment :
     private fun initStateObserver() {
         repeatOnStarted {
             viewModel.uiState.collect {
-
-                when (it.getChallengeRoomState) {
-                    is BaseState.Error -> showCustomToast(it.getChallengeRoomState.msg)
-                    else -> {}
-                }
 
                 when (it.loading) {
                     is LoadingState.IsLoading -> {
@@ -78,6 +72,7 @@ class MyChallengeFragment :
 
                     is MyChallengeEvents.ShowBottomSheet -> showBottomSheet()
                     is MyChallengeEvents.ScrollToTop -> binding.rvChallengeList.smoothScrollToPosition(0)
+                    is MyChallengeEvents.ShowToastMessage -> showCustomToast(it.msg)
                     else -> {}
                 }
             }

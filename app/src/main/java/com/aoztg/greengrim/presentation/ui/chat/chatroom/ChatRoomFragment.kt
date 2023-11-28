@@ -1,6 +1,5 @@
 package com.aoztg.greengrim.presentation.ui.chat.chatroom
 
-import android.graphics.Rect
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
@@ -16,10 +15,12 @@ import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentChatRoomBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
 import com.aoztg.greengrim.presentation.ui.chat.adapter.ChatMessageAdapter
+import com.aoztg.greengrim.presentation.ui.main.KeyboardState
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 import com.aoztg.greengrim.presentation.ui.toCertificationDetail
 import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 
 @AndroidEntryPoint
 class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment_chat_room) {
@@ -41,7 +42,7 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
         viewModel.setIds(chatId, challengeId)
         initEventsObserver()
         initChatMessageObserver()
-        setKeyboardListener()
+        initKeyboardObserver()
     }
 
     private fun initEventsObserver() {
@@ -52,12 +53,15 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
                     is ChatRoomEvents.NavigateBack -> findNavController().navigateUp()
                     is ChatRoomEvents.NavigateToCertificationList -> navigateToCertificationList()
                     is ChatRoomEvents.NavigateToCreateCertification -> findNavController().toCreateCertification()
-                    is ChatRoomEvents.NavigateToCertificationDetail -> findNavController().toCertificationDetail(it.id)
+                    is ChatRoomEvents.NavigateToCertificationDetail -> findNavController().toCertificationDetail(
+                        it.id
+                    )
 
                     is ChatRoomEvents.SendMessage -> parentViewModel.sendMessage(
                         it.chatId,
                         it.message
                     )
+
                     is ChatRoomEvents.ScrollBottom -> scrollRecyclerViewBottom()
                     else -> {}
                 }
@@ -76,25 +80,23 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
         }
     }
 
-    private fun setKeyboardListener(){
-        binding.root.viewTreeObserver.addOnGlobalLayoutListener {
-            val rec = Rect()
-            binding.root.getWindowVisibleDisplayFrame(rec)
-            val screenHeight = binding.root.rootView.height
-            val keypadHeight = screenHeight - rec.bottom
-
-            if (keypadHeight > screenHeight * 0.15) {
-                scrollRecyclerViewBottom()
+    private fun initKeyboardObserver() {
+        repeatOnStarted {
+            parentViewModel.keyboardState.collectLatest {
+                if (it == KeyboardState.SHOW) {
+                    scrollRecyclerViewBottom()
+                }
             }
         }
     }
 
-    private fun scrollRecyclerViewBottom(){
-        val lastVisibleItemPosition = (binding.rvChat.layoutManager as LinearLayoutManager).findLastCompletelyVisibleItemPosition()
+    private fun scrollRecyclerViewBottom() {
+        val lastVisibleItemPosition =
+            (binding.rvChat.layoutManager as LinearLayoutManager).findLastCompletelyVisibleItemPosition()
         val itemTotalCount = binding.rvChat.adapter?.itemCount?.minus(1)
-        itemTotalCount?.let{
-            if(lastVisibleItemPosition != itemTotalCount){
-                binding.rvChat.smoothScrollToPosition(it + 1)
+        itemTotalCount?.let {
+            if (lastVisibleItemPosition != it) {
+                binding.rvChat.smoothScrollToPosition(it+ 2)
             }
         }
     }
@@ -121,7 +123,8 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
     }
 
     private fun navigateToCertificationList() {
-        val action = ChatRoomFragmentDirections.actionChatRoomFragmentToCertificationListFragment(viewModel.chatRoomId)
+        val action =
+            ChatRoomFragmentDirections.actionChatRoomFragmentToCertificationListFragment(viewModel.chatRoomId)
         findNavController().navigate(action)
     }
 
@@ -135,7 +138,10 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
     }
 
     private fun NavController.toCreateCertification() {
-        val action = ChatRoomFragmentDirections.actionChatRoomFragmentToCreateCertificationFragment(challengeId, chatId)
+        val action = ChatRoomFragmentDirections.actionChatRoomFragmentToCreateCertificationFragment(
+            challengeId,
+            chatId
+        )
         this.navigate(action)
     }
 
