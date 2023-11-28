@@ -1,5 +1,6 @@
 package com.aoztg.greengrim.presentation.ui.chat.chatroom
 
+import android.graphics.Rect
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
@@ -40,6 +41,7 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
         viewModel.setIds(chatId, challengeId)
         initEventsObserver()
         initChatMessageObserver()
+        setKeyboardListener()
     }
 
     private fun initEventsObserver() {
@@ -74,6 +76,19 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
         }
     }
 
+    private fun setKeyboardListener(){
+        binding.root.viewTreeObserver.addOnGlobalLayoutListener {
+            val rec = Rect()
+            binding.root.getWindowVisibleDisplayFrame(rec)
+            val screenHeight = binding.root.rootView.height
+            val keypadHeight = screenHeight - rec.bottom
+
+            if (keypadHeight > screenHeight * 0.15) {
+                scrollRecyclerViewBottom()
+            }
+        }
+    }
+
     private fun scrollRecyclerViewBottom(){
         val lastVisibleItemPosition = (binding.rvChat.layoutManager as LinearLayoutManager).findLastCompletelyVisibleItemPosition()
         val itemTotalCount = binding.rvChat.adapter?.itemCount?.minus(1)
@@ -83,7 +98,6 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
             }
         }
     }
-
 
     private fun showPopup() {
         val moreBtn = binding.btnMore
@@ -129,7 +143,6 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
         super.onDestroyView()
         dismissFourPopup()
     }
-
 }
 
 @BindingAdapter("chatImgUrl")

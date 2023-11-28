@@ -7,6 +7,7 @@ import com.aoztg.greengrim.app.App
 import com.aoztg.greengrim.presentation.ui.chat.mapper.toUiChatMessage
 import com.aoztg.greengrim.presentation.ui.main.ChatMessage
 import com.aoztg.greengrim.presentation.ui.chat.model.UiChatMessage
+import com.aoztg.greengrim.presentation.ui.main.KeyboardState
 import com.aoztg.greengrim.presentation.util.Constants
 import com.aoztg.greengrim.presentation.util.Constants.MY_CHAT
 import com.aoztg.greengrim.presentation.util.Constants.OTHER_CHAT
@@ -175,4 +176,5 @@ class ChatRoomViewModel @Inject constructor() : ViewModel() {
             _events.emit(ChatRoomEvents.ScrollBottom)
         }
     }
+
 }

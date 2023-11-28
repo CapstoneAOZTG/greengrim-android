@@ -30,6 +30,11 @@ sealed class MainEvent {
     data class SendCertification(val memberId: Long, val chatId: Int, val message: String, val certId: Int, val certImg: String): MainEvent()
 }
 
+enum class KeyboardState{
+    SHOW,
+    HIDE
+}
+
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val imageRepository: ImageRepository,
