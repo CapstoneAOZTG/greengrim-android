@@ -1,4 +1,4 @@
-package com.aoztg.greengrim.presentation.ui
+package com.aoztg.greengrim.presentation.bindingadapters
 
 import android.annotation.SuppressLint
 import android.view.View
@@ -12,6 +12,7 @@ import com.aoztg.greengrim.R
 import com.aoztg.greengrim.data.model.response.ChallengeDetailTags
 import com.aoztg.greengrim.data.model.response.ChallengeSimpleTags
 import com.aoztg.greengrim.data.model.response.HotChallengeTags
+import com.aoztg.greengrim.presentation.ui.toCategoryText
 import com.bumptech.glide.Glide
 import com.google.android.material.chip.ChipGroup
 

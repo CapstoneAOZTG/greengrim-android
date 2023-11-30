@@ -2,8 +2,6 @@ package com.aoztg.greengrim.presentation.ui.chat.chatroom
 
 import android.os.Bundle
 import android.view.View
-import android.widget.ImageView
-import androidx.databinding.BindingAdapter
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
@@ -18,7 +16,6 @@ import com.aoztg.greengrim.presentation.ui.chat.adapter.ChatMessageAdapter
 import com.aoztg.greengrim.presentation.ui.main.KeyboardState
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 import com.aoztg.greengrim.presentation.ui.toCertificationDetail
-import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 
@@ -151,14 +148,3 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
     }
 }
 
-@BindingAdapter("chatImgUrl")
-fun bindChatImg(imageView: ImageView, url: String?) {
-    if (url.isNullOrBlank()) {
-        imageView.visibility = View.GONE
-    } else {
-        Glide.with(imageView.context)
-            .load(url)
-            .error(R.drawable.test)
-            .into(imageView)
-    }
-}

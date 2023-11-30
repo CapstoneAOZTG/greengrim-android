@@ -1,11 +1,9 @@
 package com.aoztg.greengrim.presentation.ui.challenge.create
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
 import androidx.core.view.children
-import androidx.databinding.BindingAdapter
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
@@ -15,7 +13,6 @@ import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentCreateChallengeDetailBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
-import com.google.android.material.chip.ChipGroup
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 
@@ -99,32 +96,3 @@ class CreateChallengeDetailFragment :
     }
 }
 
-@SuppressLint("SetTextI18n")
-@BindingAdapter("progressText")
-fun bindProgressText(view: TextView, progressState: ProgressState) {
-    when (progressState) {
-        is ProgressState.Changed -> view.text = progressState.text
-        else -> {}
-    }
-}
-
-@BindingAdapter("selectChipList")
-fun bindSelectChips(chipGroup: ChipGroup, keywordState: KeywordState) {
-    when (keywordState) {
-        is KeywordState.Set -> {
-            chipGroup.removeAllViews()
-            keywordState.keywords.forEach { data ->
-                val chip = TextView(chipGroup.context).apply {
-                    text = data
-                    setBackgroundResource(R.drawable.shape_grey2fill_nostroke_radius20)
-                    setTextAppearance(R.style.TextGgSmallBlackBold)
-                    setPadding(20, 4, 20, 4)
-                }
-
-                chipGroup.addView(chip)
-            }
-        }
-
-        else -> {}
-    }
-}

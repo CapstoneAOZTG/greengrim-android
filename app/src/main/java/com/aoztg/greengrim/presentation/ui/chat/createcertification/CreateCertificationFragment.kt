@@ -2,8 +2,6 @@ package com.aoztg.greengrim.presentation.ui.chat.createcertification
 
 import android.os.Bundle
 import android.view.View
-import android.widget.TextView
-import androidx.databinding.BindingAdapter
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -65,7 +63,3 @@ class CreateCertificationFragment :
     }
 }
 
-@BindingAdapter("certificationRoundText")
-fun bindCertificationRoundText(textView: TextView, round: Int) {
-    textView.text = "${round}회차 인증"
-}
