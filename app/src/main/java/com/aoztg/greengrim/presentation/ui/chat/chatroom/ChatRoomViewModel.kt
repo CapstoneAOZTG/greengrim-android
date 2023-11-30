@@ -3,6 +3,7 @@ package com.aoztg.greengrim.presentation.ui.chat.chatroom
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.app.App
+import com.aoztg.greengrim.data.repository.ChatRepository
 import com.aoztg.greengrim.presentation.ui.chat.mapper.toUiChatMessage
 import com.aoztg.greengrim.presentation.ui.chat.model.UiChatMessage
 import com.aoztg.greengrim.presentation.ui.main.ChatMessage
@@ -38,7 +39,9 @@ sealed class ChatRoomEvents {
 }
 
 @HiltViewModel
-class ChatRoomViewModel @Inject constructor() : ViewModel() {
+class ChatRoomViewModel @Inject constructor(
+    private val chatRepository: ChatRepository
+) : ViewModel() {
 
     var chatRoomId = -1
     var challengeId = -1
@@ -86,6 +89,10 @@ class ChatRoomViewModel @Inject constructor() : ViewModel() {
         }.launchIn(viewModelScope)
     }
 
+    fun getChatMessage(){
+
+    }
+
     fun newChatMessage(
         message: ChatMessage
     ){
@@ -123,6 +130,10 @@ class ChatRoomViewModel @Inject constructor() : ViewModel() {
                 }
             }
         }
+    }
+
+    fun storeChatMessage(){
+
     }
 
     private fun checkDate(){
