@@ -55,7 +55,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun getHomeInfo() {
-        viewModelScope.async {
+        viewModelScope.launch {
             homeRepository.getHomeInfo().let {
                 when (it) {
                     is BaseState.Success -> {

@@ -111,8 +111,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                     is MainEvent.ShowBottomNav -> binding.layoutBnv.visibility = View.VISIBLE
                     is MainEvent.ShowPhotoBottomSheet -> showPhotoBottomSheet()
                     is MainEvent.Logout -> logout()
-                    is MainEvent.ConnectNewChat -> chatSocket.subscribeChat(it.chatId)
+                    is MainEvent.SubscribeNewChat -> chatSocket.subscribeChat(it.chatId)
                     is MainEvent.SubscribeMyChats -> {
+                        chatSocket.connectServer()
                         it.myChatIds.forEach {  id ->
                             chatSocket.subscribeChat(id)
                         }
@@ -121,7 +122,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                     is MainEvent.SendChat -> chatSocket.sendMessage(it.memberId, it.chatId, it.message)
                     is MainEvent.SendCertification -> chatSocket.sendCertification(it.memberId, it.chatId, it.message, it.certId, it.certImg)
                     is MainEvent.ShowToastMessage -> showCustomToast(it.msg)
-                    else -> {}
                 }
             }
         }

@@ -15,7 +15,6 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
 import javax.inject.Inject
@@ -25,8 +24,8 @@ sealed class MainEvent {
     object ShowBottomNav : MainEvent()
     object ShowPhotoBottomSheet : MainEvent()
     object Logout : MainEvent()
-    data class ConnectNewChat(val chatId: Int) : MainEvent()
     data class SubscribeMyChats(val myChatIds: List<Int>) : MainEvent()
+    data class SubscribeNewChat(val chatId: Int) : MainEvent()
     data class ShowToastMessage(val msg: String) : MainEvent()
     data class SendChat(val memberId: Long, val chatId: Int, val message: String) : MainEvent()
     data class SendCertification(
@@ -92,14 +91,13 @@ class MainViewModel @Inject constructor(
                                 data.chatroomId
                             }
                         ))
-                        _firstConnect.value = true
                     }
 
                     is BaseState.Error -> {
                         _events.emit(MainEvent.ShowToastMessage(it.msg))
-                        _firstConnect.value = true
                     }
                 }
+                _firstConnect.value = true
             }
         }
     }
@@ -146,9 +144,9 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun connectNewChat(chatId: Int) {
+    fun subscribeNewChat(chatId: Int) {
         viewModelScope.launch {
-            _events.emit(MainEvent.ConnectNewChat(chatId))
+            _events.emit(MainEvent.SubscribeNewChat(chatId))
         }
     }
 
@@ -171,11 +169,11 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun showKeyboard(){
+    fun showKeyboard() {
         _keyboardState.value = KeyboardState.SHOW
     }
 
-    fun hideKeyboard(){
+    fun hideKeyboard() {
         _keyboardState.value = KeyboardState.HIDE
     }
 }

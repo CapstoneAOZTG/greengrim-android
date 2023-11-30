@@ -14,16 +14,13 @@ class ChatSocket(
     private val acceptChat: (String) -> Unit
 ) {
 
-    private val jwt = App.sharedPreferences.getString(Constants.X_ACCESS_TOKEN, null)
     private val stompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, BuildConfig.SOCKET_URL)
 
-    init {
-        connectServer()
-    }
 
-    private fun connectServer() {
+    fun connectServer() {
         try{
             val headerList = arrayListOf<StompHeader>()
+            val jwt = App.sharedPreferences.getString(Constants.X_ACCESS_TOKEN, null)
 
             jwt?.let {
                 headerList.add(StompHeader("token", it))

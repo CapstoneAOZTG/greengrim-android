@@ -96,7 +96,7 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
         val itemTotalCount = binding.rvChat.adapter?.itemCount?.minus(1)
         itemTotalCount?.let {
             if (lastVisibleItemPosition != it) {
-                binding.rvChat.smoothScrollToPosition(it+ 2)
+                binding.rvChat.smoothScrollToPosition(it + 3)
             }
         }
     }
