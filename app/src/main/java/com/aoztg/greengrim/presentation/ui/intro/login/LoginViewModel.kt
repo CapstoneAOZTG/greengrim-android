@@ -3,11 +3,10 @@ package com.aoztg.greengrim.presentation.ui.intro.login
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.app.App
-import com.aoztg.greengrim.data.model.ErrorResponse
+import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.model.request.LoginRequest
 import com.aoztg.greengrim.data.repository.IntroRepository
 import com.aoztg.greengrim.presentation.util.Constants
-import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -50,43 +49,41 @@ class LoginViewModel @Inject constructor(private val introRepository: IntroRepos
     ) {
         viewModelScope.launch {
 
-            val response = introRepository.login(
+            introRepository.login(
                 LoginRequest(
                     email = email
                 )
-            )
+            ).let{
+                when(it){
+                    is BaseState.Success -> {
+                        App.sharedPreferences.edit()
+                            .putString(Constants.X_ACCESS_TOKEN, it.body.accessToken)
+                            .putString(Constants.X_REFRESH_TOKEN, it.body.refreshToken)
+                            .putLong(Constants.MEMBER_ID, it.body.memberId)
+                            .apply()
 
-            if (response.isSuccessful) {
-                response.body()?.let {
-                    App.sharedPreferences.edit()
-                        .putString(Constants.X_ACCESS_TOKEN, it.accessToken)
-                        .putString(Constants.X_REFRESH_TOKEN, it.refreshToken)
-                        .putLong(Constants.MEMBER_ID, it.memberId)
-                        .apply()
-                }
-
-                _uiState.update { state ->
-                    state.copy(
-                        loginState = LoginState.Success
-                    )
-                }
-            } else {
-                val error =
-                    Gson().fromJson(response.errorBody()?.string(), ErrorResponse::class.java)
-                when (error.code) {
-                    UNAVAILABLE_EMAIL -> _uiState.update { state ->
-                        state.copy(
-                            loginState = LoginState.Error(error.message)
-                        )
+                        _uiState.update { state ->
+                            state.copy(
+                                loginState = LoginState.Success
+                            )
+                        }
                     }
+                    is BaseState.Error -> {
+                        when (it.code) {
+                            UNAVAILABLE_EMAIL -> _uiState.update { state ->
+                                state.copy(
+                                    loginState = LoginState.Error(it.msg)
+                                )
+                            }
 
-                    UNREGISTERED_EMAIL -> _uiState.update { state ->
-                        state.copy(
-                            loginState = LoginState.NoMember
-                        )
+                            UNREGISTERED_EMAIL -> _uiState.update { state ->
+                                state.copy(
+                                    loginState = LoginState.NoMember
+                                )
+                            }
+                        }
                     }
                 }
-
             }
         }
     }

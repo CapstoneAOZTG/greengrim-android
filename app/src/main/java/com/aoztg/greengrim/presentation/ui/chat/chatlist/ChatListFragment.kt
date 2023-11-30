@@ -2,8 +2,6 @@ package com.aoztg.greengrim.presentation.ui.chat.chatlist
 
 import android.os.Bundle
 import android.view.View
-import android.widget.TextView
-import androidx.databinding.BindingAdapter
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
@@ -36,6 +34,7 @@ class ChatListFragment : BaseFragment<FragmentChatListBinding>(R.layout.fragment
             viewModel.events.collect {
                 when (it) {
                     is ChatListEvents.NavigateToChatRoom -> findNavController().toChatRoom(it.chatId, it.challengeId)
+                    is ChatListEvents.ShowToastMessage -> showCustomToast(it.msg)
                 }
             }
         }
@@ -47,12 +46,4 @@ class ChatListFragment : BaseFragment<FragmentChatListBinding>(R.layout.fragment
     }
 }
 
-@BindingAdapter("chatCreationText")
-fun bindChatListDday(textView: TextView, dDay: String) {
-    if (dDay == "오늘") {
-        textView.setBackgroundResource(R.drawable.shape_greenfill_nostroke_radius20)
-    } else {
-        textView.setBackgroundResource(R.drawable.shape_redfill_nostroke_radius20)
-    }
-    textView.text = dDay
-}
+

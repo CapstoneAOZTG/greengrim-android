@@ -7,6 +7,7 @@ import android.app.Activity
 import android.content.ContentValues
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Rect
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -64,6 +65,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         setBottomNavigation()
         setBottomNavigationListener()
         initEventObserver()
+        setKeyboardListener()
     }
 
     private fun setBottomNavigation() {
@@ -109,8 +111,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                     is MainEvent.ShowBottomNav -> binding.layoutBnv.visibility = View.VISIBLE
                     is MainEvent.ShowPhotoBottomSheet -> showPhotoBottomSheet()
                     is MainEvent.Logout -> logout()
-                    is MainEvent.ConnectNewChat -> chatSocket.subscribeChat(it.chatId)
+                    is MainEvent.SubscribeNewChat -> chatSocket.subscribeChat(it.chatId)
                     is MainEvent.SubscribeMyChats -> {
+                        chatSocket.connectServer()
                         it.myChatIds.forEach {  id ->
                             chatSocket.subscribeChat(id)
                         }
@@ -118,8 +121,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
                     is MainEvent.SendChat -> chatSocket.sendMessage(it.memberId, it.chatId, it.message)
                     is MainEvent.SendCertification -> chatSocket.sendCertification(it.memberId, it.chatId, it.message, it.certId, it.certImg)
-
-                    else -> {}
+                    is MainEvent.ShowToastMessage -> showCustomToast(it.msg)
                 }
             }
         }
@@ -235,13 +237,27 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         return this.contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, content)
     }
 
-
     private val cameraLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == RESULT_OK) {
                 viewModel.imageToUrl(tempCameraUri.toMultiPart(this))
             }
         }
+
+    private fun setKeyboardListener(){
+        binding.root.viewTreeObserver.addOnGlobalLayoutListener {
+            val rec = Rect()
+            binding.root.getWindowVisibleDisplayFrame(rec)
+            val screenHeight = binding.root.rootView.height
+            val keypadHeight = screenHeight - rec.bottom
+
+            if (keypadHeight > screenHeight * 0.15) {
+                viewModel.showKeyboard()
+            } else {
+                viewModel.hideKeyboard()
+            }
+        }
+    }
 
     private fun logout() {
         App.sharedPreferences.edit()

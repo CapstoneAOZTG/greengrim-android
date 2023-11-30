@@ -2,11 +2,10 @@ package com.aoztg.greengrim.presentation.ui.info.info
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.aoztg.greengrim.data.model.ErrorResponse
+import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.repository.InfoRepository
 import com.aoztg.greengrim.presentation.ui.info.mapper.toMyProfileInfo
 import com.aoztg.greengrim.presentation.ui.info.model.MyProfileInfo
-import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,11 +25,11 @@ data class InfoUiState(
 sealed class InfoEvents {
     object ShowBottomSheet : InfoEvents()
     object GoToIntroActivity : InfoEvents()
-    object NavigateToEditProfile: InfoEvents()
-    object NavigateToAttendCheck: InfoEvents()
-    object NavigateToMyChallenge: InfoEvents()
-    object NavigateToMyCertification: InfoEvents()
-    data class ShowToastMessage(val msg: String): InfoEvents()
+    object NavigateToEditProfile : InfoEvents()
+    object NavigateToAttendCheck : InfoEvents()
+    object NavigateToMyChallenge : InfoEvents()
+    object NavigateToMyCertification : InfoEvents()
+    data class ShowToastMessage(val msg: String) : InfoEvents()
 }
 
 @HiltViewModel
@@ -39,7 +38,7 @@ class InfoViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(InfoUiState())
-    val uiState:StateFlow<InfoUiState> = _uiState.asStateFlow()
+    val uiState: StateFlow<InfoUiState> = _uiState.asStateFlow()
 
     private val _events = MutableSharedFlow<InfoEvents>()
     val events: SharedFlow<InfoEvents> = _events.asSharedFlow()
@@ -50,58 +49,62 @@ class InfoViewModel @Inject constructor(
         }
     }
 
-    fun getProfileInfo(){
+    fun getProfileInfo() {
         viewModelScope.launch {
-            val response = infoRepository.getProfile()
+            infoRepository.getProfile().let {
+                when (it) {
+                    is BaseState.Success -> {
+                        _uiState.update { state ->
+                            state.copy(
+                                myProfileInfo = it.body.toMyProfileInfo()
+                            )
+                        }
+                    }
 
-            if(response.isSuccessful){
-                response.body()?.let{ body ->
-                    _uiState.update { state ->
-                        state.copy(
-                            myProfileInfo = body.toMyProfileInfo()
-                        )
+                    is BaseState.Error -> {
+                        _events.emit(InfoEvents.ShowToastMessage(it.msg))
                     }
                 }
-            } else {
-                val error = Gson().fromJson(response.errorBody()?.string(), ErrorResponse::class.java)
-                _events.emit(InfoEvents.ShowToastMessage(error.message))
             }
         }
     }
 
     fun withdrawal() {
         viewModelScope.launch {
-            val response = infoRepository.withdrawal()
+            infoRepository.withdrawal().let {
+                when (it) {
+                    is BaseState.Success -> {
+                        _events.emit(InfoEvents.GoToIntroActivity)
+                    }
 
-            if (response.isSuccessful) {
-                _events.emit(InfoEvents.GoToIntroActivity)
-            } else {
-                val error = Gson().fromJson(response.errorBody()?.string(), ErrorResponse::class.java)
-                _events.emit(InfoEvents.ShowToastMessage(error.message))
+                    is BaseState.Error -> {
+                        _events.emit(InfoEvents.ShowToastMessage(it.msg))
+                    }
+                }
             }
         }
     }
 
-    fun navigateToEditProfile(){
+    fun navigateToEditProfile() {
         viewModelScope.launch {
             _events.emit(InfoEvents.NavigateToEditProfile)
         }
     }
 
-    fun navigateToAttendCheck(){
+    fun navigateToAttendCheck() {
         viewModelScope.launch {
             _events.emit(InfoEvents.NavigateToAttendCheck)
         }
     }
 
-    fun navigateToMyCertification(){
+    fun navigateToMyCertification() {
         viewModelScope.launch {
             _events.emit(InfoEvents.NavigateToMyCertification)
         }
     }
 
-    fun navigateToMyChallenge(){
-        viewModelScope.launch{
+    fun navigateToMyChallenge() {
+        viewModelScope.launch {
             _events.emit(InfoEvents.NavigateToMyChallenge)
         }
     }

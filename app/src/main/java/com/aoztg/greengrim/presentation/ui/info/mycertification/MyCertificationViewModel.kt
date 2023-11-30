@@ -2,14 +2,13 @@ package com.aoztg.greengrim.presentation.ui.info.mycertification
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.aoztg.greengrim.data.model.ErrorResponse
+import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.repository.CertificationRepository
 import com.aoztg.greengrim.presentation.ui.info.mapper.toMyCertificationListData
 import com.aoztg.greengrim.presentation.ui.info.model.MyCertification
 import com.aoztg.greengrim.presentation.ui.toHeaderText
 import com.aoztg.greengrim.presentation.ui.toLocalDate
 import com.aoztg.greengrim.presentation.ui.toText
-import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -37,8 +36,8 @@ sealed class MyCertificationEvents {
     data class ShowYearMonthPicker(val curYear: Int, val curMonth: Int) : MyCertificationEvents()
     data class NavigateToCertificationDetail(val certificationId: Int) : MyCertificationEvents()
     data class ShowToastMessage(val msg: String) : MyCertificationEvents()
-    object NavigateToBack: MyCertificationEvents()
-    object ShowCalendar: MyCertificationEvents()
+    object NavigateToBack : MyCertificationEvents()
+    object ShowCalendar : MyCertificationEvents()
 }
 
 @HiltViewModel
@@ -83,20 +82,21 @@ class MyCertificationViewModel @Inject constructor(
 
     fun getCertificationDate() {
         viewModelScope.launch {
-            val response = certificationRepository.getMyCertificationDate()
+            certificationRepository.getMyCertificationDate().let {
+                when (it) {
+                    is BaseState.Success -> {
+                        _uiState.update { state ->
+                            state.copy(
+                                certificationDateList = it.body.date.map { data -> data.toLocalDate() }
+                            )
+                        }
+                        _events.emit(MyCertificationEvents.ShowCalendar)
+                    }
 
-            if (response.isSuccessful) {
-                response.body()?.let { data ->
-                    _uiState.update { state ->
-                        state.copy(
-                            certificationDateList = data.date.map { it.toLocalDate() }
-                        )
+                    is BaseState.Error -> {
+                        _events.emit(MyCertificationEvents.ShowToastMessage(it.msg))
                     }
                 }
-                _events.emit(MyCertificationEvents.ShowCalendar)
-            } else {
-                val error = Gson().fromJson(response.errorBody()?.string(), ErrorResponse::class.java)
-                _events.emit(MyCertificationEvents.ShowToastMessage(error.message))
             }
         }
 
@@ -125,32 +125,34 @@ class MyCertificationViewModel @Inject constructor(
                     )
                 }
 
-                val response = certificationRepository.getMyCertificationList(
+                certificationRepository.getMyCertificationList(
                     _uiState.value.curDate.toString(),
                     _uiState.value.page,
                     20
-                )
+                ).let {
+                    when (it) {
+                        is BaseState.Success -> {
+                            val uiData =
+                                it.body.toMyCertificationListData(::navigateToCertificationDetail)
+                            _uiState.update { state ->
+                                state.copy(
+                                    certificationList = if (option == NEXT_PAGE) _uiState.value.certificationList + uiData.result else uiData.result,
+                                    hasNext = uiData.hasNext,
+                                    page = uiData.page + 1,
+                                )
+                            }
+                        }
 
-                if (response.isSuccessful) {
-                    response.body()?.let { body ->
-                        val uiData = body.toMyCertificationListData(::navigateToCertificationDetail)
-                        _uiState.update { state ->
-                            state.copy(
-                                certificationList = if (option == NEXT_PAGE) _uiState.value.certificationList + uiData.result else uiData.result,
-                                hasNext = uiData.hasNext,
-                                page = uiData.page + 1,
-                            )
+                        is BaseState.Error -> {
+                            _events.emit(MyCertificationEvents.ShowToastMessage(it.msg))
                         }
                     }
-                } else {
-                    val error = Gson().fromJson(response.errorBody()?.string(), ErrorResponse::class.java)
-                    _events.emit(MyCertificationEvents.ShowToastMessage(error.message))
                 }
             }
         }
     }
 
-    fun navigateToBack(){
+    fun navigateToBack() {
         viewModelScope.launch {
             _events.emit(MyCertificationEvents.NavigateToBack)
         }

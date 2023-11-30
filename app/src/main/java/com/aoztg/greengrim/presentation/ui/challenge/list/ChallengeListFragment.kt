@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentChallengeListBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
-import com.aoztg.greengrim.presentation.ui.BaseState
+import com.aoztg.greengrim.presentation.ui.BaseUiState
 import com.aoztg.greengrim.presentation.ui.LoadingState
 import com.aoztg.greengrim.presentation.ui.challenge.adapter.ChallengeRoomAdapter
 import com.aoztg.greengrim.presentation.ui.challenge.list.ChallengeListViewModel.Companion.ORIGINAL
@@ -52,7 +52,7 @@ class ChallengeListFragment :
             viewModel.uiState.collect {
 
                 when(it.getChallengeRoomState){
-                    is BaseState.Error -> showCustomToast(it.getChallengeRoomState.msg)
+                    is BaseUiState.Error -> showCustomToast(it.getChallengeRoomState.msg)
                     else -> {}
                 }
 

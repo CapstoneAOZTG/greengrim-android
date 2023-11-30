@@ -1,16 +1,13 @@
 package com.aoztg.greengrim.presentation.ui.intro.signup
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
-import android.widget.TextView
-import androidx.databinding.BindingAdapter
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentSignupBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
-import com.aoztg.greengrim.presentation.ui.BaseState
+import com.aoztg.greengrim.presentation.ui.BaseUiState
 import com.aoztg.greengrim.presentation.ui.intro.IntroViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -31,8 +28,8 @@ class SignupFragment : BaseFragment<FragmentSignupBinding>(R.layout.fragment_sig
         repeatOnStarted {
             viewModel.uiState.collect {
                 when (it.nextBtnState) {
-                    is BaseState.Success -> binding.btnNext.isEnabled = true
-                    is BaseState.Failure -> {
+                    is BaseUiState.Success -> binding.btnNext.isEnabled = true
+                    is BaseUiState.Failure -> {
                         binding.btnNext.isEnabled = false
                     }
 
@@ -40,8 +37,8 @@ class SignupFragment : BaseFragment<FragmentSignupBinding>(R.layout.fragment_sig
                 }
 
                 when (it.nickState) {
-                    is BaseState.Success -> binding.tvWarning.visibility = View.INVISIBLE
-                    is BaseState.Error -> {
+                    is BaseUiState.Success -> binding.tvWarning.visibility = View.INVISIBLE
+                    is BaseUiState.Error -> {
                         binding.tvWarning.visibility = View.VISIBLE
                         binding.tvWarning.text = it.nickState.msg
                     }
@@ -50,8 +47,8 @@ class SignupFragment : BaseFragment<FragmentSignupBinding>(R.layout.fragment_sig
                 }
 
                 when (it.signupState) {
-                    is BaseState.Success -> parentViewModel.goToMain()
-                    is BaseState.Error -> showCustomToast(it.signupState.msg)
+                    is BaseUiState.Success -> parentViewModel.goToMain()
+                    is BaseUiState.Error -> showCustomToast(it.signupState.msg)
                     else -> {}
                 }
             }

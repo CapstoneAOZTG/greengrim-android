@@ -2,14 +2,12 @@ package com.aoztg.greengrim.presentation.ui.global.challengedetail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.aoztg.greengrim.data.model.ErrorResponse
+import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.repository.ChallengeRepository
 import com.aoztg.greengrim.data.repository.ChatRepository
-import com.aoztg.greengrim.presentation.ui.BaseState
 import com.aoztg.greengrim.presentation.ui.LoadingState
 import com.aoztg.greengrim.presentation.ui.global.mapper.toChallengeDetail
 import com.aoztg.greengrim.presentation.ui.global.model.ChallengeDetail
-import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -25,13 +23,13 @@ import javax.inject.Inject
 data class ChallengeDetailUiState(
     val loading: LoadingState = LoadingState.Empty,
     val challengeDetail: ChallengeDetail = ChallengeDetail(),
-    val getChallengeDetailState: BaseState = BaseState.Empty
 )
 
 sealed class ChallengeDetailEvents {
     object NavigateBack : ChallengeDetailEvents()
     object PopUpMenu : ChallengeDetailEvents()
     data class NavigateChatRoom(val chatId: Int) : ChallengeDetailEvents()
+    data class ShowToastMessage(val msg: String) : ChallengeDetailEvents()
 }
 
 @HiltViewModel
@@ -57,29 +55,22 @@ class ChallengeDetailViewModel @Inject constructor(
                 )
             }
 
-            val response = challengeRepository.getChallengeDetail(challengeId)
+            challengeRepository.getChallengeDetail(challengeId).let {
+                when (it) {
+                    is BaseState.Success -> {
+                        val uiData = it.body.toChallengeDetail()
+                        _uiState.update { state ->
+                            state.copy(
+                                challengeDetail = uiData,
+                            )
+                        }
+                    }
 
-            if(response.isSuccessful){
-                response.body()?.let{
-                    val uiData = it.toChallengeDetail()
-                    _uiState.update { state ->
-                        state.copy(
-                            challengeDetail = uiData,
-                            getChallengeDetailState = BaseState.Success
-                        )
+                    is BaseState.Error -> {
+                        _events.emit(ChallengeDetailEvents.ShowToastMessage(it.msg))
                     }
                 }
-            } else {
-                val error =
-                    Gson().fromJson(response.errorBody()?.string(), ErrorResponse::class.java)
-
-                _uiState.update { state ->
-                    state.copy(
-                        getChallengeDetailState = BaseState.Error(error.message)
-                    )
-                }
             }
-
             delay(500)
 
             _uiState.update {
@@ -104,17 +95,22 @@ class ChallengeDetailViewModel @Inject constructor(
 
     fun navigateToChatRoom(id: Int) {
         viewModelScope.launch {
-            val response = chatRepository.enterChat(id)
+            chatRepository.enterChat(id).let {
+                when (it) {
+                    is BaseState.Success -> {
+                        _events.emit(ChallengeDetailEvents.NavigateChatRoom(it.body.id))
+                    }
 
-            if(response.isSuccessful){
-                response.body()?.let{
-                    _events.emit(ChallengeDetailEvents.NavigateChatRoom(it.id))
+                    is BaseState.Error -> {
+                        _events.emit(ChallengeDetailEvents.ShowToastMessage(it.msg))
+                    }
                 }
             }
+
         }
     }
 
-    fun setChallengeId(data: Int){
+    fun setChallengeId(data: Int) {
         challengeId = data
     }
 

@@ -3,6 +3,7 @@ package com.aoztg.greengrim.presentation.ui.main
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.app.App
+import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.repository.ChatRepository
 import com.aoztg.greengrim.data.repository.ImageRepository
 import com.aoztg.greengrim.presentation.util.Constants
@@ -23,14 +24,21 @@ sealed class MainEvent {
     object ShowBottomNav : MainEvent()
     object ShowPhotoBottomSheet : MainEvent()
     object Logout : MainEvent()
-    data class ConnectNewChat(val chatId: Int) : MainEvent()
     data class SubscribeMyChats(val myChatIds: List<Int>) : MainEvent()
-
+    data class SubscribeNewChat(val chatId: Int) : MainEvent()
+    data class ShowToastMessage(val msg: String) : MainEvent()
     data class SendChat(val memberId: Long, val chatId: Int, val message: String) : MainEvent()
-    data class SendCertification(val memberId: Long, val chatId: Int, val message: String, val certId: Int, val certImg: String): MainEvent()
+    data class SendCertification(
+        val memberId: Long,
+        val chatId: Int,
+        val message: String,
+        val certId: Int,
+        val certImg: String
+    ) : MainEvent()
 }
 
-enum class KeyboardState{
+enum class KeyboardState {
+    NONE,
     SHOW,
     HIDE
 }
@@ -54,6 +62,9 @@ class MainViewModel @Inject constructor(
     private val _firstConnect = MutableStateFlow(false)
     val firstConnect: StateFlow<Boolean> = _firstConnect.asStateFlow()
 
+    private val _keyboardState = MutableStateFlow(KeyboardState.NONE)
+    val keyboardState: StateFlow<KeyboardState> = _keyboardState.asStateFlow()
+
     private var memberId: Long = 0
 
     init {
@@ -70,20 +81,22 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    private fun getMyChatIds(){
+    private fun getMyChatIds() {
         viewModelScope.launch {
-            val response = chatRepository.getChatRooms()
+            chatRepository.getChatRooms().let {
+                when (it) {
+                    is BaseState.Success -> {
+                        _events.emit(MainEvent.SubscribeMyChats(
+                            it.body.map { data ->
+                                data.chatroomId
+                            }
+                        ))
+                    }
 
-            if(response.isSuccessful){
-                response.body()?.let{ body ->
-                    _events.emit(MainEvent.SubscribeMyChats(
-                        body.map {
-                            it.chatroomId
-                        }
-                    ))
+                    is BaseState.Error -> {
+                        _events.emit(MainEvent.ShowToastMessage(it.msg))
+                    }
                 }
-                _firstConnect.value = true
-            } else {
                 _firstConnect.value = true
             }
         }
@@ -111,11 +124,15 @@ class MainViewModel @Inject constructor(
 
     fun imageToUrl(file: MultipartBody.Part) {
         viewModelScope.launch {
-            val response = imageRepository.imageToUrl(file)
+            imageRepository.imageToUrl(file).let {
+                when (it) {
+                    is BaseState.Success -> {
+                        _image.emit(it.body.imgUrl)
+                    }
 
-            if (response.isSuccessful) {
-                response.body()?.let {
-                    _image.emit(it.imgUrl)
+                    is BaseState.Error -> {
+                        _events.emit(MainEvent.ShowToastMessage(it.msg))
+                    }
                 }
             }
         }
@@ -127,9 +144,9 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun connectNewChat(chatId: Int) {
+    fun subscribeNewChat(chatId: Int) {
         viewModelScope.launch {
-            _events.emit(MainEvent.ConnectNewChat(chatId))
+            _events.emit(MainEvent.SubscribeNewChat(chatId))
         }
     }
 
@@ -145,10 +162,18 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun receiveMessage(payload: String){
+    fun receiveMessage(payload: String) {
         val chatMessage = Gson().fromJson(payload, ChatMessage::class.java)
         viewModelScope.launch {
             _newChat.emit(chatMessage)
         }
+    }
+
+    fun showKeyboard() {
+        _keyboardState.value = KeyboardState.SHOW
+    }
+
+    fun hideKeyboard() {
+        _keyboardState.value = KeyboardState.HIDE
     }
 }

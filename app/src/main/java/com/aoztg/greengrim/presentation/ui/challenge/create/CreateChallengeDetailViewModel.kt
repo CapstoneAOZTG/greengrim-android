@@ -2,12 +2,11 @@ package com.aoztg.greengrim.presentation.ui.challenge.create
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.model.request.CreateChallengeRequest
-import com.aoztg.greengrim.data.model.ErrorResponse
 import com.aoztg.greengrim.data.repository.ChallengeRepository
 import com.aoztg.greengrim.data.repository.ChatRepository
-import com.aoztg.greengrim.presentation.ui.BaseState
-import com.google.gson.Gson
+import com.aoztg.greengrim.presentation.ui.BaseUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -30,7 +29,7 @@ data class CreateChallengeDetailUiState(
     val ticketProgressState: ProgressState = ProgressState.Empty,
     val minCertificateProgressState: ProgressState = ProgressState.Empty,
     val randomKeywordState: KeywordState = KeywordState.Empty,
-    val createChallengeState: BaseState = BaseState.Empty
+    val createChallengeState: BaseUiState = BaseUiState.Empty
 )
 
 sealed class ProgressState {
@@ -168,7 +167,7 @@ class CreateChallengeDetailViewModel @Inject constructor(
     fun createChallenge() {
         viewModelScope.launch {
 
-            val response = challengeRepository.createChallenge(
+           challengeRepository.createChallenge(
                 CreateChallengeRequest(
                     category = category.value,
                     title = title.value,
@@ -178,23 +177,20 @@ class CreateChallengeDetailViewModel @Inject constructor(
                     ticketTotalCount = ticketTotalCount,
                     weekMinCount = weekMinCount,
                     keyword = keyword.value)
-            )
-
-            if(response.isSuccessful){
-                response.body()?.let{
-                    _events.emit(CreateChallengeDetailEvents.NavigateToChatList(it.id))
-                }
-            } else {
-
-                val error =
-                    Gson().fromJson(response.errorBody()?.string(), ErrorResponse::class.java)
-                _uiState.update { state ->
-                    state.copy(
-                        createChallengeState = BaseState.Error(error.message)
-                    )
-                }
-
-            }
+            ).let{
+              when(it){
+                  is BaseState.Success -> {
+                      _events.emit(CreateChallengeDetailEvents.NavigateToChatList(it.body.id))
+                  }
+                  is BaseState.Error -> {
+                      _uiState.update { state ->
+                          state.copy(
+                              createChallengeState = BaseUiState.Error(it.msg)
+                          )
+                      }
+                  }
+              }
+           }
         }
 
     }

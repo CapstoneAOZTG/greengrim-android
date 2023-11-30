@@ -2,6 +2,7 @@ package com.aoztg.greengrim.presentation.ui.chat.chatlist
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.repository.ChatRepository
 import com.aoztg.greengrim.presentation.ui.chat.mapper.toChatListItem
 import com.aoztg.greengrim.presentation.ui.chat.model.ChatListItem
@@ -23,6 +24,7 @@ data class ChatListUiState(
 
 sealed class ChatListEvents {
     data class NavigateToChatRoom(val chatId: Int, val challengeId: Int) : ChatListEvents()
+    data class ShowToastMessage(val msg: String) : ChatListEvents()
 }
 
 
@@ -39,22 +41,24 @@ class ChatListViewModel @Inject constructor(
 
     fun getChatList() {
         viewModelScope.launch {
-            val response = chatRepository.getChatRooms()
+            chatRepository.getChatRooms().let {
+                when (it) {
+                    is BaseState.Success -> {
+                        _uiState.update { state ->
+                            state.copy(
+                                chatListItem = it.body.map { data ->
+                                    data.toChatListItem(::navigateToChatRoom)
+                                }
+                            )
+                        }
+                    }
 
-            if( response.isSuccessful ){
-                response.body()?.let{ body ->
-
-                    _uiState.update { state ->
-                        state.copy(
-                            chatListItem = body.map{
-                                it.toChatListItem(::navigateToChatRoom)
-                            }
-                        )
+                    is BaseState.Error -> {
+                        _events.emit(ChatListEvents.ShowToastMessage(it.msg))
                     }
                 }
-            } else {
-
             }
+
         }
     }
 

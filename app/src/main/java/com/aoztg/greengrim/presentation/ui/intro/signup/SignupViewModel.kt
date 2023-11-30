@@ -3,16 +3,15 @@ package com.aoztg.greengrim.presentation.ui.intro.signup
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.app.App.Companion.sharedPreferences
+import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.model.request.CheckNickRequest
-import com.aoztg.greengrim.data.model.ErrorResponse
 import com.aoztg.greengrim.data.model.request.SignupRequest
 import com.aoztg.greengrim.data.repository.IntroRepository
-import com.aoztg.greengrim.presentation.ui.BaseState
+import com.aoztg.greengrim.presentation.ui.BaseUiState
 import com.aoztg.greengrim.presentation.ui.intro.EmailData
 import com.aoztg.greengrim.presentation.util.Constants
 import com.aoztg.greengrim.presentation.util.Constants.X_ACCESS_TOKEN
 import com.aoztg.greengrim.presentation.util.Constants.X_REFRESH_TOKEN
-import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -28,9 +27,9 @@ import javax.inject.Inject
 
 
 data class SignupUiState(
-    val nickState: BaseState = BaseState.Empty,
-    val nextBtnState: BaseState = BaseState.Empty,
-    val signupState: BaseState = BaseState.Empty
+    val nickState: BaseUiState = BaseUiState.Empty,
+    val nextBtnState: BaseUiState = BaseUiState.Empty,
+    val signupState: BaseUiState = BaseUiState.Empty
 )
 
 @HiltViewModel
@@ -59,29 +58,29 @@ class SignupViewModel @Inject constructor(private val introRepository: IntroRepo
     }
 
     private fun checkNickDuplicate() {
-        nickname.onEach {
-            val response = introRepository.checkNick(CheckNickRequest(it))
-            if (response.isSuccessful) {
-                response.body()?.let { body ->
-
-                    if (body.used) {
-                        isNicknameValid.value = false
-                        _uiState.update { state ->
-                            state.copy(nickState = BaseState.Error("사용할 수 없는 닉네임 입니다"))
-                        }
-                    } else {
-                        isNicknameValid.value = true
-                        _uiState.update { state ->
-                            state.copy(nickState = BaseState.Success)
+        nickname.onEach { nick ->
+            introRepository.checkNick(CheckNickRequest(nick)).let {
+                when (it) {
+                    is BaseState.Success -> {
+                        if (it.body.used) {
+                            isNicknameValid.value = false
+                            _uiState.update { state ->
+                                state.copy(nickState = BaseUiState.Error("사용할 수 없는 닉네임 입니다"))
+                            }
+                        } else {
+                            isNicknameValid.value = true
+                            _uiState.update { state ->
+                                state.copy(nickState = BaseUiState.Success)
+                            }
                         }
                     }
-                }
-            } else {
-                isNicknameValid.value = false
-                val error =
-                    Gson().fromJson(response.errorBody()?.string(), ErrorResponse::class.java)
-                _uiState.update { state ->
-                    state.copy(nickState = BaseState.Error(error.message))
+
+                    is BaseState.Error -> {
+                        isNicknameValid.value = false
+                        _uiState.update { state ->
+                            state.copy(nickState = BaseUiState.Error(it.msg))
+                        }
+                    }
                 }
             }
         }.launchIn(viewModelScope)
@@ -91,11 +90,11 @@ class SignupViewModel @Inject constructor(private val introRepository: IntroRepo
         isDataReady.onEach {
             if (it) {
                 _uiState.update { state ->
-                    state.copy(nextBtnState = BaseState.Success)
+                    state.copy(nextBtnState = BaseUiState.Success)
                 }
             } else {
                 _uiState.update { state ->
-                    state.copy(nextBtnState = BaseState.Failure)
+                    state.copy(nextBtnState = BaseUiState.Failure)
                 }
             }
         }.launchIn(viewModelScope)
@@ -108,34 +107,32 @@ class SignupViewModel @Inject constructor(private val introRepository: IntroRepo
     fun signUp() {
         viewModelScope.launch {
             // 통신로직
-            val response = introRepository.signup(
+            introRepository.signup(
                 SignupRequest(
                     email = EmailData.email,
                     nickName = nickname.value,
                     introduction = introduce.value,
                     profileImgUrl = profileUrl
                 )
-            )
+            ).let {
+                when (it) {
+                    is BaseState.Success -> {
+                        sharedPreferences.edit()
+                            .putString(X_ACCESS_TOKEN, it.body.accessToken)
+                            .putString(X_REFRESH_TOKEN, it.body.refreshToken)
+                            .putLong(Constants.MEMBER_ID, it.body.memberId)
+                            .apply()
 
-            if (response.isSuccessful) {
-                isNicknameValid.value = true
+                        _uiState.update { state ->
+                            state.copy(signupState = BaseUiState.Success)
+                        }
+                    }
 
-                response.body()?.let {
-                    sharedPreferences.edit()
-                        .putString(X_ACCESS_TOKEN, it.accessToken)
-                        .putString(X_REFRESH_TOKEN, it.refreshToken)
-                        .putLong(Constants.MEMBER_ID, it.memberId)
-                        .apply()
-                }
-
-                _uiState.update { state ->
-                    state.copy(signupState = BaseState.Success)
-                }
-            } else {
-                val error =
-                    Gson().fromJson(response.errorBody()?.string(), ErrorResponse::class.java)
-                _uiState.update { state ->
-                    state.copy(signupState = BaseState.Error(error.message))
+                    is BaseState.Error -> {
+                        _uiState.update { state ->
+                            state.copy(signupState = BaseUiState.Error(it.msg))
+                        }
+                    }
                 }
             }
         }

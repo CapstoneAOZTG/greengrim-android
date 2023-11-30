@@ -2,13 +2,12 @@ package com.aoztg.greengrim.presentation.ui.info.editprofile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.model.request.CheckNickRequest
-import com.aoztg.greengrim.data.model.ErrorResponse
 import com.aoztg.greengrim.data.model.request.PatchProfileRequest
 import com.aoztg.greengrim.data.repository.InfoRepository
 import com.aoztg.greengrim.data.repository.IntroRepository
-import com.aoztg.greengrim.presentation.ui.BaseState
-import com.google.gson.Gson
+import com.aoztg.greengrim.presentation.ui.BaseUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,10 +25,9 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 data class EditProfileUiState(
-    val nickState: BaseState = BaseState.Empty,
-    val completeBtnState: BaseState = BaseState.Empty,
+    val nickState: BaseUiState = BaseUiState.Empty,
+    val completeBtnState: BaseUiState = BaseUiState.Empty,
     val getProfileState: ProfileState = ProfileState.Empty,
-    val editProfileState: BaseState = BaseState.Empty
 )
 
 sealed class ProfileState {
@@ -41,6 +39,7 @@ sealed class ProfileState {
 
 sealed class EditProfileEvents {
     object NavigateToBack : EditProfileEvents()
+    data class ShowToastMessage(val msg: String) : EditProfileEvents()
 }
 
 @HiltViewModel
@@ -84,26 +83,26 @@ class EditProfileViewModel @Inject constructor(
 
     private fun getProfileData() {
         viewModelScope.launch {
-            val response = infoRepository.getProfile()
+            infoRepository.getProfile().let {
+                when (it) {
+                    is BaseState.Success -> {
+                        curNickname = it.body.nickName
+                        curIntroduce = it.body.introduction
+                        curProfileUrl = it.body.profileImgUrl
+                        nickname.value = it.body.nickName
+                        introduce.value = it.body.introduction
+                        profileUrl.value = it.body.profileImgUrl
 
-            if (response.isSuccessful) {
-                response.body()?.let {
-                    curNickname = it.nickName
-                    curIntroduce = it.introduction
-                    curProfileUrl = it.profileImgUrl
-                    nickname.value = it.nickName
-                    introduce.value = it.introduction
-                    profileUrl.value = it.profileImgUrl
-
-                    _uiState.update { state ->
-                        state.copy(getProfileState = ProfileState.Success(it.profileImgUrl))
+                        _uiState.update { state ->
+                            state.copy(getProfileState = ProfileState.Success(it.body.profileImgUrl))
+                        }
                     }
-                }
-            } else {
-                val error =
-                    Gson().fromJson(response.errorBody()?.string(), ErrorResponse::class.java)
-                _uiState.update { state ->
-                    state.copy(getProfileState = ProfileState.Error(error.message))
+
+                    is BaseState.Error -> {
+                        _uiState.update { state ->
+                            state.copy(getProfileState = ProfileState.Error(it.msg))
+                        }
+                    }
                 }
             }
         }
@@ -113,30 +112,27 @@ class EditProfileViewModel @Inject constructor(
     }
 
     private fun checkNickDuplicate() {
-        nickname.onEach {
-            if (curNickname != it) {
-                val response = introRepository.checkNick(CheckNickRequest(it))
-                if (response.isSuccessful) {
-                    response.body()?.let { body ->
-
-                        if (body.used) {
-                            isNicknameValid.value = false
-                            _uiState.update { state ->
-                                state.copy(nickState = BaseState.Error("사용할 수 없는 닉네임 입니다"))
-                            }
-                        } else {
-                            isNicknameValid.value = true
-                            _uiState.update { state ->
-                                state.copy(nickState = BaseState.Success)
+        nickname.onEach { nick ->
+            if (curNickname != nick) {
+                introRepository.checkNick(CheckNickRequest(nick)).let {
+                    when (it) {
+                        is BaseState.Success -> {
+                            if (it.body.used) {
+                                isNicknameValid.value = false
+                                _uiState.update { state ->
+                                    state.copy(nickState = BaseUiState.Error("사용할 수 없는 닉네임 입니다"))
+                                }
+                            } else {
+                                isNicknameValid.value = true
+                                _uiState.update { state ->
+                                    state.copy(nickState = BaseUiState.Success)
+                                }
                             }
                         }
-                    }
-                } else {
-                    isNicknameValid.value = false
-                    val error =
-                        Gson().fromJson(response.errorBody()?.string(), ErrorResponse::class.java)
-                    _uiState.update { state ->
-                        state.copy(nickState = BaseState.Error(error.message))
+
+                        is BaseState.Error -> {
+                            _events.emit(EditProfileEvents.ShowToastMessage(it.msg))
+                        }
                     }
                 }
             }
@@ -148,11 +144,11 @@ class EditProfileViewModel @Inject constructor(
         isDataChanged.onEach {
             if (it) {
                 _uiState.update { state ->
-                    state.copy(completeBtnState = BaseState.Success)
+                    state.copy(completeBtnState = BaseUiState.Success)
                 }
             } else {
                 _uiState.update { state ->
-                    state.copy(completeBtnState = BaseState.Failure)
+                    state.copy(completeBtnState = BaseUiState.Failure)
                 }
             }
         }.launchIn(viewModelScope)
@@ -165,23 +161,21 @@ class EditProfileViewModel @Inject constructor(
     fun editProfile() {
         viewModelScope.launch {
 
-            val response = infoRepository.patchProfile(
+            infoRepository.patchProfile(
                 PatchProfileRequest(
                     nickName = nickname.value,
                     introduction = introduce.value,
                     profileImgUrl = profileUrl.value
                 )
-            )
+            ).let {
+                when (it) {
+                    is BaseState.Success -> {
+                        _events.emit(EditProfileEvents.NavigateToBack)
+                    }
 
-            if (response.isSuccessful) {
-                _uiState.update { state ->
-                    state.copy(editProfileState = BaseState.Success)
-                }
-            } else {
-                val error =
-                    Gson().fromJson(response.errorBody()?.string(), ErrorResponse::class.java)
-                _uiState.update { state ->
-                    state.copy(editProfileState = BaseState.Error(error.message))
+                    is BaseState.Error -> {
+                        _events.emit(EditProfileEvents.ShowToastMessage(it.msg))
+                    }
                 }
             }
         }

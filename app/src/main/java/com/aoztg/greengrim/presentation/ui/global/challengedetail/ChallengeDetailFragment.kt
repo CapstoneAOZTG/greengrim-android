@@ -1,10 +1,7 @@
 package com.aoztg.greengrim.presentation.ui.global.challengedetail
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
-import androidx.databinding.BindingAdapter
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
@@ -13,9 +10,7 @@ import androidx.navigation.fragment.navArgs
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentChallengeDetailBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
-import com.aoztg.greengrim.presentation.ui.BaseState
 import com.aoztg.greengrim.presentation.ui.LoadingState
-import com.aoztg.greengrim.presentation.ui.global.model.ChallengeDetail
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -43,11 +38,6 @@ class ChallengeDetailFragment :
     private fun initStateObserver() {
         repeatOnStarted {
             viewModel.uiState.collect{
-                when(it.getChallengeDetailState){
-                    is BaseState.Error -> showCustomToast(it.getChallengeDetailState.msg)
-                    else -> {}
-                }
-
                 when(it.loading){
                     is LoadingState.IsLoading -> {
                         if(it.loading.state){
@@ -74,9 +64,10 @@ class ChallengeDetailFragment :
                     is ChallengeDetailEvents.NavigateBack -> findNavController().navigateUp()
                     is ChallengeDetailEvents.PopUpMenu -> showPopup()
                     is ChallengeDetailEvents.NavigateChatRoom -> {
-                        parentViewModel.connectNewChat(it.chatId)
+                        parentViewModel.subscribeNewChat(it.chatId)
                         findNavController().toChatRoom(it.chatId)
                     }
+                    is ChallengeDetailEvents.ShowToastMessage -> showCustomToast(it.msg)
                 }
             }
         }
@@ -110,16 +101,3 @@ class ChallengeDetailFragment :
     }
 }
 
-@BindingAdapter("challengeDetailBtnText")
-fun bindChallengeDetailBtnText(button: Button, data: ChallengeDetail){
-
-    if( data.entered ){
-        button.text = "이미 참여중인 챌린지 입니다"
-        button.isEnabled = false
-        button.setTextColor(Color.WHITE)
-    } else {
-        button.text = "입장하기"
-        button.isEnabled = true
-        button.setTextColor(Color.BLACK)
-    }
-}

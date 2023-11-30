@@ -2,14 +2,13 @@ package com.aoztg.greengrim.presentation.ui.info.mychallenge
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.aoztg.greengrim.data.model.ErrorResponse
+import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.repository.ChallengeRepository
-import com.aoztg.greengrim.presentation.ui.BaseState
+import com.aoztg.greengrim.presentation.ui.BaseUiState
 import com.aoztg.greengrim.presentation.ui.LoadingState
 import com.aoztg.greengrim.presentation.ui.challenge.list.ChallengeSortType
 import com.aoztg.greengrim.presentation.ui.challenge.mapper.toChallengeListData
 import com.aoztg.greengrim.presentation.ui.challenge.model.ChallengeRoom
-import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -28,7 +27,7 @@ data class MyChallengeUiState(
     val sortType: ChallengeSortType = ChallengeSortType.DESC,
     val page: Int = 0,
     val hasNext: Boolean = true,
-    val getChallengeRoomState: BaseState = BaseState.Empty
+    val getChallengeRoomState: BaseUiState = BaseUiState.Empty
 )
 
 sealed class MyChallengeEvents {
@@ -36,6 +35,7 @@ sealed class MyChallengeEvents {
     object NavigateToCreateChallenge : MyChallengeEvents()
     object ShowBottomSheet : MyChallengeEvents()
     object ScrollToTop : MyChallengeEvents()
+    data class ShowToastMessage(val msg: String) : MyChallengeEvents()
 }
 
 @HiltViewModel
@@ -68,35 +68,32 @@ class MyChallengeViewModel @Inject constructor(
                     )
                 }
 
-                val response = challengeRepository.getMyChallenge(
+                challengeRepository.getMyChallenge(
                     _uiState.value.page,
                     20,
                     _uiState.value.sortType.value
-                )
-
-
-                if (response.isSuccessful) {
-                    response.body()?.let { body ->
-                        val uiData = body.toChallengeListData(::navigateToChallengeDetail)
-                        _uiState.update { state ->
-                            state.copy(
-                                challengeRoom = if (option == ORIGINAL) _uiState.value.challengeRoom + uiData.result else uiData.result,
-                                hasNext = uiData.hasNext,
-                                page = uiData.page + 1,
-                                getChallengeRoomState = BaseState.Success,
-                                loading = LoadingState.IsLoading(false)
-                            )
+                ).let {
+                    when (it) {
+                        is BaseState.Success -> {
+                            val uiData = it.body.toChallengeListData(::navigateToChallengeDetail)
+                            _uiState.update { state ->
+                                state.copy(
+                                    challengeRoom = if (option == ORIGINAL) _uiState.value.challengeRoom + uiData.result else uiData.result,
+                                    hasNext = uiData.hasNext,
+                                    page = uiData.page + 1,
+                                    loading = LoadingState.IsLoading(false)
+                                )
+                            }
                         }
-                    }
-                } else {
-                    val error =
-                        Gson().fromJson(response.errorBody()?.string(), ErrorResponse::class.java)
 
-                    _uiState.update { state ->
-                        state.copy(
-                            getChallengeRoomState = BaseState.Error(error.message),
-                            loading = LoadingState.IsLoading(false)
-                        )
+                        is BaseState.Error -> {
+                            _uiState.update { state ->
+                                state.copy(
+                                    loading = LoadingState.IsLoading(false)
+                                )
+                            }
+                            _events.emit(MyChallengeEvents.ShowToastMessage(it.msg))
+                        }
                     }
                 }
             }
