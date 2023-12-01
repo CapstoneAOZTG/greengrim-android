@@ -65,7 +65,7 @@ class ChallengeDetailFragment :
                     is ChallengeDetailEvents.PopUpMenu -> showPopup()
                     is ChallengeDetailEvents.NavigateChatRoom -> {
                         parentViewModel.subscribeNewChat(it.chatId)
-                        findNavController().toChatRoom(it.chatId)
+                        findNavController().toChatRoom(it.chatId, it.challengeId)
                     }
                     is ChallengeDetailEvents.ShowToastMessage -> showCustomToast(it.msg)
                 }
@@ -86,7 +86,7 @@ class ChallengeDetailFragment :
         )
     }
 
-    private fun NavController.toChatRoom(chatId: Int) {
+    private fun NavController.toChatRoom(chatId: Int, challengeId: Int) {
         val action = ChallengeDetailFragmentDirections.actionChallengeDetailFragmentToChatRoomFragment(chatId, challengeId)
         this.navigate(action)
     }

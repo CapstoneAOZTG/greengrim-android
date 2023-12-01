@@ -180,7 +180,7 @@ class CreateChallengeDetailViewModel @Inject constructor(
             ).let{
               when(it){
                   is BaseState.Success -> {
-                      _events.emit(CreateChallengeDetailEvents.NavigateToChatList(it.body.id))
+                      _events.emit(CreateChallengeDetailEvents.NavigateToChatList(it.body.chatRoomId))
                   }
                   is BaseState.Error -> {
                       _uiState.update { state ->
