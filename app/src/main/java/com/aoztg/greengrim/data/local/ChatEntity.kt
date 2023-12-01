@@ -6,6 +6,8 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "chat_message")
 data class ChatEntity(
+    @PrimaryKey(autoGenerate = true)
+    val idx: Long = 0,
     val chatId: Int,
     val type: Int = -1,
     val message: String = "",
@@ -15,7 +17,4 @@ data class ChatEntity(
     val profileImg: String = "",
     val certId: Int = -1,
     val certImg: String = "",
-){
-    @PrimaryKey(autoGenerate = true)
-    var idx: Long = 0
-}
+)

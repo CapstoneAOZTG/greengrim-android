@@ -1,5 +1,6 @@
 package com.aoztg.greengrim.presentation.ui.chat.chatroom
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.app.App
@@ -11,6 +12,7 @@ import com.aoztg.greengrim.presentation.ui.main.ChatMessage
 import com.aoztg.greengrim.presentation.util.Constants
 import com.aoztg.greengrim.presentation.util.Constants.MY_CHAT
 import com.aoztg.greengrim.presentation.util.Constants.OTHER_CHAT
+import com.aoztg.greengrim.presentation.util.Constants.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -27,7 +29,8 @@ import javax.inject.Inject
 data class ChatRoomUiState(
     val editTextState: Boolean = false,
     val chatMessages: List<UiChatMessage> = emptyList(),
-    val page: Int = 0
+    val page: Int = 0,
+    val hasNext: Boolean = true
 )
 
 sealed class ChatRoomEvents {
@@ -93,26 +96,29 @@ class ChatRoomViewModel @Inject constructor(
     }
 
     fun getChatMessageData() {
-        viewModelScope.launch {
-            when (val response = chatRepository.getChat(chatRoomId, 0)) {
-                is BaseState.Success -> {
-                    val list = response.body.map {
-                        it.toUiChatMessage(::navigateToCertificationDetail)
+        if (uiState.value.hasNext) {
+            viewModelScope.launch {
+                when (val response = chatRepository.getChat(chatRoomId, uiState.value.page)) {
+                    is BaseState.Success -> {
+                        val list = response.body.chatEntityList.map {
+                            it.toUiChatMessage(::navigateToCertificationDetail)
+                        }
+                        _uiState.update { state ->
+                            state.copy(
+                                hasNext = response.body.hasNext,
+                                chatMessages = list + uiState.value.chatMessages,
+                                page = uiState.value.page + 1
+                            )
+                        }
                     }
-                    _uiState.update { state ->
-                        state.copy(
-                            chatMessages = list + uiState.value.chatMessages,
-                            page = uiState.value.page + 1
-                        )
-                    }
-                }
 
-                is BaseState.Error -> {
-                    _events.emit(ChatRoomEvents.ShowToastMessage(response.msg))
+                    is BaseState.Error -> {
+                        _events.emit(ChatRoomEvents.ShowToastMessage(response.msg))
+                    }
                 }
             }
-            scrollBottom()
         }
+
     }
 
     fun newChatMessage(
@@ -169,7 +175,6 @@ class ChatRoomViewModel @Inject constructor(
     }
 
 
-
     fun navigateBack() {
         viewModelScope.launch {
             _events.emit(ChatRoomEvents.NavigateBack)
@@ -194,7 +199,7 @@ class ChatRoomViewModel @Inject constructor(
         }
     }
 
-    private fun scrollBottom(){
+    private fun scrollBottom() {
         viewModelScope.launch {
             _events.emit(ChatRoomEvents.ScrollBottom)
         }

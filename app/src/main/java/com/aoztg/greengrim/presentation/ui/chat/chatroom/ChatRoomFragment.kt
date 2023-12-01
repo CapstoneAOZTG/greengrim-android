@@ -1,26 +1,22 @@
 package com.aoztg.greengrim.presentation.ui.chat.chatroom
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.aoztg.greengrim.MainNavDirections
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentChatRoomBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
-import com.aoztg.greengrim.presentation.ui.challenge.list.ChallengeListViewModel
 import com.aoztg.greengrim.presentation.ui.chat.adapter.ChatMessageAdapter
 import com.aoztg.greengrim.presentation.ui.main.KeyboardState
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 import com.aoztg.greengrim.presentation.ui.toCertificationDetail
-import com.aoztg.greengrim.presentation.util.Constants.TAG
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 
@@ -114,8 +110,6 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
         val lastVisibleItemPosition =
             (binding.rvChat.layoutManager as LinearLayoutManager).findLastCompletelyVisibleItemPosition()
         val itemTotalCount = binding.rvChat.adapter?.itemCount
-        Log.d(TAG,lastVisibleItemPosition.toString())
-        Log.d(TAG,itemTotalCount.toString())
         itemTotalCount?.let {
             if (lastVisibleItemPosition <= it - 1) {
                 binding.rvChat.smoothScrollToPosition(it + 1)

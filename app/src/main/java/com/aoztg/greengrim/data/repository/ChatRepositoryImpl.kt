@@ -3,6 +3,7 @@ package com.aoztg.greengrim.data.repository
 import com.aoztg.greengrim.data.local.ChatDao
 import com.aoztg.greengrim.data.local.ChatEntity
 import com.aoztg.greengrim.data.model.BaseState
+import com.aoztg.greengrim.data.model.response.ChatEntityResponse
 import com.aoztg.greengrim.data.model.response.ChatRoomsResponse
 import com.aoztg.greengrim.data.model.response.EnterChatResponse
 import com.aoztg.greengrim.data.model.runRemote
@@ -10,7 +11,6 @@ import com.aoztg.greengrim.data.remote.ChatAPI
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class ChatRepositoryImpl @Inject constructor(
@@ -46,12 +46,18 @@ class ChatRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getChat(chatId: Int, page: Int): BaseState<List<ChatEntity>> {
+    override suspend fun getChat(chatId: Int, page: Int): BaseState<ChatEntityResponse> {
         return try {
             val response = CoroutineScope(Dispatchers.IO).async {
                 chatDao.getChat(chatId, page)
             }.await()
-            BaseState.Success(response.reversed())
+
+            BaseState.Success(
+                ChatEntityResponse(
+                    hasNext = response.size >= 30  ,
+                    chatEntityList = response.reversed()
+                )
+            )
         } catch (e: Exception) {
             BaseState.Error("데이터 로딩 실패", "FAIL")
         }
