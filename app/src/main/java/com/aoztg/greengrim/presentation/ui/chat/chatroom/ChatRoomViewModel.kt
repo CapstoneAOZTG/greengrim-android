@@ -109,6 +109,7 @@ class ChatRoomViewModel @Inject constructor(
                     _events.emit(ChatRoomEvents.ShowToastMessage(response.msg))
                 }
             }
+            scrollBottom()
         }
     }
 
@@ -134,7 +135,6 @@ class ChatRoomViewModel @Inject constructor(
                     )
                 }
             }
-
         } else {
             // 남 채팅
             if (message.certId == -1) {
@@ -155,6 +155,7 @@ class ChatRoomViewModel @Inject constructor(
                 }
             }
         }
+        scrollBottom()
     }
 
     private fun checkDate() {
@@ -164,6 +165,8 @@ class ChatRoomViewModel @Inject constructor(
 
         }
     }
+
+
 
     fun navigateBack() {
         viewModelScope.launch {
@@ -189,6 +192,12 @@ class ChatRoomViewModel @Inject constructor(
         }
     }
 
+    private fun scrollBottom(){
+        viewModelScope.launch {
+            _events.emit(ChatRoomEvents.ScrollBottom)
+        }
+    }
+
     fun setIds(chatIdData: Int, challengeIdData: Int) {
         chatRoomId = chatIdData
         challengeId = challengeIdData
@@ -204,7 +213,6 @@ class ChatRoomViewModel @Inject constructor(
                 )
             )
             chatMessage.emit("")
-            _events.emit(ChatRoomEvents.ScrollBottom)
         }
     }
 

@@ -72,7 +72,6 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
             parentViewModel.newChat.collect {
                 if (it.roomId == chatId) {
                     viewModel.newChatMessage(it)
-                    scrollRecyclerViewBottom()
                 }
             }
         }
@@ -91,10 +90,10 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
     private fun scrollRecyclerViewBottom() {
         val lastVisibleItemPosition =
             (binding.rvChat.layoutManager as LinearLayoutManager).findLastCompletelyVisibleItemPosition()
-        val itemTotalCount = binding.rvChat.adapter?.itemCount?.minus(1)
+        val itemTotalCount = binding.rvChat.adapter?.itemCount
         itemTotalCount?.let {
-            if (lastVisibleItemPosition != it) {
-                binding.rvChat.smoothScrollToPosition(it + 3)
+            if (lastVisibleItemPosition <= it - 1) {
+                binding.rvChat.smoothScrollToPosition(it + 1)
             }
         }
     }
