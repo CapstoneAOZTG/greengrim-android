@@ -18,3 +18,12 @@ data class ChatEntity(
     val certId: Int = -1,
     val certImg: String = "",
 )
+
+@Entity(tableName = "unread_chat_data")
+data class UnReadChatEntity(
+    @PrimaryKey
+    val chatId: Int = 0,
+    val unReadCount: Int = 0,
+    val recentChat: String = "",
+    val recentChatTime: String = ""
+)
