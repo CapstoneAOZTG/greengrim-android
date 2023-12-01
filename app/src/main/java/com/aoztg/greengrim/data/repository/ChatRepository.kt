@@ -16,7 +16,7 @@ interface ChatRepository {
 
     suspend fun getChat(chatId: Int, page: Int): BaseState<List<ChatEntity>>
 
-    suspend fun addChat(chatList: List<ChatEntity>): BaseState<Unit>
+    suspend fun addChat(chatMessage: ChatEntity): BaseState<Unit>
 
     suspend fun deleteChat(chatId: Int): BaseState<Unit>
 }

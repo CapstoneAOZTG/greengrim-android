@@ -8,7 +8,7 @@ import androidx.room.Query
 @Dao
 interface ChatDao {
 
-    @Query("SELECT * FROM chat_message  WHERE chatId = :chatId ORDER BY idx DESC LIMIT 30 OFFSET (:page - 1) * 30")
+    @Query("SELECT * FROM chat_message  WHERE chatId = :chatId ORDER BY idx DESC LIMIT 30 OFFSET :page * 30")
     fun getChat(chatId: Int, page: Int): List<ChatEntity>
 
     @Insert(onConflict = REPLACE)

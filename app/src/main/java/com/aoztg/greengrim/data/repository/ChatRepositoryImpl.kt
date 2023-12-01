@@ -7,6 +7,10 @@ import com.aoztg.greengrim.data.model.response.ChatRoomsResponse
 import com.aoztg.greengrim.data.model.response.EnterChatResponse
 import com.aoztg.greengrim.data.model.runRemote
 import com.aoztg.greengrim.data.remote.ChatAPI
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class ChatRepositoryImpl @Inject constructor(
@@ -20,12 +24,12 @@ class ChatRepositoryImpl @Inject constructor(
     override suspend fun getChatRooms(): BaseState<List<ChatRoomsResponse>> =
         runRemote(api.getChatList())
 
-    override suspend fun addChat(chatList: List<ChatEntity>): BaseState<Unit> {
+    override suspend fun addChat(chatMessage: ChatEntity): BaseState<Unit> {
         return try {
-            chatList.forEach {
-                chatDao.addChat(it)
-            }
-            BaseState.Success(Unit)
+            val response = CoroutineScope(Dispatchers.IO).async {
+                chatDao.addChat(chatMessage)
+            }.await()
+            BaseState.Success(response)
         } catch (e: Exception) {
             BaseState.Error("데이터 저장 실패", "FAIL")
         }
@@ -33,8 +37,10 @@ class ChatRepositoryImpl @Inject constructor(
 
     override suspend fun deleteChat(chatId: Int): BaseState<Unit> {
         return try {
-            chatDao.deleteChat(chatId)
-            BaseState.Success(Unit)
+            val response = CoroutineScope(Dispatchers.IO).async {
+                chatDao.deleteChat(chatId)
+            }.await()
+            BaseState.Success(response)
         } catch (e: Exception) {
             BaseState.Error("데이터 삭제 실패", "FAIL")
         }
@@ -42,10 +48,14 @@ class ChatRepositoryImpl @Inject constructor(
 
     override suspend fun getChat(chatId: Int, page: Int): BaseState<List<ChatEntity>> {
         return try {
-            BaseState.Success(chatDao.getChat(chatId, page))
+            val response = CoroutineScope(Dispatchers.IO).async {
+                chatDao.getChat(chatId, page)
+            }.await()
+            BaseState.Success(response.reversed())
         } catch (e: Exception) {
             BaseState.Error("데이터 로딩 실패", "FAIL")
         }
+
     }
 
 }
