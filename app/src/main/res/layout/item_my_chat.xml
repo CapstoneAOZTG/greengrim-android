@@ -19,7 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.2"/>
+            app:layout_constraintGuide_percent="0.2" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_message"
@@ -38,6 +38,7 @@
                 android:layout_height="120dp"
                 android:paddingBottom="12dp"
                 android:scaleType="centerCrop"
+                android:visibility="gone"
                 app:chatImgUrl="@{item.certImg}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -48,8 +49,8 @@
                 style="@style/TextGgSmallBlackBold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
                 android:text="@{item.message}"
+                android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/iv_image"
                 tools:text="우왕 개이득 ㅋㅋㅋㅋ" />

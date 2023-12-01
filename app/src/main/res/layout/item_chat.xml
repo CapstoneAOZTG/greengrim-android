@@ -54,6 +54,7 @@
                 android:layout_height="120dp"
                 android:paddingBottom="12dp"
                 android:scaleType="centerCrop"
+                android:visibility="gone"
                 app:chatImgUrl="@{item.certImg}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
