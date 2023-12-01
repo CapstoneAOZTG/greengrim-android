@@ -1,13 +1,19 @@
 package com.aoztg.greengrim.presentation.ui.main
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.app.App
 import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.repository.ChatRepository
 import com.aoztg.greengrim.data.repository.ImageRepository
+import com.aoztg.greengrim.presentation.ui.main.mapper.toChatEntity
+import com.aoztg.greengrim.presentation.ui.main.mapper.toUiUnReadChatData
+import com.aoztg.greengrim.presentation.ui.main.mapper.toUnReadChatEntity
+import com.aoztg.greengrim.presentation.ui.main.model.ChatMessage
 import com.aoztg.greengrim.presentation.ui.main.model.UiUnReadChatData
 import com.aoztg.greengrim.presentation.util.Constants
+import com.aoztg.greengrim.presentation.util.Constants.TAG
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -16,7 +22,6 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
 import javax.inject.Inject
@@ -72,7 +77,7 @@ class MainViewModel @Inject constructor(
     private val _updateUnReadChat = MutableSharedFlow<List<UiUnReadChatData>>()
     val updateUnReadChat: SharedFlow<List<UiUnReadChatData>> = _updateUnReadChat.asSharedFlow()
 
-    private val _unReadCnt = MutableStateFlow<Int>(0)
+    private val _unReadCnt = MutableStateFlow(0)
     val unReadCnt: StateFlow<Int> = _unReadCnt.asStateFlow()
 
     private var memberId: Long = 0
@@ -119,6 +124,8 @@ class MainViewModel @Inject constructor(
                 }
                 _firstConnect.value = true
             }
+
+            getUnReadChat()
         }
     }
 
@@ -189,9 +196,8 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             _newChat.emit(chatMessage)
         }
-        storeChatMessage(chatMessage)
         updateUnReadChatData(chatMessage)
-
+        storeChatMessage(chatMessage)
     }
 
     private fun updateUnReadChatData(chatMessage: ChatMessage) {
@@ -224,11 +230,10 @@ class MainViewModel @Inject constructor(
             _unReadCnt.value = unReadCnt.value + 1
         }
 
-
-
         viewModelScope.launch {
             _updateUnReadChat.emit(unReadChatData)
         }
+        storeUnReadChat()
     }
 
     fun readChat(chatId: Int) {
@@ -250,8 +255,37 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    private fun getUnReadChat() {
+        viewModelScope.launch {
+            when (val response = chatRepository.getUnReadChatData()) {
+                is BaseState.Success -> {
+                    if(response.body.isNotEmpty()){
+                        unReadChatData = response.body.map {
+                            it.toUiUnReadChatData()
+                        }
+                        _unReadCnt.value =
+                            response.body.map { it.unReadCount }.reduce { total, num -> total + num }
+                    }
+                }
+
+                is BaseState.Error -> {
+                    Log.d(TAG,response.msg)
+                }
+            }
+        }
+    }
+
     private fun storeUnReadChat() {
-        // todo Room 에 읽지않은 채팅 정보들 저장
+        viewModelScope.launch {
+            unReadChatData.forEach {
+                when(val response = chatRepository.addUnReadChatData(it.toUnReadChatEntity())){
+                    is BaseState.Success -> {}
+                    is BaseState.Error -> {
+                        Log.d(TAG,response.msg)
+                    }
+                }
+            }
+        }
     }
 
     fun showKeyboard() {

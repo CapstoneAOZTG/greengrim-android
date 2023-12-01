@@ -1,4 +1,4 @@
-package com.aoztg.greengrim.presentation.ui.main
+package com.aoztg.greengrim.presentation.ui.main.model
 
 data class ChatMessage(
     val type: String = "",

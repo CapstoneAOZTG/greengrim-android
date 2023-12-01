@@ -7,7 +7,7 @@ import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.repository.ChatRepository
 import com.aoztg.greengrim.presentation.ui.chat.mapper.toUiChatMessage
 import com.aoztg.greengrim.presentation.ui.chat.model.UiChatMessage
-import com.aoztg.greengrim.presentation.ui.main.ChatMessage
+import com.aoztg.greengrim.presentation.ui.main.model.ChatMessage
 import com.aoztg.greengrim.presentation.util.Constants
 import com.aoztg.greengrim.presentation.util.Constants.DATE
 import com.aoztg.greengrim.presentation.util.Constants.MY_CHAT
@@ -231,6 +231,12 @@ class ChatRoomViewModel @Inject constructor(
                 )
             )
             chatMessage.emit("")
+        }
+    }
+
+    fun deleteUnReadChat(chatId: Int){
+        viewModelScope.launch {
+            chatRepository.deleteUnReadChatData(chatId)
         }
     }
 
