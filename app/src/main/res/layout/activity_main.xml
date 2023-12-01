@@ -11,7 +11,7 @@
 
         <variable
             name="chatVm"
-            type="com.aoztg.greengrim.presentation.chatmanager.ChatViewModel" />
+            type="com.aoztg.greengrim.presentation.chatmanager.ChatManager" />
 
     </data>
 

@@ -25,7 +25,7 @@ import com.aoztg.greengrim.R
 import com.aoztg.greengrim.app.App
 import com.aoztg.greengrim.databinding.ActivityMainBinding
 import com.aoztg.greengrim.presentation.base.BaseActivity
-import com.aoztg.greengrim.presentation.chatmanager.ChatViewModel
+import com.aoztg.greengrim.presentation.chatmanager.ChatManager
 import com.aoztg.greengrim.presentation.customview.getPhotoSheet
 import com.aoztg.greengrim.presentation.ui.home.HomeFragmentDirections
 import com.aoztg.greengrim.presentation.ui.intro.IntroActivity
@@ -42,7 +42,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
     private lateinit var navController: NavController
     private val viewModel: MainViewModel by viewModels()
-    private val chatViewModel: ChatViewModel by viewModels()
+    private val chatManager: ChatManager by viewModels()
 
     private lateinit var neededPermissionList: MutableList<String>
     private val storagePermissionList =
@@ -64,7 +64,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         super.onCreate(savedInstanceState)
 
         binding.vm = viewModel
-        binding.chatVm = chatViewModel
+        binding.chatVm = chatManager
         setBottomNavigation()
         setBottomNavigationListener()
         initEventObserver()

@@ -13,7 +13,7 @@ import com.aoztg.greengrim.MainNavDirections
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentChatRoomBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
-import com.aoztg.greengrim.presentation.chatmanager.ChatViewModel
+import com.aoztg.greengrim.presentation.chatmanager.ChatManager
 import com.aoztg.greengrim.presentation.ui.chat.adapter.ChatMessageAdapter
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 import com.aoztg.greengrim.presentation.ui.toCertificationDetail
@@ -23,7 +23,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment_chat_room) {
 
     private val parentViewModel: MainViewModel by activityViewModels()
-    private val chatViewModel: ChatViewModel by activityViewModels()
+    private val chatManager: ChatManager by activityViewModels()
     private val viewModel: ChatRoomViewModel by viewModels()
 
     private val args: ChatRoomFragmentArgs by navArgs()
@@ -78,7 +78,7 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
                         it.id
                     )
 
-                    is ChatRoomEvents.SendMessage -> chatViewModel.sendMessage(
+                    is ChatRoomEvents.SendMessage -> chatManager.sendMessage(
                         it.chatId,
                         it.message,
                     )
@@ -92,7 +92,7 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
 
     private fun initChatMessageObserver() {
         repeatOnStarted {
-            chatViewModel.newChat.collect {
+            chatManager.newChat.collect {
                 if (it.roomId == chatId) {
                     viewModel.newChatMessage(it)
                 }
@@ -149,7 +149,7 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
     }
 
     private fun readChat(){
-        chatViewModel.readChat(chatId)
+        chatManager.readChat(chatId)
     }
 
     override fun onDestroyView() {

@@ -12,7 +12,7 @@ import androidx.navigation.fragment.navArgs
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentCreateChallengeDetailBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
-import com.aoztg.greengrim.presentation.chatmanager.ChatViewModel
+import com.aoztg.greengrim.presentation.chatmanager.ChatManager
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
@@ -22,7 +22,7 @@ class CreateChallengeDetailFragment :
     BaseFragment<FragmentCreateChallengeDetailBinding>(R.layout.fragment_create_challenge_detail) {
 
     private val parentViewModel: MainViewModel by activityViewModels()
-    private val chatViewModel: ChatViewModel by activityViewModels()
+    private val chatManager: ChatManager by activityViewModels()
     private val viewModel: CreateChallengeDetailViewModel by viewModels()
 
     private val args: CreateChallengeDetailFragmentArgs by navArgs()
@@ -71,7 +71,7 @@ class CreateChallengeDetailFragment :
                 when (it) {
                     is CreateChallengeDetailEvents.NavigateToBack -> findNavController().navigateUp()
                     is CreateChallengeDetailEvents.NavigateToChatList -> {
-                        chatViewModel.subscribeNewChat(it.chatId)
+                        chatManager.subscribeNewChat(it.chatId)
                         findNavController().toChatList()
                     }
                 }

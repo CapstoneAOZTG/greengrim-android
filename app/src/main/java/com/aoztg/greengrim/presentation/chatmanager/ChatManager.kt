@@ -29,7 +29,7 @@ sealed class ChatEvent {
 }
 
 @HiltViewModel
-class ChatViewModel @Inject constructor(
+class ChatManager @Inject constructor(
     private val chatRepository: ChatRepository
 ) : ViewModel() {
 
