@@ -98,7 +98,7 @@ class ChallengeDetailViewModel @Inject constructor(
             chatRepository.enterChat(id).let {
                 when (it) {
                     is BaseState.Success -> {
-                        _events.emit(ChallengeDetailEvents.NavigateChatRoom(it.body.chatRoomId, it.body.challengeId))
+                        _events.emit(ChallengeDetailEvents.NavigateChatRoom(it.body.chatroomId, it.body.challengeId))
                     }
 
                     is BaseState.Error -> {
