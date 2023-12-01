@@ -55,7 +55,7 @@ class ChatRepositoryImpl @Inject constructor(
             BaseState.Success(
                 ChatEntityResponse(
                     hasNext = response.size >= 30  ,
-                    chatEntityList = response.reversed()
+                    chatEntityList = response
                 )
             )
         } catch (e: Exception) {
