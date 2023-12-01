@@ -12,7 +12,6 @@ import com.aoztg.greengrim.presentation.chatmanager.mapper.toUiUnReadChatData
 import com.aoztg.greengrim.presentation.chatmanager.mapper.toUnReadChatEntity
 import com.aoztg.greengrim.presentation.chatmanager.model.ChatMessage
 import com.aoztg.greengrim.presentation.chatmanager.model.UiUnReadChatData
-import com.aoztg.greengrim.presentation.ui.chat.model.UiChatMessage
 import com.aoztg.greengrim.presentation.util.Constants
 import com.aoztg.greengrim.presentation.util.Constants.DATE
 import com.aoztg.greengrim.presentation.util.Constants.NOTHING
@@ -26,7 +25,6 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlin.reflect.typeOf
 
 
 sealed class ChatEvent {
@@ -46,6 +44,9 @@ class ChatManager @Inject constructor(
 
     private val _firstConnect = MutableStateFlow(false)
     val firstConnect: StateFlow<Boolean> = _firstConnect.asStateFlow()
+
+    private val _initialConnectChatIds = MutableStateFlow<List<Int>>(emptyList())
+    val initialConnectChatIds: StateFlow<List<Int>> = _initialConnectChatIds.asStateFlow()
 
     var unReadChatData = listOf<UiUnReadChatData>()
 
@@ -77,16 +78,16 @@ class ChatManager @Inject constructor(
             chatRepository.getChatRooms().let {
                 when (it) {
                     is BaseState.Success -> {
-                        val chatIds = it.body.map { data ->
+                        _initialConnectChatIds.value = it.body.map { data ->
                             data.chatroomId
                         }
 
                         chatSocket.connectServer()
-                        chatIds.forEach { chatId ->
+                        initialConnectChatIds.value.forEach { chatId ->
                             chatSocket.subscribeChat(chatId)
                         }
 
-                        unReadChatData = chatIds.map { chatId ->
+                        unReadChatData = initialConnectChatIds.value.map { chatId ->
                             UiUnReadChatData(
                                 chatId = chatId
                             )
@@ -126,7 +127,14 @@ class ChatManager @Inject constructor(
     }
 
     fun subscribeNewChat(chatId: Int) {
+        initialConnectChatIds.value.forEach {
+            if (chatId == it) {
+                unReadChatData = unReadChatData + UiUnReadChatData(chatId = chatId)
+                return
+            }
+        }
         chatSocket.subscribeChat(chatId)
+        _initialConnectChatIds.value = initialConnectChatIds.value + chatId
         unReadChatData = unReadChatData + UiUnReadChatData(chatId = chatId)
     }
 
@@ -261,7 +269,6 @@ class ChatManager @Inject constructor(
             unReadChatData = unReadChatData.filter {
                 it.chatId != chatId
             }
-            chatSocket.exitChat(chatId)
         }
     }
 

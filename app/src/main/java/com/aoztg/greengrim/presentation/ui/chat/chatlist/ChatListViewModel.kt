@@ -68,6 +68,8 @@ class ChatListViewModel @Inject constructor(
 
     fun setUnReadChatData(list: List<UiUnReadChatData>){
 
+        // todo 좀더 효율적인 알고리즘으로 refactoring..
+
         _uiState.update { state ->
             state.copy(
                 chatListItem = uiState.value.chatListItem.map{ listData ->
