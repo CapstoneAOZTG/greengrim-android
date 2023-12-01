@@ -67,14 +67,22 @@ class ChatListViewModel @Inject constructor(
     }
 
     fun setUnReadChatData(list: List<UiUnReadChatData>){
+
         _uiState.update { state ->
             state.copy(
-                chatListItem = uiState.value.chatListItem.mapIndexed { i, item -> 
-                    item.copy(
-                        recentChat = list[i].recentChat,
-                        recentTime = list[i].recentChatTime,
-                        chatCount = list[i].unReadCount
-                    )
+                chatListItem = uiState.value.chatListItem.map{ listData ->
+                    var newData = listData
+                    list.forEach {  unReadData ->
+                        if(listData.chatId == unReadData.chatId){
+                            newData = listData.copy(
+                                recentChat = unReadData.recentChat,
+                                recentTime = unReadData.recentChatTime,
+                                chatCount = unReadData.unReadCount
+                            )
+                            return@forEach
+                        }
+                    }
+                    newData
                 }
             )
         }
