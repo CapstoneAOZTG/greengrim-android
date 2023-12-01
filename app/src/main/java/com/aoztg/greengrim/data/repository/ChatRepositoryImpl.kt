@@ -25,6 +25,9 @@ class ChatRepositoryImpl @Inject constructor(
     override suspend fun getChatRooms(): BaseState<List<ChatRoomsResponse>> =
         runRemote(api.getChatList())
 
+    override suspend fun exitChatRoom(id: Int): BaseState<Unit> =
+        runRemote(api.exitChatRoom(id))
+
     override suspend fun addChat(chatMessage: ChatEntity): BaseState<Unit> {
         return try {
             val response = CoroutineScope(Dispatchers.IO).async {

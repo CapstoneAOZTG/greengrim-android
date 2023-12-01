@@ -27,4 +27,6 @@ interface ChatRepository {
     suspend fun addUnReadChatData(unReadChatEntity: UnReadChatEntity): BaseState<Unit>
 
     suspend fun deleteUnReadChatData(chatId: Int): BaseState<Unit>
+
+    suspend fun exitChatRoom(id: Int): BaseState<Unit>
 }

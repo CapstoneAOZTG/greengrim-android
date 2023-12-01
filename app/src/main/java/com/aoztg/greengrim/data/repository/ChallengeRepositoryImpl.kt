@@ -31,4 +31,6 @@ class ChallengeRepositoryImpl @Inject constructor(private val api: ChallengeAPI)
         size: Int,
         sort: String
     ): BaseState<ChallengeListResponse> = runRemote(api.getMyChallengeList(page, size, sort))
+
+    override suspend fun exitChallenge(id: Int): BaseState<Unit> = runRemote(api.exitChallenge(id))
 }

@@ -37,4 +37,9 @@ interface ChallengeAPI {
         @Query("size") size: Int,
         @Query("sort") sort : String
     ): Response<ChallengeListResponse>
+
+    @POST("/visitor/challenges/exit")
+    suspend fun exitChallenge(
+        @Query("id") id: Int
+    ): Response<Unit>
 }

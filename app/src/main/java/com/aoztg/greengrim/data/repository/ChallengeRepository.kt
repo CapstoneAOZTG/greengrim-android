@@ -28,4 +28,8 @@ interface ChallengeRepository {
         size: Int,
         sort: String
     ): BaseState<ChallengeListResponse>
+
+    suspend fun exitChallenge(
+        id: Int
+    ): BaseState<Unit>
 }
