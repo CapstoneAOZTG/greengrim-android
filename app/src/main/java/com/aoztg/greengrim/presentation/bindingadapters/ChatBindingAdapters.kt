@@ -22,6 +22,7 @@ fun bindChatImg(imageView: ImageView, url: String?) {
     if (url.isNullOrBlank()) {
         imageView.visibility = View.GONE
     } else {
+        imageView.visibility = View.VISIBLE
         Glide.with(imageView.context)
             .load(url)
             .error(R.drawable.test)
