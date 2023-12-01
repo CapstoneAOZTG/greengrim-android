@@ -14,12 +14,9 @@ import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentChatRoomBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
 import com.aoztg.greengrim.presentation.ui.chat.adapter.ChatMessageAdapter
-import com.aoztg.greengrim.presentation.ui.chat.chatroom.ChatRoomViewModel.Companion.SCROLL_GET
-import com.aoztg.greengrim.presentation.ui.main.KeyboardState
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 import com.aoztg.greengrim.presentation.ui.toCertificationDetail
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
 
 @AndroidEntryPoint
 class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment_chat_room) {
@@ -30,23 +27,21 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
     private val chatId by lazy { args.chatId }
     private val challengeId by lazy { args.challengeId }
     private val popupLocation = IntArray(2)
-    private var isPopupShowing = false
-    private var initGetState = true
+    private val adapter = ChatMessageAdapter()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.vm = viewModel
         parentViewModel.hideBNV()
-        binding.rvChat.adapter = ChatMessageAdapter()
+        binding.rvChat.adapter = adapter
         binding.rvChat.itemAnimator = null
         setScrollEventListener()
         viewModel.setIds(chatId, challengeId)
+        setDataChangeListener()
         initEventsObserver()
         initChatMessageObserver()
-        initKeyboardObserver()
     }
-
 
     private fun setScrollEventListener() {
 
@@ -55,13 +50,17 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
 
-                val firstVisibleItemPosition = (recyclerView.layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition()
+                val lastVisibleItemPosition = (recyclerView.layoutManager as LinearLayoutManager).findLastCompletelyVisibleItemPosition()
+                val itemTotalCount = binding.rvChat.adapter?.itemCount?.minus(1)
 
-                if (firstVisibleItemPosition == 0) {
-                    viewModel.getChatMessageData(SCROLL_GET)
+                if (lastVisibleItemPosition == itemTotalCount) {
+                    viewModel.getChatMessageData()
                 }
             }
         })
+    }
+
+    private fun setDataChangeListener() {
     }
 
     private fun initEventsObserver() {
@@ -98,26 +97,8 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
         }
     }
 
-    private fun initKeyboardObserver() {
-        repeatOnStarted {
-            parentViewModel.keyboardState.collectLatest {
-                if (it == KeyboardState.SHOW) {
-                    scrollRecyclerViewBottom()
-                }
-            }
-        }
-    }
-
     private fun scrollRecyclerViewBottom() {
-
-        val lastVisibleItemPosition =
-            (binding.rvChat.layoutManager as LinearLayoutManager).findLastCompletelyVisibleItemPosition()
-        val itemTotalCount = binding.rvChat.adapter?.itemCount
-        itemTotalCount?.let {
-            if (lastVisibleItemPosition <= it - 1) {
-                binding.rvChat.smoothScrollToPosition(it + 1)
-            }
-        }
+        binding.rvChat.scrollToPosition(0)
     }
 
     private fun showPopup() {

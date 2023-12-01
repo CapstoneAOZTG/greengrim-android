@@ -1,6 +1,5 @@
 package com.aoztg.greengrim.presentation.ui.chat.chatroom
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.app.App
@@ -12,7 +11,6 @@ import com.aoztg.greengrim.presentation.ui.main.ChatMessage
 import com.aoztg.greengrim.presentation.util.Constants
 import com.aoztg.greengrim.presentation.util.Constants.MY_CHAT
 import com.aoztg.greengrim.presentation.util.Constants.OTHER_CHAT
-import com.aoztg.greengrim.presentation.util.Constants.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -53,7 +51,7 @@ class ChatRoomViewModel @Inject constructor(
     var chatRoomId = -1
     var challengeId = -1
 
-    companion object{
+    companion object {
         const val SCROLL_GET = 0
         const val INIT_GET = 1
     }
@@ -101,7 +99,7 @@ class ChatRoomViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    fun getChatMessageData(type: Int) {
+    fun getChatMessageData() {
         if (uiState.value.hasNext) {
             viewModelScope.launch {
                 when (val response = chatRepository.getChat(chatRoomId, uiState.value.page)) {
@@ -112,7 +110,7 @@ class ChatRoomViewModel @Inject constructor(
                         _uiState.update { state ->
                             state.copy(
                                 hasNext = response.body.hasNext,
-                                chatMessages = list + uiState.value.chatMessages,
+                                chatMessages = uiState.value.chatMessages + list,
                                 page = uiState.value.page + 1
                             )
                         }
@@ -122,10 +120,6 @@ class ChatRoomViewModel @Inject constructor(
                         _events.emit(ChatRoomEvents.ShowToastMessage(response.msg))
                     }
                 }
-                if(type == INIT_GET){
-                    delay(100)
-                    scrollBottom()
-                }
             }
         }
 
@@ -134,46 +128,39 @@ class ChatRoomViewModel @Inject constructor(
     fun newChatMessage(
         message: ChatMessage
     ) {
+        val newMessages = uiState.value.chatMessages.toMutableList()
         if (message.senderId == memberId) {
             // 내 채팅
             if (message.certId == -1) {
-                _uiState.update { state ->
-                    state.copy(
-                        chatMessages = state.chatMessages + message.toUiChatMessage(MY_CHAT) {}
-                    )
-                }
+                newMessages.add(0,message.toUiChatMessage(MY_CHAT) {})
             } else {
                 // 인증 채팅
-                _uiState.update { state ->
-                    state.copy(
-                        chatMessages = state.chatMessages + message.toUiChatMessage(
-                            MY_CHAT,
-                            ::navigateToCertificationDetail
-                        )
+                newMessages.add(0,
+                    message.toUiChatMessage(
+                        MY_CHAT,
+                        ::navigateToCertificationDetail
                     )
-                }
+                )
             }
         } else {
             // 남 채팅
             if (message.certId == -1) {
-                _uiState.update { state ->
-                    state.copy(
-                        chatMessages = state.chatMessages + message.toUiChatMessage(OTHER_CHAT) {}
-                    )
-                }
+                newMessages.add(0,message.toUiChatMessage(OTHER_CHAT) {})
             } else {
                 // 인증 채팅
-                _uiState.update { state ->
-                    state.copy(
-                        chatMessages = state.chatMessages + message.toUiChatMessage(
-                            OTHER_CHAT,
-                            ::navigateToCertificationDetail
-                        )
+                newMessages.add(0,
+                    message.toUiChatMessage(
+                        OTHER_CHAT,
+                        ::navigateToCertificationDetail
                     )
-                }
+                )
             }
         }
-        scrollBottom()
+        _uiState.update { state ->
+            state.copy(
+                chatMessages = newMessages
+            )
+        }
     }
 
     private fun checkDate() {
@@ -183,7 +170,6 @@ class ChatRoomViewModel @Inject constructor(
 
         }
     }
-
 
     fun navigateBack() {
         viewModelScope.launch {
@@ -211,6 +197,7 @@ class ChatRoomViewModel @Inject constructor(
 
     private fun scrollBottom() {
         viewModelScope.launch {
+            delay(10)
             _events.emit(ChatRoomEvents.ScrollBottom)
         }
     }
@@ -218,7 +205,7 @@ class ChatRoomViewModel @Inject constructor(
     fun setIds(chatIdData: Int, challengeIdData: Int) {
         chatRoomId = chatIdData
         challengeId = challengeIdData
-        getChatMessageData(INIT_GET)
+        getChatMessageData()
     }
 
     fun sendMessage() {
