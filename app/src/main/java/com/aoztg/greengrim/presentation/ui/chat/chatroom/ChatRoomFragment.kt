@@ -14,6 +14,7 @@ import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentChatRoomBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
 import com.aoztg.greengrim.presentation.ui.chat.adapter.ChatMessageAdapter
+import com.aoztg.greengrim.presentation.ui.chat.chatroom.ChatRoomViewModel.Companion.SCROLL_GET
 import com.aoztg.greengrim.presentation.ui.main.KeyboardState
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 import com.aoztg.greengrim.presentation.ui.toCertificationDetail
@@ -30,6 +31,7 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
     private val challengeId by lazy { args.challengeId }
     private val popupLocation = IntArray(2)
     private var isPopupShowing = false
+    private var initGetState = true
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -38,11 +40,28 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
         parentViewModel.hideBNV()
         binding.rvChat.adapter = ChatMessageAdapter()
         binding.rvChat.itemAnimator = null
+        setScrollEventListener()
         viewModel.setIds(chatId, challengeId)
         initEventsObserver()
         initChatMessageObserver()
         initKeyboardObserver()
-        setScrollEventListener()
+    }
+
+
+    private fun setScrollEventListener() {
+
+        binding.rvChat.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                val firstVisibleItemPosition = (recyclerView.layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition()
+
+                if (firstVisibleItemPosition == 0) {
+                    viewModel.getChatMessageData(SCROLL_GET)
+                }
+            }
+        })
     }
 
     private fun initEventsObserver() {
@@ -87,22 +106,6 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
                 }
             }
         }
-    }
-
-    private fun setScrollEventListener() {
-
-        binding.rvChat.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-
-                val firstVisibleItemPosition = (recyclerView.layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition()
-
-                if (firstVisibleItemPosition == 0) {
-                    viewModel.getChatMessageData()
-                }
-            }
-        })
     }
 
     private fun scrollRecyclerViewBottom() {

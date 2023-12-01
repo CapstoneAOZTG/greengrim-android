@@ -14,6 +14,7 @@ import com.aoztg.greengrim.presentation.util.Constants.MY_CHAT
 import com.aoztg.greengrim.presentation.util.Constants.OTHER_CHAT
 import com.aoztg.greengrim.presentation.util.Constants.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -51,6 +52,11 @@ class ChatRoomViewModel @Inject constructor(
 
     var chatRoomId = -1
     var challengeId = -1
+
+    companion object{
+        const val SCROLL_GET = 0
+        const val INIT_GET = 1
+    }
 
     private val _uiState = MutableStateFlow(ChatRoomUiState())
     val uiState: StateFlow<ChatRoomUiState> = _uiState.asStateFlow()
@@ -95,7 +101,7 @@ class ChatRoomViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    fun getChatMessageData() {
+    fun getChatMessageData(type: Int) {
         if (uiState.value.hasNext) {
             viewModelScope.launch {
                 when (val response = chatRepository.getChat(chatRoomId, uiState.value.page)) {
@@ -115,6 +121,10 @@ class ChatRoomViewModel @Inject constructor(
                     is BaseState.Error -> {
                         _events.emit(ChatRoomEvents.ShowToastMessage(response.msg))
                     }
+                }
+                if(type == INIT_GET){
+                    delay(100)
+                    scrollBottom()
                 }
             }
         }
@@ -208,7 +218,7 @@ class ChatRoomViewModel @Inject constructor(
     fun setIds(chatIdData: Int, challengeIdData: Int) {
         chatRoomId = chatIdData
         challengeId = challengeIdData
-        getChatMessageData()
+        getChatMessageData(INIT_GET)
     }
 
     fun sendMessage() {
