@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
 import javax.inject.Inject
@@ -70,6 +71,9 @@ class MainViewModel @Inject constructor(
 
     private val _updateUnReadChat = MutableSharedFlow<List<UiUnReadChatData>>()
     val updateUnReadChat: SharedFlow<List<UiUnReadChatData>> = _updateUnReadChat.asSharedFlow()
+
+    private val _unReadCnt = MutableStateFlow<Int>(0)
+    val unReadCnt: StateFlow<Int> = _unReadCnt.asStateFlow()
 
     private var memberId: Long = 0
 
@@ -216,7 +220,10 @@ class MainViewModel @Inject constructor(
                     it
                 }
             }
+
+            _unReadCnt.value = unReadCnt.value + 1
         }
+
 
 
         viewModelScope.launch {
@@ -227,6 +234,7 @@ class MainViewModel @Inject constructor(
     fun readChat(chatId: Int) {
         unReadChatData = unReadChatData.map {
             if (it.chatId == chatId) {
+                _unReadCnt.value = unReadCnt.value - it.unReadCount
                 it.copy(
                     unReadCount = 0
                 )
