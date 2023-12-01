@@ -3,6 +3,7 @@ package com.aoztg.greengrim.presentation.ui.chat.chatroom
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.app.App
+import com.aoztg.greengrim.data.local.ChatEntity
 import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.repository.ChallengeRepository
 import com.aoztg.greengrim.data.repository.ChatRepository
@@ -133,33 +134,17 @@ class ChatRoomViewModel @Inject constructor(
     ) {
         val newMessages = uiState.value.chatMessages.toMutableList()
         val newMessage = message.toUiChatMessage(memberId,::navigateToCertificationDetail)
+
+        if(newMessages.last().sentDate != newMessage.sentDate){
+            newMessages.add(0, UiChatMessage(type = DATE, sentDate = newMessage.sentDate){})
+        }
+
         if(newMessage.type != NOTHING){
             newMessages.add(0, newMessage)
             _uiState.update { state ->
                 state.copy(
                     chatMessages = newMessages
                 )
-            }
-        }
-    }
-
-    private fun checkDate() {
-        // todo chatmessage 의 날짜를 비교해서, 날짜 헤더 삽입 로직.
-        // todo UiChatMessage(sentDate="", type="DATE") 이런식으로
-        var lastDate = ""
-        val newMessages = mutableListOf<UiChatMessage>()
-        _uiState.value.chatMessages.forEach {
-            if(it.type != DATE && it.sentDate != lastDate){
-                lastDate = it.sentDate
-                newMessages.add(
-                    UiChatMessage(
-                        sentDate = it.sentDate,
-                        type = DATE
-                    ){}
-                )
-                newMessages.add(it)
-            } else {
-                newMessages.add(it)
             }
         }
     }

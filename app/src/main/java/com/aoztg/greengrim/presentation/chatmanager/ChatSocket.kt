@@ -45,6 +45,14 @@ class ChatSocket(
         }
     }
 
+    fun exitChat(chatId: Int){
+//        try{
+//            stompClient.topic("/sub/chat/room/$chatId").blockingSubscribe()
+//        } catch(e: Exception){
+//            Log.d(TAG,e.message.toString())
+//        }
+    }
+
     fun sendMessage(memberId: Long, chatId: Int, message: String) {
         try{
             val data = JSONObject()

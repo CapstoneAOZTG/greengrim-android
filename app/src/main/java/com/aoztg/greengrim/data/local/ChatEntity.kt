@@ -25,5 +25,6 @@ data class UnReadChatEntity(
     val chatId: Int = 0,
     val unReadCount: Int = 0,
     val recentChat: String = "",
-    val recentChatTime: String = ""
+    val recentChatTime: String = "",
+    val recentChatDate: String = ""
 )

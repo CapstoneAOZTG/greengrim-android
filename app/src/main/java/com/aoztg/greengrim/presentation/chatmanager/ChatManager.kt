@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.app.App
+import com.aoztg.greengrim.data.local.ChatEntity
 import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.repository.ChatRepository
 import com.aoztg.greengrim.presentation.chatmanager.mapper.toChatEntity
@@ -11,7 +12,9 @@ import com.aoztg.greengrim.presentation.chatmanager.mapper.toUiUnReadChatData
 import com.aoztg.greengrim.presentation.chatmanager.mapper.toUnReadChatEntity
 import com.aoztg.greengrim.presentation.chatmanager.model.ChatMessage
 import com.aoztg.greengrim.presentation.chatmanager.model.UiUnReadChatData
+import com.aoztg.greengrim.presentation.ui.chat.model.UiChatMessage
 import com.aoztg.greengrim.presentation.util.Constants
+import com.aoztg.greengrim.presentation.util.Constants.DATE
 import com.aoztg.greengrim.presentation.util.Constants.NOTHING
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,6 +26,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.reflect.typeOf
 
 
 sealed class ChatEvent {
@@ -155,13 +159,14 @@ class ChatManager @Inject constructor(
 
     private fun updateUnReadChatData(chatMessage: ChatMessage) {
         // todo 메세지 수신시, recentChatData 업데이트
-        if(chatMessage.type == "TALK"){
+        if (chatMessage.type == "TALK") {
             if (chatMessage.senderId == memberId) {
                 unReadChatData = unReadChatData.map {
                     if (it.chatId == chatMessage.roomId) {
                         it.copy(
                             recentChat = chatMessage.message,
                             recentChatTime = chatMessage.sentTime,
+                            recentChatDate = chatMessage.sentDate,
                             unReadCount = it.unReadCount
                         )
                     } else {
@@ -194,9 +199,32 @@ class ChatManager @Inject constructor(
     private fun storeChatMessage(message: ChatMessage) {
         viewModelScope.launch {
             val newMessage = message.toChatEntity(memberId)
-            if(newMessage.type != NOTHING){
+
+            // 해당 chatId 의 recentChatDate 와 현재 메세지의 sentDate 가 다르면, Date type 메세지 로컬에 저장
+            unReadChatData.forEach { data ->
+                if (data.chatId == newMessage.chatId) {
+                    if (newMessage.sentDate != data.recentChatDate) {
+                        storeDateMessage(newMessage.chatId, newMessage.sentDate)
+                        return@forEach
+                    }
+                }
+            }
+
+            if (newMessage.type != NOTHING) {
                 chatRepository.addChat(newMessage)
             }
+        }
+    }
+
+    private fun storeDateMessage(chatId: Int, date: String) {
+        viewModelScope.launch {
+            chatRepository.addChat(
+                ChatEntity(
+                    chatId = chatId,
+                    type = DATE,
+                    message = date,
+                )
+            )
         }
     }
 
@@ -233,6 +261,7 @@ class ChatManager @Inject constructor(
             unReadChatData = unReadChatData.filter {
                 it.chatId != chatId
             }
+            chatSocket.exitChat(chatId)
         }
     }
 
