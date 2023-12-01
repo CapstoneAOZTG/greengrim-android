@@ -36,6 +36,7 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
         binding.vm = viewModel
         parentViewModel.hideBNV()
         binding.rvChat.adapter = ChatMessageAdapter()
+        binding.rvChat.itemAnimator = null
         viewModel.setIds(chatId, challengeId)
         initEventsObserver()
         initChatMessageObserver()

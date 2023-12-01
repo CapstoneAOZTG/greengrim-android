@@ -3,6 +3,7 @@ package com.aoztg.greengrim.presentation.ui.chat.chatroom
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.app.App
+import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.repository.ChatRepository
 import com.aoztg.greengrim.presentation.ui.chat.mapper.toUiChatMessage
 import com.aoztg.greengrim.presentation.ui.chat.model.UiChatMessage
@@ -35,7 +36,8 @@ sealed class ChatRoomEvents {
     data class NavigateToCertificationList(val id: Int) : ChatRoomEvents()
     data class NavigateToCertificationDetail(val id: Int) : ChatRoomEvents()
     data class SendMessage(val chatId: Int, val message: String) : ChatRoomEvents()
-    object ScrollBottom: ChatRoomEvents()
+    object ScrollBottom : ChatRoomEvents()
+    data class ShowToastMessage(val msg: String) : ChatRoomEvents()
 }
 
 @HiltViewModel
@@ -89,54 +91,73 @@ class ChatRoomViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    fun getChatMessage(){
+    private fun getChatMessageData() {
+        viewModelScope.launch {
+            when (val response = chatRepository.getChat(chatRoomId, 0)) {
+                is BaseState.Success -> {
+                    val list = response.body.map {
+                        it.toUiChatMessage(::navigateToCertificationDetail)
+                    }
+                    _uiState.update { state ->
+                        state.copy(
+                            chatMessages = list
+                        )
+                    }
+                }
 
+                is BaseState.Error -> {
+                    _events.emit(ChatRoomEvents.ShowToastMessage(response.msg))
+                }
+            }
+        }
     }
 
     fun newChatMessage(
         message: ChatMessage
-    ){
-        if(message.senderId == memberId){
+    ) {
+        if (message.senderId == memberId) {
             // 내 채팅
-            if(message.certId == -1){
+            if (message.certId == -1) {
                 _uiState.update { state ->
                     state.copy(
-                        chatMessages = state.chatMessages + message.toUiChatMessage(MY_CHAT){}
+                        chatMessages = state.chatMessages + message.toUiChatMessage(MY_CHAT) {}
                     )
                 }
             } else {
                 // 인증 채팅
                 _uiState.update { state ->
                     state.copy(
-                        chatMessages = state.chatMessages + message.toUiChatMessage(MY_CHAT, ::navigateToCertificationDetail)
+                        chatMessages = state.chatMessages + message.toUiChatMessage(
+                            MY_CHAT,
+                            ::navigateToCertificationDetail
+                        )
                     )
                 }
             }
 
         } else {
             // 남 채팅
-            if(message.certId == -1){
+            if (message.certId == -1) {
                 _uiState.update { state ->
                     state.copy(
-                        chatMessages = state.chatMessages + message.toUiChatMessage(OTHER_CHAT){}
+                        chatMessages = state.chatMessages + message.toUiChatMessage(OTHER_CHAT) {}
                     )
                 }
             } else {
                 // 인증 채팅
                 _uiState.update { state ->
                     state.copy(
-                        chatMessages = state.chatMessages + message.toUiChatMessage(OTHER_CHAT, ::navigateToCertificationDetail)
+                        chatMessages = state.chatMessages + message.toUiChatMessage(
+                            OTHER_CHAT,
+                            ::navigateToCertificationDetail
+                        )
                     )
                 }
             }
         }
     }
 
-    fun storeChatMessage(){
-
-    }
-
-    private fun checkDate(){
+    private fun checkDate() {
         // todo chat message 의 날짜를 비교해서, 날짜 헤더 삽입 로직.
         // todo UiChatMessage(sentDate="", type="DATE") 이런식으로
         _uiState.value.chatMessages.forEach {
@@ -171,14 +192,17 @@ class ChatRoomViewModel @Inject constructor(
     fun setIds(chatIdData: Int, challengeIdData: Int) {
         chatRoomId = chatIdData
         challengeId = challengeIdData
+        getChatMessageData()
     }
 
-    fun sendMessage(){
-        viewModelScope.launch{
-            _events.emit(ChatRoomEvents.SendMessage(
-                chatRoomId,
-                chatMessage.value,
-            ))
+    fun sendMessage() {
+        viewModelScope.launch {
+            _events.emit(
+                ChatRoomEvents.SendMessage(
+                    chatRoomId,
+                    chatMessage.value,
+                )
+            )
             chatMessage.emit("")
             _events.emit(ChatRoomEvents.ScrollBottom)
         }
