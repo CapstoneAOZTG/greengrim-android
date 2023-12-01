@@ -26,7 +26,8 @@ import javax.inject.Inject
 
 data class ChatRoomUiState(
     val editTextState: Boolean = false,
-    val chatMessages: List<UiChatMessage> = emptyList()
+    val chatMessages: List<UiChatMessage> = emptyList(),
+    val page: Int = 0
 )
 
 sealed class ChatRoomEvents {
@@ -91,7 +92,7 @@ class ChatRoomViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    private fun getChatMessageData() {
+    fun getChatMessageData() {
         viewModelScope.launch {
             when (val response = chatRepository.getChat(chatRoomId, 0)) {
                 is BaseState.Success -> {
@@ -100,7 +101,8 @@ class ChatRoomViewModel @Inject constructor(
                     }
                     _uiState.update { state ->
                         state.copy(
-                            chatMessages = list
+                            chatMessages = list + uiState.value.chatMessages,
+                            page = uiState.value.page + 1
                         )
                     }
                 }
