@@ -6,6 +6,7 @@ import com.aoztg.greengrim.app.App
 import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.repository.ChatRepository
 import com.aoztg.greengrim.data.repository.ImageRepository
+import com.aoztg.greengrim.presentation.ui.main.model.UiUnReadChatData
 import com.aoztg.greengrim.presentation.util.Constants
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -65,6 +66,11 @@ class MainViewModel @Inject constructor(
     private val _keyboardState = MutableStateFlow(KeyboardState.NONE)
     val keyboardState: StateFlow<KeyboardState> = _keyboardState.asStateFlow()
 
+    var unReadChatData = listOf<UiUnReadChatData>()
+
+    private val _updateUnReadChat = MutableSharedFlow<List<UiUnReadChatData>>()
+    val updateUnReadChat: SharedFlow<List<UiUnReadChatData>> = _updateUnReadChat.asSharedFlow()
+
     private var memberId: Long = 0
 
     init {
@@ -86,11 +92,21 @@ class MainViewModel @Inject constructor(
             chatRepository.getChatRooms().let {
                 when (it) {
                     is BaseState.Success -> {
-                        _events.emit(MainEvent.SubscribeMyChats(
-                            it.body.map { data ->
-                                data.chatroomId
-                            }
-                        ))
+                        val chatIds = it.body.map { data ->
+                            data.chatroomId
+                        }
+
+                        _events.emit(
+                            MainEvent.SubscribeMyChats(
+                                chatIds
+                            )
+                        )
+
+                        unReadChatData = chatIds.map { chatId ->
+                            UiUnReadChatData(
+                                chatId = chatId
+                            )
+                        }
                     }
 
                     is BaseState.Error -> {
@@ -148,6 +164,8 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             _events.emit(MainEvent.SubscribeNewChat(chatId))
         }
+
+        unReadChatData = unReadChatData + UiUnReadChatData(chatId = chatId)
     }
 
     fun sendMessage(chatId: Int, message: String) {
@@ -168,12 +186,64 @@ class MainViewModel @Inject constructor(
             _newChat.emit(chatMessage)
         }
         storeChatMessage(chatMessage)
+        updateUnReadChatData(chatMessage)
+
+    }
+
+    private fun updateUnReadChatData(chatMessage: ChatMessage) {
+        // todo 메세지 수신시, recentChatData 업데이트
+        if (chatMessage.senderId == memberId) {
+            unReadChatData = unReadChatData.map {
+                if (it.chatId == chatMessage.roomId) {
+                    it.copy(
+                        recentChat = chatMessage.message,
+                        recentChatTime = chatMessage.sentTime,
+                        unReadCount = it.unReadCount
+                    )
+                } else {
+                    it
+                }
+            }
+        } else {
+            unReadChatData = unReadChatData.map {
+                if (it.chatId == chatMessage.roomId) {
+                    it.copy(
+                        recentChat = chatMessage.message,
+                        recentChatTime = chatMessage.sentTime,
+                        unReadCount = it.unReadCount + 1
+                    )
+                } else {
+                    it
+                }
+            }
+        }
+
+
+        viewModelScope.launch {
+            _updateUnReadChat.emit(unReadChatData)
+        }
+    }
+
+    fun readChat(chatId: Int) {
+        unReadChatData = unReadChatData.map {
+            if (it.chatId == chatId) {
+                it.copy(
+                    unReadCount = 0
+                )
+            } else {
+                it
+            }
+        }
     }
 
     private fun storeChatMessage(message: ChatMessage) {
         viewModelScope.launch {
             chatRepository.addChat(message.toChatEntity(memberId))
         }
+    }
+
+    private fun storeUnReadChat() {
+        // todo Room 에 읽지않은 채팅 정보들 저장
     }
 
     fun showKeyboard() {

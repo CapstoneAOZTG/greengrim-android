@@ -29,3 +29,13 @@ fun bindChatImg(imageView: ImageView, url: String?) {
             .into(imageView)
     }
 }
+
+@BindingAdapter("unReadChatCount")
+fun bindUnReadChatCount(tv: TextView, count: Int) {
+    if (count == 0) {
+        tv.visibility = View.INVISIBLE
+    } else {
+        tv.visibility = View.VISIBLE
+        tv.text = count.toString()
+    }
+}

@@ -77,7 +77,7 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
 
                     is ChatRoomEvents.SendMessage -> parentViewModel.sendMessage(
                         it.chatId,
-                        it.message
+                        it.message,
                     )
 
                     is ChatRoomEvents.ScrollBottom -> scrollRecyclerViewBottom()
@@ -145,9 +145,14 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
         this.navigate(action)
     }
 
+    private fun readChat(){
+        parentViewModel.readChat(chatId)
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         dismissFourPopup()
+        readChat()
     }
 }
 

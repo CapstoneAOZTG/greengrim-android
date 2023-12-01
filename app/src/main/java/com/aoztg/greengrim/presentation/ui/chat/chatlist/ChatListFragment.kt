@@ -27,6 +27,7 @@ class ChatListFragment : BaseFragment<FragmentChatListBinding>(R.layout.fragment
         binding.rvChatList.adapter = ChatListAdapter()
         viewModel.getChatList()
         initEventsObserver()
+        initRecentChatObserver()
     }
 
     private fun initEventsObserver() {
@@ -35,7 +36,16 @@ class ChatListFragment : BaseFragment<FragmentChatListBinding>(R.layout.fragment
                 when (it) {
                     is ChatListEvents.NavigateToChatRoom -> findNavController().toChatRoom(it.chatId, it.challengeId)
                     is ChatListEvents.ShowToastMessage -> showCustomToast(it.msg)
+                    is ChatListEvents.CallUnReadChatData -> viewModel.setRecentChatData(parentViewModel.unReadChatData)
                 }
+            }
+        }
+    }
+
+    private fun initRecentChatObserver(){
+        repeatOnStarted {
+            parentViewModel.updateUnReadChat.collect{
+                viewModel.setRecentChatData(it)
             }
         }
     }

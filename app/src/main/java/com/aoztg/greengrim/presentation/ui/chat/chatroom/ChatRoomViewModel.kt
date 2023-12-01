@@ -9,6 +9,7 @@ import com.aoztg.greengrim.presentation.ui.chat.mapper.toUiChatMessage
 import com.aoztg.greengrim.presentation.ui.chat.model.UiChatMessage
 import com.aoztg.greengrim.presentation.ui.main.ChatMessage
 import com.aoztg.greengrim.presentation.util.Constants
+import com.aoztg.greengrim.presentation.util.Constants.DATE
 import com.aoztg.greengrim.presentation.util.Constants.MY_CHAT
 import com.aoztg.greengrim.presentation.util.Constants.OTHER_CHAT
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -164,10 +165,23 @@ class ChatRoomViewModel @Inject constructor(
     }
 
     private fun checkDate() {
-        // todo chat message 의 날짜를 비교해서, 날짜 헤더 삽입 로직.
+        // todo chatmessage 의 날짜를 비교해서, 날짜 헤더 삽입 로직.
         // todo UiChatMessage(sentDate="", type="DATE") 이런식으로
+        var lastDate = ""
+        val newMessages = mutableListOf<UiChatMessage>()
         _uiState.value.chatMessages.forEach {
-
+            if(it.type != DATE && it.sentDate != lastDate){
+                lastDate = it.sentDate
+                newMessages.add(
+                    UiChatMessage(
+                        sentDate = it.sentDate,
+                        type = DATE
+                    ){}
+                )
+                newMessages.add(it)
+            } else {
+                newMessages.add(it)
+            }
         }
     }
 

@@ -6,6 +6,7 @@ import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.repository.ChatRepository
 import com.aoztg.greengrim.presentation.ui.chat.mapper.toChatListItem
 import com.aoztg.greengrim.presentation.ui.chat.model.ChatListItem
+import com.aoztg.greengrim.presentation.ui.main.model.UiUnReadChatData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,6 +26,7 @@ data class ChatListUiState(
 sealed class ChatListEvents {
     data class NavigateToChatRoom(val chatId: Int, val challengeId: Int) : ChatListEvents()
     data class ShowToastMessage(val msg: String) : ChatListEvents()
+    object CallUnReadChatData: ChatListEvents()
 }
 
 
@@ -57,8 +59,25 @@ class ChatListViewModel @Inject constructor(
                         _events.emit(ChatListEvents.ShowToastMessage(it.msg))
                     }
                 }
+
+                _events.emit(ChatListEvents.CallUnReadChatData)
             }
 
+        }
+    }
+
+    fun setRecentChatData(list: List<UiUnReadChatData>){
+
+        _uiState.update { state ->
+            state.copy(
+                chatListItem = uiState.value.chatListItem.mapIndexed { i, item -> 
+                    item.copy(
+                        recentChat = list[i].recentChat,
+                        recentTime = list[i].recentChatTime,
+                        chatCount = list[i].unReadCount
+                    )
+                }
+            )
         }
     }
 
