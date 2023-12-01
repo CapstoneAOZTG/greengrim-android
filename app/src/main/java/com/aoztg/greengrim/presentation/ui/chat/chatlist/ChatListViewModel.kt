@@ -6,7 +6,7 @@ import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.repository.ChatRepository
 import com.aoztg.greengrim.presentation.ui.chat.mapper.toChatListItem
 import com.aoztg.greengrim.presentation.ui.chat.model.ChatListItem
-import com.aoztg.greengrim.presentation.ui.main.model.UiUnReadChatData
+import com.aoztg.greengrim.presentation.chatmanager.model.UiUnReadChatData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow

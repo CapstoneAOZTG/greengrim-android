@@ -9,6 +9,7 @@ import androidx.navigation.fragment.findNavController
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentChatListBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
+import com.aoztg.greengrim.presentation.chatmanager.ChatViewModel
 import com.aoztg.greengrim.presentation.ui.chat.adapter.ChatListAdapter
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -17,6 +18,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class ChatListFragment : BaseFragment<FragmentChatListBinding>(R.layout.fragment_chat_list) {
 
     private val parentViewModel: MainViewModel by activityViewModels()
+    private val chatViewModel: ChatViewModel by activityViewModels()
     private val viewModel: ChatListViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -36,7 +38,7 @@ class ChatListFragment : BaseFragment<FragmentChatListBinding>(R.layout.fragment
                 when (it) {
                     is ChatListEvents.NavigateToChatRoom -> findNavController().toChatRoom(it.chatId, it.challengeId)
                     is ChatListEvents.ShowToastMessage -> showCustomToast(it.msg)
-                    is ChatListEvents.CallUnReadChatData -> viewModel.setUnReadChatData(parentViewModel.unReadChatData)
+                    is ChatListEvents.CallUnReadChatData -> viewModel.setUnReadChatData(chatViewModel.unReadChatData)
                 }
             }
         }
@@ -44,7 +46,7 @@ class ChatListFragment : BaseFragment<FragmentChatListBinding>(R.layout.fragment
 
     private fun initUnReadChatObserver(){
         repeatOnStarted {
-            parentViewModel.updateUnReadChat.collect{
+            chatViewModel.updateUnReadChat.collect{
                 viewModel.setUnReadChatData(it)
             }
         }

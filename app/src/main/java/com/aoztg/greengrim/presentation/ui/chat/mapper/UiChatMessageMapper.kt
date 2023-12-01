@@ -2,7 +2,7 @@ package com.aoztg.greengrim.presentation.ui.chat.mapper
 
 import com.aoztg.greengrim.data.local.ChatEntity
 import com.aoztg.greengrim.presentation.ui.chat.model.UiChatMessage
-import com.aoztg.greengrim.presentation.ui.main.model.ChatMessage
+import com.aoztg.greengrim.presentation.chatmanager.model.ChatMessage
 
 
 internal fun ChatMessage.toUiChatMessage(msgType: Int, onCertClickListener: (Int) -> Unit) = UiChatMessage(

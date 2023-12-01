@@ -9,6 +9,7 @@ import androidx.navigation.fragment.navArgs
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentCreateCertificationBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
+import com.aoztg.greengrim.presentation.chatmanager.ChatViewModel
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -17,6 +18,7 @@ class CreateCertificationFragment :
     BaseFragment<FragmentCreateCertificationBinding>(R.layout.fragment_create_certification) {
 
     private val parentViewModel: MainViewModel by activityViewModels()
+    private val chatViewModel: ChatViewModel by activityViewModels()
     private val viewModel: CreateCertificationViewModel by viewModels()
 
     private val args: CreateCertificationFragmentArgs by navArgs()
@@ -50,13 +52,12 @@ class CreateCertificationFragment :
                 when (it) {
                     is CreateCertificationEvents.NavigateToBack -> findNavController().navigateUp()
                     is CreateCertificationEvents.ShowToastMessage -> showCustomToast(it.msg)
-                    is CreateCertificationEvents.SendCertificationMessage -> parentViewModel.sendCertificationMessage(
+                    is CreateCertificationEvents.SendCertificationMessage -> chatViewModel.sendCertificationMessage(
                         chatId = chatId,
                         message = it.message,
                         certId = it.certId,
                         certImg = it.certImg
                     )
-                    else -> {}
                 }
             }
         }

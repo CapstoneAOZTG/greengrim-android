@@ -9,6 +9,10 @@
             name="vm"
             type="com.aoztg.greengrim.presentation.ui.main.MainViewModel" />
 
+        <variable
+            name="chatVm"
+            type="com.aoztg.greengrim.presentation.chatmanager.ChatViewModel" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -87,7 +91,7 @@
                 app:layout_constraintBottom_toBottomOf="@id/bnv"
                 app:layout_constraintStart_toEndOf="@id/guide"
                 app:layout_constraintTop_toTopOf="@id/bnv"
-                app:unReadChatCount="@{vm.unReadCnt}"
+                app:unReadChatCount="@{chatVm.unReadCnt}"
                 tools:text="5" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

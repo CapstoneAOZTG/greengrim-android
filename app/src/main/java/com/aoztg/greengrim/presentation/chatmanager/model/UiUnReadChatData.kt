@@ -1,4 +1,4 @@
-package com.aoztg.greengrim.presentation.ui.main.model
+package com.aoztg.greengrim.presentation.chatmanager.model
 
 data class UiUnReadChatData(
     val chatId: Int = -1,

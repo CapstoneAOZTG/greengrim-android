@@ -1,7 +1,7 @@
-package com.aoztg.greengrim.presentation.ui.main.mapper
+package com.aoztg.greengrim.presentation.chatmanager.mapper
 
 import com.aoztg.greengrim.data.local.ChatEntity
-import com.aoztg.greengrim.presentation.ui.main.model.ChatMessage
+import com.aoztg.greengrim.presentation.chatmanager.model.ChatMessage
 import com.aoztg.greengrim.presentation.util.Constants.MY_CHAT
 import com.aoztg.greengrim.presentation.util.Constants.OTHER_CHAT
 

@@ -1,4 +1,4 @@
-package com.aoztg.greengrim.presentation.ui.main
+package com.aoztg.greengrim.presentation.chatmanager
 
 import android.annotation.SuppressLint
 import android.util.Log

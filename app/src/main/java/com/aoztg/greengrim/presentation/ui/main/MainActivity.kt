@@ -25,6 +25,7 @@ import com.aoztg.greengrim.R
 import com.aoztg.greengrim.app.App
 import com.aoztg.greengrim.databinding.ActivityMainBinding
 import com.aoztg.greengrim.presentation.base.BaseActivity
+import com.aoztg.greengrim.presentation.chatmanager.ChatViewModel
 import com.aoztg.greengrim.presentation.customview.getPhotoSheet
 import com.aoztg.greengrim.presentation.ui.home.HomeFragmentDirections
 import com.aoztg.greengrim.presentation.ui.intro.IntroActivity
@@ -41,6 +42,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
     private lateinit var navController: NavController
     private val viewModel: MainViewModel by viewModels()
+    private val chatViewModel: ChatViewModel by viewModels()
 
     private lateinit var neededPermissionList: MutableList<String>
     private val storagePermissionList =
@@ -57,12 +59,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     private val cameraPermission = Manifest.permission.CAMERA
 
     private lateinit var tempCameraUri: Uri
-    private val chatSocket = ChatSocket(::receiveChat)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding.vm = viewModel
+        binding.chatVm = chatViewModel
         setBottomNavigation()
         setBottomNavigationListener()
         initEventObserver()
@@ -112,16 +114,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                     is MainEvent.ShowBottomNav -> binding.layoutBnv.visibility = View.VISIBLE
                     is MainEvent.ShowPhotoBottomSheet -> showPhotoBottomSheet()
                     is MainEvent.Logout -> logout()
-                    is MainEvent.SubscribeNewChat -> chatSocket.subscribeChat(it.chatId)
-                    is MainEvent.SubscribeMyChats -> {
-                        chatSocket.connectServer()
-                        it.myChatIds.forEach {  id ->
-                            chatSocket.subscribeChat(id)
-                        }
-                    }
-
-                    is MainEvent.SendChat -> chatSocket.sendMessage(it.memberId, it.chatId, it.message)
-                    is MainEvent.SendCertification -> chatSocket.sendCertification(it.memberId, it.chatId, it.message, it.certId, it.certImg)
                     is MainEvent.ShowToastMessage -> showCustomToast(it.msg)
                 }
             }
@@ -245,7 +237,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             }
         }
 
-    private fun setKeyboardListener(){
+    private fun setKeyboardListener() {
         binding.root.viewTreeObserver.addOnGlobalLayoutListener {
             val rec = Rect()
             binding.root.getWindowVisibleDisplayFrame(rec)
@@ -271,10 +263,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             finishAffinity()
             startActivity(this)
         }
-    }
-
-    private fun receiveChat(message: String){
-        viewModel.receiveMessage(message)
     }
 
 }
