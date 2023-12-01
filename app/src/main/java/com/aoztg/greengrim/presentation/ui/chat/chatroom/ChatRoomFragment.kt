@@ -53,7 +53,8 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
 
-                val lastVisibleItemPosition = (recyclerView.layoutManager as LinearLayoutManager).findLastCompletelyVisibleItemPosition()
+                val lastVisibleItemPosition =
+                    (recyclerView.layoutManager as LinearLayoutManager).findLastCompletelyVisibleItemPosition()
                 val itemTotalCount = binding.rvChat.adapter?.itemCount?.minus(1)
 
                 if (lastVisibleItemPosition == itemTotalCount) {
@@ -84,7 +85,12 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
                     )
 
                     is ChatRoomEvents.ScrollBottom -> scrollRecyclerViewBottom()
-                    else -> {}
+                    is ChatRoomEvents.ExitChat -> {
+                        chatManager.exitChat(chatId)
+                        findNavController().navigateUp()
+                    }
+
+                    is ChatRoomEvents.ShowToastMessage -> showCustomToast(it.msg)
                 }
             }
         }
@@ -136,8 +142,7 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
     }
 
     private fun exitChat() {
-        showCustomToast("나가기 구현 전")
-        findNavController().navigateUp()
+        viewModel.exitChallenge()
     }
 
     private fun NavController.toCreateCertification() {
@@ -148,7 +153,7 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
         this.navigate(action)
     }
 
-    private fun readChat(){
+    private fun readChat() {
         chatManager.readChat(chatId)
     }
 

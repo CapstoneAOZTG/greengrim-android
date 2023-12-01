@@ -220,18 +220,14 @@ class ChatManager @Inject constructor(
         }
     }
 
-    fun exitChat(chatId: Int){
-        viewModelScope.launch {
-
-        }
-    }
-
-    private fun exitChatData(chatId: Int){
+    fun exitChat(chatId: Int) {
         viewModelScope.launch {
             chatRepository.deleteChat(chatId)
             chatRepository.deleteUnReadChatData(chatId)
+            unReadChatData = unReadChatData.filter {
+                it.chatId != chatId
+            }
         }
     }
-
 
 }

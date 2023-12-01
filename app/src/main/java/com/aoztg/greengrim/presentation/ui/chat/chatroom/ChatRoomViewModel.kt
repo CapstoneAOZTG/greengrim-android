@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.app.App
 import com.aoztg.greengrim.data.model.BaseState
+import com.aoztg.greengrim.data.repository.ChallengeRepository
 import com.aoztg.greengrim.data.repository.ChatRepository
 import com.aoztg.greengrim.presentation.ui.chat.mapper.toUiChatMessage
 import com.aoztg.greengrim.presentation.ui.chat.model.UiChatMessage
@@ -35,6 +36,7 @@ data class ChatRoomUiState(
 
 sealed class ChatRoomEvents {
     object NavigateBack : ChatRoomEvents()
+    object ExitChat: ChatRoomEvents()
     object ShowPopupMenu : ChatRoomEvents()
     object NavigateToCreateCertification : ChatRoomEvents()
     data class NavigateToCertificationList(val id: Int) : ChatRoomEvents()
@@ -46,7 +48,8 @@ sealed class ChatRoomEvents {
 
 @HiltViewModel
 class ChatRoomViewModel @Inject constructor(
-    private val chatRepository: ChatRepository
+    private val chatRepository: ChatRepository,
+    private val challengeRepository: ChallengeRepository
 ) : ViewModel() {
 
     var chatRoomId = -1
@@ -234,9 +237,10 @@ class ChatRoomViewModel @Inject constructor(
         }
     }
 
-    fun deleteUnReadChat(chatId: Int){
+    fun exitChallenge(){
         viewModelScope.launch {
-            chatRepository.deleteUnReadChatData(chatId)
+            challengeRepository.exitChallenge(challengeId)
+            _events.emit(ChatRoomEvents.ExitChat)
         }
     }
 
