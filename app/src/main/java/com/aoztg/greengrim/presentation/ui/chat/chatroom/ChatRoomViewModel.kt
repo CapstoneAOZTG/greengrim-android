@@ -6,13 +6,12 @@ import com.aoztg.greengrim.app.App
 import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.repository.ChallengeRepository
 import com.aoztg.greengrim.data.repository.ChatRepository
+import com.aoztg.greengrim.presentation.chatmanager.model.ChatMessage
 import com.aoztg.greengrim.presentation.ui.chat.mapper.toUiChatMessage
 import com.aoztg.greengrim.presentation.ui.chat.model.UiChatMessage
-import com.aoztg.greengrim.presentation.chatmanager.model.ChatMessage
 import com.aoztg.greengrim.presentation.util.Constants
 import com.aoztg.greengrim.presentation.util.Constants.DATE
-import com.aoztg.greengrim.presentation.util.Constants.MY_CHAT
-import com.aoztg.greengrim.presentation.util.Constants.OTHER_CHAT
+import com.aoztg.greengrim.presentation.util.Constants.NOTHING
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -133,37 +132,14 @@ class ChatRoomViewModel @Inject constructor(
         message: ChatMessage
     ) {
         val newMessages = uiState.value.chatMessages.toMutableList()
-        if (message.senderId == memberId) {
-            // 내 채팅
-            if (message.certId == -1) {
-                newMessages.add(0,message.toUiChatMessage(MY_CHAT) {})
-            } else {
-                // 인증 채팅
-                newMessages.add(0,
-                    message.toUiChatMessage(
-                        MY_CHAT,
-                        ::navigateToCertificationDetail
-                    )
+        val newMessage = message.toUiChatMessage(memberId,::navigateToCertificationDetail)
+        if(newMessage.type != NOTHING){
+            newMessages.add(0, newMessage)
+            _uiState.update { state ->
+                state.copy(
+                    chatMessages = newMessages
                 )
             }
-        } else {
-            // 남 채팅
-            if (message.certId == -1) {
-                newMessages.add(0,message.toUiChatMessage(OTHER_CHAT) {})
-            } else {
-                // 인증 채팅
-                newMessages.add(0,
-                    message.toUiChatMessage(
-                        OTHER_CHAT,
-                        ::navigateToCertificationDetail
-                    )
-                )
-            }
-        }
-        _uiState.update { state ->
-            state.copy(
-                chatMessages = newMessages
-            )
         }
     }
 

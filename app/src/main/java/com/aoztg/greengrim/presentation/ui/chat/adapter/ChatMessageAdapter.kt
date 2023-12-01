@@ -6,9 +6,11 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.aoztg.greengrim.databinding.ItemChatBinding
 import com.aoztg.greengrim.databinding.ItemChatDateBinding
-import com.aoztg.greengrim.databinding.ItemMyChatBinding
+import com.aoztg.greengrim.databinding.ItemChatEnterExitBinding
+import com.aoztg.greengrim.databinding.ItemChatMyBinding
 import com.aoztg.greengrim.presentation.ui.chat.model.UiChatMessage
 import com.aoztg.greengrim.presentation.util.Constants.DATE
+import com.aoztg.greengrim.presentation.util.Constants.ENTER_AND_EXIT
 import com.aoztg.greengrim.presentation.util.Constants.MY_CHAT
 import com.aoztg.greengrim.presentation.util.Constants.OTHER_CHAT
 import com.aoztg.greengrim.presentation.util.DefaultDiffUtil
@@ -20,7 +22,7 @@ class ChatMessageAdapter :
         return when(viewType){
             MY_CHAT -> {
                 MyChatViewHolder(
-                    ItemMyChatBinding.inflate(
+                    ItemChatMyBinding.inflate(
                         LayoutInflater.from(parent.context),
                         parent,
                         false
@@ -45,6 +47,15 @@ class ChatMessageAdapter :
                     )
                 )
             }
+            ENTER_AND_EXIT -> {
+                EnterExitChatViewHolder(
+                    ItemChatEnterExitBinding.inflate(
+                        LayoutInflater.from(parent.context),
+                        parent,
+                        false
+                    )
+                )
+            }
 
             else -> throw IllegalArgumentException("Invalid ViewType")
         }
@@ -56,6 +67,7 @@ class ChatMessageAdapter :
             MY_CHAT -> (holder as MyChatViewHolder).bind(getItem(position))
             OTHER_CHAT -> (holder as OtherChatViewHolder).bind(getItem(position))
             DATE -> (holder as ChatDateViewHolder).bind(getItem(position))
+            ENTER_AND_EXIT -> (holder as EnterExitChatViewHolder).bind(getItem(position))
         }
     }
 
@@ -74,12 +86,18 @@ class OtherChatViewHolder(private val binding: ItemChatBinding) : RecyclerView.V
 
 }
 
-class MyChatViewHolder(private val binding: ItemMyChatBinding) : RecyclerView.ViewHolder(binding.root) {
+class MyChatViewHolder(private val binding: ItemChatMyBinding) : RecyclerView.ViewHolder(binding.root) {
     fun bind(item: UiChatMessage){
         binding.item = item
         binding.ivImage.setOnClickListener {
             item.onCertClickListener(item.certId)
         }
+    }
+}
+
+class EnterExitChatViewHolder(private val binding: ItemChatEnterExitBinding) : RecyclerView.ViewHolder(binding.root) {
+    fun bind(item: UiChatMessage){
+        binding.item = item
     }
 }
 

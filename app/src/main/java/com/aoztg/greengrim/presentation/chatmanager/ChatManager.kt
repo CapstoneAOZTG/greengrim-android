@@ -12,6 +12,7 @@ import com.aoztg.greengrim.presentation.chatmanager.mapper.toUnReadChatEntity
 import com.aoztg.greengrim.presentation.chatmanager.model.ChatMessage
 import com.aoztg.greengrim.presentation.chatmanager.model.UiUnReadChatData
 import com.aoztg.greengrim.presentation.util.Constants
+import com.aoztg.greengrim.presentation.util.Constants.NOTHING
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -154,43 +155,48 @@ class ChatManager @Inject constructor(
 
     private fun updateUnReadChatData(chatMessage: ChatMessage) {
         // todo 메세지 수신시, recentChatData 업데이트
-        if (chatMessage.senderId == memberId) {
-            unReadChatData = unReadChatData.map {
-                if (it.chatId == chatMessage.roomId) {
-                    it.copy(
-                        recentChat = chatMessage.message,
-                        recentChatTime = chatMessage.sentTime,
-                        unReadCount = it.unReadCount
-                    )
-                } else {
-                    it
+        if(chatMessage.type == "TALK"){
+            if (chatMessage.senderId == memberId) {
+                unReadChatData = unReadChatData.map {
+                    if (it.chatId == chatMessage.roomId) {
+                        it.copy(
+                            recentChat = chatMessage.message,
+                            recentChatTime = chatMessage.sentTime,
+                            unReadCount = it.unReadCount
+                        )
+                    } else {
+                        it
+                    }
                 }
-            }
-        } else {
-            unReadChatData = unReadChatData.map {
-                if (it.chatId == chatMessage.roomId) {
-                    it.copy(
-                        recentChat = chatMessage.message,
-                        recentChatTime = chatMessage.sentTime,
-                        unReadCount = it.unReadCount + 1
-                    )
-                } else {
-                    it
+            } else {
+                unReadChatData = unReadChatData.map {
+                    if (it.chatId == chatMessage.roomId) {
+                        it.copy(
+                            recentChat = chatMessage.message,
+                            recentChatTime = chatMessage.sentTime,
+                            unReadCount = it.unReadCount + 1
+                        )
+                    } else {
+                        it
+                    }
                 }
+
+                _unReadCnt.value = unReadCnt.value + 1
             }
 
-            _unReadCnt.value = unReadCnt.value + 1
+            viewModelScope.launch {
+                _updateUnReadChat.emit(unReadChatData)
+            }
+            storeUnReadChat()
         }
-
-        viewModelScope.launch {
-            _updateUnReadChat.emit(unReadChatData)
-        }
-        storeUnReadChat()
     }
 
     private fun storeChatMessage(message: ChatMessage) {
         viewModelScope.launch {
-            chatRepository.addChat(message.toChatEntity(memberId))
+            val newMessage = message.toChatEntity(memberId)
+            if(newMessage.type != NOTHING){
+                chatRepository.addChat(newMessage)
+            }
         }
     }
 
