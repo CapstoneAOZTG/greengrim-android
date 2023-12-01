@@ -16,7 +16,6 @@ class ChatSocket(
 
     private val stompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, BuildConfig.SOCKET_URL)
 
-
     fun connectServer() {
         try{
             val headerList = arrayListOf<StompHeader>()
@@ -35,7 +34,6 @@ class ChatSocket(
 
     }
 
-
     @SuppressLint("CheckResult")
     fun subscribeChat(chatId: Int) {
         try{
@@ -45,7 +43,6 @@ class ChatSocket(
         } catch(e: Exception){
             Log.d(TAG,e.message.toString())
         }
-
     }
 
     fun sendMessage(memberId: Long, chatId: Int, message: String) {

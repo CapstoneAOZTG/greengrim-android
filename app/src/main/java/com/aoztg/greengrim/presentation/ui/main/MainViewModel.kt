@@ -167,6 +167,13 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             _newChat.emit(chatMessage)
         }
+        storeChatMessage(chatMessage)
+    }
+
+    private fun storeChatMessage(message: ChatMessage) {
+        viewModelScope.launch {
+            chatRepository.addChat(message.toChatEntity(memberId))
+        }
     }
 
     fun showKeyboard() {
