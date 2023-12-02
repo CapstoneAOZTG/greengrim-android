@@ -1,6 +1,8 @@
 package com.aoztg.greengrim.config
 
+import android.util.Log
 import com.aoztg.greengrim.app.App.Companion.sharedPreferences
+import com.aoztg.greengrim.presentation.util.Constants.TAG
 import com.aoztg.greengrim.presentation.util.Constants.X_ACCESS_TOKEN
 import okhttp3.Interceptor
 import okhttp3.Request
@@ -13,6 +15,7 @@ class AccessTokenInterceptor() : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val builder: Request.Builder = chain.request().newBuilder()
         val jwt: String? = sharedPreferences.getString(X_ACCESS_TOKEN, null)
+        Log.d("token",jwt.toString())
         jwt?.let {
             builder.addHeader("Authorization", jwt)
         } ?: run {

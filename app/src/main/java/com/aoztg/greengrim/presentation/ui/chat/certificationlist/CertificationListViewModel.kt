@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.repository.CertificationRepository
+import com.aoztg.greengrim.data.repository.ChallengeRepository
 import com.aoztg.greengrim.presentation.ui.chat.mapper.toUiCertificationList
 import com.aoztg.greengrim.presentation.ui.chat.mapper.toUiChallengeSimpleInfo
 import com.aoztg.greengrim.presentation.ui.chat.model.UiCertificationItem
@@ -46,7 +47,8 @@ sealed class CertificationListEvents {
 
 @HiltViewModel
 class CertificationListViewModel @Inject constructor(
-    private val certificationRepository: CertificationRepository
+    private val certificationRepository: CertificationRepository,
+    private val challengeRepository: ChallengeRepository
 ) : ViewModel() {
 
     companion object {
@@ -87,7 +89,7 @@ class CertificationListViewModel @Inject constructor(
 
     fun getChallengeInfo() {
         viewModelScope.launch {
-            certificationRepository.getCertificationDetail(challengeId)
+            challengeRepository.getChallengeDetail(challengeId)
                 .let {
                     when (it) {
                         is BaseState.Success -> {
