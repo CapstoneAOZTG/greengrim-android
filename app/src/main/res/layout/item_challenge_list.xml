@@ -23,13 +23,13 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/test"
             app:imgUrl="@{item.imgUrl}"
             app:layout_constraintDimensionRatio="10:9"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:shapeAppearanceOverlay="@style/All28RadiusImageView" />
+            app:shapeAppearanceOverlay="@style/All28RadiusImageView"
+            tools:src="@drawable/test" />
 
         <TextView
             android:id="@+id/tv_title"
