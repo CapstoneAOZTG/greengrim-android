@@ -43,6 +43,9 @@ sealed class ChatRoomEvents {
     data class SendMessage(val chatId: Int, val message: String) : ChatRoomEvents()
     object ScrollBottom : ChatRoomEvents()
     data class ShowToastMessage(val msg: String) : ChatRoomEvents()
+    data class ShowSnackMessage(val msg: String) : ChatRoomEvents()
+    object ShowDialog : ChatRoomEvents()
+    object DismissDialog : ChatRoomEvents()
 }
 
 @HiltViewModel
@@ -201,8 +204,19 @@ class ChatRoomViewModel @Inject constructor(
 
     fun exitChallenge() {
         viewModelScope.launch {
-            challengeRepository.exitChallenge(challengeId)
-            _events.emit(ChatRoomEvents.ExitChat)
+            _events.emit(ChatRoomEvents.ShowDialog)
+
+            challengeRepository.exitChallenge(challengeId).let{
+                when(it){
+                    is BaseState.Success -> {
+                        _events.emit(ChatRoomEvents.ExitChat)
+                    }
+                    is BaseState.Error -> {
+                        _events.emit(ChatRoomEvents.DismissDialog)
+                        _events.emit(ChatRoomEvents.ShowSnackMessage(it.msg))
+                    }
+                }
+            }
         }
     }
 
