@@ -7,6 +7,7 @@ import com.aoztg.greengrim.app.App
 import com.aoztg.greengrim.data.local.ChatEntity
 import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.repository.ChatRepository
+import com.aoztg.greengrim.data.repository.FcmRepository
 import com.aoztg.greengrim.presentation.chatmanager.mapper.toChatEntity
 import com.aoztg.greengrim.presentation.chatmanager.mapper.toUiUnReadChatData
 import com.aoztg.greengrim.presentation.chatmanager.mapper.toUnReadChatEntity
@@ -34,7 +35,8 @@ sealed class ChatEvent {
 
 @HiltViewModel
 class ChatManager @Inject constructor(
-    private val chatRepository: ChatRepository
+    private val chatRepository: ChatRepository,
+    private val fcmRepository: FcmRepository
 ) : ViewModel() {
 
     private val _events: MutableSharedFlow<ChatEvent> = MutableSharedFlow()
@@ -100,7 +102,7 @@ class ChatManager @Inject constructor(
                 }
                 _firstConnect.value = true
             }
-
+            unsubscribeFcm()
             getUnReadChat()
         }
     }
@@ -279,5 +281,28 @@ class ChatManager @Inject constructor(
 
     fun disconnectChat(){
         chatSocket.disconnectServer()
+    }
+
+    fun subscribeFcm(){
+        viewModelScope.launch {
+            fcmRepository.subscribeFcm().let{
+                when(it){
+                    is BaseState.Success -> {}
+                    is BaseState.Error -> {}
+                }
+            }
+        }
+    }
+
+    fun unsubscribeFcm(){
+        viewModelScope.launch {
+            fcmRepository.unsubscribeFcm().let{
+                when(it){
+                    is BaseState.Success -> {}
+                    is BaseState.Error -> {}
+                }
+            }
+
+        }
     }
 }
