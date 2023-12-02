@@ -241,6 +241,20 @@ class ChatManager @Inject constructor(
         }
     }
 
+    fun readChat(chatId: Int) {
+        unReadChatData = unReadChatData.map {
+            if (it.chatId == chatId) {
+                _unReadCnt.value = unReadCnt.value - it.unReadCount
+                it.copy(
+                    unReadCount = 0
+                )
+            } else {
+                it
+            }
+        }
+        storeUnReadChat()
+    }
+
     private fun storeUnReadChat() {
         viewModelScope.launch {
             unReadChatData.forEach {
@@ -254,19 +268,6 @@ class ChatManager @Inject constructor(
         }
     }
 
-    fun readChat(chatId: Int) {
-        unReadChatData = unReadChatData.map {
-            if (it.chatId == chatId) {
-                _unReadCnt.value = unReadCnt.value - it.unReadCount
-                it.copy(
-                    unReadCount = 0
-                )
-            } else {
-                it
-            }
-        }
-    }
-
     fun exitChat(chatId: Int) {
         viewModelScope.launch {
             chatRepository.deleteChat(chatId)
@@ -276,5 +277,4 @@ class ChatManager @Inject constructor(
             }
         }
     }
-
 }

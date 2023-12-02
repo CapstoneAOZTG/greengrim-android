@@ -34,7 +34,7 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        readChat()
         binding.vm = viewModel
         parentViewModel.hideBNV()
         binding.rvChat.adapter = adapter
