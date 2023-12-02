@@ -167,7 +167,7 @@ class ChatManager @Inject constructor(
 
     private fun updateUnReadChatData(chatMessage: ChatMessage) {
         // todo 메세지 수신시, recentChatData 업데이트
-        if (chatMessage.type == "TALK") {
+        if (chatMessage.type == "TALK" || chatMessage.type == "CERT") {
             if (chatMessage.senderId == memberId) {
                 unReadChatData = unReadChatData.map {
                     if (it.chatId == chatMessage.roomId) {
