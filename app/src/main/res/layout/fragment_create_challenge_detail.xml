@@ -169,6 +169,18 @@
                     app:layout_constraintTop_toBottomOf="@id/tv_introduce_label" />
 
                 <TextView
+                    android:id="@+id/tv_warning"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="2글자 이상 입력해주세요!"
+                    android:textColor="@color/gg_red"
+                    android:visibility="gone"
+                    app:descriptionHelperMessage="@{vm.uiState.descriptionState}"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/et_introduce" />
+
+                <TextView
                     android:id="@+id/tv_photo_label"
                     style="@style/TextFormLabel"
                     android:layout_width="wrap_content"
@@ -176,7 +188,7 @@
                     android:layout_marginTop="20dp"
                     android:text="대표 사진"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/et_introduce" />
+                    app:layout_constraintTop_toBottomOf="@id/tv_warning" />
 
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/iv_add_photo"

@@ -25,11 +25,11 @@ import javax.inject.Inject
 
 
 data class CreateChallengeDetailUiState(
+    val descriptionState: BaseUiState = BaseUiState.Empty,
     val certificateProgressState: ProgressState = ProgressState.Empty,
     val ticketProgressState: ProgressState = ProgressState.Empty,
     val minCertificateProgressState: ProgressState = ProgressState.Empty,
     val randomKeywordState: KeywordState = KeywordState.Empty,
-    val createChallengeState: BaseUiState = BaseUiState.Empty
 )
 
 sealed class ProgressState {
@@ -45,6 +45,8 @@ sealed class KeywordState {
 sealed class CreateChallengeDetailEvents{
     object NavigateToBack : CreateChallengeDetailEvents()
     data class NavigateToChatList(val chatId: Int) : CreateChallengeDetailEvents()
+    data class ShowToastMessage(val msg: String): CreateChallengeDetailEvents()
+    data class ShowSnackMessage(val msg: String): CreateChallengeDetailEvents()
 }
 
 @HiltViewModel
@@ -97,8 +99,35 @@ class CreateChallengeDetailViewModel @Inject constructor(
     }
 
     init {
+        observeDescription()
         observeSeekBar()
         setRandomKeywords()
+    }
+
+    private fun observeDescription(){
+        description.onEach {
+            if(it.isNotBlank()){
+                if(it.length < 2){
+                    _uiState.update { state ->
+                        state.copy(
+                            descriptionState = BaseUiState.Error("2글자 이상 입력해주세요")
+                        )
+                    }
+                } else {
+                    _uiState.update { state ->
+                        state.copy(
+                            descriptionState = BaseUiState.Success
+                        )
+                    }
+                }
+            } else {
+                _uiState.update { state ->
+                    state.copy(
+                        descriptionState = BaseUiState.Empty
+                    )
+                }
+            }
+        }.launchIn(viewModelScope)
     }
 
     private fun observeSeekBar() {
@@ -180,14 +209,11 @@ class CreateChallengeDetailViewModel @Inject constructor(
             ).let{
               when(it){
                   is BaseState.Success -> {
+                      _events.emit(CreateChallengeDetailEvents.ShowToastMessage("챌린지가 생성되었습니다!"))
                       _events.emit(CreateChallengeDetailEvents.NavigateToChatList(it.body.chatroomId))
                   }
                   is BaseState.Error -> {
-                      _uiState.update { state ->
-                          state.copy(
-                              createChallengeState = BaseUiState.Error(it.msg)
-                          )
-                      }
+                      _events.emit(CreateChallengeDetailEvents.ShowSnackMessage(it.msg))
                   }
               }
            }
