@@ -4,9 +4,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.aoztg.greengrim.databinding.ItemHomeHotChallengeBinding
-import com.aoztg.greengrim.presentation.ui.home.model.HotChallenge
+import com.aoztg.greengrim.presentation.ui.home.model.UiHotChallenge
 
-class HotChallengeAdapter(val data: List<HotChallenge>) :
+class HotChallengeAdapter(val data: List<UiHotChallenge>) :
     RecyclerView.Adapter<HotChallengeViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HotChallengeViewHolder {
@@ -25,7 +25,7 @@ class HotChallengeAdapter(val data: List<HotChallenge>) :
 class HotChallengeViewHolder(private val binding: ItemHomeHotChallengeBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(item: HotChallenge) {
+    fun bind(item: UiHotChallenge) {
         binding.item = item
     }
 }

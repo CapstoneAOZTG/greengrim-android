@@ -84,7 +84,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/layout_toolbar"
-            app:list="@{vm.uiState.chatListItem}"
+            app:list="@{vm.uiState.uiChatListItem}"
             tools:listitem="@layout/item_chat_list" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

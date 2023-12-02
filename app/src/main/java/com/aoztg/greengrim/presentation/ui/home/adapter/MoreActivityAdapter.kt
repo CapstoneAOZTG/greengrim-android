@@ -4,9 +4,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.aoztg.greengrim.databinding.ItemHomeMoreActivityBinding
-import com.aoztg.greengrim.presentation.ui.home.model.MoreActivity
+import com.aoztg.greengrim.presentation.ui.home.model.UiMoreActivity
 
-class MoreActivityAdapter(val data: List<MoreActivity>) :
+class MoreActivityAdapter(val data: List<UiMoreActivity>) :
     RecyclerView.Adapter<MoreActivityViewHolder>() {
 
     override fun onBindViewHolder(holder: MoreActivityViewHolder, position: Int) {
@@ -25,7 +25,7 @@ class MoreActivityAdapter(val data: List<MoreActivity>) :
 class MoreActivityViewHolder(private val binding: ItemHomeMoreActivityBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(item: MoreActivity) {
+    fun bind(item: UiMoreActivity) {
         binding.item = item
     }
 }

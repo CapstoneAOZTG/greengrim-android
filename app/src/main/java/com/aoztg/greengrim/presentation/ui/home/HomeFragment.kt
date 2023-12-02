@@ -46,20 +46,20 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
     private fun initRecycler() {
         repeatOnStarted {
             viewModel.uiState.collect {
-                if (it.hotChallengeList.isNotEmpty() && !isHotChallengeSet) {
-                    binding.rvHotChallenge.adapter = HotChallengeAdapter(it.hotChallengeList)
+                if (it.uiHotChallengeList.isNotEmpty() && !isHotChallengeSet) {
+                    binding.rvHotChallenge.adapter = HotChallengeAdapter(it.uiHotChallengeList)
                     recyclerToViewPager(binding.rvHotChallenge, binding.indicatorHotChallenge)
                     isHotChallengeSet = true
                 }
 
-                if (it.moreActivityList.isNotEmpty() && !isMoreActivitySet) {
-                    binding.rvMoreActivity.adapter = MoreActivityAdapter(it.moreActivityList)
+                if (it.uiMoreActivityList.isNotEmpty() && !isMoreActivitySet) {
+                    binding.rvMoreActivity.adapter = MoreActivityAdapter(it.uiMoreActivityList)
                     recyclerToViewPager(binding.rvMoreActivity, binding.indicatorMoreActivity)
                     isMoreActivitySet = true
                 }
 
-                if (it.hotNftList.isNotEmpty() && !isHotNftSet) {
-                    binding.rvHotNft.adapter = HotNftAdapter(it.hotNftList)
+                if (it.uiHotNftList.isNotEmpty() && !isHotNftSet) {
+                    binding.rvHotNft.adapter = HotNftAdapter(it.uiHotNftList)
                     recyclerToViewPager(binding.rvHotNft, binding.indicatorHotNft)
                     isHotNftSet = true
                 }

@@ -7,7 +7,7 @@
 
         <variable
             name="item"
-            type="com.aoztg.greengrim.presentation.ui.challenge.model.ChallengeRoom" />
+            type="com.aoztg.greengrim.presentation.ui.challenge.model.UiChallengeRoom" />
 
     </data>
 

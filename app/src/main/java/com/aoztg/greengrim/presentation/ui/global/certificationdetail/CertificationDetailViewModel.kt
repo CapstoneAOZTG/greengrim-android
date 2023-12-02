@@ -5,8 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.model.request.VerificationsRequest
 import com.aoztg.greengrim.data.repository.CertificationRepository
-import com.aoztg.greengrim.presentation.ui.global.mapper.toCertificationDetail
-import com.aoztg.greengrim.presentation.ui.global.model.CertificationDetail
+import com.aoztg.greengrim.presentation.ui.global.mapper.toUiCertificationDetail
+import com.aoztg.greengrim.presentation.ui.global.model.UiCertificationDetail
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,7 +19,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 data class CertificationDetailUiState(
-    val certificationDetail: CertificationDetail = CertificationDetail()
+    val uiCertificationDetail: UiCertificationDetail = UiCertificationDetail()
 )
 
 sealed class CertificationDetailEvents {
@@ -48,7 +48,7 @@ class CertificationDetailViewModel @Inject constructor(
                     is BaseState.Success -> {
                         _uiState.update { state ->
                             state.copy(
-                                certificationDetail = it.body.toCertificationDetail()
+                                uiCertificationDetail = it.body.toUiCertificationDetail()
                             )
                         }
                     }
@@ -73,7 +73,7 @@ class CertificationDetailViewModel @Inject constructor(
                     is BaseState.Success -> {
                         _uiState.update { state ->
                             state.copy(
-                                certificationDetail = _uiState.value.certificationDetail.copy(
+                                uiCertificationDetail = _uiState.value.uiCertificationDetail.copy(
                                     isVerified = "TRUE"
                                 )
                             )

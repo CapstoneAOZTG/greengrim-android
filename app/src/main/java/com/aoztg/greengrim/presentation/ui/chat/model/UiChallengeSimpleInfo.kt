@@ -1,6 +1,6 @@
 package com.aoztg.greengrim.presentation.ui.chat.model
 
-data class ChallengeSimpleInfo(
+data class UiChallengeSimpleInfo(
     val title: String = "",
     val category: String = "",
     val ticketCount: String = "",

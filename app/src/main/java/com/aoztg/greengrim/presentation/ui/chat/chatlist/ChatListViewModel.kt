@@ -5,8 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.repository.ChatRepository
 import com.aoztg.greengrim.presentation.chatmanager.model.UiUnReadChatData
-import com.aoztg.greengrim.presentation.ui.chat.mapper.toChatListItem
-import com.aoztg.greengrim.presentation.ui.chat.model.ChatListItem
+import com.aoztg.greengrim.presentation.ui.chat.mapper.toUiChatListItem
+import com.aoztg.greengrim.presentation.ui.chat.model.UiChatListItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,7 +20,7 @@ import javax.inject.Inject
 
 
 data class ChatListUiState(
-    val chatListItem: List<ChatListItem> = emptyList()
+    val uiChatListItem: List<UiChatListItem> = emptyList()
 )
 
 sealed class ChatListEvents {
@@ -48,8 +48,8 @@ class ChatListViewModel @Inject constructor(
                     is BaseState.Success -> {
                         _uiState.update { state ->
                             state.copy(
-                                chatListItem = it.body.map { data ->
-                                    data.toChatListItem(::navigateToChatRoom)
+                                uiChatListItem = it.body.map { data ->
+                                    data.toUiChatListItem(::navigateToChatRoom)
                                 }
                             )
                         }
@@ -72,7 +72,7 @@ class ChatListViewModel @Inject constructor(
 
         _uiState.update { state ->
             state.copy(
-                chatListItem = uiState.value.chatListItem.map{ listData ->
+                uiChatListItem = uiState.value.uiChatListItem.map{ listData ->
                     var newData = listData
                     list.forEach {  unReadData ->
                         if(listData.chatId == unReadData.chatId){

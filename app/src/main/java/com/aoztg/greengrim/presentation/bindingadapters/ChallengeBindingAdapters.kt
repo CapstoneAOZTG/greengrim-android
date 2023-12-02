@@ -8,7 +8,7 @@ import androidx.databinding.BindingAdapter
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.presentation.ui.challenge.create.KeywordState
 import com.aoztg.greengrim.presentation.ui.challenge.create.ProgressState
-import com.aoztg.greengrim.presentation.ui.global.model.ChallengeDetail
+import com.aoztg.greengrim.presentation.ui.global.model.UiChallengeDetail
 import com.google.android.material.chip.ChipGroup
 
 @SuppressLint("SetTextI18n")
@@ -42,7 +42,7 @@ fun bindSelectChips(chipGroup: ChipGroup, keywordState: KeywordState) {
 }
 
 @BindingAdapter("challengeDetailBtnText")
-fun bindChallengeDetailBtnText(button: Button, data: ChallengeDetail){
+fun bindChallengeDetailBtnText(button: Button, data: UiChallengeDetail){
 
     if( data.entered ){
         button.text = "이미 참여중인 챌린지 입니다"

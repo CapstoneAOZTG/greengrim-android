@@ -2,7 +2,7 @@ package com.aoztg.greengrim.presentation.ui.home.model
 
 import com.aoztg.greengrim.data.model.response.HotChallengeTags
 
-data class HotChallenge(
+data class UiHotChallenge(
     val id: Int,
     val imgUrl: String,
     val title: String,

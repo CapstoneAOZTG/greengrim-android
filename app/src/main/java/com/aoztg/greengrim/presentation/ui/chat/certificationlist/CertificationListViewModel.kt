@@ -4,11 +4,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.repository.CertificationRepository
-import com.aoztg.greengrim.presentation.ui.chat.mapper.toCertificationListData
-import com.aoztg.greengrim.presentation.ui.chat.mapper.toChallengeSimpleInfo
-import com.aoztg.greengrim.presentation.ui.chat.model.CertificationListItem
-import com.aoztg.greengrim.presentation.ui.chat.model.ChallengeSimpleInfo
-import com.aoztg.greengrim.presentation.ui.info.mycertification.MyCertificationEvents
+import com.aoztg.greengrim.presentation.ui.chat.mapper.toUiCertificationList
+import com.aoztg.greengrim.presentation.ui.chat.mapper.toUiChallengeSimpleInfo
+import com.aoztg.greengrim.presentation.ui.chat.model.UiCertificationItem
+import com.aoztg.greengrim.presentation.ui.chat.model.UiChallengeSimpleInfo
 import com.aoztg.greengrim.presentation.ui.toHeaderText
 import com.aoztg.greengrim.presentation.ui.toLocalDate
 import com.aoztg.greengrim.presentation.ui.toText
@@ -27,12 +26,12 @@ import javax.inject.Inject
 
 
 data class CertificationListUiState(
-    val challengeInfo: ChallengeSimpleInfo = ChallengeSimpleInfo(),
+    val challengeInfo: UiChallengeSimpleInfo = UiChallengeSimpleInfo(),
     val curMonthString: String = YearMonth.now().toText(),
     val curDateString: String = LocalDate.now().toHeaderText(),
     val curDate: LocalDate = LocalDate.now(),
     val certificationDateList: List<LocalDate> = emptyList(),
-    val certificationList: List<CertificationListItem> = emptyList(),
+    val certificationList: List<UiCertificationItem> = emptyList(),
     val page: Int = 0,
     val hasNext: Boolean = true,
 )
@@ -94,7 +93,7 @@ class CertificationListViewModel @Inject constructor(
                         is BaseState.Success -> {
                             _uiState.update { state ->
                                 state.copy(
-                                    challengeInfo = it.body.toChallengeSimpleInfo()
+                                    challengeInfo = it.body.toUiChallengeSimpleInfo()
                                 )
                             }
                         }
@@ -150,7 +149,7 @@ class CertificationListViewModel @Inject constructor(
                     when (it) {
                         is BaseState.Success -> {
                             val uiData =
-                                it.body.toCertificationListData(::navigateToCertificationDetail)
+                                it.body.toUiCertificationList(::navigateToCertificationDetail)
                             _uiState.update { state ->
                                 state.copy(
                                     certificationList = if (option == NEXT_PAGE) _uiState.value.certificationList + uiData.result else uiData.result,

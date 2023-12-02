@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.repository.InfoRepository
-import com.aoztg.greengrim.presentation.ui.info.mapper.toMyProfileInfo
-import com.aoztg.greengrim.presentation.ui.info.model.MyProfileInfo
+import com.aoztg.greengrim.presentation.ui.info.mapper.toUiMyProfileInfo
+import com.aoztg.greengrim.presentation.ui.info.model.UiMyProfileInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,7 +19,7 @@ import javax.inject.Inject
 
 
 data class InfoUiState(
-    val myProfileInfo: MyProfileInfo = MyProfileInfo()
+    val uiMyProfileInfo: UiMyProfileInfo = UiMyProfileInfo()
 )
 
 sealed class InfoEvents {
@@ -56,7 +56,7 @@ class InfoViewModel @Inject constructor(
                     is BaseState.Success -> {
                         _uiState.update { state ->
                             state.copy(
-                                myProfileInfo = it.body.toMyProfileInfo()
+                                uiMyProfileInfo = it.body.toUiMyProfileInfo()
                             )
                         }
                     }

@@ -5,11 +5,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.aoztg.greengrim.databinding.ItemChallengeListBinding
-import com.aoztg.greengrim.presentation.ui.challenge.model.ChallengeRoom
+import com.aoztg.greengrim.presentation.ui.challenge.model.UiChallengeRoom
 import com.aoztg.greengrim.presentation.util.DefaultDiffUtil
 
 class ChallengeRoomAdapter :
-    ListAdapter<ChallengeRoom, ChallengeRoomViewHolder>(DefaultDiffUtil<ChallengeRoom>()) {
+    ListAdapter<UiChallengeRoom, ChallengeRoomViewHolder>(DefaultDiffUtil<UiChallengeRoom>()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChallengeRoomViewHolder {
         return ChallengeRoomViewHolder(
@@ -30,7 +30,7 @@ class ChallengeRoomAdapter :
 class ChallengeRoomViewHolder(private val binding: ItemChallengeListBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(item: ChallengeRoom) {
+    fun bind(item: UiChallengeRoom) {
         binding.item = item
     }
 }

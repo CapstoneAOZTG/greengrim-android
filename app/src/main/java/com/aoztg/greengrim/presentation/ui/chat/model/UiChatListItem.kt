@@ -1,6 +1,6 @@
 package com.aoztg.greengrim.presentation.ui.chat.model
 
-data class ChatListItem(
+data class UiChatListItem(
     val chatId: Int,
     val challengeId: Int,
     val titleImg: String,

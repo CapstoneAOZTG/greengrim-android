@@ -6,8 +6,8 @@ import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.repository.ChallengeRepository
 import com.aoztg.greengrim.data.repository.ChatRepository
 import com.aoztg.greengrim.presentation.ui.LoadingState
-import com.aoztg.greengrim.presentation.ui.global.mapper.toChallengeDetail
-import com.aoztg.greengrim.presentation.ui.global.model.ChallengeDetail
+import com.aoztg.greengrim.presentation.ui.global.mapper.toUiChallengeDetail
+import com.aoztg.greengrim.presentation.ui.global.model.UiChallengeDetail
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -22,7 +22,7 @@ import javax.inject.Inject
 
 data class ChallengeDetailUiState(
     val loading: LoadingState = LoadingState.Empty,
-    val challengeDetail: ChallengeDetail = ChallengeDetail(),
+    val uiChallengeDetail: UiChallengeDetail = UiChallengeDetail(),
 )
 
 sealed class ChallengeDetailEvents {
@@ -58,10 +58,10 @@ class ChallengeDetailViewModel @Inject constructor(
             challengeRepository.getChallengeDetail(challengeId).let {
                 when (it) {
                     is BaseState.Success -> {
-                        val uiData = it.body.toChallengeDetail()
+                        val uiData = it.body.toUiChallengeDetail()
                         _uiState.update { state ->
                             state.copy(
-                                challengeDetail = uiData,
+                                uiChallengeDetail = uiData,
                             )
                         }
                     }

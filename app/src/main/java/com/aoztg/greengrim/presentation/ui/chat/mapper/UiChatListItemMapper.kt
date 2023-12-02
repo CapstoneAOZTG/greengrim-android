@@ -1,11 +1,11 @@
 package com.aoztg.greengrim.presentation.ui.chat.mapper
 
 import com.aoztg.greengrim.data.model.response.ChatRoomsResponse
-import com.aoztg.greengrim.presentation.ui.chat.model.ChatListItem
+import com.aoztg.greengrim.presentation.ui.chat.model.UiChatListItem
 
 
-fun ChatRoomsResponse.toChatListItem(onItemClick: (Int, Int) -> Unit): ChatListItem {
-    return ChatListItem(
+fun ChatRoomsResponse.toUiChatListItem(onItemClick: (Int, Int) -> Unit): UiChatListItem {
+    return UiChatListItem(
         chatId = this.chatroomId,
         challengeId = this.challengeId,
         titleImg = this.imgUrl,
