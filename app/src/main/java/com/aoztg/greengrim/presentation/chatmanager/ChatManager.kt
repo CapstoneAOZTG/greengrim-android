@@ -62,7 +62,6 @@ class ChatManager @Inject constructor(
 
     init {
         setMemberId()
-        getMyChatIds()
     }
 
     private fun setMemberId() {
@@ -74,7 +73,7 @@ class ChatManager @Inject constructor(
         }
     }
 
-    private fun getMyChatIds() {
+    fun getMyChatIds() {
         viewModelScope.launch {
             chatRepository.getChatRooms().let {
                 when (it) {
@@ -276,5 +275,9 @@ class ChatManager @Inject constructor(
                 it.chatId != chatId
             }
         }
+    }
+
+    fun disconnectChat(){
+        chatSocket.disconnectServer()
     }
 }

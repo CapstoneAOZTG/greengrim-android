@@ -60,7 +60,7 @@
         </activity>
 
         <service
-            android:name=".config.MyFirebaseMessagingService"
+            android:name=".service.MyFirebaseMessagingService"
             android:exported="true"
             android:enabled="true"
             android:stopWithTask="false">

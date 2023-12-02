@@ -1,4 +1,4 @@
-package com.aoztg.greengrim.config
+package com.aoztg.greengrim.service
 
 import android.app.Notification
 import android.app.NotificationChannel

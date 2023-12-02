@@ -8,6 +8,7 @@ import com.aoztg.greengrim.presentation.util.Constants
 import com.aoztg.greengrim.presentation.util.Constants.TAG
 import org.json.JSONObject
 import ua.naiksoftware.stomp.Stomp
+import ua.naiksoftware.stomp.dto.LifecycleEvent
 import ua.naiksoftware.stomp.dto.StompHeader
 
 class ChatSocket(
@@ -31,8 +32,12 @@ class ChatSocket(
         } catch(e: Exception){
             Log.d(TAG,e.message.toString())
         }
-
     }
+
+    fun disconnectServer(){
+        stompClient.disconnect()
+    }
+
 
     @SuppressLint("CheckResult")
     fun subscribeChat(chatId: Int) {
@@ -40,6 +45,25 @@ class ChatSocket(
             stompClient.topic("/sub/chat/room/$chatId").subscribe { topicMessage ->
                 acceptChat(topicMessage.payload)
             }
+
+            stompClient.lifecycle().subscribe{ event ->
+                when(event.type){
+                    LifecycleEvent.Type.OPENED -> {
+                        Log.d(TAG,"open")
+                    }
+
+                    LifecycleEvent.Type.CLOSED -> {
+                        Log.d(TAG,"closed")
+                    }
+
+                    LifecycleEvent.Type.ERROR -> {
+                        Log.d(TAG,"error")
+                    }
+
+                    else -> {}
+                }
+            }
+
         } catch(e: Exception){
             Log.d(TAG,e.message.toString())
         }

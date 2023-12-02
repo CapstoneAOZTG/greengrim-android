@@ -6,7 +6,7 @@ import android.content.SharedPreferences
 import android.util.Log
 import com.aoztg.greengrim.BuildConfig
 import com.aoztg.greengrim.R
-import com.aoztg.greengrim.config.MyFirebaseMessagingService
+import com.aoztg.greengrim.service.MyFirebaseMessagingService
 import com.aoztg.greengrim.presentation.util.Constants.TAG
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.FirebaseApp
@@ -70,7 +70,8 @@ class App : Application() {
         FirebaseApp.initializeApp(this@App)
         CoroutineScope(Dispatchers.Main).launch {
             fcmToken = async { MyFirebaseMessagingService().getFirebaseToken() }.await()
-            Log.d(TAG, fcmToken)
+            Log.d("fcmToken", fcmToken)
         }
     }
+
 }

@@ -15,7 +15,7 @@ class AccessTokenInterceptor() : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val builder: Request.Builder = chain.request().newBuilder()
         val jwt: String? = sharedPreferences.getString(X_ACCESS_TOKEN, null)
-        Log.d("token",jwt.toString())
+        Log.d("accessToken",jwt.toString())
         jwt?.let {
             builder.addHeader("Authorization", jwt)
         } ?: run {
