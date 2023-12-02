@@ -62,6 +62,7 @@ abstract class BaseFragment<B : ViewDataBinding>(
     fun dismissLoading() {
         if (loadingState) {
             loadingDialog.dismiss()
+            loadingState = false
         }
     }
 

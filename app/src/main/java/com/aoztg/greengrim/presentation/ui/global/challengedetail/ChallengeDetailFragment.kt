@@ -31,8 +31,12 @@ class ChallengeDetailFragment :
         parentViewModel.hideBNV()
         binding.vm = viewModel
         viewModel.setChallengeId(challengeId)
-        viewModel.getChallengeDetailInfo()
         initEventObserver()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.getChallengeDetailInfo()
     }
 
     private fun initEventObserver() {
@@ -47,8 +51,8 @@ class ChallengeDetailFragment :
                     }
                     is ChallengeDetailEvents.ShowToastMessage -> showCustomToast(it.msg)
                     is ChallengeDetailEvents.ShowSnackMessage -> showSnackBar(it.msg)
-                    is ChallengeDetailEvents.ShowDialog -> showLoading(requireContext())
-                    is ChallengeDetailEvents.DismissDialog -> dismissLoading()
+                    is ChallengeDetailEvents.ShowLoading -> showLoading(requireContext())
+                    is ChallengeDetailEvents.DismissLoading -> dismissLoading()
                 }
             }
         }

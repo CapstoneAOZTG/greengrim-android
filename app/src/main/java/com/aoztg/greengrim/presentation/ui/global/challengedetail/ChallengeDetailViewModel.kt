@@ -29,8 +29,8 @@ sealed class ChallengeDetailEvents {
     data class NavigateChatRoom(val chatId: Int, val challengeId: Int) : ChallengeDetailEvents()
     data class ShowToastMessage(val msg: String) : ChallengeDetailEvents()
     data class ShowSnackMessage(val msg: String) : ChallengeDetailEvents()
-    object ShowDialog : ChallengeDetailEvents()
-    object DismissDialog : ChallengeDetailEvents()
+    object ShowLoading : ChallengeDetailEvents()
+    object DismissLoading : ChallengeDetailEvents()
 }
 
 @HiltViewModel
@@ -50,7 +50,7 @@ class ChallengeDetailViewModel @Inject constructor(
     fun getChallengeDetailInfo() {
         viewModelScope.launch {
 
-            _events.emit(ChallengeDetailEvents.ShowDialog)
+            _events.emit(ChallengeDetailEvents.ShowLoading)
 
             challengeRepository.getChallengeDetail(challengeId).let {
                 when (it) {
@@ -69,7 +69,7 @@ class ChallengeDetailViewModel @Inject constructor(
                 }
             }
             delay(500)
-            _events.emit(ChallengeDetailEvents.DismissDialog)
+            _events.emit(ChallengeDetailEvents.DismissLoading)
         }
     }
 
@@ -88,13 +88,13 @@ class ChallengeDetailViewModel @Inject constructor(
     fun enterChat(id: Int) {
         viewModelScope.launch {
 
-            _events.emit(ChallengeDetailEvents.ShowDialog)
+            _events.emit(ChallengeDetailEvents.ShowLoading)
 
             chatRepository.enterChat(id).let {
-                _events.emit(ChallengeDetailEvents.DismissDialog)
+                _events.emit(ChallengeDetailEvents.DismissLoading)
                 when (it) {
                     is BaseState.Success -> {
-                        _events.emit(ChallengeDetailEvents.ShowToastMessage("채팅방에 입장합니다"))
+                        _events.emit(ChallengeDetailEvents.ShowToastMessage("채팅방에 입장했습니다"))
                         _events.emit(
                             ChallengeDetailEvents.NavigateChatRoom(
                                 it.body.chatroomId,

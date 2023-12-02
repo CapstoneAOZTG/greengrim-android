@@ -8,6 +8,7 @@ import com.aoztg.greengrim.data.repository.CertificationRepository
 import com.aoztg.greengrim.presentation.ui.global.mapper.toUiCertificationDetail
 import com.aoztg.greengrim.presentation.ui.global.model.UiCertificationDetail
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -25,7 +26,10 @@ data class CertificationDetailUiState(
 sealed class CertificationDetailEvents {
     data class ShowToastMessage(val msg: String) : CertificationDetailEvents()
     object NavigateToBack : CertificationDetailEvents()
-    object ShowSnackBar : CertificationDetailEvents()
+    object ShowVerifySnackBar : CertificationDetailEvents()
+    data class ShowSnackMessage(val msg: String): CertificationDetailEvents()
+    object ShowLoading: CertificationDetailEvents()
+    object DismissLoading: CertificationDetailEvents()
 }
 
 @HiltViewModel
@@ -41,8 +45,10 @@ class CertificationDetailViewModel @Inject constructor(
 
     private var certificationId = -1
 
-    private fun getCertificationDetail() {
+    fun getCertificationDetail() {
         viewModelScope.launch {
+            _events.emit(CertificationDetailEvents.ShowLoading)
+
             certificationRepository.getCertificationDetail(certificationId).let {
                 when (it) {
                     is BaseState.Success -> {
@@ -54,10 +60,12 @@ class CertificationDetailViewModel @Inject constructor(
                     }
 
                     is BaseState.Error -> {
-                        _events.emit(CertificationDetailEvents.ShowToastMessage(it.msg))
+                        _events.emit(CertificationDetailEvents.ShowSnackMessage(it.msg))
                     }
                 }
             }
+            delay(500)
+            _events.emit(CertificationDetailEvents.DismissLoading)
         }
     }
 
@@ -78,11 +86,11 @@ class CertificationDetailViewModel @Inject constructor(
                                 )
                             )
                         }
-                        _events.emit(CertificationDetailEvents.ShowSnackBar)
+                        _events.emit(CertificationDetailEvents.ShowVerifySnackBar)
                     }
 
                     is BaseState.Error -> {
-                        _events.emit(CertificationDetailEvents.ShowToastMessage(it.msg))
+                        _events.emit(CertificationDetailEvents.ShowSnackMessage(it.msg))
                     }
                 }
             }
@@ -92,7 +100,6 @@ class CertificationDetailViewModel @Inject constructor(
 
     fun setCertificationId(id: Int) {
         certificationId = id
-        getCertificationDetail()
     }
 
     fun navigateToBack() {
