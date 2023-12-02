@@ -14,7 +14,7 @@ internal fun ChatMessage.toUiChatMessage(memberId: Long, onCertClickListener: (I
     fun empty(empty: Int){}
     return UiChatMessage(
         type = when (type) {
-            "TALK" -> {
+            "TALK", "CERT" -> {
                 if (memberId == senderId) Constants.MY_CHAT
                 else OTHER_CHAT
             }

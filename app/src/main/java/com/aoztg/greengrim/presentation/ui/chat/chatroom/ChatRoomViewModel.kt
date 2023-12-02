@@ -3,7 +3,6 @@ package com.aoztg.greengrim.presentation.ui.chat.chatroom
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.app.App
-import com.aoztg.greengrim.data.local.ChatEntity
 import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.repository.ChallengeRepository
 import com.aoztg.greengrim.data.repository.ChatRepository
@@ -36,7 +35,7 @@ data class ChatRoomUiState(
 
 sealed class ChatRoomEvents {
     object NavigateBack : ChatRoomEvents()
-    object ExitChat: ChatRoomEvents()
+    object ExitChat : ChatRoomEvents()
     object ShowPopupMenu : ChatRoomEvents()
     object NavigateToCreateCertification : ChatRoomEvents()
     data class NavigateToCertificationList(val id: Int) : ChatRoomEvents()
@@ -133,15 +132,15 @@ class ChatRoomViewModel @Inject constructor(
         message: ChatMessage
     ) {
         val newMessages = uiState.value.chatMessages.toMutableList()
-        val newMessage = message.toUiChatMessage(memberId,::navigateToCertificationDetail)
+        val newMessage = message.toUiChatMessage(memberId, ::navigateToCertificationDetail)
 
-        if(newMessages.isNotEmpty()){
-            if(newMessages.last().sentDate != newMessage.sentDate){
-                newMessages.add(0, UiChatMessage(type = DATE, sentDate = newMessage.sentDate){})
+        if (newMessages.isNotEmpty()) {
+            if (newMessages.last().sentDate != newMessage.sentDate) {
+                newMessages.add(0, UiChatMessage(type = DATE, message = newMessage.sentDate) {})
             }
         }
 
-        if(newMessage.type != NOTHING){
+        if (newMessage.type != NOTHING) {
             newMessages.add(0, newMessage)
             _uiState.update { state ->
                 state.copy(
@@ -200,7 +199,7 @@ class ChatRoomViewModel @Inject constructor(
         }
     }
 
-    fun exitChallenge(){
+    fun exitChallenge() {
         viewModelScope.launch {
             challengeRepository.exitChallenge(challengeId)
             _events.emit(ChatRoomEvents.ExitChat)

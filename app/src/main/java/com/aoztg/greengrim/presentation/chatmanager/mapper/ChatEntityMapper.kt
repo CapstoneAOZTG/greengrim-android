@@ -12,7 +12,7 @@ internal fun ChatMessage.toChatEntity(memberId: Long): ChatEntity {
     return ChatEntity(
         chatId = roomId,
         type = when (type) {
-            "TALK" -> {
+            "TALK", "CERT" -> {
                 if (memberId == senderId) MY_CHAT
                 else OTHER_CHAT
             }
