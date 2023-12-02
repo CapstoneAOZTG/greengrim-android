@@ -31,6 +31,7 @@ import javax.inject.Inject
 
 sealed class ChatEvent {
     data class ShowToastMessage(val msg: String) : ChatEvent()
+    data class ShowSnackMessage(val msg: String) : ChatEvent()
 }
 
 @HiltViewModel
@@ -60,7 +61,7 @@ class ChatManager @Inject constructor(
     val unReadCnt: StateFlow<Int> = _unReadCnt.asStateFlow()
 
     private var memberId: Long = 0
-    private val chatSocket = ChatSocket(::receiveMessage, ::showSocketToastMessage)
+    private val chatSocket = ChatSocket(::receiveMessage, ::showSocketToastMessage, ::showSocketSnackMessage)
 
     init {
         setMemberId()
@@ -282,6 +283,12 @@ class ChatManager @Inject constructor(
     private fun showSocketToastMessage(msg: String){
         viewModelScope.launch {
             _events.emit(ChatEvent.ShowToastMessage(msg))
+        }
+    }
+
+    private fun showSocketSnackMessage(msg: String){
+        viewModelScope.launch {
+            _events.emit(ChatEvent.ShowSnackMessage(msg))
         }
     }
 

@@ -26,6 +26,7 @@ import com.aoztg.greengrim.R
 import com.aoztg.greengrim.app.App
 import com.aoztg.greengrim.databinding.ActivityMainBinding
 import com.aoztg.greengrim.presentation.base.BaseActivity
+import com.aoztg.greengrim.presentation.chatmanager.ChatEvent
 import com.aoztg.greengrim.presentation.chatmanager.ChatManager
 import com.aoztg.greengrim.presentation.customview.getPhotoSheet
 import com.aoztg.greengrim.presentation.ui.home.HomeFragmentDirections
@@ -70,6 +71,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         setBottomNavigation()
         setBottomNavigationListener()
         initEventObserver()
+        initSocketObserver()
         setKeyboardListener()
     }
 
@@ -128,6 +130,17 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                     is MainEvent.ShowPhotoBottomSheet -> showPhotoBottomSheet()
                     is MainEvent.Logout -> logout()
                     is MainEvent.ShowToastMessage -> showCustomToast(it.msg)
+                }
+            }
+        }
+    }
+
+    private fun initSocketObserver(){
+        repeatOnStarted {
+            chatManager.event.collect{
+                when(it){
+                    is ChatEvent.ShowSnackMessage -> showSnackBar(it.msg)
+                    is ChatEvent.ShowToastMessage -> showCustomToast(it.msg)
                 }
             }
         }

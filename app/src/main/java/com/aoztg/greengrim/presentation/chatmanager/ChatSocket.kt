@@ -1,11 +1,9 @@
 package com.aoztg.greengrim.presentation.chatmanager
 
 import android.annotation.SuppressLint
-import android.util.Log
 import com.aoztg.greengrim.BuildConfig
 import com.aoztg.greengrim.app.App
 import com.aoztg.greengrim.presentation.util.Constants
-import com.aoztg.greengrim.presentation.util.Constants.TAG
 import org.json.JSONObject
 import ua.naiksoftware.stomp.Stomp
 import ua.naiksoftware.stomp.dto.StompHeader
@@ -13,6 +11,7 @@ import ua.naiksoftware.stomp.dto.StompHeader
 class ChatSocket(
     private val acceptChat: (String) -> Unit,
     private val showToastMessage: (String) -> Unit,
+    private val showSnackMessage: (String) -> Unit
 ) {
 
     private val stompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, BuildConfig.SOCKET_URL)
@@ -30,7 +29,7 @@ class ChatSocket(
 
             stompClient.connect(headerList)
         } catch(e: Exception){
-            showToastMessage(e.message.toString())
+            showSnackMessage(e.message.toString())
         }
     }
 
@@ -47,7 +46,7 @@ class ChatSocket(
             }
 
         } catch(e: Exception){
-            showToastMessage(e.message.toString())
+            showSnackMessage(e.message.toString())
         }
     }
 
@@ -56,7 +55,7 @@ class ChatSocket(
         try{
             stompClient.topic("/sub/chat/room/$chatId").subscribe { topicMessage -> }
         } catch(e: Exception){
-            Log.d(TAG,e.message.toString())
+            showSnackMessage(e.message.toString())
         }
     }
 
@@ -69,7 +68,7 @@ class ChatSocket(
             data.put("message", message)
             stompClient.send("/pub/chat/message", data.toString()).subscribe()
         } catch(e: Exception){
-            showToastMessage(e.message.toString())
+            showSnackMessage(e.message.toString())
         }
     }
 
@@ -84,7 +83,7 @@ class ChatSocket(
             data.put("certImg", certImg)
             stompClient.send("/pub/chat/message", data.toString()).subscribe()
         } catch(e: Exception){
-            showToastMessage(e.message.toString())
+            showSnackMessage(e.message.toString())
         }
     }
 }
