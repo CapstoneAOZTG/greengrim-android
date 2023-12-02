@@ -31,13 +31,13 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
     override fun onMessageReceived(message: RemoteMessage) {
         PushUtils.acquireWakeLock(App.context())
         //수신한 메시지를 처리
-        val title = message.data["title"]
-        val body = message.data["body"]
-        val code = message.data["code"]
-        sendNotification(title, body, code)
+//        val title = message.data["title"]
+//        val body = message.data["body"]
+//        val code = message.data["code"]
+        sendNotification()
     }
 
-    private fun sendNotification(title: String?, body: String?, code: String?) {
+    private fun sendNotification() {
 
         val uniId = (System.currentTimeMillis() / 7).toInt()
         val intent = Intent(this, SplashActivity::class.java)
@@ -47,8 +47,8 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
 
         val notificationBuilder = NotificationCompat.Builder(this, channelId).apply {
             priority = NotificationCompat.PRIORITY_HIGH
-            setContentTitle(title)
-            setContentText(body)
+//            setContentTitle(title)
+//            setContentText(body)
             setContentIntent(pIntent)
             setAutoCancel(true)
             setSmallIcon(R.drawable.gg_logo)

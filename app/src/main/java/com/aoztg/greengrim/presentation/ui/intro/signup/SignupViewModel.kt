@@ -2,6 +2,7 @@ package com.aoztg.greengrim.presentation.ui.intro.signup
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.aoztg.greengrim.app.App
 import com.aoztg.greengrim.app.App.Companion.sharedPreferences
 import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.model.request.CheckNickRequest
@@ -112,7 +113,8 @@ class SignupViewModel @Inject constructor(private val introRepository: IntroRepo
                     email = EmailData.email,
                     nickName = nickname.value,
                     introduction = introduce.value,
-                    profileImgUrl = profileUrl
+                    profileImgUrl = profileUrl,
+                    App.fcmToken
                 )
             ).let {
                 when (it) {
