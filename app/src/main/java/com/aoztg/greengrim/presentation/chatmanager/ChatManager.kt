@@ -315,7 +315,7 @@ class ChatManager @Inject constructor(
                 when(it){
                     is BaseState.Success -> {}
                     is BaseState.Error -> {
-                        _events.emit(ChatEvent.ShowSnackMessage(it.msg))
+                        _events.emit(ChatEvent.ShowToastMessage(it.msg))
                     }
                 }
             }
