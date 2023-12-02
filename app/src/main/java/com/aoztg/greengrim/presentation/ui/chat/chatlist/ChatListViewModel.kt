@@ -1,5 +1,6 @@
 package com.aoztg.greengrim.presentation.ui.chat.chatlist
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.data.model.BaseState
@@ -7,8 +8,8 @@ import com.aoztg.greengrim.data.repository.ChatRepository
 import com.aoztg.greengrim.presentation.chatmanager.model.UiUnReadChatData
 import com.aoztg.greengrim.presentation.ui.chat.mapper.toUiChatListItem
 import com.aoztg.greengrim.presentation.ui.chat.model.UiChatListItem
+import com.aoztg.greengrim.presentation.util.Constants.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -47,8 +48,6 @@ class ChatListViewModel @Inject constructor(
 
     fun getChatList() {
         viewModelScope.launch {
-            _events.emit(ChatListEvents.ShowLoading)
-
             chatRepository.getChatRooms().let {
                 when (it) {
                     is BaseState.Success -> {
@@ -64,7 +63,6 @@ class ChatListViewModel @Inject constructor(
 
                     is BaseState.Error -> {
                         _events.emit(ChatListEvents.ShowSnackMessage(it.msg))
-                        _events.emit(ChatListEvents.DismissLoading)
                     }
                 }
             }
@@ -74,6 +72,9 @@ class ChatListViewModel @Inject constructor(
     fun setUnReadChatData(list: List<UiUnReadChatData>) {
 
         // todo 좀더 효율적인 알고리즘으로 refactoring..
+        list.forEach {
+            Log.d(TAG,it.toString())
+        }
 
         _uiState.update { state ->
             state.copy(
@@ -92,11 +93,6 @@ class ChatListViewModel @Inject constructor(
                     newData
                 }
             )
-        }
-
-        viewModelScope.launch {
-            delay(200)
-            _events.emit(ChatListEvents.DismissLoading)
         }
     }
 

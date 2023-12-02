@@ -71,7 +71,7 @@ class HomeViewModel @Inject constructor(
                 }
 
                 is BaseState.Error -> {
-                    _events.emit(HomeEvents.ShowToastMessage(it.msg))
+                    _events.emit(HomeEvents.ShowSnackMessage(it.msg))
                 }
             }
         }
@@ -92,7 +92,7 @@ class HomeViewModel @Inject constructor(
                 }
 
                 is BaseState.Error -> {
-                    _events.emit(HomeEvents.ShowToastMessage(it.msg))
+                    _events.emit(HomeEvents.ShowSnackMessage(it.msg))
                 }
             }
         }

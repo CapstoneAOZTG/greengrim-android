@@ -23,20 +23,18 @@ fun bindResource(imageView: ImageView, resource: Int) {
 
 @BindingAdapter("imgUrl")
 fun bindImg(imageView: ImageView, url: String) {
-
     Glide.with(imageView.context)
         .load(url)
+        .error(R.drawable.icon_no_image)
         .into(imageView)
 }
 
 @BindingAdapter("profileImgUrl")
 fun bindProfileImg(imageView: ImageView, url: String) {
-    if (url.isNotBlank()) {
-        Glide.with(imageView.context)
-            .load(url)
-            .error(R.drawable.icon_profile)
-            .into(imageView)
-    }
+    Glide.with(imageView.context)
+        .load(url)
+        .error(R.drawable.icon_profile)
+        .into(imageView)
 }
 
 @BindingAdapter("imgUrlCheckEmtpy")

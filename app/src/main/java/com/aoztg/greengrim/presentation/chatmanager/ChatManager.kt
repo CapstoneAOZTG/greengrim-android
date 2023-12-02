@@ -15,6 +15,7 @@ import com.aoztg.greengrim.presentation.chatmanager.model.UiUnReadChatData
 import com.aoztg.greengrim.presentation.util.Constants
 import com.aoztg.greengrim.presentation.util.Constants.DATE
 import com.aoztg.greengrim.presentation.util.Constants.NOTHING
+import com.aoztg.greengrim.presentation.util.Constants.TAG
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -110,6 +111,9 @@ class ChatManager @Inject constructor(
             when (val response = chatRepository.getUnReadChatData()) {
                 is BaseState.Success -> {
                     if (response.body.isNotEmpty()) {
+                        response.body.forEach {
+                            Log.d(TAG,it.toString())
+                        }
                         unReadChatData = response.body.map {
                             it.toUiUnReadChatData()
                         }
@@ -187,6 +191,7 @@ class ChatManager @Inject constructor(
                         it.copy(
                             recentChat = chatMessage.message,
                             recentChatTime = chatMessage.sentTime,
+                            recentChatDate = chatMessage.sentDate,
                             unReadCount = it.unReadCount + 1
                         )
                     } else {
@@ -242,7 +247,7 @@ class ChatManager @Inject constructor(
                 when (val response = chatRepository.addUnReadChatData(it.toUnReadChatEntity())) {
                     is BaseState.Success -> {}
                     is BaseState.Error -> {
-                        Log.d(Constants.TAG, response.msg)
+                        Log.d(TAG, response.msg)
                     }
                 }
             }
