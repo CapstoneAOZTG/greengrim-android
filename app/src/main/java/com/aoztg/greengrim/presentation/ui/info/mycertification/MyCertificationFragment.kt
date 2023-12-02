@@ -13,6 +13,8 @@ import com.aoztg.greengrim.presentation.ui.info.mycertification.MyCertificationV
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 import com.aoztg.greengrim.presentation.ui.toCertificationDetail
 import com.aoztg.greengrim.presentation.customview.CustomCalendar
+import com.aoztg.greengrim.presentation.ui.chat.certificationlist.CertificationListViewModel
+import com.aoztg.greengrim.presentation.ui.info.mycertification.MyCertificationViewModel.Companion.NEW_DATE
 import com.kizitonwose.calendar.core.yearMonth
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.LocalDate
@@ -37,6 +39,7 @@ class MyCertificationFragment :
         initCustomCalendar()
         setBtnClickListener()
         binding.rvCertifications.adapter = MyCertificationAdapter()
+        viewModel.getCertificationList(NEW_DATE)
         viewModel.getCertificationDate()
     }
 
