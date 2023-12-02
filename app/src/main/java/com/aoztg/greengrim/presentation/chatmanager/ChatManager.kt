@@ -60,7 +60,7 @@ class ChatManager @Inject constructor(
     val unReadCnt: StateFlow<Int> = _unReadCnt.asStateFlow()
 
     private var memberId: Long = 0
-    private val chatSocket = ChatSocket(::receiveMessage)
+    private val chatSocket = ChatSocket(::receiveMessage, ::showSocketToastMessage)
 
     init {
         setMemberId()
@@ -276,6 +276,12 @@ class ChatManager @Inject constructor(
             unReadChatData = unReadChatData.filter {
                 it.chatId != chatId
             }
+        }
+    }
+
+    private fun showSocketToastMessage(msg: String){
+        viewModelScope.launch {
+            _events.emit(ChatEvent.ShowToastMessage(msg))
         }
     }
 

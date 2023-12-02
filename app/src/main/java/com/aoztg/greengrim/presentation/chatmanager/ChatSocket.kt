@@ -8,11 +8,11 @@ import com.aoztg.greengrim.presentation.util.Constants
 import com.aoztg.greengrim.presentation.util.Constants.TAG
 import org.json.JSONObject
 import ua.naiksoftware.stomp.Stomp
-import ua.naiksoftware.stomp.dto.LifecycleEvent
 import ua.naiksoftware.stomp.dto.StompHeader
 
 class ChatSocket(
-    private val acceptChat: (String) -> Unit
+    private val acceptChat: (String) -> Unit,
+    private val showToastMessage: (String) -> Unit,
 ) {
 
     private val stompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, BuildConfig.SOCKET_URL)
@@ -30,7 +30,7 @@ class ChatSocket(
 
             stompClient.connect(headerList)
         } catch(e: Exception){
-            Log.d(TAG,e.message.toString())
+            showToastMessage(e.message.toString())
         }
     }
 
@@ -46,26 +46,8 @@ class ChatSocket(
                 acceptChat(topicMessage.payload)
             }
 
-            stompClient.lifecycle().subscribe{ event ->
-                when(event.type){
-                    LifecycleEvent.Type.OPENED -> {
-                        Log.d(TAG,"open")
-                    }
-
-                    LifecycleEvent.Type.CLOSED -> {
-                        Log.d(TAG,"closed")
-                    }
-
-                    LifecycleEvent.Type.ERROR -> {
-                        Log.d(TAG,"error")
-                    }
-
-                    else -> {}
-                }
-            }
-
         } catch(e: Exception){
-            Log.d(TAG,e.message.toString())
+            showToastMessage(e.message.toString())
         }
     }
 
@@ -87,14 +69,12 @@ class ChatSocket(
             data.put("message", message)
             stompClient.send("/pub/chat/message", data.toString()).subscribe()
         } catch(e: Exception){
-            Log.d(TAG,e.message.toString())
+            showToastMessage(e.message.toString())
         }
-
     }
 
     fun sendCertification(memberId: Long, chatId: Int, message: String, certId: Int, certImg: String, ) {
         try{
-
             val data = JSONObject()
             data.put("senderId", memberId)
             data.put("type", "CERT")
@@ -104,7 +84,7 @@ class ChatSocket(
             data.put("certImg", certImg)
             stompClient.send("/pub/chat/message", data.toString()).subscribe()
         } catch(e: Exception){
-            Log.d(TAG,e.message.toString())
+            showToastMessage(e.message.toString())
         }
     }
 }
