@@ -14,12 +14,12 @@ import javax.inject.Inject
 class IntroRepositoryImpl @Inject constructor(private val api: IntroAPI) : IntroRepository {
 
     override suspend fun signup(data: SignupRequest): BaseState<SignupResponse> =
-        runRemote(api.signup(data))
+        runRemote { api.signup(data) }
 
     override suspend fun login(data: LoginRequest): BaseState<LoginResponse> =
-        runRemote(api.login(data))
+        runRemote { api.login(data) }
 
     override suspend fun checkNick(data: CheckNickRequest): BaseState<CheckNickResponse> =
-        runRemote(api.checkNick(data))
+        runRemote { api.checkNick(data) }
 
 }

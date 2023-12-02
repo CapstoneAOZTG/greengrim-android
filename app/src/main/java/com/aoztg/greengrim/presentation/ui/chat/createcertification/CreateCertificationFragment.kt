@@ -58,7 +58,7 @@ class CreateCertificationFragment :
                         certId = it.certId,
                         certImg = it.certImg
                     )
-                    is CreateCertificationEvents.ShowSnackMessage -> showSnackBar(it.msg)
+                    is CreateCertificationEvents.ShowSnackMessage -> showCustomSnack(binding.tvTitle,it.msg)
                     is CreateCertificationEvents.ShowLoading -> showLoading(requireContext())
                     is CreateCertificationEvents.DismissLoading -> dismissLoading()
                 }

@@ -8,6 +8,8 @@ import com.aoztg.greengrim.data.repository.ChallengeRepository
 import com.aoztg.greengrim.data.repository.ChallengeRepositoryImpl
 import com.aoztg.greengrim.data.repository.ChatRepository
 import com.aoztg.greengrim.data.repository.ChatRepositoryImpl
+import com.aoztg.greengrim.data.repository.FcmRepository
+import com.aoztg.greengrim.data.repository.FcmRepositoryImpl
 import com.aoztg.greengrim.data.repository.HomeRepository
 import com.aoztg.greengrim.data.repository.HomeRepositoryImpl
 import com.aoztg.greengrim.data.repository.ImageRepository
@@ -74,4 +76,10 @@ abstract class RepositoryModule {
     abstract fun bindAttendCheckRepository(
         attendCheckRepositoryImpl: AttendCheckRepositoryImpl
     ): AttendCheckRepository
+
+    @Singleton
+    @Binds
+    abstract fun bindFcmRepository(
+        fcmRepositoryImpl: FcmRepositoryImpl
+    ): FcmRepository
 }

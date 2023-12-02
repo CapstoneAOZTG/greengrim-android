@@ -14,9 +14,11 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.aoztg.greengrim.presentation.customview.CustomSnackBar
 import com.aoztg.greengrim.presentation.customview.FourPopupMenu
 import com.aoztg.greengrim.presentation.customview.LoadingDialog
 import com.aoztg.greengrim.presentation.customview.OnePopupMenu
+import com.aoztg.greengrim.presentation.customview.VerifySnackBar
 import com.aoztg.greengrim.presentation.customview.YearMonthPickerDialog
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.CoroutineScope
@@ -52,7 +54,7 @@ abstract class BaseFragment<B : ViewDataBinding>(
     }
 
     fun showLoading(context: Context) {
-        if(!loadingState){
+        if (!loadingState) {
             loadingDialog = LoadingDialog(context)
             loadingDialog.show()
             loadingState = true
@@ -88,12 +90,18 @@ abstract class BaseFragment<B : ViewDataBinding>(
         onClickExit: () -> Unit,
         xPosition: Int,
         yPosition: Int
-    ){
-        fourPopupMenu = FourPopupMenu(context, onClickChallengeInfo, onClickCertificationList, onClickAccusation, onClickExit)
-        fourPopupMenu?.show(xPosition,yPosition)
+    ) {
+        fourPopupMenu = FourPopupMenu(
+            context,
+            onClickChallengeInfo,
+            onClickCertificationList,
+            onClickAccusation,
+            onClickExit
+        )
+        fourPopupMenu?.show(xPosition, yPosition)
     }
 
-    fun dismissFourPopup(){
+    fun dismissFourPopup() {
         fourPopupMenu?.dismiss()
     }
 
@@ -102,13 +110,14 @@ abstract class BaseFragment<B : ViewDataBinding>(
         curYear: Int,
         curMonth: Int,
         onConfirmBtnClickListener: (year: Int, month: Int) -> Unit
-    ){
-        yearMonthPickerDialog = YearMonthPickerDialog(context, curYear, curMonth, onConfirmBtnClickListener)
+    ) {
+        yearMonthPickerDialog =
+            YearMonthPickerDialog(context, curYear, curMonth, onConfirmBtnClickListener)
         yearMonthPickerDialog.show()
     }
 
-    fun dismissYearMonthDialog(){
-        if(yearMonthPickerDialog.isShowing){
+    fun dismissYearMonthDialog() {
+        if (yearMonthPickerDialog.isShowing) {
             yearMonthPickerDialog.dismiss()
         }
     }
@@ -129,6 +138,13 @@ abstract class BaseFragment<B : ViewDataBinding>(
             }
             show()
         }
+    }
+
+    fun showCustomSnack(
+        view: View,
+        text: String,
+    ) {
+        CustomSnackBar.make(view, text).show()
     }
 
     override fun onDestroyView() {

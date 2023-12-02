@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -80,12 +81,12 @@
             android:layout_marginTop="30dp"
             android:onClick="@{() -> pvm.goToGallery()}"
             android:scaleType="centerCrop"
-            android:src="@drawable/icon_profile"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/layout_toolbar"
             app:profileImgUrl="@{vm.profileUrl}"
-            app:shapeAppearanceOverlay="@style/All40RadiusImageView" />
+            app:shapeAppearanceOverlay="@style/All40RadiusImageView"
+            tools:src="@drawable/icon_profile" />
 
         <ImageView
             android:id="@+id/btn_goto_gallery"

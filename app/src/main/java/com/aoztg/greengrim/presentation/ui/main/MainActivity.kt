@@ -12,6 +12,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -25,6 +26,7 @@ import com.aoztg.greengrim.R
 import com.aoztg.greengrim.app.App
 import com.aoztg.greengrim.databinding.ActivityMainBinding
 import com.aoztg.greengrim.presentation.base.BaseActivity
+import com.aoztg.greengrim.presentation.chatmanager.ChatEvent
 import com.aoztg.greengrim.presentation.chatmanager.ChatManager
 import com.aoztg.greengrim.presentation.customview.getPhotoSheet
 import com.aoztg.greengrim.presentation.ui.home.HomeFragmentDirections
@@ -33,6 +35,7 @@ import com.aoztg.greengrim.presentation.ui.toMultiPart
 import com.aoztg.greengrim.presentation.util.Constants
 import com.aoztg.greengrim.presentation.util.Constants.CAMERA_PERMISSION
 import com.aoztg.greengrim.presentation.util.Constants.STORAGE_PERMISSION
+import com.aoztg.greengrim.presentation.util.Constants.TAG
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -68,7 +71,19 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         setBottomNavigation()
         setBottomNavigationListener()
         initEventObserver()
+        initSocketObserver()
         setKeyboardListener()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        chatManager.getMyChatIds()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        chatManager.subscribeFcm()
+        chatManager.disconnectChat()
     }
 
     private fun setBottomNavigation() {
@@ -115,6 +130,18 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                     is MainEvent.ShowPhotoBottomSheet -> showPhotoBottomSheet()
                     is MainEvent.Logout -> logout()
                     is MainEvent.ShowToastMessage -> showCustomToast(it.msg)
+                    is MainEvent.ShowSnackMessage -> showCustomSnack(binding.bnv, it.msg)
+                }
+            }
+        }
+    }
+
+    private fun initSocketObserver(){
+        repeatOnStarted {
+            chatManager.event.collect{
+                when(it){
+                    is ChatEvent.ShowSnackMessage -> showSnackBar(it.msg)
+                    is ChatEvent.ShowToastMessage -> showCustomToast(it.msg)
                 }
             }
         }

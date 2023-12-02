@@ -7,6 +7,7 @@ import com.aoztg.greengrim.app.App
 import com.aoztg.greengrim.data.local.ChatEntity
 import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.repository.ChatRepository
+import com.aoztg.greengrim.data.repository.FcmRepository
 import com.aoztg.greengrim.presentation.chatmanager.mapper.toChatEntity
 import com.aoztg.greengrim.presentation.chatmanager.mapper.toUiUnReadChatData
 import com.aoztg.greengrim.presentation.chatmanager.mapper.toUnReadChatEntity
@@ -30,11 +31,13 @@ import javax.inject.Inject
 
 sealed class ChatEvent {
     data class ShowToastMessage(val msg: String) : ChatEvent()
+    data class ShowSnackMessage(val msg: String) : ChatEvent()
 }
 
 @HiltViewModel
 class ChatManager @Inject constructor(
-    private val chatRepository: ChatRepository
+    private val chatRepository: ChatRepository,
+    private val fcmRepository: FcmRepository
 ) : ViewModel() {
 
     private val _events: MutableSharedFlow<ChatEvent> = MutableSharedFlow()
@@ -58,11 +61,10 @@ class ChatManager @Inject constructor(
     val unReadCnt: StateFlow<Int> = _unReadCnt.asStateFlow()
 
     private var memberId: Long = 0
-    private val chatSocket = ChatSocket(::receiveMessage)
+    private val chatSocket = ChatSocket(::receiveMessage, ::showSocketToastMessage, ::showSocketSnackMessage)
 
     init {
         setMemberId()
-        getMyChatIds()
     }
 
     private fun setMemberId() {
@@ -74,7 +76,7 @@ class ChatManager @Inject constructor(
         }
     }
 
-    private fun getMyChatIds() {
+    fun getMyChatIds() {
         viewModelScope.launch {
             chatRepository.getChatRooms().let {
                 when (it) {
@@ -96,12 +98,12 @@ class ChatManager @Inject constructor(
                     }
 
                     is BaseState.Error -> {
-                        _events.emit(ChatEvent.ShowToastMessage(it.msg))
+                        _events.emit(ChatEvent.ShowSnackMessage(it.msg))
                     }
                 }
                 _firstConnect.value = true
             }
-
+            unsubscribeFcm()
             getUnReadChat()
         }
     }
@@ -124,7 +126,7 @@ class ChatManager @Inject constructor(
                 }
 
                 is BaseState.Error -> {
-                    Log.d(Constants.TAG, response.msg)
+                    _events.emit(ChatEvent.ShowSnackMessage(response.msg))
                 }
             }
         }
@@ -241,19 +243,6 @@ class ChatManager @Inject constructor(
         }
     }
 
-    private fun storeUnReadChat() {
-        viewModelScope.launch {
-            unReadChatData.forEach {
-                when (val response = chatRepository.addUnReadChatData(it.toUnReadChatEntity())) {
-                    is BaseState.Success -> {}
-                    is BaseState.Error -> {
-                        Log.d(TAG, response.msg)
-                    }
-                }
-            }
-        }
-    }
-
     fun readChat(chatId: Int) {
         unReadChatData = unReadChatData.map {
             if (it.chatId == chatId) {
@@ -263,6 +252,20 @@ class ChatManager @Inject constructor(
                 )
             } else {
                 it
+            }
+        }
+        storeUnReadChat()
+    }
+
+    private fun storeUnReadChat() {
+        viewModelScope.launch {
+            unReadChatData.forEach {
+                when (val response = chatRepository.addUnReadChatData(it.toUnReadChatEntity())) {
+                    is BaseState.Success -> {}
+                    is BaseState.Error -> {
+                        _events.emit(ChatEvent.ShowSnackMessage(response.msg))
+                    }
+                }
             }
         }
     }
@@ -277,4 +280,46 @@ class ChatManager @Inject constructor(
         }
     }
 
+    private fun showSocketToastMessage(msg: String){
+        viewModelScope.launch {
+            _events.emit(ChatEvent.ShowToastMessage(msg))
+        }
+    }
+
+    private fun showSocketSnackMessage(msg: String){
+        viewModelScope.launch {
+            _events.emit(ChatEvent.ShowSnackMessage(msg))
+        }
+    }
+
+    fun disconnectChat(){
+        chatSocket.disconnectServer()
+    }
+
+    fun subscribeFcm(){
+        viewModelScope.launch {
+            fcmRepository.subscribeFcm().let{
+                when(it){
+                    is BaseState.Success -> {}
+                    is BaseState.Error -> {
+                        _events.emit(ChatEvent.ShowSnackMessage(it.msg))
+                    }
+                }
+            }
+        }
+    }
+
+    fun unsubscribeFcm(){
+        viewModelScope.launch {
+            fcmRepository.unsubscribeFcm().let{
+                when(it){
+                    is BaseState.Success -> {}
+                    is BaseState.Error -> {
+                        _events.emit(ChatEvent.ShowToastMessage(it.msg))
+                    }
+                }
+            }
+
+        }
+    }
 }

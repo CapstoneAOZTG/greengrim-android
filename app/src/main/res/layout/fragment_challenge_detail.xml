@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:ignore="MissingDefaultResource">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -60,13 +59,13 @@
             android:layout_height="0dp"
             android:layout_marginTop="16dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/test"
             app:imgUrl="@{vm.uiState.uiChallengeDetail.imgUrl}"
             app:layout_constraintDimensionRatio="3:2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/layout_toolbar"
-            app:shapeAppearanceOverlay="@style/All28RadiusImageView" />
+            app:shapeAppearanceOverlay="@style/All28RadiusImageView"
+            tools:src="@drawable/test" />
 
         <TextView
             android:id="@+id/tv_title"

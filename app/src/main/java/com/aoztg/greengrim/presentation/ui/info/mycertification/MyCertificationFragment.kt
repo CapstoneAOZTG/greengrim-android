@@ -65,7 +65,7 @@ class MyCertificationFragment :
                         viewModel.uiState.value.certificationDateList
                     )
                     is MyCertificationEvents.NavigateToBack -> findNavController().navigateUp()
-                    else -> {}
+                    is MyCertificationEvents.ShowSnackMessage -> showCustomSnack(binding.calendarView, it.msg)
                 }
             }
         }

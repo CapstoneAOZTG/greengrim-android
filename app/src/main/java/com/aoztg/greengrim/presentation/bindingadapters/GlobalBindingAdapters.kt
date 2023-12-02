@@ -133,7 +133,6 @@ fun bindChallengeListChips(chipGroup: ChipGroup, chips: ChallengeSimpleTags) {
 @BindingAdapter("mainChipList")
 fun bindDetailMainChips(chipGroup: ChipGroup, chips: ChallengeDetailTags?) {
 
-
     if (chips != null) {
         chipGroup.removeAllViews()
 
@@ -157,7 +156,6 @@ fun bindDetailMainChips(chipGroup: ChipGroup, chips: ChallengeDetailTags?) {
             chipGroup.addView(chip)
         }
     }
-
 }
 
 @BindingAdapter("subChipList")

@@ -59,7 +59,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(R.layout.fragment_login
                     }
 
                     is LoginState.Error -> {
-                        showCustomToast(it.loginState.msg)
+                        showCustomSnack(binding.ivLogo, it.loginState.msg)
                     }
 
                     else -> {}

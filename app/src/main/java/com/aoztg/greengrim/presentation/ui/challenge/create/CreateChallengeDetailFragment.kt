@@ -76,7 +76,7 @@ class CreateChallengeDetailFragment :
                         findNavController().toChatList()
                     }
                     is CreateChallengeDetailEvents.ShowToastMessage -> showCustomToast(it.msg)
-                    is CreateChallengeDetailEvents.ShowSnackMessage -> showSnackBar(it.msg)
+                    is CreateChallengeDetailEvents.ShowSnackMessage -> showCustomSnack(binding.etTitle, it.msg)
                     is CreateChallengeDetailEvents.ShowLoading -> showLoading(requireContext())
                     is CreateChallengeDetailEvents.DismissLoading -> dismissLoading()
                 }

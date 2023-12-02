@@ -4,6 +4,7 @@ import com.aoztg.greengrim.data.remote.AttendCheckAPI
 import com.aoztg.greengrim.data.remote.ChallengeAPI
 import com.aoztg.greengrim.data.remote.CertificationAPI
 import com.aoztg.greengrim.data.remote.ChatAPI
+import com.aoztg.greengrim.data.remote.FcmAPI
 import com.aoztg.greengrim.data.remote.HomeAPI
 import com.aoztg.greengrim.data.remote.ImageAPI
 import com.aoztg.greengrim.data.remote.InfoAPI
@@ -65,6 +66,12 @@ object ApiModule {
     @Provides
     fun provideAttendCheckService(retrofit: Retrofit): AttendCheckAPI {
         return retrofit.create(AttendCheckAPI::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun provideFcmService(retrofit: Retrofit): FcmAPI{
+        return retrofit.create(FcmAPI::class.java)
     }
 
 }

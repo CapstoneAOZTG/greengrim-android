@@ -9,10 +9,12 @@ import javax.inject.Inject
 
 class InfoRepositoryImpl @Inject constructor(private val api: InfoAPI) : InfoRepository {
 
-    override suspend fun getProfile(): BaseState<GetProfileResponse> = runRemote(api.getProfile())
-    override suspend fun patchProfile(data: PatchProfileRequest): BaseState<Unit> =
-        runRemote(api.patchProfile(data))
+    override suspend fun getProfile(): BaseState<GetProfileResponse> =
+        runRemote { api.getProfile() }
 
-    override suspend fun withdrawal(): BaseState<Unit> = runRemote(api.withdrawal())
+    override suspend fun patchProfile(data: PatchProfileRequest): BaseState<Unit> =
+        runRemote { api.patchProfile(data) }
+
+    override suspend fun withdrawal(): BaseState<Unit> = runRemote { api.withdrawal() }
 
 }

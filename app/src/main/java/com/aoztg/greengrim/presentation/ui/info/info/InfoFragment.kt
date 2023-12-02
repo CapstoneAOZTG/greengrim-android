@@ -9,13 +9,13 @@ import androidx.navigation.fragment.findNavController
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentInfoBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
+import com.aoztg.greengrim.presentation.customview.getInfoSettingSheet
 import com.aoztg.greengrim.presentation.ui.SocialLoginType
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 import com.aoztg.greengrim.presentation.ui.toAttendCheck
 import com.aoztg.greengrim.presentation.util.Constants.GOOGLE
 import com.aoztg.greengrim.presentation.util.Constants.KAKAO
 import com.aoztg.greengrim.presentation.util.Constants.NAVER
-import com.aoztg.greengrim.presentation.customview.getInfoSettingSheet
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.kakao.sdk.user.UserApiClient
@@ -50,6 +50,7 @@ class InfoFragment : BaseFragment<FragmentInfoBinding>(R.layout.fragment_info) {
                     is InfoEvents.NavigateToMyChallenge -> findNavController().toMyChallenge()
                     is InfoEvents.NavigateToMyCertification -> findNavController().toMyCertification()
                     is InfoEvents.ShowToastMessage -> showCustomToast(it.msg)
+                    is InfoEvents.ShowSnackMessage -> showCustomSnack(binding.ivProfile, it.msg)
                 }
             }
         }

@@ -36,6 +36,7 @@ sealed class MyCertificationEvents {
     data class ShowYearMonthPicker(val curYear: Int, val curMonth: Int) : MyCertificationEvents()
     data class NavigateToCertificationDetail(val certificationId: Int) : MyCertificationEvents()
     data class ShowToastMessage(val msg: String) : MyCertificationEvents()
+    data class ShowSnackMessage(val msg: String) : MyCertificationEvents()
     object NavigateToBack : MyCertificationEvents()
     object ShowCalendar : MyCertificationEvents()
 }
@@ -94,7 +95,7 @@ class MyCertificationViewModel @Inject constructor(
                     }
 
                     is BaseState.Error -> {
-                        _events.emit(MyCertificationEvents.ShowToastMessage(it.msg))
+                        _events.emit(MyCertificationEvents.ShowSnackMessage(it.msg))
                     }
                 }
             }
@@ -144,7 +145,7 @@ class MyCertificationViewModel @Inject constructor(
                         }
 
                         is BaseState.Error -> {
-                            _events.emit(MyCertificationEvents.ShowToastMessage(it.msg))
+                            _events.emit(MyCertificationEvents.ShowSnackMessage(it.msg))
                         }
                     }
                 }

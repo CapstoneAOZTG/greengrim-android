@@ -4,6 +4,7 @@ package com.aoztg.greengrim.presentation.base
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.ViewDataBinding
@@ -11,6 +12,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.aoztg.greengrim.presentation.customview.CustomSnackBar
 import com.aoztg.greengrim.presentation.customview.LoadingDialog
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.CoroutineScope
@@ -55,6 +57,13 @@ abstract class BaseActivity<B : ViewDataBinding>(private val inflate: (LayoutInf
     fun showCustomToast(message: String) {
         val toast = Toast.makeText(this, message, Toast.LENGTH_SHORT)
         toast.show()
+    }
+
+    fun showCustomSnack(
+        view: View,
+        text: String,
+    ) {
+        CustomSnackBar.make(view, text).show()
     }
 
     fun showSnackBar(text: String, action: String? = null) {

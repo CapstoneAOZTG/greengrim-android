@@ -51,7 +51,8 @@ class LoginViewModel @Inject constructor(private val introRepository: IntroRepos
 
             introRepository.login(
                 LoginRequest(
-                    email = email
+                    email = email,
+                    App.fcmToken
                 )
             ).let{
                 when(it){

@@ -3,6 +3,7 @@ package com.aoztg.greengrim.presentation.ui.main
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.data.model.BaseState
+import com.aoztg.greengrim.data.repository.FcmRepository
 import com.aoztg.greengrim.data.repository.ImageRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -21,6 +22,7 @@ sealed class MainEvent {
     object ShowPhotoBottomSheet : MainEvent()
     object Logout : MainEvent()
     data class ShowToastMessage(val msg: String) : MainEvent()
+    data class ShowSnackMessage(val msg: String) : MainEvent()
 }
 
 enum class KeyboardState {
@@ -74,7 +76,7 @@ class MainViewModel @Inject constructor(
                     }
 
                     is BaseState.Error -> {
-                        _events.emit(MainEvent.ShowToastMessage(it.msg))
+                        _events.emit(MainEvent.ShowSnackMessage(it.msg))
                     }
                 }
             }

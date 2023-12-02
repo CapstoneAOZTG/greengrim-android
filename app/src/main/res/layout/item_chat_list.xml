@@ -22,7 +22,6 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/test"
             app:imgUrl="@{item.titleImg}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"

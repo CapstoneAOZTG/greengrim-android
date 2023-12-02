@@ -20,13 +20,13 @@ class ChatRepositoryImpl @Inject constructor(
 ) : ChatRepository {
 
     override suspend fun enterChat(challengeId: Int): BaseState<EnterChatResponse> =
-        runRemote(api.enterChat(challengeId))
+        runRemote { api.enterChat(challengeId) }
 
     override suspend fun getChatRooms(): BaseState<List<ChatRoomsResponse>> =
-        runRemote(api.getChatList())
+        runRemote { api.getChatList() }
 
     override suspend fun exitChatRoom(id: Int): BaseState<Unit> =
-        runRemote(api.exitChatRoom(id))
+        runRemote { api.exitChatRoom(id) }
 
     override suspend fun addChat(chatMessage: ChatEntity): BaseState<Unit> {
         return try {
@@ -58,7 +58,7 @@ class ChatRepositoryImpl @Inject constructor(
 
             BaseState.Success(
                 ChatEntityResponse(
-                    hasNext = response.size >= 30  ,
+                    hasNext = response.size >= 30,
                     chatEntityList = response
                 )
             )
