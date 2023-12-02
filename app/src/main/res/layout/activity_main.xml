@@ -5,6 +5,14 @@
 
     <data>
 
+        <variable
+            name="vm"
+            type="com.aoztg.greengrim.presentation.ui.main.MainViewModel" />
+
+        <variable
+            name="chatVm"
+            type="com.aoztg.greengrim.presentation.chatmanager.ChatManager" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -64,6 +72,27 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guide"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.25" />
+
+            <TextView
+                android:id="@+id/tv_message_cnt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_redfill_nostroke_radius100"
+                android:paddingHorizontal="5dp"
+                android:textColor="@color/white"
+                android:textSize="10sp"
+                app:layout_constraintBottom_toBottomOf="@id/bnv"
+                app:layout_constraintStart_toEndOf="@id/guide"
+                app:layout_constraintTop_toTopOf="@id/bnv"
+                app:unReadChatCount="@{chatVm.unReadCnt}"
+                tools:text="5" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

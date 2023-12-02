@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.repository.ChatRepository
+import com.aoztg.greengrim.presentation.chatmanager.model.UiUnReadChatData
 import com.aoztg.greengrim.presentation.ui.chat.mapper.toChatListItem
 import com.aoztg.greengrim.presentation.ui.chat.model.ChatListItem
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -25,6 +26,7 @@ data class ChatListUiState(
 sealed class ChatListEvents {
     data class NavigateToChatRoom(val chatId: Int, val challengeId: Int) : ChatListEvents()
     data class ShowToastMessage(val msg: String) : ChatListEvents()
+    object CallUnReadChatData: ChatListEvents()
 }
 
 
@@ -57,8 +59,34 @@ class ChatListViewModel @Inject constructor(
                         _events.emit(ChatListEvents.ShowToastMessage(it.msg))
                     }
                 }
+
+                _events.emit(ChatListEvents.CallUnReadChatData)
             }
 
+        }
+    }
+
+    fun setUnReadChatData(list: List<UiUnReadChatData>){
+
+        // todo 좀더 효율적인 알고리즘으로 refactoring..
+
+        _uiState.update { state ->
+            state.copy(
+                chatListItem = uiState.value.chatListItem.map{ listData ->
+                    var newData = listData
+                    list.forEach {  unReadData ->
+                        if(listData.chatId == unReadData.chatId){
+                            newData = listData.copy(
+                                recentChat = unReadData.recentChat,
+                                recentTime = unReadData.recentChatTime,
+                                chatCount = unReadData.unReadCount
+                            )
+                            return@forEach
+                        }
+                    }
+                    newData
+                }
+            )
         }
     }
 

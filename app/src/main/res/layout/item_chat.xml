@@ -15,15 +15,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <de.hdodenhof.circleimageview.CircleImageView
+        <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/iv_profile"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginTop="12dp"
             android:scaleType="centerCrop"
-            app:imgUrl="@{item.profileImg}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:profileImgUrl="@{item.profileImg}"
+            app:shapeAppearanceOverlay="@style/All20RadiusImageView"
             tools:src="@drawable/test" />
 
         <TextView
@@ -54,6 +55,7 @@
                 android:layout_height="120dp"
                 android:paddingBottom="12dp"
                 android:scaleType="centerCrop"
+                android:visibility="gone"
                 app:chatImgUrl="@{item.certImg}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"

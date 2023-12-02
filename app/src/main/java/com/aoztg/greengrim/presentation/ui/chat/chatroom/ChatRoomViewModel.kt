@@ -3,13 +3,17 @@ package com.aoztg.greengrim.presentation.ui.chat.chatroom
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.app.App
+import com.aoztg.greengrim.data.model.BaseState
+import com.aoztg.greengrim.data.repository.ChallengeRepository
+import com.aoztg.greengrim.data.repository.ChatRepository
+import com.aoztg.greengrim.presentation.chatmanager.model.ChatMessage
 import com.aoztg.greengrim.presentation.ui.chat.mapper.toUiChatMessage
 import com.aoztg.greengrim.presentation.ui.chat.model.UiChatMessage
-import com.aoztg.greengrim.presentation.ui.main.ChatMessage
 import com.aoztg.greengrim.presentation.util.Constants
-import com.aoztg.greengrim.presentation.util.Constants.MY_CHAT
-import com.aoztg.greengrim.presentation.util.Constants.OTHER_CHAT
+import com.aoztg.greengrim.presentation.util.Constants.DATE
+import com.aoztg.greengrim.presentation.util.Constants.NOTHING
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -24,24 +28,36 @@ import javax.inject.Inject
 
 data class ChatRoomUiState(
     val editTextState: Boolean = false,
-    val chatMessages: List<UiChatMessage> = emptyList()
+    val chatMessages: List<UiChatMessage> = emptyList(),
+    val page: Int = 0,
+    val hasNext: Boolean = true
 )
 
 sealed class ChatRoomEvents {
     object NavigateBack : ChatRoomEvents()
+    object ExitChat : ChatRoomEvents()
     object ShowPopupMenu : ChatRoomEvents()
     object NavigateToCreateCertification : ChatRoomEvents()
     data class NavigateToCertificationList(val id: Int) : ChatRoomEvents()
     data class NavigateToCertificationDetail(val id: Int) : ChatRoomEvents()
     data class SendMessage(val chatId: Int, val message: String) : ChatRoomEvents()
-    object ScrollBottom: ChatRoomEvents()
+    object ScrollBottom : ChatRoomEvents()
+    data class ShowToastMessage(val msg: String) : ChatRoomEvents()
 }
 
 @HiltViewModel
-class ChatRoomViewModel @Inject constructor() : ViewModel() {
+class ChatRoomViewModel @Inject constructor(
+    private val chatRepository: ChatRepository,
+    private val challengeRepository: ChallengeRepository
+) : ViewModel() {
 
     var chatRoomId = -1
     var challengeId = -1
+
+    companion object {
+        const val SCROLL_GET = 0
+        const val INIT_GET = 1
+    }
 
     private val _uiState = MutableStateFlow(ChatRoomUiState())
     val uiState: StateFlow<ChatRoomUiState> = _uiState.asStateFlow()
@@ -86,50 +102,51 @@ class ChatRoomViewModel @Inject constructor() : ViewModel() {
         }.launchIn(viewModelScope)
     }
 
-    fun newChatMessage(
-        message: ChatMessage
-    ){
-        if(message.senderId == memberId){
-            // 내 채팅
-            if(message.certId == -1){
-                _uiState.update { state ->
-                    state.copy(
-                        chatMessages = state.chatMessages + message.toUiChatMessage(MY_CHAT){}
-                    )
-                }
-            } else {
-                // 인증 채팅
-                _uiState.update { state ->
-                    state.copy(
-                        chatMessages = state.chatMessages + message.toUiChatMessage(MY_CHAT, ::navigateToCertificationDetail)
-                    )
-                }
-            }
+    fun getChatMessageData() {
+        if (uiState.value.hasNext) {
+            viewModelScope.launch {
+                when (val response = chatRepository.getChat(chatRoomId, uiState.value.page)) {
+                    is BaseState.Success -> {
+                        val list = response.body.chatEntityList.map {
+                            it.toUiChatMessage(::navigateToCertificationDetail)
+                        }
+                        _uiState.update { state ->
+                            state.copy(
+                                hasNext = response.body.hasNext,
+                                chatMessages = uiState.value.chatMessages + list,
+                                page = uiState.value.page + 1
+                            )
+                        }
+                    }
 
-        } else {
-            // 남 채팅
-            if(message.certId == -1){
-                _uiState.update { state ->
-                    state.copy(
-                        chatMessages = state.chatMessages + message.toUiChatMessage(OTHER_CHAT){}
-                    )
-                }
-            } else {
-                // 인증 채팅
-                _uiState.update { state ->
-                    state.copy(
-                        chatMessages = state.chatMessages + message.toUiChatMessage(OTHER_CHAT, ::navigateToCertificationDetail)
-                    )
+                    is BaseState.Error -> {
+                        _events.emit(ChatRoomEvents.ShowToastMessage(response.msg))
+                    }
                 }
             }
         }
+
     }
 
-    private fun checkDate(){
-        // todo chat message 의 날짜를 비교해서, 날짜 헤더 삽입 로직.
-        // todo UiChatMessage(sentDate="", type="DATE") 이런식으로
-        _uiState.value.chatMessages.forEach {
+    fun newChatMessage(
+        message: ChatMessage
+    ) {
+        val newMessages = uiState.value.chatMessages.toMutableList()
+        val newMessage = message.toUiChatMessage(memberId, ::navigateToCertificationDetail)
 
+        if (newMessages.isNotEmpty()) {
+            if (newMessages.last().sentDate != newMessage.sentDate) {
+                newMessages.add(0, UiChatMessage(type = DATE, message = newMessage.sentDate) {})
+            }
+        }
+
+        if (newMessage.type != NOTHING) {
+            newMessages.add(0, newMessage)
+            _uiState.update { state ->
+                state.copy(
+                    chatMessages = newMessages
+                )
+            }
         }
     }
 
@@ -157,19 +174,35 @@ class ChatRoomViewModel @Inject constructor() : ViewModel() {
         }
     }
 
+    private fun scrollBottom() {
+        viewModelScope.launch {
+            delay(10)
+            _events.emit(ChatRoomEvents.ScrollBottom)
+        }
+    }
+
     fun setIds(chatIdData: Int, challengeIdData: Int) {
         chatRoomId = chatIdData
         challengeId = challengeIdData
+        getChatMessageData()
     }
 
-    fun sendMessage(){
-        viewModelScope.launch{
-            _events.emit(ChatRoomEvents.SendMessage(
-                chatRoomId,
-                chatMessage.value,
-            ))
+    fun sendMessage() {
+        viewModelScope.launch {
+            _events.emit(
+                ChatRoomEvents.SendMessage(
+                    chatRoomId,
+                    chatMessage.value,
+                )
+            )
             chatMessage.emit("")
-            _events.emit(ChatRoomEvents.ScrollBottom)
+        }
+    }
+
+    fun exitChallenge() {
+        viewModelScope.launch {
+            challengeRepository.exitChallenge(challengeId)
+            _events.emit(ChatRoomEvents.ExitChat)
         }
     }
 

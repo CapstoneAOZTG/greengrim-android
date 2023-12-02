@@ -136,6 +136,7 @@
             android:clipToPadding="false"
             android:orientation="vertical"
             android:paddingBottom="10dp"
+            app:reverseLayout="true"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toTopOf="@id/layout_edit_text"
             app:layout_constraintEnd_toEndOf="parent"

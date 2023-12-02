@@ -8,6 +8,7 @@ import com.aoztg.greengrim.presentation.ui.chat.mapper.toCertificationListData
 import com.aoztg.greengrim.presentation.ui.chat.mapper.toChallengeSimpleInfo
 import com.aoztg.greengrim.presentation.ui.chat.model.CertificationListItem
 import com.aoztg.greengrim.presentation.ui.chat.model.ChallengeSimpleInfo
+import com.aoztg.greengrim.presentation.ui.info.mycertification.MyCertificationEvents
 import com.aoztg.greengrim.presentation.ui.toHeaderText
 import com.aoztg.greengrim.presentation.ui.toLocalDate
 import com.aoztg.greengrim.presentation.ui.toText
@@ -118,6 +119,7 @@ class CertificationListViewModel @Inject constructor(
                                     certificationDateList = it.body.date.map { data -> data.toLocalDate() }
                                 )
                             }
+                            _events.emit(CertificationListEvents.ShowCalendar)
                         }
 
                         is BaseState.Error -> {

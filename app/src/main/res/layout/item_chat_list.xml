@@ -54,28 +54,30 @@
             tools:text="지구를 지켜 지수" />
 
         <TextView
+            android:id="@+id/tv_message_cnt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/shape_redfill_nostroke_radius100"
+            android:paddingHorizontal="5dp"
+            android:textColor="@color/white"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@id/tv_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:unReadChatCount="@{item.chatCount}"
+            tools:text="5" />
+
+
+        <TextView
             android:id="@+id/tv_recent_date"
             style="@style/TextGgTiny"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="20dp"
             android:text="@{item.recentTime}"
-            app:layout_constraintBottom_toBottomOf="@id/tv_title"
-            app:layout_constraintEnd_toEndOf="parent"
-            tools:text="오전 5:31" />
-
-        <TextView
-            android:id="@+id/tv_creation_dday"
-            style="@style/TextGgSmallBlackBold"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="20dp"
-            android:background="@drawable/shape_greenfill_nostroke_radius20"
-            android:paddingHorizontal="8dp"
-            app:chatCreationText="@{item.creationDday}"
             app:layout_constraintBottom_toBottomOf="@id/tv_recent_chat"
             app:layout_constraintEnd_toEndOf="parent"
-            tools:text="오늘" />
+            tools:text="오전 5:31" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

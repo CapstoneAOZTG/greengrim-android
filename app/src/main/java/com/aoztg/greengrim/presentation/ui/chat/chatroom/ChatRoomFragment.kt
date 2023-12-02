@@ -8,38 +8,63 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.aoztg.greengrim.MainNavDirections
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentChatRoomBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
+import com.aoztg.greengrim.presentation.chatmanager.ChatManager
 import com.aoztg.greengrim.presentation.ui.chat.adapter.ChatMessageAdapter
-import com.aoztg.greengrim.presentation.ui.main.KeyboardState
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 import com.aoztg.greengrim.presentation.ui.toCertificationDetail
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
 
 @AndroidEntryPoint
 class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment_chat_room) {
 
     private val parentViewModel: MainViewModel by activityViewModels()
+    private val chatManager: ChatManager by activityViewModels()
     private val viewModel: ChatRoomViewModel by viewModels()
+
     private val args: ChatRoomFragmentArgs by navArgs()
     private val chatId by lazy { args.chatId }
     private val challengeId by lazy { args.challengeId }
     private val popupLocation = IntArray(2)
-    private var isPopupShowing = false
+    private val adapter = ChatMessageAdapter()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.vm = viewModel
         parentViewModel.hideBNV()
-        binding.rvChat.adapter = ChatMessageAdapter()
+        binding.rvChat.adapter = adapter
+        binding.rvChat.itemAnimator = null
+        setScrollEventListener()
         viewModel.setIds(chatId, challengeId)
+        setDataChangeListener()
         initEventsObserver()
         initChatMessageObserver()
-        initKeyboardObserver()
+    }
+
+    private fun setScrollEventListener() {
+
+        binding.rvChat.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                val lastVisibleItemPosition =
+                    (recyclerView.layoutManager as LinearLayoutManager).findLastCompletelyVisibleItemPosition()
+                val itemTotalCount = binding.rvChat.adapter?.itemCount?.minus(1)
+
+                if (lastVisibleItemPosition == itemTotalCount) {
+                    viewModel.getChatMessageData()
+                }
+            }
+        })
+    }
+
+    private fun setDataChangeListener() {
     }
 
     private fun initEventsObserver() {
@@ -54,13 +79,18 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
                         it.id
                     )
 
-                    is ChatRoomEvents.SendMessage -> parentViewModel.sendMessage(
+                    is ChatRoomEvents.SendMessage -> chatManager.sendMessage(
                         it.chatId,
-                        it.message
+                        it.message,
                     )
 
                     is ChatRoomEvents.ScrollBottom -> scrollRecyclerViewBottom()
-                    else -> {}
+                    is ChatRoomEvents.ExitChat -> {
+                        chatManager.exitChat(chatId)
+                        findNavController().navigateUp()
+                    }
+
+                    is ChatRoomEvents.ShowToastMessage -> showCustomToast(it.msg)
                 }
             }
         }
@@ -68,34 +98,16 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
 
     private fun initChatMessageObserver() {
         repeatOnStarted {
-            parentViewModel.newChat.collect {
+            chatManager.newChat.collect {
                 if (it.roomId == chatId) {
                     viewModel.newChatMessage(it)
-                    scrollRecyclerViewBottom()
-                }
-            }
-        }
-    }
-
-    private fun initKeyboardObserver() {
-        repeatOnStarted {
-            parentViewModel.keyboardState.collectLatest {
-                if (it == KeyboardState.SHOW) {
-                    scrollRecyclerViewBottom()
                 }
             }
         }
     }
 
     private fun scrollRecyclerViewBottom() {
-        val lastVisibleItemPosition =
-            (binding.rvChat.layoutManager as LinearLayoutManager).findLastCompletelyVisibleItemPosition()
-        val itemTotalCount = binding.rvChat.adapter?.itemCount?.minus(1)
-        itemTotalCount?.let {
-            if (lastVisibleItemPosition != it) {
-                binding.rvChat.smoothScrollToPosition(it + 3)
-            }
-        }
+        binding.rvChat.scrollToPosition(0)
     }
 
     private fun showPopup() {
@@ -130,8 +142,7 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
     }
 
     private fun exitChat() {
-        showCustomToast("나가기 구현 전")
-        findNavController().navigateUp()
+        viewModel.exitChallenge()
     }
 
     private fun NavController.toCreateCertification() {
@@ -142,9 +153,14 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
         this.navigate(action)
     }
 
+    private fun readChat() {
+        chatManager.readChat(chatId)
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         dismissFourPopup()
+        readChat()
     }
 }
 

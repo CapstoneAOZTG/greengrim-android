@@ -9,11 +9,16 @@ import retrofit2.http.Query
 
 interface ChatAPI {
 
-    @POST("visitor/challenges/enter")
+    @POST("/visitor/challenges/enter")
     suspend fun enterChat(
         @Query("id") challengeId: Int
     ): Response<EnterChatResponse>
 
-    @GET("visitor/challenges/chatrooms")
+    @GET("/visitor/challenges/chatrooms")
     suspend fun getChatList(): Response<List<ChatRoomsResponse>>
+
+    @POST("/visitor/chatrooms/exit")
+    suspend fun exitChatRoom(
+        @Query("chatroomId") id: Int
+    ): Response<Unit>
 }

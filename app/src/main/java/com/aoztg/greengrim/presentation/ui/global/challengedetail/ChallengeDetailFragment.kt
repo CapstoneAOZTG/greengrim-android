@@ -10,6 +10,7 @@ import androidx.navigation.fragment.navArgs
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentChallengeDetailBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
+import com.aoztg.greengrim.presentation.chatmanager.ChatManager
 import com.aoztg.greengrim.presentation.ui.LoadingState
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -20,6 +21,8 @@ class ChallengeDetailFragment :
 
     private val viewModel: ChallengeDetailViewModel by viewModels()
     private val parentViewModel: MainViewModel by activityViewModels()
+    private val chatManager: ChatManager by activityViewModels()
+
     private val args: ChallengeDetailFragmentArgs by navArgs()
     private val challengeId by lazy { args.challengeId }
     private val popupLocation = IntArray(2)
@@ -64,8 +67,8 @@ class ChallengeDetailFragment :
                     is ChallengeDetailEvents.NavigateBack -> findNavController().navigateUp()
                     is ChallengeDetailEvents.PopUpMenu -> showPopup()
                     is ChallengeDetailEvents.NavigateChatRoom -> {
-                        parentViewModel.subscribeNewChat(it.chatId)
-                        findNavController().toChatRoom(it.chatId)
+                        chatManager.subscribeNewChat(it.chatId)
+                        findNavController().toChatRoom(it.chatId, it.challengeId)
                     }
                     is ChallengeDetailEvents.ShowToastMessage -> showCustomToast(it.msg)
                 }
@@ -86,7 +89,7 @@ class ChallengeDetailFragment :
         )
     }
 
-    private fun NavController.toChatRoom(chatId: Int) {
+    private fun NavController.toChatRoom(chatId: Int, challengeId: Int) {
         val action = ChallengeDetailFragmentDirections.actionChallengeDetailFragmentToChatRoomFragment(chatId, challengeId)
         this.navigate(action)
     }

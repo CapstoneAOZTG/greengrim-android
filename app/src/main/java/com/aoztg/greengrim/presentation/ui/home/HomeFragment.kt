@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentHomeBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
+import com.aoztg.greengrim.presentation.chatmanager.ChatManager
 import com.aoztg.greengrim.presentation.ui.LoadingState
 import com.aoztg.greengrim.presentation.ui.home.adapter.HotChallengeAdapter
 import com.aoztg.greengrim.presentation.ui.home.adapter.HotNftAdapter
@@ -25,6 +26,7 @@ import me.relex.circleindicator.CircleIndicator2
 class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
     private val parentViewModel: MainViewModel by activityViewModels()
+    private val chatManager: ChatManager by activityViewModels()
     private val viewModel: HomeViewModel by viewModels()
 
     private var isHotChallengeSet: Boolean = false
@@ -96,7 +98,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
     private fun initParentObserver(){
         repeatOnStarted {
-            parentViewModel.firstConnect.collectLatest {
+            chatManager.firstConnect.collectLatest {
                 if(it)viewModel.getHomeData()
             }
         }

@@ -1,6 +1,7 @@
 package com.aoztg.greengrim.presentation.ui.chat.chatlist
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -9,14 +10,17 @@ import androidx.navigation.fragment.findNavController
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentChatListBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
+import com.aoztg.greengrim.presentation.chatmanager.ChatManager
 import com.aoztg.greengrim.presentation.ui.chat.adapter.ChatListAdapter
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
+import com.aoztg.greengrim.presentation.util.Constants.TAG
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class ChatListFragment : BaseFragment<FragmentChatListBinding>(R.layout.fragment_chat_list) {
 
     private val parentViewModel: MainViewModel by activityViewModels()
+    private val chatManager: ChatManager by activityViewModels()
     private val viewModel: ChatListViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -27,6 +31,7 @@ class ChatListFragment : BaseFragment<FragmentChatListBinding>(R.layout.fragment
         binding.rvChatList.adapter = ChatListAdapter()
         viewModel.getChatList()
         initEventsObserver()
+        initUnReadChatObserver()
     }
 
     private fun initEventsObserver() {
@@ -35,7 +40,16 @@ class ChatListFragment : BaseFragment<FragmentChatListBinding>(R.layout.fragment
                 when (it) {
                     is ChatListEvents.NavigateToChatRoom -> findNavController().toChatRoom(it.chatId, it.challengeId)
                     is ChatListEvents.ShowToastMessage -> showCustomToast(it.msg)
+                    is ChatListEvents.CallUnReadChatData -> viewModel.setUnReadChatData(chatManager.unReadChatData)
                 }
+            }
+        }
+    }
+
+    private fun initUnReadChatObserver(){
+        repeatOnStarted {
+            chatManager.updateUnReadChat.collect{
+                viewModel.setUnReadChatData(it)
             }
         }
     }

@@ -28,7 +28,7 @@ data class ChallengeDetailUiState(
 sealed class ChallengeDetailEvents {
     object NavigateBack : ChallengeDetailEvents()
     object PopUpMenu : ChallengeDetailEvents()
-    data class NavigateChatRoom(val chatId: Int) : ChallengeDetailEvents()
+    data class NavigateChatRoom(val chatId: Int, val challengeId: Int) : ChallengeDetailEvents()
     data class ShowToastMessage(val msg: String) : ChallengeDetailEvents()
 }
 
@@ -98,7 +98,7 @@ class ChallengeDetailViewModel @Inject constructor(
             chatRepository.enterChat(id).let {
                 when (it) {
                     is BaseState.Success -> {
-                        _events.emit(ChallengeDetailEvents.NavigateChatRoom(it.body.id))
+                        _events.emit(ChallengeDetailEvents.NavigateChatRoom(it.body.chatroomId, it.body.challengeId))
                     }
 
                     is BaseState.Error -> {

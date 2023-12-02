@@ -22,9 +22,20 @@ fun bindChatImg(imageView: ImageView, url: String?) {
     if (url.isNullOrBlank()) {
         imageView.visibility = View.GONE
     } else {
+        imageView.visibility = View.VISIBLE
         Glide.with(imageView.context)
             .load(url)
             .error(R.drawable.test)
             .into(imageView)
+    }
+}
+
+@BindingAdapter("unReadChatCount")
+fun bindUnReadChatCount(tv: TextView, count: Int) {
+    if (count == 0) {
+        tv.visibility = View.INVISIBLE
+    } else {
+        tv.visibility = View.VISIBLE
+        tv.text = count.toString()
     }
 }

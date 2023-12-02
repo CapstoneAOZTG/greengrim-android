@@ -1,4 +1,4 @@
-package com.aoztg.greengrim.presentation.ui.main
+package com.aoztg.greengrim.presentation.chatmanager
 
 import android.annotation.SuppressLint
 import android.util.Log
@@ -15,7 +15,6 @@ class ChatSocket(
 ) {
 
     private val stompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, BuildConfig.SOCKET_URL)
-
 
     fun connectServer() {
         try{
@@ -35,7 +34,6 @@ class ChatSocket(
 
     }
 
-
     @SuppressLint("CheckResult")
     fun subscribeChat(chatId: Int) {
         try{
@@ -45,7 +43,15 @@ class ChatSocket(
         } catch(e: Exception){
             Log.d(TAG,e.message.toString())
         }
+    }
 
+    @SuppressLint("CheckResult")
+    fun subscribeNewChat(chatId: Int){
+        try{
+            stompClient.topic("/sub/chat/room/$chatId").subscribe { topicMessage -> }
+        } catch(e: Exception){
+            Log.d(TAG,e.message.toString())
+        }
     }
 
     fun sendMessage(memberId: Long, chatId: Int, message: String) {
