@@ -1,16 +1,16 @@
 package com.aoztg.greengrim.presentation.ui.challenge.mapper
 
 import com.aoztg.greengrim.data.model.response.ChallengeListResponse
-import com.aoztg.greengrim.presentation.ui.challenge.model.ChallengeListData
-import com.aoztg.greengrim.presentation.ui.challenge.model.ChallengeRoom
+import com.aoztg.greengrim.presentation.ui.challenge.model.UiChallengeList
+import com.aoztg.greengrim.presentation.ui.challenge.model.UiChallengeRoom
 
 
-fun ChallengeListResponse.toChallengeListData(onItemClicked: (Int) -> Unit): ChallengeListData{
-    return ChallengeListData(
+fun ChallengeListResponse.toUiChallengeList(onItemClicked: (Int) -> Unit): UiChallengeList{
+    return UiChallengeList(
         hasNext = hasNext,
         page = page,
         result = result.map {
-            ChallengeRoom(
+            UiChallengeRoom(
                 id = it.challengeInfo.id,
                 imgUrl = it.challengeInfo.imgUrl,
                 title = it.challengeInfo.title,

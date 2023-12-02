@@ -5,14 +5,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.aoztg.greengrim.databinding.ItemChallengeCategoryBinding
-import com.aoztg.greengrim.presentation.ui.challenge.model.ChallengeCategory
+import com.aoztg.greengrim.presentation.ui.challenge.model.UiChallengeCategory
 import com.aoztg.greengrim.presentation.util.DefaultDiffUtil
 
 
 class ChallengeCategoryAdapter(
     private val listener: OnCategoryItemClickListener
 ) :
-    ListAdapter<ChallengeCategory, ChallengeCategoryViewHolder>(DefaultDiffUtil<ChallengeCategory>()) {
+    ListAdapter<UiChallengeCategory, ChallengeCategoryViewHolder>(DefaultDiffUtil<UiChallengeCategory>()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChallengeCategoryViewHolder {
         return ChallengeCategoryViewHolder(
@@ -33,7 +33,7 @@ class ChallengeCategoryViewHolder(private val binding: ItemChallengeCategoryBind
     RecyclerView.ViewHolder(binding.root) {
 
     fun bind(
-        item: ChallengeCategory,
+        item: UiChallengeCategory,
         listener: OnCategoryItemClickListener
     ) {
         binding.item = item

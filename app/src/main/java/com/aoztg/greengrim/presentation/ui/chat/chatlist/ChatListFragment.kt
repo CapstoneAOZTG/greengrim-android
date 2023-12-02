@@ -1,7 +1,6 @@
 package com.aoztg.greengrim.presentation.ui.chat.chatlist
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -13,7 +12,6 @@ import com.aoztg.greengrim.presentation.base.BaseFragment
 import com.aoztg.greengrim.presentation.chatmanager.ChatManager
 import com.aoztg.greengrim.presentation.ui.chat.adapter.ChatListAdapter
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
-import com.aoztg.greengrim.presentation.util.Constants.TAG
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -25,13 +23,16 @@ class ChatListFragment : BaseFragment<FragmentChatListBinding>(R.layout.fragment
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         parentViewModel.showBNV()
         binding.vm = viewModel
         binding.rvChatList.adapter = ChatListAdapter()
-        viewModel.getChatList()
         initEventsObserver()
         initUnReadChatObserver()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.getChatList()
     }
 
     private fun initEventsObserver() {
@@ -39,8 +40,11 @@ class ChatListFragment : BaseFragment<FragmentChatListBinding>(R.layout.fragment
             viewModel.events.collect {
                 when (it) {
                     is ChatListEvents.NavigateToChatRoom -> findNavController().toChatRoom(it.chatId, it.challengeId)
-                    is ChatListEvents.ShowToastMessage -> showCustomToast(it.msg)
                     is ChatListEvents.CallUnReadChatData -> viewModel.setUnReadChatData(chatManager.unReadChatData)
+                    is ChatListEvents.ShowLoading -> showLoading(requireContext())
+                    is ChatListEvents.DismissLoading -> dismissLoading()
+                    is ChatListEvents.ShowToastMessage -> showCustomToast(it.msg)
+                    is ChatListEvents.ShowSnackMessage -> showSnackBar(it.msg)
                 }
             }
         }

@@ -7,6 +7,7 @@ import com.aoztg.greengrim.data.model.request.CreateChallengeRequest
 import com.aoztg.greengrim.data.repository.ChallengeRepository
 import com.aoztg.greengrim.data.repository.ChatRepository
 import com.aoztg.greengrim.presentation.ui.BaseUiState
+import com.aoztg.greengrim.presentation.ui.LoadingState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,11 +26,12 @@ import javax.inject.Inject
 
 
 data class CreateChallengeDetailUiState(
+    val titleState: BaseUiState = BaseUiState.Empty,
+    val descriptionState: BaseUiState = BaseUiState.Empty,
     val certificateProgressState: ProgressState = ProgressState.Empty,
     val ticketProgressState: ProgressState = ProgressState.Empty,
     val minCertificateProgressState: ProgressState = ProgressState.Empty,
     val randomKeywordState: KeywordState = KeywordState.Empty,
-    val createChallengeState: BaseUiState = BaseUiState.Empty
 )
 
 sealed class ProgressState {
@@ -42,9 +44,13 @@ sealed class KeywordState {
     data class Set(val keywords: List<String>) : KeywordState()
 }
 
-sealed class CreateChallengeDetailEvents{
+sealed class CreateChallengeDetailEvents {
     object NavigateToBack : CreateChallengeDetailEvents()
     data class NavigateToChatList(val chatId: Int) : CreateChallengeDetailEvents()
+    data class ShowToastMessage(val msg: String) : CreateChallengeDetailEvents()
+    data class ShowSnackMessage(val msg: String) : CreateChallengeDetailEvents()
+    object ShowLoading : CreateChallengeDetailEvents()
+    object DismissLoading : CreateChallengeDetailEvents()
 }
 
 @HiltViewModel
@@ -54,8 +60,49 @@ class CreateChallengeDetailViewModel @Inject constructor(
 ) : ViewModel() {
 
     companion object {
-        val keywordsWhat = listOf("꽃다발", "개", "고양이", "버스", "감자튀김", "컵", "운동화", "기타", "모자", "소파", "우주선", "접시", "나무", "럭비공", "모래성", "초콜릿", "피망", "책", "포도")
-        val keywordsPlace = listOf("공원", "바다", "숲", "도시", "부엌", "모래사장", "농장", "학교", "커피숍", "동굴", "운동장", "다리", "회사", "골목", "절벽", "슈퍼마켓", "우주", "지하철", "박물관", "언덕",)
+        val keywordsWhat = listOf(
+            "꽃다발",
+            "개",
+            "고양이",
+            "버스",
+            "감자튀김",
+            "컵",
+            "운동화",
+            "기타",
+            "모자",
+            "소파",
+            "우주선",
+            "접시",
+            "나무",
+            "럭비공",
+            "모래성",
+            "초콜릿",
+            "피망",
+            "책",
+            "포도"
+        )
+        val keywordsPlace = listOf(
+            "공원",
+            "바다",
+            "숲",
+            "도시",
+            "부엌",
+            "모래사장",
+            "농장",
+            "학교",
+            "커피숍",
+            "동굴",
+            "운동장",
+            "다리",
+            "회사",
+            "골목",
+            "절벽",
+            "슈퍼마켓",
+            "우주",
+            "지하철",
+            "박물관",
+            "언덕",
+        )
     }
 
     private val _uiState = MutableStateFlow(CreateChallengeDetailUiState())
@@ -78,8 +125,13 @@ class CreateChallengeDetailViewModel @Inject constructor(
     private var ticketTotalCount = 0
     private var weekMinCount = 0
 
-    val isDataReady = combine(title, description, imageUrl, keyword, category) {
-            title, description, img, keyword, category ->
+    val isDataReady = combine(
+        title,
+        description,
+        imageUrl,
+        keyword,
+        category
+    ) { title, description, img, keyword, category ->
         title.length >= 2 && description.length >= 2
                 && img.isNotBlank() && keyword.isNotBlank() && category.isNotBlank()
     }.stateIn(
@@ -97,8 +149,62 @@ class CreateChallengeDetailViewModel @Inject constructor(
     }
 
     init {
+        observeTitle()
+        observeDescription()
         observeSeekBar()
         setRandomKeywords()
+    }
+
+    private fun observeTitle() {
+        title.onEach {
+            if (it.isNotBlank()) {
+                if (it.length < 2) {
+                    _uiState.update { state ->
+                        state.copy(
+                            titleState = BaseUiState.Error("2글자 이상 입력해주세요")
+                        )
+                    }
+                } else {
+                    _uiState.update { state ->
+                        state.copy(
+                            titleState = BaseUiState.Success
+                        )
+                    }
+                }
+            } else {
+                _uiState.update { state ->
+                    state.copy(
+                        titleState = BaseUiState.Empty
+                    )
+                }
+            }
+        }.launchIn(viewModelScope)
+    }
+
+    private fun observeDescription() {
+        description.onEach {
+            if (it.isNotBlank()) {
+                if (it.length < 2) {
+                    _uiState.update { state ->
+                        state.copy(
+                            descriptionState = BaseUiState.Error("2글자 이상 입력해주세요")
+                        )
+                    }
+                } else {
+                    _uiState.update { state ->
+                        state.copy(
+                            descriptionState = BaseUiState.Success
+                        )
+                    }
+                }
+            } else {
+                _uiState.update { state ->
+                    state.copy(
+                        descriptionState = BaseUiState.Empty
+                    )
+                }
+            }
+        }.launchIn(viewModelScope)
     }
 
     private fun observeSeekBar() {
@@ -154,20 +260,21 @@ class CreateChallengeDetailViewModel @Inject constructor(
         }
     }
 
-    fun setCategory(data: String){
+    fun setCategory(data: String) {
         category.value = data
     }
 
-    fun navigateToBack(){
-        viewModelScope.launch{
+    fun navigateToBack() {
+        viewModelScope.launch {
             _events.emit(CreateChallengeDetailEvents.NavigateToBack)
         }
     }
 
     fun createChallenge() {
         viewModelScope.launch {
+            _events.emit(CreateChallengeDetailEvents.ShowLoading)
 
-           challengeRepository.createChallenge(
+            challengeRepository.createChallenge(
                 CreateChallengeRequest(
                     category = category.value,
                     title = title.value,
@@ -176,21 +283,23 @@ class CreateChallengeDetailViewModel @Inject constructor(
                     goalCount = goalCount,
                     ticketTotalCount = ticketTotalCount,
                     weekMinCount = weekMinCount,
-                    keyword = keyword.value)
-            ).let{
-              when(it){
-                  is BaseState.Success -> {
-                      _events.emit(CreateChallengeDetailEvents.NavigateToChatList(it.body.chatroomId))
-                  }
-                  is BaseState.Error -> {
-                      _uiState.update { state ->
-                          state.copy(
-                              createChallengeState = BaseUiState.Error(it.msg)
-                          )
-                      }
-                  }
-              }
-           }
+                    keyword = keyword.value
+                )
+            ).let {
+                _events.emit(CreateChallengeDetailEvents.DismissLoading)
+
+                when (it) {
+                    is BaseState.Success -> {
+                        _events.emit(CreateChallengeDetailEvents.ShowToastMessage("챌린지가 생성되었습니다!"))
+                        _events.emit(CreateChallengeDetailEvents.NavigateToChatList(it.body.chatroomId))
+                    }
+
+                    is BaseState.Error -> {
+                        _events.emit(CreateChallengeDetailEvents.ShowSnackMessage(it.msg))
+                    }
+                }
+
+            }
         }
 
     }

@@ -7,7 +7,7 @@
 
         <variable
             name="item"
-            type="com.aoztg.greengrim.presentation.ui.chat.model.ChatListItem" />
+            type="com.aoztg.greengrim.presentation.ui.chat.model.UiChatListItem" />
 
     </data>
 

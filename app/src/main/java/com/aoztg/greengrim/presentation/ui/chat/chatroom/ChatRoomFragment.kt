@@ -87,10 +87,15 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
                     is ChatRoomEvents.ScrollBottom -> scrollRecyclerViewBottom()
                     is ChatRoomEvents.ExitChat -> {
                         chatManager.exitChat(chatId)
+                        dismissLoading()
+                        showCustomToast("채팅방 나가기 성공")
                         findNavController().navigateUp()
                     }
 
                     is ChatRoomEvents.ShowToastMessage -> showCustomToast(it.msg)
+                    is ChatRoomEvents.ShowSnackMessage -> showSnackBar(it.msg)
+                    is ChatRoomEvents.ShowLoading -> showLoading(requireContext())
+                    is ChatRoomEvents.DismissLoading -> showLoading(requireContext())
                 }
             }
         }

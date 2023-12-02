@@ -6,18 +6,17 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.aoztg.greengrim.databinding.ItemChatListBinding
-import com.aoztg.greengrim.presentation.ui.chat.model.ChatListItem
-import com.aoztg.greengrim.presentation.util.DefaultDiffUtil
+import com.aoztg.greengrim.presentation.ui.chat.model.UiChatListItem
 
-class ChatListAdapter : ListAdapter<ChatListItem, ChatListViewHolder>(diffCallback) {
+class ChatListAdapter : ListAdapter<UiChatListItem, ChatListViewHolder>(diffCallback) {
 
     companion object {
-        val diffCallback = object : DiffUtil.ItemCallback<ChatListItem>() {
-            override fun areItemsTheSame(oldItem: ChatListItem, newItem: ChatListItem): Boolean {
+        val diffCallback = object : DiffUtil.ItemCallback<UiChatListItem>() {
+            override fun areItemsTheSame(oldItem: UiChatListItem, newItem: UiChatListItem): Boolean {
                 return oldItem.chatId == newItem.chatId
             }
 
-            override fun areContentsTheSame(oldItem: ChatListItem, newItem: ChatListItem): Boolean {
+            override fun areContentsTheSame(oldItem: UiChatListItem, newItem: UiChatListItem): Boolean {
                 return oldItem == newItem
             }
         }
@@ -41,7 +40,7 @@ class ChatListAdapter : ListAdapter<ChatListItem, ChatListViewHolder>(diffCallba
 class ChatListViewHolder(private val binding: ItemChatListBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(item: ChatListItem) {
+    fun bind(item: UiChatListItem) {
         binding.item = item
         binding.root.setOnClickListener {
             item.onClickListener(item.chatId, item.challengeId)

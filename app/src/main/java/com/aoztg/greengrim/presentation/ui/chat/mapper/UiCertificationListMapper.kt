@@ -1,14 +1,14 @@
 package com.aoztg.greengrim.presentation.ui.chat.mapper
 
 import com.aoztg.greengrim.data.model.response.CertificationListResponse
-import com.aoztg.greengrim.presentation.ui.chat.model.CertificationListData
-import com.aoztg.greengrim.presentation.ui.chat.model.CertificationListItem
+import com.aoztg.greengrim.presentation.ui.chat.model.UiCertificationList
+import com.aoztg.greengrim.presentation.ui.chat.model.UiCertificationItem
 
-internal fun CertificationListResponse.toCertificationListData(onItemClickListener: (Int) -> Unit) = CertificationListData(
+internal fun CertificationListResponse.toUiCertificationList(onItemClickListener: (Int) -> Unit) = UiCertificationList(
     page = page,
     hasNext = hasNext,
     result = result.map{
-        CertificationListItem(
+        UiCertificationItem(
             id = it.certificationInfo.id,
             profileImg = it.memberSimpleInfo.profileImgUrl,
             nick = it.memberSimpleInfo.nickName,

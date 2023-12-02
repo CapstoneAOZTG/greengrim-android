@@ -18,6 +18,7 @@ import com.aoztg.greengrim.presentation.customview.FourPopupMenu
 import com.aoztg.greengrim.presentation.customview.LoadingDialog
 import com.aoztg.greengrim.presentation.customview.OnePopupMenu
 import com.aoztg.greengrim.presentation.customview.YearMonthPickerDialog
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -32,6 +33,7 @@ abstract class BaseFragment<B : ViewDataBinding>(
     private var onePopupMenu: OnePopupMenu? = null
     private var fourPopupMenu: FourPopupMenu? = null
     private lateinit var yearMonthPickerDialog: YearMonthPickerDialog
+    private var loadingState = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -50,13 +52,17 @@ abstract class BaseFragment<B : ViewDataBinding>(
     }
 
     fun showLoading(context: Context) {
-        loadingDialog = LoadingDialog(context)
-        loadingDialog.show()
+        if(!loadingState){
+            loadingDialog = LoadingDialog(context)
+            loadingDialog.show()
+            loadingState = true
+        }
     }
 
     fun dismissLoading() {
-        if (loadingDialog.isShowing) {
+        if (loadingState) {
             loadingDialog.dismiss()
+            loadingState = false
         }
     }
 
@@ -112,8 +118,24 @@ abstract class BaseFragment<B : ViewDataBinding>(
         toast.show()
     }
 
+    fun showSnackBar(text: String, action: String? = null) {
+        Snackbar.make(
+            binding.root,
+            text,
+            Snackbar.LENGTH_SHORT
+        ).apply {
+            action?.let {
+                setAction(it) {}
+            }
+            show()
+        }
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
+        if (loadingState) {
+            loadingDialog.dismiss()
+        }
         _binding = null
     }
 

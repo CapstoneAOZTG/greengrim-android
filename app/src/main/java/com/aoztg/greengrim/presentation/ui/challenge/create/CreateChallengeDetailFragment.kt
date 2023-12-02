@@ -13,6 +13,7 @@ import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentCreateChallengeDetailBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
 import com.aoztg.greengrim.presentation.chatmanager.ChatManager
+import com.aoztg.greengrim.presentation.customview.CustomSnackBar
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
@@ -74,6 +75,10 @@ class CreateChallengeDetailFragment :
                         chatManager.subscribeNewChat(it.chatId)
                         findNavController().toChatList()
                     }
+                    is CreateChallengeDetailEvents.ShowToastMessage -> showCustomToast(it.msg)
+                    is CreateChallengeDetailEvents.ShowSnackMessage -> showSnackBar(it.msg)
+                    is CreateChallengeDetailEvents.ShowLoading -> showLoading(requireContext())
+                    is CreateChallengeDetailEvents.DismissLoading -> dismissLoading()
                 }
             }
         }
@@ -97,5 +102,6 @@ class CreateChallengeDetailFragment :
         val action = CreateChallengeDetailFragmentDirections.actionCreateChallengeDetailFragmentToChatListFragment()
         this.navigate(action)
     }
+
 }
 

@@ -5,9 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.repository.ChallengeRepository
 import com.aoztg.greengrim.data.repository.ChatRepository
-import com.aoztg.greengrim.presentation.ui.LoadingState
-import com.aoztg.greengrim.presentation.ui.global.mapper.toChallengeDetail
-import com.aoztg.greengrim.presentation.ui.global.model.ChallengeDetail
+import com.aoztg.greengrim.presentation.ui.global.mapper.toUiChallengeDetail
+import com.aoztg.greengrim.presentation.ui.global.model.UiChallengeDetail
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -21,8 +20,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 data class ChallengeDetailUiState(
-    val loading: LoadingState = LoadingState.Empty,
-    val challengeDetail: ChallengeDetail = ChallengeDetail(),
+    val uiChallengeDetail: UiChallengeDetail = UiChallengeDetail(),
 )
 
 sealed class ChallengeDetailEvents {
@@ -30,6 +28,9 @@ sealed class ChallengeDetailEvents {
     object PopUpMenu : ChallengeDetailEvents()
     data class NavigateChatRoom(val chatId: Int, val challengeId: Int) : ChallengeDetailEvents()
     data class ShowToastMessage(val msg: String) : ChallengeDetailEvents()
+    data class ShowSnackMessage(val msg: String) : ChallengeDetailEvents()
+    object ShowLoading : ChallengeDetailEvents()
+    object DismissLoading : ChallengeDetailEvents()
 }
 
 @HiltViewModel
@@ -49,35 +50,26 @@ class ChallengeDetailViewModel @Inject constructor(
     fun getChallengeDetailInfo() {
         viewModelScope.launch {
 
-            _uiState.update {
-                it.copy(
-                    loading = LoadingState.IsLoading(true)
-                )
-            }
+            _events.emit(ChallengeDetailEvents.ShowLoading)
 
             challengeRepository.getChallengeDetail(challengeId).let {
                 when (it) {
                     is BaseState.Success -> {
-                        val uiData = it.body.toChallengeDetail()
+                        val uiData = it.body.toUiChallengeDetail()
                         _uiState.update { state ->
                             state.copy(
-                                challengeDetail = uiData,
+                                uiChallengeDetail = uiData,
                             )
                         }
                     }
 
                     is BaseState.Error -> {
-                        _events.emit(ChallengeDetailEvents.ShowToastMessage(it.msg))
+                        _events.emit(ChallengeDetailEvents.ShowSnackMessage(it.msg))
                     }
                 }
             }
             delay(500)
-
-            _uiState.update {
-                it.copy(
-                    loading = LoadingState.IsLoading(false)
-                )
-            }
+            _events.emit(ChallengeDetailEvents.DismissLoading)
         }
     }
 
@@ -93,16 +85,26 @@ class ChallengeDetailViewModel @Inject constructor(
         }
     }
 
-    fun navigateToChatRoom(id: Int) {
+    fun enterChat(id: Int) {
         viewModelScope.launch {
+
+            _events.emit(ChallengeDetailEvents.ShowLoading)
+
             chatRepository.enterChat(id).let {
+                _events.emit(ChallengeDetailEvents.DismissLoading)
                 when (it) {
                     is BaseState.Success -> {
-                        _events.emit(ChallengeDetailEvents.NavigateChatRoom(it.body.chatroomId, it.body.challengeId))
+                        _events.emit(ChallengeDetailEvents.ShowToastMessage("채팅방에 입장했습니다"))
+                        _events.emit(
+                            ChallengeDetailEvents.NavigateChatRoom(
+                                it.body.chatroomId,
+                                it.body.challengeId
+                            )
+                        )
                     }
 
                     is BaseState.Error -> {
-                        _events.emit(ChallengeDetailEvents.ShowToastMessage(it.msg))
+                        _events.emit(ChallengeDetailEvents.ShowSnackMessage(it.msg))
                     }
                 }
             }

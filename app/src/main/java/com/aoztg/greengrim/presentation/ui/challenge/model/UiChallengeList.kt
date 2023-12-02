@@ -3,13 +3,13 @@ package com.aoztg.greengrim.presentation.ui.challenge.model
 import com.aoztg.greengrim.data.model.response.ChallengeSimpleTags
 
 
-data class ChallengeListData(
+data class UiChallengeList(
     val hasNext: Boolean,
     val page: Int,
-    val result: List<ChallengeRoom>
+    val result: List<UiChallengeRoom>
 )
 
-data class ChallengeRoom(
+data class UiChallengeRoom(
     val id: Int,
     val imgUrl: String,
     val title: String,

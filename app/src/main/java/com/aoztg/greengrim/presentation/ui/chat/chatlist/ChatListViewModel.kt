@@ -1,12 +1,14 @@
 package com.aoztg.greengrim.presentation.ui.chat.chatlist
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.repository.ChatRepository
 import com.aoztg.greengrim.presentation.chatmanager.model.UiUnReadChatData
-import com.aoztg.greengrim.presentation.ui.chat.mapper.toChatListItem
-import com.aoztg.greengrim.presentation.ui.chat.model.ChatListItem
+import com.aoztg.greengrim.presentation.ui.chat.mapper.toUiChatListItem
+import com.aoztg.greengrim.presentation.ui.chat.model.UiChatListItem
+import com.aoztg.greengrim.presentation.util.Constants.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,13 +22,16 @@ import javax.inject.Inject
 
 
 data class ChatListUiState(
-    val chatListItem: List<ChatListItem> = emptyList()
+    val uiChatListItem: List<UiChatListItem> = emptyList()
 )
 
 sealed class ChatListEvents {
     data class NavigateToChatRoom(val chatId: Int, val challengeId: Int) : ChatListEvents()
     data class ShowToastMessage(val msg: String) : ChatListEvents()
-    object CallUnReadChatData: ChatListEvents()
+    object CallUnReadChatData : ChatListEvents()
+    data class ShowSnackMessage(val msg: String) : ChatListEvents()
+    object ShowLoading : ChatListEvents()
+    object DismissLoading : ChatListEvents()
 }
 
 
@@ -48,34 +53,35 @@ class ChatListViewModel @Inject constructor(
                     is BaseState.Success -> {
                         _uiState.update { state ->
                             state.copy(
-                                chatListItem = it.body.map { data ->
-                                    data.toChatListItem(::navigateToChatRoom)
+                                uiChatListItem = it.body.map { data ->
+                                    data.toUiChatListItem(::navigateToChatRoom)
                                 }
                             )
                         }
+                        _events.emit(ChatListEvents.CallUnReadChatData)
                     }
 
                     is BaseState.Error -> {
-                        _events.emit(ChatListEvents.ShowToastMessage(it.msg))
+                        _events.emit(ChatListEvents.ShowSnackMessage(it.msg))
                     }
                 }
-
-                _events.emit(ChatListEvents.CallUnReadChatData)
             }
-
         }
     }
 
-    fun setUnReadChatData(list: List<UiUnReadChatData>){
+    fun setUnReadChatData(list: List<UiUnReadChatData>) {
 
         // todo 좀더 효율적인 알고리즘으로 refactoring..
+        list.forEach {
+            Log.d(TAG,it.toString())
+        }
 
         _uiState.update { state ->
             state.copy(
-                chatListItem = uiState.value.chatListItem.map{ listData ->
+                uiChatListItem = uiState.value.uiChatListItem.map { listData ->
                     var newData = listData
-                    list.forEach {  unReadData ->
-                        if(listData.chatId == unReadData.chatId){
+                    list.forEach { unReadData ->
+                        if (listData.chatId == unReadData.chatId) {
                             newData = listData.copy(
                                 recentChat = unReadData.recentChat,
                                 recentTime = unReadData.recentChatTime,

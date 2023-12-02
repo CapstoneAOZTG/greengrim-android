@@ -189,7 +189,7 @@
             app:layout_constraintTop_toBottomOf="@id/tv_description" />
 
         <TextView
-            android:id="@+id/tv_warning"
+            android:id="@+id/tv_description_warning"
             style="@style/TextGgSmallGrey5"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

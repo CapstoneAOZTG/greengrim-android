@@ -5,11 +5,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.aoztg.greengrim.databinding.ItemCertificationBinding
-import com.aoztg.greengrim.presentation.ui.chat.model.CertificationListItem
+import com.aoztg.greengrim.presentation.ui.chat.model.UiCertificationItem
 import com.aoztg.greengrim.presentation.util.DefaultDiffUtil
 
-class CertificationListAdapter : ListAdapter<CertificationListItem, CertificationViewHolder>(
-    DefaultDiffUtil<CertificationListItem>()
+class CertificationListAdapter : ListAdapter<UiCertificationItem, CertificationViewHolder>(
+    DefaultDiffUtil<UiCertificationItem>()
 ) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CertificationViewHolder {
@@ -30,7 +30,7 @@ class CertificationListAdapter : ListAdapter<CertificationListItem, Certificatio
 class CertificationViewHolder(private val binding: ItemCertificationBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(item: CertificationListItem) {
+    fun bind(item: UiCertificationItem) {
         binding.item = item
         binding.root.setOnClickListener {
             item.onItemClickListener(item.id)

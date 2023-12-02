@@ -1,7 +1,6 @@
 package com.aoztg.greengrim.presentation.ui.global.attendcheck
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -11,7 +10,6 @@ import com.aoztg.greengrim.databinding.FragmentAttendCheckBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
 import com.aoztg.greengrim.presentation.customview.VerifySnackBar
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
-import com.aoztg.greengrim.presentation.util.Constants.TAG
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -25,8 +23,12 @@ class AttendCheckFragment : BaseFragment<FragmentAttendCheckBinding>(R.layout.fr
 
         parentViewModel.hideBNV()
         binding.vm = viewModel
-        viewModel.getCertificationForVerify()
         initEventObserver()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.getCertificationForVerify()
     }
 
     private fun initEventObserver(){
@@ -35,8 +37,10 @@ class AttendCheckFragment : BaseFragment<FragmentAttendCheckBinding>(R.layout.fr
                 when(it){
                     is AttendCheckEvents.ShowToastMessage -> showCustomToast(it.msg)
                     is AttendCheckEvents.NavigateToBack -> findNavController().navigateUp()
-                    is AttendCheckEvents.ShowSnackBar -> VerifySnackBar.make(binding.tvDescription).show()
-                    else -> {}
+                    is AttendCheckEvents.ShowVerifySnackBar -> VerifySnackBar.make(binding.tvDescription).show()
+                    is AttendCheckEvents.ShowSnackMessage -> showSnackBar(it.msg)
+                    is AttendCheckEvents.ShowLoading -> showLoading(requireContext())
+                    is AttendCheckEvents.DismissLoading -> dismissLoading()
                 }
             }
         }

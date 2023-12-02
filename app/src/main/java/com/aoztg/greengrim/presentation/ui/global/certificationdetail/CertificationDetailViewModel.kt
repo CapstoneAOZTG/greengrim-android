@@ -5,9 +5,10 @@ import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.model.request.VerificationsRequest
 import com.aoztg.greengrim.data.repository.CertificationRepository
-import com.aoztg.greengrim.presentation.ui.global.mapper.toCertificationDetail
-import com.aoztg.greengrim.presentation.ui.global.model.CertificationDetail
+import com.aoztg.greengrim.presentation.ui.global.mapper.toUiCertificationDetail
+import com.aoztg.greengrim.presentation.ui.global.model.UiCertificationDetail
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -19,13 +20,16 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 data class CertificationDetailUiState(
-    val certificationDetail: CertificationDetail = CertificationDetail()
+    val uiCertificationDetail: UiCertificationDetail = UiCertificationDetail()
 )
 
 sealed class CertificationDetailEvents {
     data class ShowToastMessage(val msg: String) : CertificationDetailEvents()
     object NavigateToBack : CertificationDetailEvents()
-    object ShowSnackBar : CertificationDetailEvents()
+    object ShowVerifySnackBar : CertificationDetailEvents()
+    data class ShowSnackMessage(val msg: String): CertificationDetailEvents()
+    object ShowLoading: CertificationDetailEvents()
+    object DismissLoading: CertificationDetailEvents()
 }
 
 @HiltViewModel
@@ -41,23 +45,27 @@ class CertificationDetailViewModel @Inject constructor(
 
     private var certificationId = -1
 
-    private fun getCertificationDetail() {
+    fun getCertificationDetail() {
         viewModelScope.launch {
+            _events.emit(CertificationDetailEvents.ShowLoading)
+
             certificationRepository.getCertificationDetail(certificationId).let {
                 when (it) {
                     is BaseState.Success -> {
                         _uiState.update { state ->
                             state.copy(
-                                certificationDetail = it.body.toCertificationDetail()
+                                uiCertificationDetail = it.body.toUiCertificationDetail()
                             )
                         }
                     }
 
                     is BaseState.Error -> {
-                        _events.emit(CertificationDetailEvents.ShowToastMessage(it.msg))
+                        _events.emit(CertificationDetailEvents.ShowSnackMessage(it.msg))
                     }
                 }
             }
+            delay(500)
+            _events.emit(CertificationDetailEvents.DismissLoading)
         }
     }
 
@@ -73,16 +81,16 @@ class CertificationDetailViewModel @Inject constructor(
                     is BaseState.Success -> {
                         _uiState.update { state ->
                             state.copy(
-                                certificationDetail = _uiState.value.certificationDetail.copy(
+                                uiCertificationDetail = _uiState.value.uiCertificationDetail.copy(
                                     isVerified = "TRUE"
                                 )
                             )
                         }
-                        _events.emit(CertificationDetailEvents.ShowSnackBar)
+                        _events.emit(CertificationDetailEvents.ShowVerifySnackBar)
                     }
 
                     is BaseState.Error -> {
-                        _events.emit(CertificationDetailEvents.ShowToastMessage(it.msg))
+                        _events.emit(CertificationDetailEvents.ShowSnackMessage(it.msg))
                     }
                 }
             }
@@ -92,7 +100,6 @@ class CertificationDetailViewModel @Inject constructor(
 
     fun setCertificationId(id: Int) {
         certificationId = id
-        getCertificationDetail()
     }
 
     fun navigateToBack() {

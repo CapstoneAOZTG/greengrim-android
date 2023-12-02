@@ -2,13 +2,15 @@ package com.aoztg.greengrim.presentation.bindingadapters
 
 import android.annotation.SuppressLint
 import android.graphics.Color
+import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.aoztg.greengrim.R
+import com.aoztg.greengrim.presentation.ui.BaseUiState
 import com.aoztg.greengrim.presentation.ui.challenge.create.KeywordState
 import com.aoztg.greengrim.presentation.ui.challenge.create.ProgressState
-import com.aoztg.greengrim.presentation.ui.global.model.ChallengeDetail
+import com.aoztg.greengrim.presentation.ui.global.model.UiChallengeDetail
 import com.google.android.material.chip.ChipGroup
 
 @SuppressLint("SetTextI18n")
@@ -42,7 +44,7 @@ fun bindSelectChips(chipGroup: ChipGroup, keywordState: KeywordState) {
 }
 
 @BindingAdapter("challengeDetailBtnText")
-fun bindChallengeDetailBtnText(button: Button, data: ChallengeDetail){
+fun bindChallengeDetailBtnText(button: Button, data: UiChallengeDetail){
 
     if( data.entered ){
         button.text = "이미 참여중인 챌린지 입니다"
@@ -52,5 +54,15 @@ fun bindChallengeDetailBtnText(button: Button, data: ChallengeDetail){
         button.text = "입장하기"
         button.isEnabled = true
         button.setTextColor(Color.BLACK)
+    }
+}
+
+@BindingAdapter("descriptionHelperMessage")
+fun bindDescriptionHelperMessage(tv: TextView, state: BaseUiState){
+    when(state){
+        is BaseUiState.Error -> {
+            tv.visibility = View.VISIBLE
+        }
+        else -> tv.visibility = View.GONE
     }
 }

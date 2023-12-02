@@ -4,9 +4,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.aoztg.greengrim.databinding.ItemHomeHotNftBinding
-import com.aoztg.greengrim.presentation.ui.home.model.HotNft
+import com.aoztg.greengrim.presentation.ui.home.model.UiHotNft
 
-class HotNftAdapter(val data: List<HotNft>) : RecyclerView.Adapter<HotNftViewHolder>() {
+class HotNftAdapter(val data: List<UiHotNft>) : RecyclerView.Adapter<HotNftViewHolder>() {
 
     override fun onBindViewHolder(holder: HotNftViewHolder, position: Int) {
         holder.bind(data[position])
@@ -24,7 +24,7 @@ class HotNftAdapter(val data: List<HotNft>) : RecyclerView.Adapter<HotNftViewHol
 class HotNftViewHolder(private val binding: ItemHomeHotNftBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(item: HotNft) {
+    fun bind(item: UiHotNft) {
         binding.item = item
     }
 }

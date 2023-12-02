@@ -1,12 +1,12 @@
 package com.aoztg.greengrim.presentation.ui.global.mapper
 
 import com.aoztg.greengrim.data.model.response.CertificationDetailResponse
-import com.aoztg.greengrim.presentation.ui.global.model.CertificationDetail
+import com.aoztg.greengrim.presentation.ui.global.model.UiCertificationDetail
 import com.aoztg.greengrim.presentation.ui.toCategoryText
 
 
-internal fun CertificationDetailResponse.toCertificationDetail(): CertificationDetail {
-    return CertificationDetail(
+internal fun CertificationDetailResponse.toUiCertificationDetail(): UiCertificationDetail {
+    return UiCertificationDetail(
         certificationId = certificationInfo.id,
         challengeTitle = challengeInfo.title,
         category = challengeInfo.category.toCategoryText(),

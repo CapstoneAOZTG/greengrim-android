@@ -1,12 +1,12 @@
 package com.aoztg.greengrim.presentation.ui.info.model
 
-data class MyCertificationListData(
+data class UiMyCertificationList(
     val page: Int,
     val hasNext: Boolean,
-    val result: List<MyCertification>
+    val result: List<UiMyCertification>
 )
 
-data class MyCertification (
+data class UiMyCertification (
     val id: Int,
     val categoryImg: String,
     val title: String,

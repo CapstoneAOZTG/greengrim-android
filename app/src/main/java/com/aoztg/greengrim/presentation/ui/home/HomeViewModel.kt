@@ -5,14 +5,13 @@ import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.repository.HomeRepository
 import com.aoztg.greengrim.presentation.ui.LoadingState
-import com.aoztg.greengrim.presentation.ui.home.mapper.toHomeInfo
-import com.aoztg.greengrim.presentation.ui.home.mapper.toHotChallenge
-import com.aoztg.greengrim.presentation.ui.home.model.HomeInfo
-import com.aoztg.greengrim.presentation.ui.home.model.HotChallenge
-import com.aoztg.greengrim.presentation.ui.home.model.HotNft
-import com.aoztg.greengrim.presentation.ui.home.model.MoreActivity
+import com.aoztg.greengrim.presentation.ui.home.mapper.toUiHomeInfo
+import com.aoztg.greengrim.presentation.ui.home.mapper.toUiHotChallenge
+import com.aoztg.greengrim.presentation.ui.home.model.UiHomeInfo
+import com.aoztg.greengrim.presentation.ui.home.model.UiHotChallenge
+import com.aoztg.greengrim.presentation.ui.home.model.UiHotNft
+import com.aoztg.greengrim.presentation.ui.home.model.UiMoreActivity
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -24,16 +23,18 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 data class HomeUiState(
-    val loading: LoadingState = LoadingState.Empty,
-    val hotChallengeList: List<HotChallenge> = emptyList(),
-    val moreActivityList: List<MoreActivity> = emptyList(),
-    val hotNftList: List<HotNft> = emptyList(),
-    val homeInfo: HomeInfo = HomeInfo()
+    val uiHotChallengeList: List<UiHotChallenge> = emptyList(),
+    val uiMoreActivityList: List<UiMoreActivity> = emptyList(),
+    val uiHotNftList: List<UiHotNft> = emptyList(),
+    val uiHomeInfo: UiHomeInfo = UiHomeInfo()
 )
 
 sealed class HomeEvents {
     data class NavigateToChallengeDetail(val id: Int) : HomeEvents()
     data class ShowToastMessage(val msg: String) : HomeEvents()
+    data class ShowSnackMessage(val msg: String) : HomeEvents()
+    object ShowLoading : HomeEvents()
+    object DismissLoading : HomeEvents()
 }
 
 @HiltViewModel
@@ -48,72 +49,72 @@ class HomeViewModel @Inject constructor(
     val events: SharedFlow<HomeEvents> = _events.asSharedFlow()
 
     fun getHomeData() {
-        getHomeInfo()
-        getHotChallenges()
-        getMoreActivity()
-        getHotNft()
+        viewModelScope.launch{
+            _events.emit(HomeEvents.ShowLoading)
+            getHomeInfo()
+            getHotChallenges()
+            getMoreActivity()
+            getHotNft()
+            _events.emit(HomeEvents.DismissLoading)
+        }
     }
 
-    private fun getHomeInfo() {
-        viewModelScope.launch {
-            homeRepository.getHomeInfo().let {
-                when (it) {
-                    is BaseState.Success -> {
-                        _uiState.update { state ->
-                            state.copy(
-                                homeInfo = it.body.toHomeInfo()
-                            )
-                        }
+    private suspend fun getHomeInfo() {
+        homeRepository.getHomeInfo().let {
+            when (it) {
+                is BaseState.Success -> {
+                    _uiState.update { state ->
+                        state.copy(
+                            uiHomeInfo = it.body.toUiHomeInfo()
+                        )
                     }
+                }
 
-                    is BaseState.Error -> {
-                        _events.emit(HomeEvents.ShowToastMessage(it.msg))
-                    }
+                is BaseState.Error -> {
+                    _events.emit(HomeEvents.ShowSnackMessage(it.msg))
                 }
             }
         }
     }
 
-    private fun getHotChallenges() {
-        viewModelScope.launch {
-            homeRepository.getHotChallenges().let {
-                when (it) {
-                    is BaseState.Success -> {
-                        val uiModel = it.body.hotChallengeInfos.map { data ->
-                            data.toHotChallenge(::navigateToChallengeDetail)
-                        }
-                        _uiState.update { state ->
-                            state.copy(
-                                hotChallengeList = uiModel
-                            )
-                        }
+    private suspend fun getHotChallenges() {
+        homeRepository.getHotChallenges().let {
+            when (it) {
+                is BaseState.Success -> {
+                    val uiModel = it.body.hotChallengeInfos.map { data ->
+                        data.toUiHotChallenge(::navigateToChallengeDetail)
                     }
+                    _uiState.update { state ->
+                        state.copy(
+                            uiHotChallengeList = uiModel
+                        )
+                    }
+                }
 
-                    is BaseState.Error -> {
-                        _events.emit(HomeEvents.ShowToastMessage(it.msg))
-                    }
+                is BaseState.Error -> {
+                    _events.emit(HomeEvents.ShowSnackMessage(it.msg))
                 }
             }
         }
     }
 
-    private fun getMoreActivity() {
+    private suspend fun getMoreActivity() {
         _uiState.update { state ->
             state.copy(
-                moreActivityList = listOf(
-                    MoreActivity("", "쓰레기 잡기", "지금 플레이하면", "+ 10 G"),
-                    MoreActivity("", "출석 체크", "지금 상호 인증하면", "+ 10 G")
+                uiMoreActivityList = listOf(
+                    UiMoreActivity("", "쓰레기 잡기", "지금 플레이하면", "+ 10 G"),
+                    UiMoreActivity("", "출석 체크", "지금 상호 인증하면", "+ 10 G")
                 )
             )
         }
     }
 
-    private fun getHotNft() {
+    private suspend fun getHotNft() {
         _uiState.update { state ->
             state.copy(
-                hotNftList = listOf(
-                    HotNft("", "장화 신은 고양이", "", "Noah", "15.7 C"),
-                    HotNft("", "레인보우 빨대", "", "Bora", "13.1 C")
+                uiHotNftList = listOf(
+                    UiHotNft("", "장화 신은 고양이", "", "Noah", "15.7 C"),
+                    UiHotNft("", "레인보우 빨대", "", "Bora", "13.1 C")
                 )
             )
         }

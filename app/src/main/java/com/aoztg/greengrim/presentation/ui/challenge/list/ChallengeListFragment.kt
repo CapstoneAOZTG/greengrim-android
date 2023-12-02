@@ -12,13 +12,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentChallengeListBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
-import com.aoztg.greengrim.presentation.ui.BaseUiState
-import com.aoztg.greengrim.presentation.ui.LoadingState
+import com.aoztg.greengrim.presentation.customview.getSortSheet
 import com.aoztg.greengrim.presentation.ui.challenge.adapter.ChallengeRoomAdapter
 import com.aoztg.greengrim.presentation.ui.challenge.list.ChallengeListViewModel.Companion.ORIGINAL
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 import com.aoztg.greengrim.presentation.ui.toChallengeDetail
-import com.aoztg.greengrim.presentation.customview.getSortSheet
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -32,7 +30,6 @@ class ChallengeListFragment :
     private val categoryText by lazy { args.categoryText }
     private val categoryValue by lazy { args.categoryValue }
     private var sortType = ChallengeSortType.DESC
-    private var loadingState = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -41,38 +38,13 @@ class ChallengeListFragment :
         binding.tvTitle.text = categoryText
         viewModel.setCategory(categoryValue)
         binding.rvChallengeList.adapter = ChallengeRoomAdapter()
-        viewModel.getChallengeList(ORIGINAL)
-        initStateObserver()
         initEventObserver()
         setScrollEventListener()
     }
 
-    private fun initStateObserver() {
-        repeatOnStarted {
-            viewModel.uiState.collect {
-
-                when(it.getChallengeRoomState){
-                    is BaseUiState.Error -> showCustomToast(it.getChallengeRoomState.msg)
-                    else -> {}
-                }
-
-                when (it.loading) {
-                    is LoadingState.IsLoading -> {
-                        if(it.loading.state){
-                            if(!loadingState){
-                                showLoading(requireContext())
-                                loadingState = true
-                            }
-                        } else{
-                            dismissLoading()
-                            loadingState = false
-                        }
-                    }
-
-                    else -> {}
-                }
-            }
-        }
+    override fun onResume() {
+        super.onResume()
+        viewModel.getChallengeList(ORIGINAL)
     }
 
     private fun initEventObserver() {
@@ -86,6 +58,9 @@ class ChallengeListFragment :
                     is ChallengeListEvents.NavigateToCreateChallenge -> findNavController().toCreateChallenge()
                     is ChallengeListEvents.ShowBottomSheet -> showBottomSheet()
                     is ChallengeListEvents.ScrollToTop -> binding.rvChallengeList.smoothScrollToPosition(0)
+                    is ChallengeListEvents.ShowLoading -> showLoading(requireContext())
+                    is ChallengeListEvents.DismissLoading -> dismissLoading()
+                    is ChallengeListEvents.ShowSnackMessage -> showSnackBar(it.msg)
                 }
             }
         }
@@ -120,11 +95,6 @@ class ChallengeListFragment :
         val action =
             ChallengeListFragmentDirections.actionChallengeListFragmentToCreateChallengeFragment()
         this.navigate(action)
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        if (loadingState) dismissLoading()
     }
 }
 

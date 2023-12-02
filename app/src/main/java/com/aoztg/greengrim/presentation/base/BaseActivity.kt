@@ -12,6 +12,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.aoztg.greengrim.presentation.customview.LoadingDialog
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -19,6 +20,7 @@ abstract class BaseActivity<B : ViewDataBinding>(private val inflate: (LayoutInf
     AppCompatActivity() {
     protected lateinit var binding: B
     private lateinit var loadingDialog : LoadingDialog
+    private var loadingState = false
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,19 +38,43 @@ abstract class BaseActivity<B : ViewDataBinding>(private val inflate: (LayoutInf
 
 
     fun showLoading(context : Context){
-        loadingDialog = LoadingDialog(context)
-        loadingDialog.show()
+        if(!loadingState){
+            loadingDialog = LoadingDialog(context)
+            loadingDialog.show()
+            loadingState = true
+        }
     }
 
     fun dismissLoading(){
-        if(loadingDialog.isShowing){
+        if(loadingState){
             loadingDialog.dismiss()
+            loadingState = false
         }
     }
 
     fun showCustomToast(message: String) {
         val toast = Toast.makeText(this, message, Toast.LENGTH_SHORT)
         toast.show()
+    }
+
+    fun showSnackBar(text: String, action: String? = null) {
+        Snackbar.make(
+            binding.root,
+            text,
+            Snackbar.LENGTH_INDEFINITE
+        ).apply {
+            action?.let {
+                setAction(it) {}
+            }
+            show()
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if(loadingState){
+            loadingDialog.dismiss()
+        }
     }
 
 }

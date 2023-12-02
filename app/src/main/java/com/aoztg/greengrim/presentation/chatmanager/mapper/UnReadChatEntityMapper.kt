@@ -5,5 +5,5 @@ import com.aoztg.greengrim.presentation.chatmanager.model.UiUnReadChatData
 
 
 internal fun UiUnReadChatData.toUnReadChatEntity() = UnReadChatEntity(
-    chatId, unReadCount, recentChat, recentChatTime
+    chatId, unReadCount, recentChat, recentChatTime, recentChatDate
 )

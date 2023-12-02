@@ -38,7 +38,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         parentViewModel.showBNV()
         binding.vm = viewModel
         initRecycler()
-        initStateObserver()
         initEventObserver()
         initParentObserver()
     }
@@ -46,37 +45,22 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
     private fun initRecycler() {
         repeatOnStarted {
             viewModel.uiState.collect {
-                if (it.hotChallengeList.isNotEmpty() && !isHotChallengeSet) {
-                    binding.rvHotChallenge.adapter = HotChallengeAdapter(it.hotChallengeList)
+                if (it.uiHotChallengeList.isNotEmpty() && !isHotChallengeSet) {
+                    binding.rvHotChallenge.adapter = HotChallengeAdapter(it.uiHotChallengeList)
                     recyclerToViewPager(binding.rvHotChallenge, binding.indicatorHotChallenge)
                     isHotChallengeSet = true
                 }
 
-                if (it.moreActivityList.isNotEmpty() && !isMoreActivitySet) {
-                    binding.rvMoreActivity.adapter = MoreActivityAdapter(it.moreActivityList)
+                if (it.uiMoreActivityList.isNotEmpty() && !isMoreActivitySet) {
+                    binding.rvMoreActivity.adapter = MoreActivityAdapter(it.uiMoreActivityList)
                     recyclerToViewPager(binding.rvMoreActivity, binding.indicatorMoreActivity)
                     isMoreActivitySet = true
                 }
 
-                if (it.hotNftList.isNotEmpty() && !isHotNftSet) {
-                    binding.rvHotNft.adapter = HotNftAdapter(it.hotNftList)
+                if (it.uiHotNftList.isNotEmpty() && !isHotNftSet) {
+                    binding.rvHotNft.adapter = HotNftAdapter(it.uiHotNftList)
                     recyclerToViewPager(binding.rvHotNft, binding.indicatorHotNft)
                     isHotNftSet = true
-                }
-            }
-        }
-    }
-
-    private fun initStateObserver() {
-        repeatOnStarted {
-            viewModel.uiState.collect {
-                when (it.loading) {
-                    is LoadingState.IsLoading -> {
-                        if (it.loading.state) showLoading(requireContext())
-                        else dismissLoading()
-                    }
-
-                    else -> {}
                 }
             }
         }
@@ -91,6 +75,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
                     )
 
                     is HomeEvents.ShowToastMessage -> showCustomToast(it.msg)
+                    is HomeEvents.ShowLoading -> showLoading(requireContext())
+                    is HomeEvents.DismissLoading -> dismissLoading()
+                    is HomeEvents.ShowSnackMessage -> showSnackBar(it.msg)
                 }
             }
         }
@@ -103,7 +90,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
             }
         }
     }
-
 
     private fun recyclerToViewPager(
         recycler: RecyclerView,

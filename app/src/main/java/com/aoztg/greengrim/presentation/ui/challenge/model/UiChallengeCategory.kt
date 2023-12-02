@@ -1,6 +1,6 @@
 package com.aoztg.greengrim.presentation.ui.challenge.model
 
-data class ChallengeCategory(
+data class UiChallengeCategory(
     val icon: Int,
     val category: CategoryName,
     val point: String,

@@ -7,8 +7,8 @@ import com.aoztg.greengrim.data.repository.ChallengeRepository
 import com.aoztg.greengrim.presentation.ui.BaseUiState
 import com.aoztg.greengrim.presentation.ui.LoadingState
 import com.aoztg.greengrim.presentation.ui.challenge.list.ChallengeSortType
-import com.aoztg.greengrim.presentation.ui.challenge.mapper.toChallengeListData
-import com.aoztg.greengrim.presentation.ui.challenge.model.ChallengeRoom
+import com.aoztg.greengrim.presentation.ui.challenge.mapper.toUiChallengeList
+import com.aoztg.greengrim.presentation.ui.challenge.model.UiChallengeRoom
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,7 +23,7 @@ import javax.inject.Inject
 
 data class MyChallengeUiState(
     val loading: LoadingState = LoadingState.Empty,
-    val challengeRoom: List<ChallengeRoom> = emptyList(),
+    val uiChallengeRoom: List<UiChallengeRoom> = emptyList(),
     val sortType: ChallengeSortType = ChallengeSortType.DESC,
     val page: Int = 0,
     val hasNext: Boolean = true,
@@ -75,10 +75,10 @@ class MyChallengeViewModel @Inject constructor(
                 ).let {
                     when (it) {
                         is BaseState.Success -> {
-                            val uiData = it.body.toChallengeListData(::navigateToChallengeDetail)
+                            val uiData = it.body.toUiChallengeList(::navigateToChallengeDetail)
                             _uiState.update { state ->
                                 state.copy(
-                                    challengeRoom = if (option == ORIGINAL) _uiState.value.challengeRoom + uiData.result else uiData.result,
+                                    uiChallengeRoom = if (option == ORIGINAL) _uiState.value.uiChallengeRoom + uiData.result else uiData.result,
                                     hasNext = uiData.hasNext,
                                     page = uiData.page + 1,
                                     loading = LoadingState.IsLoading(false)

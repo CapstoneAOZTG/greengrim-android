@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.repository.CertificationRepository
-import com.aoztg.greengrim.presentation.ui.info.mapper.toMyCertificationListData
-import com.aoztg.greengrim.presentation.ui.info.model.MyCertification
+import com.aoztg.greengrim.presentation.ui.info.mapper.toUiMyCertificationList
+import com.aoztg.greengrim.presentation.ui.info.model.UiMyCertification
 import com.aoztg.greengrim.presentation.ui.toHeaderText
 import com.aoztg.greengrim.presentation.ui.toLocalDate
 import com.aoztg.greengrim.presentation.ui.toText
@@ -27,7 +27,7 @@ data class MyCertificationUiState(
     val curDateString: String = LocalDate.now().toHeaderText(),
     val curDate: LocalDate = LocalDate.now(),
     val certificationDateList: List<LocalDate> = emptyList(),
-    val certificationList: List<MyCertification> = emptyList(),
+    val certificationList: List<UiMyCertification> = emptyList(),
     val page: Int = 0,
     val hasNext: Boolean = true,
 )
@@ -133,7 +133,7 @@ class MyCertificationViewModel @Inject constructor(
                     when (it) {
                         is BaseState.Success -> {
                             val uiData =
-                                it.body.toMyCertificationListData(::navigateToCertificationDetail)
+                                it.body.toUiMyCertificationList(::navigateToCertificationDetail)
                             _uiState.update { state ->
                                 state.copy(
                                     certificationList = if (option == NEXT_PAGE) _uiState.value.certificationList + uiData.result else uiData.result,
