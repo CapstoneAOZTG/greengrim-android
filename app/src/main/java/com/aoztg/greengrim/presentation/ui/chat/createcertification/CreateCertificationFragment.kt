@@ -59,8 +59,8 @@ class CreateCertificationFragment :
                         certImg = it.certImg
                     )
                     is CreateCertificationEvents.ShowSnackMessage -> showSnackBar(it.msg)
-                    is CreateCertificationEvents.ShowDialog -> showLoading(requireContext())
-                    is CreateCertificationEvents.DismissDialog -> dismissLoading()
+                    is CreateCertificationEvents.ShowLoading -> showLoading(requireContext())
+                    is CreateCertificationEvents.DismissLoading -> dismissLoading()
                 }
             }
         }

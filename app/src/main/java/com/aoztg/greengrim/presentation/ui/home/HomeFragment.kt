@@ -38,7 +38,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         parentViewModel.showBNV()
         binding.vm = viewModel
         initRecycler()
-        initStateObserver()
         initEventObserver()
         initParentObserver()
     }
@@ -67,21 +66,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         }
     }
 
-    private fun initStateObserver() {
-        repeatOnStarted {
-            viewModel.uiState.collect {
-                when (it.loading) {
-                    is LoadingState.IsLoading -> {
-                        if (it.loading.state) showLoading(requireContext())
-                        else dismissLoading()
-                    }
-
-                    else -> {}
-                }
-            }
-        }
-    }
-
     private fun initEventObserver() {
         repeatOnStarted {
             viewModel.events.collect {
@@ -91,6 +75,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
                     )
 
                     is HomeEvents.ShowToastMessage -> showCustomToast(it.msg)
+                    is HomeEvents.ShowLoading -> showLoading(requireContext())
+                    is HomeEvents.DismissLoading -> dismissLoading()
+                    is HomeEvents.ShowSnackMessage -> showSnackBar(it.msg)
                 }
             }
         }
@@ -103,7 +90,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
             }
         }
     }
-
 
     private fun recyclerToViewPager(
         recycler: RecyclerView,

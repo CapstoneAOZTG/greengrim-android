@@ -8,6 +8,7 @@ import com.aoztg.greengrim.data.repository.AttendCheckRepository
 import com.aoztg.greengrim.presentation.ui.global.mapper.toUiCertificationDetail
 import com.aoztg.greengrim.presentation.ui.global.model.UiCertificationDetail
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -23,9 +24,12 @@ data class AttendCheckUiState(
 )
 
 sealed class AttendCheckEvents {
-    object ShowSnackBar : AttendCheckEvents()
+    object ShowVerifySnackBar : AttendCheckEvents()
     data class ShowToastMessage(val msg: String) : AttendCheckEvents()
     object NavigateToBack : AttendCheckEvents()
+    object ShowLoading : AttendCheckEvents()
+    object DismissLoading : AttendCheckEvents()
+    data class ShowSnackMessage(val msg: String) : AttendCheckEvents()
 }
 
 
@@ -42,6 +46,7 @@ class AttendCheckViewModel @Inject constructor(
 
     fun getCertificationForVerify() {
         viewModelScope.launch {
+            _events.emit(AttendCheckEvents.ShowLoading)
 
             attendCheckRepository.getCertificationForVerify().let {
                 when (it) {
@@ -54,10 +59,13 @@ class AttendCheckViewModel @Inject constructor(
                     }
 
                     is BaseState.Error -> {
-                        _events.emit(AttendCheckEvents.ShowToastMessage(it.msg))
+                        _events.emit(AttendCheckEvents.ShowSnackMessage(it.msg))
                     }
                 }
             }
+
+            delay(500)
+            _events.emit(AttendCheckEvents.DismissLoading)
         }
     }
 
@@ -79,11 +87,11 @@ class AttendCheckViewModel @Inject constructor(
                                 )
                             )
                         }
-                        _events.emit(AttendCheckEvents.ShowSnackBar)
+                        _events.emit(AttendCheckEvents.ShowVerifySnackBar)
                     }
 
                     is BaseState.Error -> {
-                        _events.emit(AttendCheckEvents.ShowToastMessage(it.msg))
+                        _events.emit(AttendCheckEvents.ShowSnackMessage(it.msg))
                     }
                 }
             }

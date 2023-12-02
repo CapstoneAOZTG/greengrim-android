@@ -23,7 +23,6 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 data class HomeUiState(
-    val loading: LoadingState = LoadingState.Empty,
     val uiHotChallengeList: List<UiHotChallenge> = emptyList(),
     val uiMoreActivityList: List<UiMoreActivity> = emptyList(),
     val uiHotNftList: List<UiHotNft> = emptyList(),
@@ -33,6 +32,9 @@ data class HomeUiState(
 sealed class HomeEvents {
     data class NavigateToChallengeDetail(val id: Int) : HomeEvents()
     data class ShowToastMessage(val msg: String) : HomeEvents()
+    data class ShowSnackMessage(val msg: String) : HomeEvents()
+    object ShowLoading : HomeEvents()
+    object DismissLoading : HomeEvents()
 }
 
 @HiltViewModel
@@ -47,56 +49,56 @@ class HomeViewModel @Inject constructor(
     val events: SharedFlow<HomeEvents> = _events.asSharedFlow()
 
     fun getHomeData() {
-        getHomeInfo()
-        getHotChallenges()
-        getMoreActivity()
-        getHotNft()
+        viewModelScope.launch{
+            _events.emit(HomeEvents.ShowLoading)
+            getHomeInfo()
+            getHotChallenges()
+            getMoreActivity()
+            getHotNft()
+            _events.emit(HomeEvents.DismissLoading)
+        }
     }
 
-    private fun getHomeInfo() {
-        viewModelScope.launch {
-            homeRepository.getHomeInfo().let {
-                when (it) {
-                    is BaseState.Success -> {
-                        _uiState.update { state ->
-                            state.copy(
-                                uiHomeInfo = it.body.toUiHomeInfo()
-                            )
-                        }
+    private suspend fun getHomeInfo() {
+        homeRepository.getHomeInfo().let {
+            when (it) {
+                is BaseState.Success -> {
+                    _uiState.update { state ->
+                        state.copy(
+                            uiHomeInfo = it.body.toUiHomeInfo()
+                        )
                     }
+                }
 
-                    is BaseState.Error -> {
-                        _events.emit(HomeEvents.ShowToastMessage(it.msg))
-                    }
+                is BaseState.Error -> {
+                    _events.emit(HomeEvents.ShowToastMessage(it.msg))
                 }
             }
         }
     }
 
-    private fun getHotChallenges() {
-        viewModelScope.launch {
-            homeRepository.getHotChallenges().let {
-                when (it) {
-                    is BaseState.Success -> {
-                        val uiModel = it.body.hotChallengeInfos.map { data ->
-                            data.toUiHotChallenge(::navigateToChallengeDetail)
-                        }
-                        _uiState.update { state ->
-                            state.copy(
-                                uiHotChallengeList = uiModel
-                            )
-                        }
+    private suspend fun getHotChallenges() {
+        homeRepository.getHotChallenges().let {
+            when (it) {
+                is BaseState.Success -> {
+                    val uiModel = it.body.hotChallengeInfos.map { data ->
+                        data.toUiHotChallenge(::navigateToChallengeDetail)
                     }
+                    _uiState.update { state ->
+                        state.copy(
+                            uiHotChallengeList = uiModel
+                        )
+                    }
+                }
 
-                    is BaseState.Error -> {
-                        _events.emit(HomeEvents.ShowToastMessage(it.msg))
-                    }
+                is BaseState.Error -> {
+                    _events.emit(HomeEvents.ShowToastMessage(it.msg))
                 }
             }
         }
     }
 
-    private fun getMoreActivity() {
+    private suspend fun getMoreActivity() {
         _uiState.update { state ->
             state.copy(
                 uiMoreActivityList = listOf(
@@ -107,7 +109,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun getHotNft() {
+    private suspend fun getHotNft() {
         _uiState.update { state ->
             state.copy(
                 uiHotNftList = listOf(

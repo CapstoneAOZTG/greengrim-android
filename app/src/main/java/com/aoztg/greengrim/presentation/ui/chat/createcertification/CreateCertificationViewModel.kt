@@ -37,8 +37,8 @@ sealed class CreateCertificationEvents {
 
     data class ShowToastMessage(val msg: String) : CreateCertificationEvents()
     data class ShowSnackMessage(val msg: String) : CreateCertificationEvents()
-    object ShowDialog : CreateCertificationEvents()
-    object DismissDialog : CreateCertificationEvents()
+    object ShowLoading : CreateCertificationEvents()
+    object DismissLoading : CreateCertificationEvents()
 }
 
 @HiltViewModel
@@ -91,7 +91,7 @@ class CreateCertificationViewModel @Inject constructor(
 
         viewModelScope.launch {
 
-            _events.emit(CreateCertificationEvents.ShowDialog)
+            _events.emit(CreateCertificationEvents.ShowLoading)
 
             certificationRepository.createCertification(
                 CreateCertificationRequest(
@@ -101,7 +101,7 @@ class CreateCertificationViewModel @Inject constructor(
                     round = _uiState.value.certificationDefaultData.round
                 )
             ).let {
-                _events.emit(CreateCertificationEvents.DismissDialog)
+                _events.emit(CreateCertificationEvents.DismissLoading)
 
                 when (it) {
 

@@ -94,8 +94,8 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
 
                     is ChatRoomEvents.ShowToastMessage -> showCustomToast(it.msg)
                     is ChatRoomEvents.ShowSnackMessage -> showSnackBar(it.msg)
-                    is ChatRoomEvents.ShowDialog -> showLoading(requireContext())
-                    is ChatRoomEvents.DismissDialog -> showLoading(requireContext())
+                    is ChatRoomEvents.ShowLoading -> showLoading(requireContext())
+                    is ChatRoomEvents.DismissLoading -> showLoading(requireContext())
                 }
             }
         }
