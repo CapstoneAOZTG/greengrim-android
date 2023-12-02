@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.repository.ChallengeRepository
 import com.aoztg.greengrim.data.repository.ChatRepository
-import com.aoztg.greengrim.presentation.ui.LoadingState
 import com.aoztg.greengrim.presentation.ui.global.mapper.toUiChallengeDetail
 import com.aoztg.greengrim.presentation.ui.global.model.UiChallengeDetail
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,7 +20,6 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 data class ChallengeDetailUiState(
-    val loading: LoadingState = LoadingState.Empty,
     val uiChallengeDetail: UiChallengeDetail = UiChallengeDetail(),
 )
 
@@ -30,6 +28,9 @@ sealed class ChallengeDetailEvents {
     object PopUpMenu : ChallengeDetailEvents()
     data class NavigateChatRoom(val chatId: Int, val challengeId: Int) : ChallengeDetailEvents()
     data class ShowToastMessage(val msg: String) : ChallengeDetailEvents()
+    data class ShowSnackMessage(val msg: String) : ChallengeDetailEvents()
+    object ShowDialog : ChallengeDetailEvents()
+    object DismissDialog : ChallengeDetailEvents()
 }
 
 @HiltViewModel
@@ -49,11 +50,7 @@ class ChallengeDetailViewModel @Inject constructor(
     fun getChallengeDetailInfo() {
         viewModelScope.launch {
 
-            _uiState.update {
-                it.copy(
-                    loading = LoadingState.IsLoading(true)
-                )
-            }
+            _events.emit(ChallengeDetailEvents.ShowDialog)
 
             challengeRepository.getChallengeDetail(challengeId).let {
                 when (it) {
@@ -67,17 +64,12 @@ class ChallengeDetailViewModel @Inject constructor(
                     }
 
                     is BaseState.Error -> {
-                        _events.emit(ChallengeDetailEvents.ShowToastMessage(it.msg))
+                        _events.emit(ChallengeDetailEvents.ShowSnackMessage(it.msg))
                     }
                 }
             }
             delay(500)
-
-            _uiState.update {
-                it.copy(
-                    loading = LoadingState.IsLoading(false)
-                )
-            }
+            _events.emit(ChallengeDetailEvents.DismissDialog)
         }
     }
 
@@ -93,16 +85,26 @@ class ChallengeDetailViewModel @Inject constructor(
         }
     }
 
-    fun navigateToChatRoom(id: Int) {
+    fun enterChat(id: Int) {
         viewModelScope.launch {
+
+            _events.emit(ChallengeDetailEvents.ShowDialog)
+
             chatRepository.enterChat(id).let {
+                _events.emit(ChallengeDetailEvents.DismissDialog)
                 when (it) {
                     is BaseState.Success -> {
-                        _events.emit(ChallengeDetailEvents.NavigateChatRoom(it.body.chatroomId, it.body.challengeId))
+                        _events.emit(ChallengeDetailEvents.ShowToastMessage("채팅방에 입장합니다"))
+                        _events.emit(
+                            ChallengeDetailEvents.NavigateChatRoom(
+                                it.body.chatroomId,
+                                it.body.challengeId
+                            )
+                        )
                     }
 
                     is BaseState.Error -> {
-                        _events.emit(ChallengeDetailEvents.ShowToastMessage(it.msg))
+                        _events.emit(ChallengeDetailEvents.ShowSnackMessage(it.msg))
                     }
                 }
             }

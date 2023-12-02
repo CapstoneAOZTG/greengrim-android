@@ -137,7 +137,7 @@
             android:layout_marginTop="24dp"
             android:layout_marginBottom="40dp"
             android:background="@drawable/selector_next_btn"
-            android:onClick="@{() -> vm.navigateToChatRoom(vm.uiState.uiChallengeDetail.id)}"
+            android:onClick="@{() -> vm.enterChat(vm.uiState.uiChallengeDetail.id)}"
             android:text="입장하기"
             android:textColor="@color/black"
             android:textSize="16sp"

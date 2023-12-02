@@ -11,7 +11,6 @@ import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentChallengeDetailBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
 import com.aoztg.greengrim.presentation.chatmanager.ChatManager
-import com.aoztg.greengrim.presentation.ui.LoadingState
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -26,7 +25,6 @@ class ChallengeDetailFragment :
     private val args: ChallengeDetailFragmentArgs by navArgs()
     private val challengeId by lazy { args.challengeId }
     private val popupLocation = IntArray(2)
-    private var loadingState = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -34,30 +32,7 @@ class ChallengeDetailFragment :
         binding.vm = viewModel
         viewModel.setChallengeId(challengeId)
         viewModel.getChallengeDetailInfo()
-        initStateObserver()
         initEventObserver()
-    }
-
-    private fun initStateObserver() {
-        repeatOnStarted {
-            viewModel.uiState.collect{
-                when(it.loading){
-                    is LoadingState.IsLoading -> {
-                        if(it.loading.state){
-                            if(!loadingState){
-                                showLoading(requireContext())
-                                loadingState = true
-                            }
-                        } else{
-                            dismissLoading()
-                            loadingState = false
-                        }
-                    }
-
-                    else -> {}
-                }
-            }
-        }
     }
 
     private fun initEventObserver() {
@@ -71,6 +46,9 @@ class ChallengeDetailFragment :
                         findNavController().toChatRoom(it.chatId, it.challengeId)
                     }
                     is ChallengeDetailEvents.ShowToastMessage -> showCustomToast(it.msg)
+                    is ChallengeDetailEvents.ShowSnackMessage -> showSnackBar(it.msg)
+                    is ChallengeDetailEvents.ShowDialog -> showLoading(requireContext())
+                    is ChallengeDetailEvents.DismissDialog -> dismissLoading()
                 }
             }
         }

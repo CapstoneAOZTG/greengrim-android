@@ -43,6 +43,7 @@ sealed class CertificationListEvents {
     object ShowCalendar : CertificationListEvents()
     data class NavigateToCertificationDetail(val certificationId: Int) : CertificationListEvents()
     object NavigateToBack : CertificationListEvents()
+    data class ShowSnackMessage(val msg: String) : CertificationListEvents()
 }
 
 @HiltViewModel
@@ -101,7 +102,7 @@ class CertificationListViewModel @Inject constructor(
                         }
 
                         is BaseState.Error -> {
-                            _events.emit(CertificationListEvents.ShowToastMessage(it.msg))
+                            _events.emit(CertificationListEvents.ShowSnackMessage(it.msg))
                         }
                     }
                 }
@@ -124,7 +125,7 @@ class CertificationListViewModel @Inject constructor(
                         }
 
                         is BaseState.Error -> {
-                            _events.emit(CertificationListEvents.ShowToastMessage(it.msg))
+                            _events.emit(CertificationListEvents.ShowSnackMessage(it.msg))
                         }
                     }
                 }
@@ -162,7 +163,7 @@ class CertificationListViewModel @Inject constructor(
                         }
 
                         is BaseState.Error -> {
-                            _events.emit(CertificationListEvents.ShowToastMessage(it.msg))
+                            _events.emit(CertificationListEvents.ShowSnackMessage(it.msg))
                         }
                     }
                 }
