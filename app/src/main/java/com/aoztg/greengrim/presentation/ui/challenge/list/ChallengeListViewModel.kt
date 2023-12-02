@@ -9,6 +9,7 @@ import com.aoztg.greengrim.presentation.ui.LoadingState
 import com.aoztg.greengrim.presentation.ui.challenge.mapper.toUiChallengeList
 import com.aoztg.greengrim.presentation.ui.challenge.model.UiChallengeRoom
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -20,12 +21,10 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 data class ChallengeListUiState(
-    val loading: LoadingState = LoadingState.Empty,
     val uiChallengeRoom: List<UiChallengeRoom> = emptyList(),
     val sortType: ChallengeSortType = ChallengeSortType.DESC,
     val page: Int = 0,
     val hasNext: Boolean = true,
-    val getChallengeRoomState: BaseUiState = BaseUiState.Empty
 )
 
 sealed class ChallengeListEvents {
@@ -33,6 +32,9 @@ sealed class ChallengeListEvents {
     object NavigateToCreateChallenge : ChallengeListEvents()
     object ShowBottomSheet : ChallengeListEvents()
     object ScrollToTop : ChallengeListEvents()
+    data class ShowSnackMessage(val msg: String) : ChallengeListEvents()
+    object ShowLoading : ChallengeListEvents()
+    object DismissLoading : ChallengeListEvents()
 }
 
 @HiltViewModel
@@ -57,21 +59,15 @@ class ChallengeListViewModel @Inject constructor(
 
         if (_uiState.value.hasNext) {
             viewModelScope.launch {
-
-                _uiState.update {
-                    it.copy(
-                        loading = LoadingState.IsLoading(true),
-                        page = it.page
-                    )
-                }
+                _events.emit(ChallengeListEvents.ShowLoading)
 
                 challengeRepository.getChallengeList(
                     category,
                     _uiState.value.page,
                     20,
                     _uiState.value.sortType.value
-                ).let{
-                    when(it){
+                ).let {
+                    when (it) {
                         is BaseState.Success -> {
                             val uiData = it.body.toUiChallengeList(::navigateToChallengeDetail)
                             _uiState.update { state ->
@@ -79,20 +75,14 @@ class ChallengeListViewModel @Inject constructor(
                                     uiChallengeRoom = if (option == ORIGINAL) _uiState.value.uiChallengeRoom + uiData.result else uiData.result,
                                     hasNext = uiData.hasNext,
                                     page = uiData.page + 1,
-                                    getChallengeRoomState = BaseUiState.Success,
-                                    loading = LoadingState.IsLoading(false)
                                 )
                             }
                         }
-                        is BaseState.Error -> {
-                            _uiState.update { state ->
-                                state.copy(
-                                    getChallengeRoomState = BaseUiState.Error(it.msg),
-                                    loading = LoadingState.IsLoading(false)
-                                )
-                            }
-                        }
+
+                        is BaseState.Error ->  _events.emit(ChallengeListEvents.ShowSnackMessage(it.msg))
                     }
+                    delay(500)
+                    _events.emit(ChallengeListEvents.DismissLoading)
                 }
             }
         }

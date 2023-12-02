@@ -33,6 +33,7 @@ abstract class BaseFragment<B : ViewDataBinding>(
     private var onePopupMenu: OnePopupMenu? = null
     private var fourPopupMenu: FourPopupMenu? = null
     private lateinit var yearMonthPickerDialog: YearMonthPickerDialog
+    private var loadingState = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,12 +52,15 @@ abstract class BaseFragment<B : ViewDataBinding>(
     }
 
     fun showLoading(context: Context) {
-        loadingDialog = LoadingDialog(context)
-        loadingDialog.show()
+        if(!loadingState){
+            loadingDialog = LoadingDialog(context)
+            loadingDialog.show()
+            loadingState = true
+        }
     }
 
     fun dismissLoading() {
-        if (loadingDialog.isShowing) {
+        if (loadingState) {
             loadingDialog.dismiss()
         }
     }
@@ -117,7 +121,7 @@ abstract class BaseFragment<B : ViewDataBinding>(
         Snackbar.make(
             binding.root,
             text,
-            Snackbar.LENGTH_INDEFINITE
+            Snackbar.LENGTH_SHORT
         ).apply {
             action?.let {
                 setAction(it) {}
@@ -128,6 +132,9 @@ abstract class BaseFragment<B : ViewDataBinding>(
 
     override fun onDestroyView() {
         super.onDestroyView()
+        if (loadingState) {
+            loadingDialog.dismiss()
+        }
         _binding = null
     }
 

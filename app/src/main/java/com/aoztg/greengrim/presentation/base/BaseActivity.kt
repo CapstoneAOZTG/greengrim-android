@@ -20,6 +20,7 @@ abstract class BaseActivity<B : ViewDataBinding>(private val inflate: (LayoutInf
     AppCompatActivity() {
     protected lateinit var binding: B
     private lateinit var loadingDialog : LoadingDialog
+    private var loadingState = false
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,12 +38,15 @@ abstract class BaseActivity<B : ViewDataBinding>(private val inflate: (LayoutInf
 
 
     fun showLoading(context : Context){
-        loadingDialog = LoadingDialog(context)
-        loadingDialog.show()
+        if(!loadingState){
+            loadingDialog = LoadingDialog(context)
+            loadingDialog.show()
+            loadingState = true
+        }
     }
 
     fun dismissLoading(){
-        if(loadingDialog.isShowing){
+        if(loadingState){
             loadingDialog.dismiss()
         }
     }
@@ -62,6 +66,13 @@ abstract class BaseActivity<B : ViewDataBinding>(private val inflate: (LayoutInf
                 setAction(it) {}
             }
             show()
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if(loadingState){
+            loadingDialog.dismiss()
         }
     }
 

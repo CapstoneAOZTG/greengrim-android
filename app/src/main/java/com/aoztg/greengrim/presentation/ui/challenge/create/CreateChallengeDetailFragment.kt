@@ -102,5 +102,6 @@ class CreateChallengeDetailFragment :
         val action = CreateChallengeDetailFragmentDirections.actionCreateChallengeDetailFragmentToChatListFragment()
         this.navigate(action)
     }
+
 }
 
