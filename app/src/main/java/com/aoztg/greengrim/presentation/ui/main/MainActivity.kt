@@ -130,7 +130,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                     is MainEvent.ShowPhotoBottomSheet -> showPhotoBottomSheet()
                     is MainEvent.Logout -> logout()
                     is MainEvent.ShowToastMessage -> showCustomToast(it.msg)
-                    is MainEvent.ShowSnackMessage -> showCustomSnack(binding.bnv, it.msg)
+                    is MainEvent.ShowSnackMessage -> showCustomSnack(binding.snackGuide, it.msg)
                 }
             }
         }
@@ -140,7 +140,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         repeatOnStarted {
             chatManager.event.collect{
                 when(it){
-                    is ChatEvent.ShowSnackMessage -> showSnackBar(it.msg)
+                    is ChatEvent.ShowSnackMessage -> showCustomSnack(binding.snackGuide, it.msg)
                     is ChatEvent.ShowToastMessage -> showCustomToast(it.msg)
                 }
             }
