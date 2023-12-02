@@ -36,6 +36,9 @@ sealed class CreateCertificationEvents {
     ) : CreateCertificationEvents()
 
     data class ShowToastMessage(val msg: String) : CreateCertificationEvents()
+    data class ShowSnackMessage(val msg: String) : CreateCertificationEvents()
+    object ShowDialog : CreateCertificationEvents()
+    object DismissDialog : CreateCertificationEvents()
 }
 
 @HiltViewModel
@@ -76,7 +79,7 @@ class CreateCertificationViewModel @Inject constructor(
                         }
 
                         is BaseState.Error -> {
-                            _events.emit(CreateCertificationEvents.ShowToastMessage(it.msg))
+                            _events.emit(CreateCertificationEvents.ShowSnackMessage(it.msg))
                         }
                     }
                 }
@@ -87,6 +90,9 @@ class CreateCertificationViewModel @Inject constructor(
     fun createCertification() {
 
         viewModelScope.launch {
+
+            _events.emit(CreateCertificationEvents.ShowDialog)
+
             certificationRepository.createCertification(
                 CreateCertificationRequest(
                     challengeId = challengeId,
@@ -95,7 +101,10 @@ class CreateCertificationViewModel @Inject constructor(
                     round = _uiState.value.certificationDefaultData.round
                 )
             ).let {
+                _events.emit(CreateCertificationEvents.DismissDialog)
+
                 when (it) {
+
                     is BaseState.Success -> {
                         _events.emit(
                             CreateCertificationEvents.SendCertificationMessage(
@@ -104,11 +113,12 @@ class CreateCertificationViewModel @Inject constructor(
                                 certImg = it.body.certImg
                             )
                         )
+                        _events.emit(CreateCertificationEvents.ShowToastMessage("인증 업로드 성공"))
                         _events.emit(CreateCertificationEvents.NavigateToBack)
                     }
 
                     is BaseState.Error -> {
-                        _events.emit(CreateCertificationEvents.ShowToastMessage(it.msg))
+                        _events.emit(CreateCertificationEvents.ShowSnackMessage(it.msg))
                     }
                 }
             }
