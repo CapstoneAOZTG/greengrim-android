@@ -18,11 +18,11 @@ class CertificationRepositoryImpl @Inject constructor(private val api: Certifica
 
 
     override suspend fun getCertificationDefaultData(id: Int): BaseState<CertificationDefaultDataResponse> =
-        runRemote(api.getCertificationDefaultData(id))
+        runRemote { api.getCertificationDefaultData(id) }
 
     override suspend fun getCertificationDate(
         challengeId: Int
-    ): BaseState<CertificationDatesResponse> = runRemote(api.getCertificationDate(challengeId))
+    ): BaseState<CertificationDatesResponse> = runRemote { api.getCertificationDate(challengeId) }
 
     override suspend fun getCertificationList(
         challengeId: Int,
@@ -30,28 +30,28 @@ class CertificationRepositoryImpl @Inject constructor(private val api: Certifica
         page: Int,
         size: Int
     ): BaseState<CertificationListResponse> =
-        runRemote(api.getCertificationList(challengeId, date, page, size))
+        runRemote { api.getCertificationList(challengeId, date, page, size) }
 
     override suspend fun getCertificationDetail(id: Int): BaseState<CertificationDetailResponse> =
-        runRemote(api.getCertificationDetail(id))
+        runRemote { api.getCertificationDetail(id) }
 
     override suspend fun getMyCertificationDate(): BaseState<CertificationDatesResponse> =
-        runRemote(api.getMyCertificationDate())
+        runRemote { api.getMyCertificationDate() }
 
     override suspend fun getMyCertificationList(
         date: String,
         page: Int,
         size: Int
     ): BaseState<MyCertificationListResponse> =
-        runRemote(api.getMyCertificationList(date, page, size))
+        runRemote { api.getMyCertificationList(date, page, size) }
 
     override suspend fun verifyCertification(data: VerificationsRequest): BaseState<Unit> =
-        runRemote(api.verifyCertification(data))
+        runRemote { api.verifyCertification(data) }
 
     override suspend fun createCertification(data: CreateCertificationRequest): BaseState<CreateCertificationResponse> =
-        runRemote(api.createCertification(data))
+        runRemote { api.createCertification(data) }
 
     override suspend fun deleteCertification(id: Int): BaseState<Unit> =
-        runRemote(api.deleteCertification(id))
+        runRemote { api.deleteCertification(id) }
 
 }

@@ -7,9 +7,9 @@ import javax.inject.Inject
 
 class FcmRepositoryImpl @Inject constructor(
     private val api: FcmAPI
-): FcmRepository {
+) : FcmRepository {
 
-    override suspend fun subscribeFcm(): BaseState<Unit> = runRemote(api.subscribeFcm())
+    override suspend fun subscribeFcm(): BaseState<Unit> = runRemote { api.subscribeFcm() }
 
-    override suspend fun unsubscribeFcm(): BaseState<Unit> = runRemote(api.unsubscribeFcm())
+    override suspend fun unsubscribeFcm(): BaseState<Unit> = runRemote { api.unsubscribeFcm() }
 }

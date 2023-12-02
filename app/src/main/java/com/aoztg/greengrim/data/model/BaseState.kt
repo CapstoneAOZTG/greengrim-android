@@ -8,8 +8,9 @@ sealed class BaseState<out T>{
     data class Error(val msg: String, val code: String): BaseState<Nothing>()
 }
 
-internal fun <T> runRemote(response: Response<T>): BaseState<T>{
+suspend fun <T> runRemote(block: suspend () -> Response<T>): BaseState<T>{
     return try{
+        val response = block()
         if(response.isSuccessful) {
             response.body()?.let{
                 BaseState.Success(it)

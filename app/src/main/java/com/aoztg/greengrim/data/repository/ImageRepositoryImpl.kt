@@ -11,5 +11,5 @@ class ImageRepositoryImpl @Inject constructor(private val api: ImageAPI) : Image
 
     override suspend fun imageToUrl(
         data: MultipartBody.Part
-    ): BaseState<ImageResponse> = runRemote(api.imageToUrl(data))
+    ): BaseState<ImageResponse> = runRemote { api.imageToUrl(data) }
 }

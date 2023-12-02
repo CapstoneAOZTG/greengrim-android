@@ -12,7 +12,8 @@ class HomeRepositoryImpl @Inject constructor(
 ) : HomeRepository {
 
     override suspend fun getHotChallenges(): BaseState<HotChallengeResponse> =
-        runRemote(api.getHotChallenges())
+        runRemote { api.getHotChallenges() }
 
-    override suspend fun getHomeInfo(): BaseState<HomeInfoResponse> = runRemote(api.getHomeInfo())
+    override suspend fun getHomeInfo(): BaseState<HomeInfoResponse> =
+        runRemote { api.getHomeInfo() }
 }

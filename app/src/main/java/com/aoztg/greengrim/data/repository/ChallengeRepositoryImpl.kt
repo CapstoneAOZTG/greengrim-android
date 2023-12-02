@@ -13,7 +13,7 @@ class ChallengeRepositoryImpl @Inject constructor(private val api: ChallengeAPI)
     ChallengeRepository {
 
     override suspend fun createChallenge(data: CreateChallengeRequest): BaseState<CreateChallengeResponse> =
-        runRemote(api.createChallenge(data))
+        runRemote { api.createChallenge(data) }
 
     override suspend fun getChallengeList(
         category: String,
@@ -21,16 +21,17 @@ class ChallengeRepositoryImpl @Inject constructor(private val api: ChallengeAPI)
         size: Int,
         sort: String
     ): BaseState<ChallengeListResponse> =
-        runRemote(api.getChallengeList(category, page, size, sort))
+        runRemote { api.getChallengeList(category, page, size, sort) }
 
     override suspend fun getChallengeDetail(id: Int): BaseState<ChallengeDetailResponse> =
-        runRemote(api.getChallengeDetail(id))
+        runRemote { api.getChallengeDetail(id) }
 
     override suspend fun getMyChallenge(
         page: Int,
         size: Int,
         sort: String
-    ): BaseState<ChallengeListResponse> = runRemote(api.getMyChallengeList(page, size, sort))
+    ): BaseState<ChallengeListResponse> = runRemote { api.getMyChallengeList(page, size, sort) }
 
-    override suspend fun exitChallenge(id: Int): BaseState<Unit> = runRemote(api.exitChallenge(id))
+    override suspend fun exitChallenge(id: Int): BaseState<Unit> =
+        runRemote { api.exitChallenge(id) }
 }
