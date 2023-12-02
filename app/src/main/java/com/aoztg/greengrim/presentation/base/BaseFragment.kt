@@ -18,6 +18,7 @@ import com.aoztg.greengrim.presentation.customview.FourPopupMenu
 import com.aoztg.greengrim.presentation.customview.LoadingDialog
 import com.aoztg.greengrim.presentation.customview.OnePopupMenu
 import com.aoztg.greengrim.presentation.customview.YearMonthPickerDialog
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -110,6 +111,19 @@ abstract class BaseFragment<B : ViewDataBinding>(
     fun showCustomToast(message: String) {
         val toast = Toast.makeText(activity, message, Toast.LENGTH_SHORT)
         toast.show()
+    }
+
+    fun showSnackBar(text: String, action: String? = null) {
+        Snackbar.make(
+            binding.root,
+            text,
+            Snackbar.LENGTH_INDEFINITE
+        ).apply {
+            action?.let {
+                setAction(it) {}
+            }
+            show()
+        }
     }
 
     override fun onDestroyView() {

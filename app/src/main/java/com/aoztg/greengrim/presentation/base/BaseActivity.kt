@@ -12,6 +12,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.aoztg.greengrim.presentation.customview.LoadingDialog
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -49,6 +50,19 @@ abstract class BaseActivity<B : ViewDataBinding>(private val inflate: (LayoutInf
     fun showCustomToast(message: String) {
         val toast = Toast.makeText(this, message, Toast.LENGTH_SHORT)
         toast.show()
+    }
+
+    fun showSnackBar(text: String, action: String? = null) {
+        Snackbar.make(
+            binding.root,
+            text,
+            Snackbar.LENGTH_INDEFINITE
+        ).apply {
+            action?.let {
+                setAction(it) {}
+            }
+            show()
+        }
     }
 
 }
