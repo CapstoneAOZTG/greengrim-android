@@ -13,9 +13,9 @@ class CustomSnackBar(
     private val text: String
 ) {
 
-    companion object{
+    companion object {
 
-        fun make(view: View) = VerifySnackBar(view)
+        fun make(view: View, text: String) = CustomSnackBar(view, text)
     }
 
     private val context = view.context
@@ -24,7 +24,12 @@ class CustomSnackBar(
     }
     private val snackbarLayout = snackbar.view as Snackbar.SnackbarLayout
 
-    private val binding: DialogCustomSnackbarBinding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.dialog_custom_snackbar, null, false)
+    private val binding: DialogCustomSnackbarBinding = DataBindingUtil.inflate(
+        LayoutInflater.from(context),
+        R.layout.dialog_custom_snackbar,
+        null,
+        false
+    )
 
     init {
         initView()

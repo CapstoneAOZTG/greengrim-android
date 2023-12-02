@@ -60,7 +60,7 @@ class ChallengeListFragment :
                     is ChallengeListEvents.ScrollToTop -> binding.rvChallengeList.smoothScrollToPosition(0)
                     is ChallengeListEvents.ShowLoading -> showLoading(requireContext())
                     is ChallengeListEvents.DismissLoading -> dismissLoading()
-                    is ChallengeListEvents.ShowSnackMessage -> showSnackBar(it.msg)
+                    is ChallengeListEvents.ShowSnackMessage -> showCustomSnack(binding.rvChallengeList, it.msg)
                 }
             }
         }

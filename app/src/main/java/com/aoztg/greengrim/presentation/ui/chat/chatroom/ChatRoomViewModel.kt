@@ -123,7 +123,7 @@ class ChatRoomViewModel @Inject constructor(
                     }
 
                     is BaseState.Error -> {
-                        _events.emit(ChatRoomEvents.ShowToastMessage(response.msg))
+                        _events.emit(ChatRoomEvents.ShowSnackMessage(response.msg))
                     }
                 }
             }

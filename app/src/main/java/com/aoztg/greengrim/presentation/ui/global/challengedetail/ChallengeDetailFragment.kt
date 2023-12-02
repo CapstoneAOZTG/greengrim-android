@@ -50,7 +50,7 @@ class ChallengeDetailFragment :
                         findNavController().toChatRoom(it.chatId, it.challengeId)
                     }
                     is ChallengeDetailEvents.ShowToastMessage -> showCustomToast(it.msg)
-                    is ChallengeDetailEvents.ShowSnackMessage -> showSnackBar(it.msg)
+                    is ChallengeDetailEvents.ShowSnackMessage -> showCustomSnack(binding.tvTitle, it.msg)
                     is ChallengeDetailEvents.ShowLoading -> showLoading(requireContext())
                     is ChallengeDetailEvents.DismissLoading -> dismissLoading()
                 }

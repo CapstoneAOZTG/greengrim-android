@@ -43,7 +43,7 @@ class CertificationDetailFragment: BaseFragment<FragmentCertificationDetailBindi
                     is CertificationDetailEvents.ShowToastMessage -> showCustomToast(it.msg)
                     is CertificationDetailEvents.NavigateToBack -> findNavController().navigateUp()
                     is CertificationDetailEvents.ShowVerifySnackBar -> VerifySnackBar.make(binding.tvDescription).show()
-                    is CertificationDetailEvents.ShowSnackMessage -> showSnackBar(it.msg)
+                    is CertificationDetailEvents.ShowSnackMessage -> showCustomSnack(binding.tvTitle, it.msg)
                     is CertificationDetailEvents.ShowLoading -> showLoading(requireContext())
                     is CertificationDetailEvents.DismissLoading -> dismissLoading()
                 }

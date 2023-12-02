@@ -64,6 +64,7 @@ class IntroActivity : BaseActivity<ActivityIntroBinding>(ActivityIntroBinding::i
 
                     is IntroEvent.ShowPhotoBottomSheet -> showPhotoBottomSheet()
                     is IntroEvent.ShowToastMessage -> showCustomToast(it.msg)
+                    is IntroEvent.ShowSnackMessage -> showCustomSnack(binding.introFrag, it.msg)
                 }
             }
         }

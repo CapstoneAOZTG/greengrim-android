@@ -36,6 +36,7 @@ sealed class MyChallengeEvents {
     object ShowBottomSheet : MyChallengeEvents()
     object ScrollToTop : MyChallengeEvents()
     data class ShowToastMessage(val msg: String) : MyChallengeEvents()
+    data class ShowSnackMessage(val msg: String) : MyChallengeEvents()
 }
 
 @HiltViewModel
@@ -92,7 +93,7 @@ class MyChallengeViewModel @Inject constructor(
                                     loading = LoadingState.IsLoading(false)
                                 )
                             }
-                            _events.emit(MyChallengeEvents.ShowToastMessage(it.msg))
+                            _events.emit(MyChallengeEvents.ShowSnackMessage(it.msg))
                         }
                     }
                 }

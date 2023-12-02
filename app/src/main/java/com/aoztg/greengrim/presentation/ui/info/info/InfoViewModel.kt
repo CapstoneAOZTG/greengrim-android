@@ -30,6 +30,7 @@ sealed class InfoEvents {
     object NavigateToMyChallenge : InfoEvents()
     object NavigateToMyCertification : InfoEvents()
     data class ShowToastMessage(val msg: String) : InfoEvents()
+    data class ShowSnackMessage(val msg: String) : InfoEvents()
 }
 
 @HiltViewModel
@@ -62,7 +63,7 @@ class InfoViewModel @Inject constructor(
                     }
 
                     is BaseState.Error -> {
-                        _events.emit(InfoEvents.ShowToastMessage(it.msg))
+                        _events.emit(InfoEvents.ShowSnackMessage(it.msg))
                     }
                 }
             }
@@ -78,7 +79,7 @@ class InfoViewModel @Inject constructor(
                     }
 
                     is BaseState.Error -> {
-                        _events.emit(InfoEvents.ShowToastMessage(it.msg))
+                        _events.emit(InfoEvents.ShowSnackMessage(it.msg))
                     }
                 }
             }

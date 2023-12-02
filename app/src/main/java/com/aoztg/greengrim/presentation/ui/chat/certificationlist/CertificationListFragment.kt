@@ -68,7 +68,7 @@ class CertificationListFragment : BaseFragment<FragmentCertificationListBinding>
                         viewModel.uiState.value.certificationDateList
                     )
                     is CertificationListEvents.NavigateToBack -> findNavController().navigateUp()
-                    is CertificationListEvents.ShowSnackMessage -> showSnackBar(it.msg)
+                    is CertificationListEvents.ShowSnackMessage -> showCustomSnack(binding.tvChallengeTitle,it.msg)
                 }
             }
         }

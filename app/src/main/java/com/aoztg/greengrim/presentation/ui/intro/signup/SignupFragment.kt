@@ -48,7 +48,7 @@ class SignupFragment : BaseFragment<FragmentSignupBinding>(R.layout.fragment_sig
 
                 when (it.signupState) {
                     is BaseUiState.Success -> parentViewModel.goToMain()
-                    is BaseUiState.Error -> showCustomToast(it.signupState.msg)
+                    is BaseUiState.Error -> showCustomSnack(binding.tvTitle, it.signupState.msg)
                     else -> {}
                 }
             }

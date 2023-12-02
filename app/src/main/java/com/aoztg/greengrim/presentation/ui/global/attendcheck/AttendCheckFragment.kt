@@ -38,7 +38,7 @@ class AttendCheckFragment : BaseFragment<FragmentAttendCheckBinding>(R.layout.fr
                     is AttendCheckEvents.ShowToastMessage -> showCustomToast(it.msg)
                     is AttendCheckEvents.NavigateToBack -> findNavController().navigateUp()
                     is AttendCheckEvents.ShowVerifySnackBar -> VerifySnackBar.make(binding.tvDescription).show()
-                    is AttendCheckEvents.ShowSnackMessage -> showSnackBar(it.msg)
+                    is AttendCheckEvents.ShowSnackMessage -> showCustomSnack(binding.tvTitle, it.msg)
                     is AttendCheckEvents.ShowLoading -> showLoading(requireContext())
                     is AttendCheckEvents.DismissLoading -> dismissLoading()
                 }

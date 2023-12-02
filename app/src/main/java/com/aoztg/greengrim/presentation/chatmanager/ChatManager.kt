@@ -26,7 +26,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import java.net.UnknownHostException
 import javax.inject.Inject
 
 
@@ -99,7 +98,7 @@ class ChatManager @Inject constructor(
                     }
 
                     is BaseState.Error -> {
-                        _events.emit(ChatEvent.ShowToastMessage(it.msg))
+                        _events.emit(ChatEvent.ShowSnackMessage(it.msg))
                     }
                 }
                 _firstConnect.value = true
@@ -127,7 +126,7 @@ class ChatManager @Inject constructor(
                 }
 
                 is BaseState.Error -> {
-                    Log.d(Constants.TAG, response.msg)
+                    _events.emit(ChatEvent.ShowSnackMessage(response.msg))
                 }
             }
         }
@@ -264,7 +263,7 @@ class ChatManager @Inject constructor(
                 when (val response = chatRepository.addUnReadChatData(it.toUnReadChatEntity())) {
                     is BaseState.Success -> {}
                     is BaseState.Error -> {
-                        Log.d(TAG, response.msg)
+                        _events.emit(ChatEvent.ShowSnackMessage(response.msg))
                     }
                 }
             }
@@ -302,7 +301,9 @@ class ChatManager @Inject constructor(
             fcmRepository.subscribeFcm().let{
                 when(it){
                     is BaseState.Success -> {}
-                    is BaseState.Error -> {}
+                    is BaseState.Error -> {
+                        _events.emit(ChatEvent.ShowSnackMessage(it.msg))
+                    }
                 }
             }
         }
@@ -313,7 +314,9 @@ class ChatManager @Inject constructor(
             fcmRepository.unsubscribeFcm().let{
                 when(it){
                     is BaseState.Success -> {}
-                    is BaseState.Error -> {}
+                    is BaseState.Error -> {
+                        _events.emit(ChatEvent.ShowSnackMessage(it.msg))
+                    }
                 }
             }
 

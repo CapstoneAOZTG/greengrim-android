@@ -19,6 +19,7 @@ sealed class IntroEvent {
     object ShowPhotoBottomSheet : IntroEvent()
     object GoToMainActivity : IntroEvent()
     data class ShowToastMessage(val msg: String) : IntroEvent()
+    data class ShowSnackMessage(val msg: String) : IntroEvent()
 }
 
 @HiltViewModel
@@ -59,7 +60,7 @@ class IntroViewModel @Inject constructor(
                     }
 
                     is BaseState.Error -> {
-                        _events.emit(IntroEvent.ShowToastMessage(it.msg))
+                        _events.emit(IntroEvent.ShowSnackMessage(it.msg))
                     }
                 }
             }

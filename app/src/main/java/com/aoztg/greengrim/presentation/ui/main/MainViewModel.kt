@@ -22,6 +22,7 @@ sealed class MainEvent {
     object ShowPhotoBottomSheet : MainEvent()
     object Logout : MainEvent()
     data class ShowToastMessage(val msg: String) : MainEvent()
+    data class ShowSnackMessage(val msg: String) : MainEvent()
 }
 
 enum class KeyboardState {
@@ -75,7 +76,7 @@ class MainViewModel @Inject constructor(
                     }
 
                     is BaseState.Error -> {
-                        _events.emit(MainEvent.ShowToastMessage(it.msg))
+                        _events.emit(MainEvent.ShowSnackMessage(it.msg))
                     }
                 }
             }

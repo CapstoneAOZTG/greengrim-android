@@ -130,6 +130,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                     is MainEvent.ShowPhotoBottomSheet -> showPhotoBottomSheet()
                     is MainEvent.Logout -> logout()
                     is MainEvent.ShowToastMessage -> showCustomToast(it.msg)
+                    is MainEvent.ShowSnackMessage -> showCustomSnack(binding.bnv, it.msg)
                 }
             }
         }

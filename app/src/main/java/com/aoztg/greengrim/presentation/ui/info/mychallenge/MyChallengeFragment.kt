@@ -73,6 +73,7 @@ class MyChallengeFragment :
                     is MyChallengeEvents.ShowBottomSheet -> showBottomSheet()
                     is MyChallengeEvents.ScrollToTop -> binding.rvChallengeList.smoothScrollToPosition(0)
                     is MyChallengeEvents.ShowToastMessage -> showCustomToast(it.msg)
+                    is MyChallengeEvents.ShowSnackMessage -> showCustomSnack(binding.rvChallengeList, it.msg)
                     else -> {}
                 }
             }
