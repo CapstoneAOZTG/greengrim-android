@@ -137,8 +137,8 @@ class ChatRoomViewModel @Inject constructor(
         val newMessages = uiState.value.chatMessages.toMutableList()
         val newMessage = message.toUiChatMessage(memberId, ::navigateToCertificationDetail)
 
-        if (newMessages.isNotEmpty()) {
-            if (newMessages.last().sentDate != newMessage.sentDate) {
+        if (newMessages.size > 0 && newMessages.first().sentDate.isNotBlank()) {
+            if (newMessages.first().sentDate != newMessage.sentDate) {
                 newMessages.add(0, UiChatMessage(type = DATE, message = newMessage.sentDate) {})
             }
         }
