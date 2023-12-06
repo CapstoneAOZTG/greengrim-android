@@ -9,13 +9,13 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="300dp"
         android:layout_height="200dp"
-        android:background="@drawable/ingame_toolbar_background">
+        android:background="@drawable/catch_game_wood_background">
 
         <ImageView
             android:layout_width="300dp"
             android:layout_height="50dp"
             android:layout_marginTop="20dp"
-            android:src="@drawable/pause_header"
+            android:src="@drawable/catch_game_pause_header"
             app:layout_constraintBottom_toTopOf="@id/guide"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
