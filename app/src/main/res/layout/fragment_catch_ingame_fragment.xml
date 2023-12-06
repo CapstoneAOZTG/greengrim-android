@@ -342,10 +342,19 @@
                     android:scaleType="fitCenter"
                     android:src="@drawable/catch_game_recycle_bag" />
 
-
             </GridLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ImageView
+            android:id="@+id/iv_levelup_modal"
+            android:layout_width="200dp"
+            android:layout_height="100dp"
+            android:src="@drawable/catch_game_levelup_modal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
