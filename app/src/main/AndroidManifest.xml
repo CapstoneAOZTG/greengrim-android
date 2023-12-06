@@ -43,7 +43,8 @@
         <activity android:name=".presentation.ui.intro.IntroActivity"
             android:exported="true"/>
 
-        <activity android:name=".presentation.ui.game.GameActivity"
+        <activity android:name=".presentation.ui.catchgame.CatchGameActivity"
+            android:screenOrientation="landscape"
             android:exported="false"/>
 
         <activity

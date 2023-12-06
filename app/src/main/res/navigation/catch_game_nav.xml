@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/game_nav">
+
+    <fragment
+        android:id="@+id/lobby_fragment"
+        android:name="com.aoztg.greengrim.presentation.ui.catchgame.CatchGameLobbyFragment"
+        android:label="lobby">
+        <action
+            android:id="@+id/action_lobby_fragment_to_ingame_fragment"
+            app:destination="@id/ingame_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/ingame_fragment"
+        android:name="com.aoztg.greengrim.presentation.ui.catchgame.CatchInGameFragment"
+        android:label="ingame"/>
+
+</navigation>
