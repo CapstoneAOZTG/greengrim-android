@@ -9,7 +9,9 @@ import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentCatchGameLobbyBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
 import com.aoztg.greengrim.presentation.ui.main.MainActivity
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class CatchGameLobbyFragment: BaseFragment<FragmentCatchGameLobbyBinding>(R.layout.fragment_catch_game_lobby) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

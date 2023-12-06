@@ -158,20 +158,11 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:background="@drawable/catch_game_ingame_background"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/layout_status_bar"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/layout_toolbar">
-
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/catch_game_ingame_background"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
 
             <GridLayout
                 android:id="@+id/layout_ingame_grid"
@@ -197,7 +188,8 @@
                     android:background="@android:color/transparent"
                     android:paddingBottom="30dp"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/catch_game_recycle_bag" />
+                    android:src="@drawable/catch_game_recycle_bag"
+                    android:visibility="invisible" />
 
                 <ImageButton
                     android:id="@+id/btn_trash2"
@@ -210,7 +202,8 @@
                     android:background="@android:color/transparent"
                     android:paddingBottom="30dp"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/catch_game_recycle_bag" />
+                    android:src="@drawable/catch_game_recycle_bag"
+                    android:visibility="invisible" />
 
                 <ImageButton
                     android:id="@+id/btn_trash3"
@@ -223,7 +216,8 @@
                     android:background="@android:color/transparent"
                     android:paddingBottom="30dp"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/catch_game_recycle_bag" />
+                    android:src="@drawable/catch_game_recycle_bag"
+                    android:visibility="invisible" />
 
                 <ImageButton
                     android:id="@+id/btn_trash4"
@@ -236,7 +230,8 @@
                     android:background="@android:color/transparent"
                     android:paddingBottom="30dp"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/catch_game_recycle_bag" />
+                    android:src="@drawable/catch_game_recycle_bag"
+                    android:visibility="invisible" />
 
                 <ImageButton
                     android:id="@+id/btn_trash5"
@@ -249,7 +244,8 @@
                     android:background="@android:color/transparent"
                     android:paddingBottom="30dp"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/catch_game_recycle_bag" />
+                    android:src="@drawable/catch_game_recycle_bag"
+                    android:visibility="invisible" />
 
                 <ImageButton
                     android:id="@+id/btn_trash6"
@@ -262,7 +258,8 @@
                     android:background="@android:color/transparent"
                     android:paddingBottom="30dp"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/catch_game_recycle_bag" />
+                    android:src="@drawable/catch_game_recycle_bag"
+                    android:visibility="invisible" />
 
                 <ImageButton
                     android:id="@+id/btn_trash7"
@@ -275,7 +272,8 @@
                     android:background="@android:color/transparent"
                     android:paddingBottom="30dp"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/catch_game_recycle_bag" />
+                    android:src="@drawable/catch_game_recycle_bag"
+                    android:visibility="invisible" />
 
                 <ImageButton
                     android:id="@+id/btn_trash8"
@@ -288,7 +286,8 @@
                     android:background="@android:color/transparent"
                     android:paddingBottom="30dp"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/catch_game_recycle_bag" />
+                    android:src="@drawable/catch_game_recycle_bag"
+                    android:visibility="invisible" />
 
                 <ImageButton
                     android:id="@+id/btn_trash9"
@@ -301,7 +300,8 @@
                     android:background="@android:color/transparent"
                     android:paddingBottom="30dp"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/catch_game_recycle_bag" />
+                    android:src="@drawable/catch_game_recycle_bag"
+                    android:visibility="invisible" />
 
                 <ImageButton
                     android:id="@+id/btn_trash10"
@@ -314,7 +314,8 @@
                     android:background="@android:color/transparent"
                     android:paddingBottom="30dp"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/catch_game_recycle_bag" />
+                    android:src="@drawable/catch_game_recycle_bag"
+                    android:visibility="invisible" />
 
                 <ImageButton
                     android:id="@+id/btn_trash11"
@@ -327,7 +328,8 @@
                     android:background="@android:color/transparent"
                     android:paddingBottom="30dp"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/catch_game_recycle_bag" />
+                    android:src="@drawable/catch_game_recycle_bag"
+                    android:visibility="invisible" />
 
                 <ImageButton
                     android:id="@+id/btn_trash12"
@@ -340,7 +342,8 @@
                     android:background="@android:color/transparent"
                     android:paddingBottom="30dp"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/catch_game_recycle_bag" />
+                    android:src="@drawable/catch_game_recycle_bag"
+                    android:visibility="invisible" />
 
             </GridLayout>
 
