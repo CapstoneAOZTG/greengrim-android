@@ -31,7 +31,6 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
     override fun onMessageReceived(message: RemoteMessage) {
         PushUtils.acquireWakeLock(App.context())
         //수신한 메시지를 처리
-//        val title = message.data["title"]
 //        val body = message.data["body"]
 //        val code = message.data["code"]
         sendNotification()
@@ -47,8 +46,8 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
 
         val notificationBuilder = NotificationCompat.Builder(this, channelId).apply {
             priority = NotificationCompat.PRIORITY_HIGH
-//            setContentTitle(title)
-//            setContentText(body)
+            setContentTitle("Test")
+            setContentText("Test")
             setContentIntent(pIntent)
             setAutoCancel(true)
             setSmallIcon(R.drawable.gg_logo)
