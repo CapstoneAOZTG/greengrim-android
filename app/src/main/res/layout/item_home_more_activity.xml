@@ -29,7 +29,6 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:scaleType="centerCrop"
-            app:imgUrl="@{item.imgUrl}"
             app:layout_constraintBottom_toBottomOf="@id/guideline_item"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

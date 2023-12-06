@@ -27,5 +27,9 @@ class MoreActivityViewHolder(private val binding: ItemHomeMoreActivityBinding) :
 
     fun bind(item: UiMoreActivity) {
         binding.item = item
+        binding.ivImage.setImageResource(item.imgResource)
+        binding.root.setOnClickListener {
+            item.itemClickListener()
+        }
     }
 }

@@ -2,6 +2,7 @@ package com.aoztg.greengrim.presentation.ui.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.aoztg.greengrim.R
 import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.repository.HomeRepository
 import com.aoztg.greengrim.presentation.ui.LoadingState
@@ -33,6 +34,8 @@ sealed class HomeEvents {
     data class NavigateToChallengeDetail(val id: Int) : HomeEvents()
     data class ShowToastMessage(val msg: String) : HomeEvents()
     data class ShowSnackMessage(val msg: String) : HomeEvents()
+    object NavigateToAttendCheck : HomeEvents()
+    object GoToGameActivity : HomeEvents()
     object ShowLoading : HomeEvents()
     object DismissLoading : HomeEvents()
 }
@@ -102,8 +105,8 @@ class HomeViewModel @Inject constructor(
         _uiState.update { state ->
             state.copy(
                 uiMoreActivityList = listOf(
-                    UiMoreActivity("", "쓰레기 잡기", "지금 플레이하면", "+ 10 G"),
-                    UiMoreActivity("", "출석 체크", "지금 상호 인증하면", "+ 10 G")
+                    UiMoreActivity(R.drawable.icon_home_game, "쓰레기 잡기", "지금 플레이하면", "+ 10 G", ::goToGameActivity),
+                    UiMoreActivity(R.drawable.icon_home_attend_check, "출석 체크", "지금 상호 인증하면", "+ 10 G", ::navigateToAttendCheck)
                 )
             )
         }
@@ -123,6 +126,18 @@ class HomeViewModel @Inject constructor(
     private fun navigateToChallengeDetail(id: Int) {
         viewModelScope.launch {
             _events.emit(HomeEvents.NavigateToChallengeDetail(id))
+        }
+    }
+
+    private fun navigateToAttendCheck(){
+        viewModelScope.launch {
+            _events.emit(HomeEvents.NavigateToAttendCheck)
+        }
+    }
+
+    private fun goToGameActivity(){
+        viewModelScope.launch {
+            _events.emit(HomeEvents.GoToGameActivity)
         }
     }
 

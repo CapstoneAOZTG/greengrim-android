@@ -1,5 +1,6 @@
 package com.aoztg.greengrim.presentation.ui.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.activityViewModels
@@ -12,10 +13,12 @@ import com.aoztg.greengrim.databinding.FragmentHomeBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
 import com.aoztg.greengrim.presentation.chatmanager.ChatManager
 import com.aoztg.greengrim.presentation.ui.LoadingState
+import com.aoztg.greengrim.presentation.ui.game.GameActivity
 import com.aoztg.greengrim.presentation.ui.home.adapter.HotChallengeAdapter
 import com.aoztg.greengrim.presentation.ui.home.adapter.HotNftAdapter
 import com.aoztg.greengrim.presentation.ui.home.adapter.MoreActivityAdapter
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
+import com.aoztg.greengrim.presentation.ui.toAttendCheck
 import com.aoztg.greengrim.presentation.ui.toChallengeDetail
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -78,6 +81,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
                     is HomeEvents.ShowLoading -> showLoading(requireContext())
                     is HomeEvents.DismissLoading -> dismissLoading()
                     is HomeEvents.ShowSnackMessage -> showCustomSnack(binding.tvBannerName, it.msg)
+                    is HomeEvents.NavigateToAttendCheck -> findNavController().toAttendCheck()
+                    is HomeEvents.GoToGameActivity -> {
+                        val intent = Intent(requireContext(),GameActivity::class.java)
+                        startActivity(intent)
+                    }
                 }
             }
         }
