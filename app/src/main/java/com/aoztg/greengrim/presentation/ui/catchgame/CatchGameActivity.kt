@@ -6,8 +6,4 @@ import com.aoztg.greengrim.presentation.base.BaseActivity
 
 class CatchGameActivity: BaseActivity<ActivityCatchGameBinding>(ActivityCatchGameBinding::inflate) {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
 }
