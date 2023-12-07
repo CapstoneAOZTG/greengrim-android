@@ -1,6 +1,7 @@
 package com.aoztg.greengrim.presentation.ui.catchgame
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.animation.TranslateAnimation
 import android.widget.ImageButton
@@ -9,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentCatchIngameFragmentBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
+import com.aoztg.greengrim.presentation.util.Constants.TAG
 import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -23,8 +25,12 @@ class CatchInGameFragment :
 
     private val viewModel: CatchInGameViewModel by viewModels()
     private lateinit var trashViews: Array<ImageButton>
-    val showAnim = TranslateAnimation(0f,0f,30f,0f).apply { duration = 50 }
-    val hideAnim = TranslateAnimation(0f,0f,30f,0f).apply { duration = 50 }
+    private val showAnim = TranslateAnimation(0f,0f,30f,0f).apply { duration = 50 }
+    private val hideAnim = TranslateAnimation(0f,0f,30f,0f).apply { duration = 50 }
+    private val showLevelUpAnim =  TranslateAnimation(0f,0f,200f,0f).apply {
+        duration = 400
+        fillAfter = true
+    }
 
     companion object {
         const val EMPTY = 0
@@ -35,7 +41,6 @@ class CatchInGameFragment :
         const val TRASH = 4
         const val FOOD_TRASH = 5
     }
-
 
     private var holeState: Array<Int> =
         arrayOf(EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY)
@@ -59,9 +64,11 @@ class CatchInGameFragment :
     private var time = 100
     private var score = 0
     private var life = 5
+    private var level = 1
 
     private var sleepTime = 0L
     private var progressTime = 0L
+    private var pauseState = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -83,27 +90,104 @@ class CatchInGameFragment :
             )
         }
 
+        setTrashBtnListener()
         gameThread()
 
     }
 
+    private fun setTrashBtnListener(){
+        trashViews.forEachIndexed { i, btn ->
+            btn.setOnClickListener {
+                it.isClickable = false
+
+                when(trashState[i]){
+                    RECYCLE_TRASH -> {
+                        Glide.with(this)
+                            .load(R.drawable.catch_game_smile_earth)
+                            .into(btn)
+                        if(time < 90){
+                            time += 10
+                        } else if(time > 90){
+                            time = 100
+                        }
+
+                        when(score){
+                            in (0..39) -> score++
+                            in (40..1500) -> score+=2
+                        }
+                        binding.tvScore.text = score.toString()
+
+                        when(score){
+                            10 -> {
+                                showLevelUp()
+                                progressTime+=30
+                            }
+                            20 -> {
+                                showLevelUp()
+                                progressTime+=30
+                            }
+                            40 -> {
+                                showLevelUp()
+
+                                sleepTime += 200
+                                progressTime+=20
+                            }
+                            80 -> {
+                                showLevelUp()
+
+                                sleepTime += 200
+                                progressTime+=20
+                            }
+                            160 -> {
+                                showLevelUp()
+
+                                sleepTime += 200
+                                progressTime+=20
+                            }
+                            320 -> {
+                                showLevelUp()
+                                progressTime+=20
+                            }
+                        }
+                    }
+
+                    RECYCLE_CAN -> {
+                        Glide.with(this)
+                            .load(R.drawable.catch_game_smile_earth)
+                            .into(btn)
+                        life += 1
+                        binding.tvLife.text = life.toString()
+                    }
+
+                    TRASH -> {
+                        Glide.with(this)
+                            .load(R.drawable.catch_game_cry_earth)
+                            .into(btn)
+                        time -= 5
+                    }
+
+                    FOOD_TRASH -> {
+                        Glide.with(this)
+                            .load(R.drawable.catch_game_cry_earth)
+                            .into(btn)
+                        life -= 1
+                        binding.tvLife.text = life.toString()
+                    }
+                }
+            }
+        }
+    }
+
     private fun gameThread() {
         binding.ivLevelupModal.visibility = View.INVISIBLE
-
-        CoroutineScope(Dispatchers.Main).launch {
+        Thread{
             recycleTrashThread(1500)
-            delay(1000)
             recycleTrashThread(1100)
-            delay(1000)
             recycleTrashThread(800)
-            delay(1000)
             recycleCanThread()
-            delay(1000)
             trashThread()
-            delay(1000)
             foodTrashThread()
             timeThread()
-            levelUpThread()
 
             // 게임 종료조건 해당시 while문 탈출
             while (life > 0 && time > 0) {
@@ -111,8 +195,7 @@ class CatchInGameFragment :
             }
 
             // 게임 Over
-        }
-
+        }.start()
     }
 
     private fun recycleTrashThread(speed: Int) {
@@ -137,6 +220,7 @@ class CatchInGameFragment :
 
                 trashViews[index].animation = hideAnim
                 trashViews[index].visibility = View.INVISIBLE
+                trashViews[index].isClickable = true
                 holeState[index] = EMPTY
 
                 delay(speed - sleepTime)
@@ -146,6 +230,7 @@ class CatchInGameFragment :
 
     private fun recycleCanThread() {
         CoroutineScope(Dispatchers.Main).launch {
+            delay(1000)
             while (true) {
                 var index = (0..11).random()
 
@@ -166,6 +251,7 @@ class CatchInGameFragment :
 
                 trashViews[index].animation = hideAnim
                 trashViews[index].visibility = View.INVISIBLE
+                trashViews[index].isClickable = true
                 holeState[index] = EMPTY
 
                 delay(7000)
@@ -175,6 +261,7 @@ class CatchInGameFragment :
 
     private fun trashThread() {
         CoroutineScope(Dispatchers.Main).launch {
+            delay(1500)
             while (true) {
                 var index = (0..11).random()
 
@@ -195,6 +282,7 @@ class CatchInGameFragment :
 
                 trashViews[index].animation = hideAnim
                 trashViews[index].visibility = View.INVISIBLE
+                trashViews[index].isClickable = true
                 holeState[index] = EMPTY
 
                 delay(1500 - sleepTime)
@@ -204,6 +292,7 @@ class CatchInGameFragment :
 
     private fun foodTrashThread() {
         CoroutineScope(Dispatchers.Main).launch {
+            delay(2000)
             while (true) {
                 var index = (0..11).random()
 
@@ -224,6 +313,7 @@ class CatchInGameFragment :
 
                 trashViews[index].animation = hideAnim
                 trashViews[index].visibility = View.INVISIBLE
+                trashViews[index].isClickable = true
                 holeState[index] = EMPTY
 
                 delay(1500 - sleepTime)
@@ -241,8 +331,19 @@ class CatchInGameFragment :
         }
     }
 
-    private fun levelUpThread() {
+    private fun showLevelUp() {
+        CoroutineScope(Dispatchers.Main).launch {
+            level++
+            binding.tvLevel.text = level.toString()
+            binding.ivLevelupModal.animation = showLevelUpAnim
+            binding.ivLevelupModal.visibility = View.VISIBLE
 
+            delay(1000)
+
+            val hideLevelUpAnim = TranslateAnimation(0f,0f,0f,binding.ivLevelupModal.width.toFloat()).apply { duration = 400 }
+            binding.ivLevelupModal.animation = hideLevelUpAnim
+            binding.ivLevelupModal.visibility = View.GONE
+        }
     }
 
 
