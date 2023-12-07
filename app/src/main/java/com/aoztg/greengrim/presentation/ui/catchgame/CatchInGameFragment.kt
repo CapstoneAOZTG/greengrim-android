@@ -1,6 +1,8 @@
 package com.aoztg.greengrim.presentation.ui.catchgame
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import android.view.animation.AlphaAnimation
 import android.view.animation.TranslateAnimation
@@ -10,6 +12,8 @@ import androidx.navigation.fragment.findNavController
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentCatchIngameFragmentBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
+import com.aoztg.greengrim.presentation.customview.CatchGameOverDialog
+import com.aoztg.greengrim.presentation.customview.CatchGamePauseDialog
 import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -24,8 +28,6 @@ class CatchInGameFragment :
 
     private val viewModel: CatchInGameViewModel by viewModels()
     private lateinit var trashViews: Array<ImageButton>
-    private val showAnim = TranslateAnimation(0f, 0f, 30f, 0f).apply { duration = 50 }
-    private val hideAnim = TranslateAnimation(0f, 0f, 30f, 0f).apply { duration = 50 }
 
     private val showLevelUpAnim = TranslateAnimation(0f, 0f, 200f, 0f).apply {
         duration = 400
@@ -90,9 +92,13 @@ class CatchInGameFragment :
             )
         }
 
+        binding.btnPause.setOnClickListener {
+            pauseState = true
+            showPauseDialog()
+        }
+
         setTrashBtnListener()
         gameThread()
-
     }
 
     private fun setTrashBtnListener() {
@@ -204,16 +210,20 @@ class CatchInGameFragment :
 
             // 게임 종료조건 해당시 while문 탈출
             while (life > 0 && time > 0) {
-
             }
 
             // 게임 Over
+            Handler(Looper.getMainLooper()).post {
+                showGameOverDialog()
+            }
+
         }.start()
     }
 
     private fun recycleTrashThread(speed: Int) {
         CoroutineScope(Dispatchers.Main).launch {
-            while (true) {
+            while (life > 0 && time > 0) {
+
                 var index = (0..11).random()
 
                 while (holeState[index] == 1) {
@@ -226,17 +236,27 @@ class CatchInGameFragment :
                 Glide.with(requireContext())
                     .load(R.drawable.catch_game_recycle_bag)
                     .into(trashViews[index])
-                trashViews[index].animation = showAnim
+                trashViews[index].animation =
+                    TranslateAnimation(0f, 0f, 30f, 0f).apply { duration = 50 }
                 trashViews[index].visibility = View.VISIBLE
 
+                while (pauseState) {
+                }
                 delay(speed - sleepTime)
+                while (pauseState) {
+                }
 
-                trashViews[index].animation = hideAnim
+                trashViews[index].animation =
+                    TranslateAnimation(0f, 0f, 30f, 0f).apply { duration = 50 }
                 trashViews[index].visibility = View.INVISIBLE
                 trashViews[index].isClickable = true
                 holeState[index] = EMPTY
 
+                while (pauseState) {
+                }
                 delay(speed - sleepTime)
+                while (pauseState) {
+                }
             }
         }
     }
@@ -244,7 +264,7 @@ class CatchInGameFragment :
     private fun recycleCanThread() {
         CoroutineScope(Dispatchers.Main).launch {
             delay(1000)
-            while (true) {
+            while (life > 0 && time > 0) {
                 var index = (0..11).random()
 
                 while (holeState[index] == 1) {
@@ -257,17 +277,27 @@ class CatchInGameFragment :
                 Glide.with(requireContext())
                     .load(R.drawable.catch_game_recycle_can)
                     .into(trashViews[index])
-                trashViews[index].animation = showAnim
+                trashViews[index].animation =
+                    TranslateAnimation(0f, 0f, 30f, 0f).apply { duration = 50 }
                 trashViews[index].visibility = View.VISIBLE
 
+                while (pauseState) {
+                }
                 delay(1000 - sleepTime)
+                while (pauseState) {
+                }
 
-                trashViews[index].animation = hideAnim
+                trashViews[index].animation =
+                    TranslateAnimation(0f, 0f, 30f, 0f).apply { duration = 50 }
                 trashViews[index].visibility = View.INVISIBLE
                 trashViews[index].isClickable = true
                 holeState[index] = EMPTY
 
+                while (pauseState) {
+                }
                 delay(7000)
+                while (pauseState) {
+                }
             }
         }
     }
@@ -275,7 +305,7 @@ class CatchInGameFragment :
     private fun trashThread() {
         CoroutineScope(Dispatchers.Main).launch {
             delay(1500)
-            while (true) {
+            while (life > 0 && time > 0) {
                 var index = (0..11).random()
 
                 while (holeState[index] == 1) {
@@ -288,17 +318,27 @@ class CatchInGameFragment :
                 Glide.with(requireContext())
                     .load(R.drawable.catch_game_trash_bag)
                     .into(trashViews[index])
-                trashViews[index].animation = showAnim
+                trashViews[index].animation =
+                    TranslateAnimation(0f, 0f, 30f, 0f).apply { duration = 50 }
                 trashViews[index].visibility = View.VISIBLE
 
+                while (pauseState) {
+                }
                 delay(1500 - sleepTime)
+                while (pauseState) {
+                }
 
-                trashViews[index].animation = hideAnim
+                trashViews[index].animation =
+                    TranslateAnimation(0f, 0f, 30f, 0f).apply { duration = 50 }
                 trashViews[index].visibility = View.INVISIBLE
                 trashViews[index].isClickable = true
                 holeState[index] = EMPTY
 
+                while (pauseState) {
+                }
                 delay(1500 - sleepTime)
+                while (pauseState) {
+                }
             }
         }
     }
@@ -306,7 +346,8 @@ class CatchInGameFragment :
     private fun foodTrashThread() {
         CoroutineScope(Dispatchers.Main).launch {
             delay(2000)
-            while (true) {
+            while (life > 0 && time > 0) {
+
                 var index = (0..11).random()
 
                 while (holeState[index] == 1) {
@@ -319,27 +360,42 @@ class CatchInGameFragment :
                 Glide.with(requireContext())
                     .load(R.drawable.catch_game_food_trash)
                     .into(trashViews[index])
-                trashViews[index].animation = showAnim
+                trashViews[index].animation =
+                    TranslateAnimation(0f, 0f, 30f, 0f).apply { duration = 50 }
                 trashViews[index].visibility = View.VISIBLE
 
+                while (pauseState) {
+                }
                 delay(1500 - sleepTime)
+                while (pauseState) {
+                }
 
-                trashViews[index].animation = hideAnim
+                trashViews[index].animation =
+                    TranslateAnimation(0f, 0f, 30f, 0f).apply { duration = 50 }
                 trashViews[index].visibility = View.INVISIBLE
                 trashViews[index].isClickable = true
                 holeState[index] = EMPTY
 
+                while (pauseState) {
+                }
                 delay(1500 - sleepTime)
+                while (pauseState) {
+                }
             }
         }
     }
 
     private fun timeThread() {
         CoroutineScope(Dispatchers.Main).launch {
-            while (time > 0) {
+            while (life > 0 && time > 0) {
                 time -= 1
                 binding.pbTimebar.progress = time
+
+                while (pauseState) {
+                }
                 delay(150 - progressTime)
+                while (pauseState) {
+                }
             }
         }
     }
@@ -366,49 +422,67 @@ class CatchInGameFragment :
 
     private fun showLifeMinus() {
         CoroutineScope(Dispatchers.Main).launch {
-            val showModalAnim = AlphaAnimation(0f, 1f).apply { duration = 500 }
-            val hideModalAnim = AlphaAnimation(1f, 0f).apply { duration = 500 }
-            binding.ivLifeMinusModal.animation = showModalAnim
+            binding.ivLifeMinusModal.animation = AlphaAnimation(0f, 1f).apply { duration = 500 }
             binding.ivLifeMinusModal.visibility = View.VISIBLE
 
             delay(500)
 
-            binding.ivLifeMinusModal.animation = hideModalAnim
+            binding.ivLifeMinusModal.animation = AlphaAnimation(1f, 0f).apply { duration = 500 }
             binding.ivLifeMinusModal.visibility = View.GONE
         }
     }
 
     private fun showHit() {
         CoroutineScope(Dispatchers.Main).launch {
-            val showModalAnim = AlphaAnimation(0f, 1f).apply { duration = 100 }
-            val hideModalAnim = AlphaAnimation(1f, 0f).apply { duration = 100 }
-            binding.ivHitModal.animation = showModalAnim
+            binding.ivHitModal.animation = AlphaAnimation(0f, 1f).apply { duration = 100 }
             binding.ivHitModal.visibility = View.VISIBLE
 
             delay(500)
 
-            binding.ivHitModal.animation = hideModalAnim
+            binding.ivHitModal.animation = AlphaAnimation(1f, 0f).apply { duration = 100 }
             binding.ivHitModal.visibility = View.GONE
         }
     }
 
     private fun showMiss() {
         CoroutineScope(Dispatchers.Main).launch {
-            val showModalAnim = AlphaAnimation(0f, 1f).apply { duration = 100 }
-            val hideModalAnim = AlphaAnimation(1f, 0f).apply { duration = 100 }
-            binding.ivMissModal.animation = showModalAnim
+            binding.ivMissModal.animation = AlphaAnimation(0f, 1f).apply { duration = 100 }
             binding.ivMissModal.visibility = View.VISIBLE
 
             delay(500)
 
-            binding.ivMissModal.animation = hideModalAnim
+            binding.ivMissModal.animation = AlphaAnimation(1f, 0f).apply { duration = 100 }
             binding.ivMissModal.visibility = View.GONE
         }
     }
 
+    private fun showGameOverDialog() {
+        CatchGameOverDialog(requireContext(), ::exitGame, ::reStartGame).show()
+    }
+
+    private fun showPauseDialog() {
+        CatchGamePauseDialog(requireContext(), ::exitGame, ::resumeGame).show()
+    }
 
     private fun exitGame() {
         findNavController().navigateUp()
+    }
+
+    private fun reStartGame() {
+        score = 0
+        level = 1
+        life = 5
+        time = 100
+        sleepTime = 0L
+        progressTime = 0L
+        binding.tvScore.text = score.toString()
+        binding.tvLevel.text = level.toString()
+        binding.pbTimebar.progress = time
+        gameThread()
+    }
+
+    private fun resumeGame() {
+        pauseState = false
     }
 
 }

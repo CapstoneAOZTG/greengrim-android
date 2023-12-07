@@ -1,6 +1,5 @@
 package com.aoztg.greengrim.presentation.ui.catchgame
 
-import android.os.Bundle
 import com.aoztg.greengrim.databinding.ActivityCatchGameBinding
 import com.aoztg.greengrim.presentation.base.BaseActivity
 import dagger.hilt.android.AndroidEntryPoint

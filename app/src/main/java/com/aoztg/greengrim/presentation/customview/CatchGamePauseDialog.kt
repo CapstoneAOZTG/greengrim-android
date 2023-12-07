@@ -8,6 +8,7 @@ import com.aoztg.greengrim.databinding.DialogCatchGamePauseDialogBinding
 class CatchGamePauseDialog(
     context: Context,
     private val exitBtnClickListener: () -> Unit,
+    private val resumeBtnClickListener: () -> Unit
 ) : Dialog(context) {
 
     private lateinit var binding: DialogCatchGamePauseDialogBinding
@@ -26,6 +27,7 @@ class CatchGamePauseDialog(
         }
 
         btnResume.setOnClickListener {
+            resumeBtnClickListener()
             dismiss()
         }
     }
