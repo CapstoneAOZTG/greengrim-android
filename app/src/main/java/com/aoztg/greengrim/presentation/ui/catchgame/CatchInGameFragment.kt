@@ -1,5 +1,7 @@
 package com.aoztg.greengrim.presentation.ui.catchgame
 
+import android.media.MediaPlayer
+import android.media.SoundPool
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -13,7 +15,6 @@ import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentCatchIngameFragmentBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
 import com.aoztg.greengrim.presentation.customview.CatchGameOverDialog
-import com.aoztg.greengrim.presentation.customview.CatchGamePauseDialog
 import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -71,6 +72,11 @@ class CatchInGameFragment :
     private var sleepTime = 0L
     private var progressTime = 0L
     private var pauseState = false
+    private var musicstate = true
+
+    private lateinit var soundPool: SoundPool
+    private lateinit var mediaPlayer: MediaPlayer
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -97,14 +103,39 @@ class CatchInGameFragment :
             showPauseDialog()
         }
 
+        soundPool = SoundPool.Builder().build()
+
+
+        mediaPlayer = MediaPlayer.create(requireContext(), R.raw.bgm)
+
+        binding.btnMusic.setOnClickListener {
+            if(musicstate){
+                Glide.with(this)
+                    .load(R.drawable.catch_game_sound_off)
+                    .into(binding.btnMusic)
+                mediaPlayer.pause()
+                musicstate = false
+            }else{
+                Glide.with(this)
+                    .load(R.drawable.catch_game_sound_on)
+                    .into(binding.btnMusic)
+                mediaPlayer.start()
+
+                musicstate =  true
+            }
+        }
+
         setTrashBtnListener()
         gameThread()
     }
 
     private fun setTrashBtnListener() {
+
+        val hitsound = soundPool.load(requireContext(), R.raw.hitsound,1)
         trashViews.forEachIndexed { i, btn ->
             btn.setOnClickListener {
                 it.isClickable = false
+                soundPool.play(hitsound, 1.0f, 1.0f, 0,0,1.0f)
 
                 when (trashState[i]) {
                     RECYCLE_TRASH -> {
@@ -199,6 +230,7 @@ class CatchInGameFragment :
     }
 
     private fun gameThread() {
+        mediaPlayer.start()
         Thread {
             recycleTrashThread(1500)
             recycleTrashThread(1100)
@@ -240,11 +272,7 @@ class CatchInGameFragment :
                     TranslateAnimation(0f, 0f, 30f, 0f).apply { duration = 50 }
                 trashViews[index].visibility = View.VISIBLE
 
-                while (pauseState) {
-                }
                 delay(speed - sleepTime)
-                while (pauseState) {
-                }
 
                 trashViews[index].animation =
                     TranslateAnimation(0f, 0f, 30f, 0f).apply { duration = 50 }
@@ -252,11 +280,7 @@ class CatchInGameFragment :
                 trashViews[index].isClickable = true
                 holeState[index] = EMPTY
 
-                while (pauseState) {
-                }
                 delay(speed - sleepTime)
-                while (pauseState) {
-                }
             }
         }
     }
@@ -281,11 +305,7 @@ class CatchInGameFragment :
                     TranslateAnimation(0f, 0f, 30f, 0f).apply { duration = 50 }
                 trashViews[index].visibility = View.VISIBLE
 
-                while (pauseState) {
-                }
                 delay(1000 - sleepTime)
-                while (pauseState) {
-                }
 
                 trashViews[index].animation =
                     TranslateAnimation(0f, 0f, 30f, 0f).apply { duration = 50 }
@@ -293,11 +313,7 @@ class CatchInGameFragment :
                 trashViews[index].isClickable = true
                 holeState[index] = EMPTY
 
-                while (pauseState) {
-                }
                 delay(7000)
-                while (pauseState) {
-                }
             }
         }
     }
@@ -322,11 +338,7 @@ class CatchInGameFragment :
                     TranslateAnimation(0f, 0f, 30f, 0f).apply { duration = 50 }
                 trashViews[index].visibility = View.VISIBLE
 
-                while (pauseState) {
-                }
                 delay(1500 - sleepTime)
-                while (pauseState) {
-                }
 
                 trashViews[index].animation =
                     TranslateAnimation(0f, 0f, 30f, 0f).apply { duration = 50 }
@@ -334,11 +346,7 @@ class CatchInGameFragment :
                 trashViews[index].isClickable = true
                 holeState[index] = EMPTY
 
-                while (pauseState) {
-                }
                 delay(1500 - sleepTime)
-                while (pauseState) {
-                }
             }
         }
     }
@@ -364,11 +372,7 @@ class CatchInGameFragment :
                     TranslateAnimation(0f, 0f, 30f, 0f).apply { duration = 50 }
                 trashViews[index].visibility = View.VISIBLE
 
-                while (pauseState) {
-                }
                 delay(1500 - sleepTime)
-                while (pauseState) {
-                }
 
                 trashViews[index].animation =
                     TranslateAnimation(0f, 0f, 30f, 0f).apply { duration = 50 }
@@ -376,11 +380,7 @@ class CatchInGameFragment :
                 trashViews[index].isClickable = true
                 holeState[index] = EMPTY
 
-                while (pauseState) {
-                }
                 delay(1500 - sleepTime)
-                while (pauseState) {
-                }
             }
         }
     }
@@ -391,17 +391,15 @@ class CatchInGameFragment :
                 time -= 1
                 binding.pbTimebar.progress = time
 
-                while (pauseState) {
-                }
                 delay(150 - progressTime)
-                while (pauseState) {
-                }
             }
         }
     }
 
     private fun showLevelUp() {
         CoroutineScope(Dispatchers.Main).launch {
+            val levelupsound = soundPool.load(requireContext(), R.raw.levelupsound, 1)
+            soundPool.play(levelupsound, 1.0f, 1.0f, 0,0,1.0f)
             level++
             binding.tvLevel.text = level.toString()
             binding.ivLevelupModal.animation = showLevelUpAnim
@@ -461,7 +459,7 @@ class CatchInGameFragment :
     }
 
     private fun showPauseDialog() {
-        CatchGamePauseDialog(requireContext(), ::exitGame, ::resumeGame).show()
+//        CatchGamePauseDialog(requireContext(), ::exitGame, ::resumeGame).show()
     }
 
     private fun exitGame() {
