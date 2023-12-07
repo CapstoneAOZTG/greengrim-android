@@ -1,8 +1,8 @@
 package com.aoztg.greengrim.presentation.ui.catchgame
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
+import android.view.animation.AlphaAnimation
 import android.view.animation.TranslateAnimation
 import android.widget.ImageButton
 import androidx.fragment.app.viewModels
@@ -10,7 +10,6 @@ import androidx.navigation.fragment.findNavController
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentCatchIngameFragmentBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
-import com.aoztg.greengrim.presentation.util.Constants.TAG
 import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -25,9 +24,10 @@ class CatchInGameFragment :
 
     private val viewModel: CatchInGameViewModel by viewModels()
     private lateinit var trashViews: Array<ImageButton>
-    private val showAnim = TranslateAnimation(0f,0f,30f,0f).apply { duration = 50 }
-    private val hideAnim = TranslateAnimation(0f,0f,30f,0f).apply { duration = 50 }
-    private val showLevelUpAnim =  TranslateAnimation(0f,0f,200f,0f).apply {
+    private val showAnim = TranslateAnimation(0f, 0f, 30f, 0f).apply { duration = 50 }
+    private val hideAnim = TranslateAnimation(0f, 0f, 30f, 0f).apply { duration = 50 }
+
+    private val showLevelUpAnim = TranslateAnimation(0f, 0f, 200f, 0f).apply {
         duration = 400
         fillAfter = true
     }
@@ -95,63 +95,73 @@ class CatchInGameFragment :
 
     }
 
-    private fun setTrashBtnListener(){
+    private fun setTrashBtnListener() {
         trashViews.forEachIndexed { i, btn ->
             btn.setOnClickListener {
                 it.isClickable = false
 
-                when(trashState[i]){
+                when (trashState[i]) {
                     RECYCLE_TRASH -> {
+
+                        showHit()
+
                         Glide.with(this)
                             .load(R.drawable.catch_game_smile_earth)
                             .into(btn)
-                        if(time < 90){
+                        if (time < 90) {
                             time += 10
-                        } else if(time > 90){
+                        } else if (time > 90) {
                             time = 100
                         }
 
-                        when(score){
+                        when (score) {
                             in (0..39) -> score++
-                            in (40..1500) -> score+=2
+                            in (40..1500) -> score += 2
                         }
                         binding.tvScore.text = score.toString()
 
-                        when(score){
+                        when (score) {
                             10 -> {
                                 showLevelUp()
-                                progressTime+=30
+                                progressTime += 30
                             }
+
                             20 -> {
                                 showLevelUp()
-                                progressTime+=30
+                                progressTime += 30
                             }
+
                             40 -> {
                                 showLevelUp()
 
                                 sleepTime += 200
-                                progressTime+=20
+                                progressTime += 20
                             }
+
                             80 -> {
                                 showLevelUp()
 
                                 sleepTime += 200
-                                progressTime+=20
+                                progressTime += 20
                             }
+
                             160 -> {
                                 showLevelUp()
 
                                 sleepTime += 200
-                                progressTime+=20
+                                progressTime += 20
                             }
+
                             320 -> {
                                 showLevelUp()
-                                progressTime+=20
+                                progressTime += 20
                             }
                         }
                     }
 
                     RECYCLE_CAN -> {
+                        showHit()
+
                         Glide.with(this)
                             .load(R.drawable.catch_game_smile_earth)
                             .into(btn)
@@ -160,6 +170,8 @@ class CatchInGameFragment :
                     }
 
                     TRASH -> {
+                        showMiss()
+
                         Glide.with(this)
                             .load(R.drawable.catch_game_cry_earth)
                             .into(btn)
@@ -167,6 +179,8 @@ class CatchInGameFragment :
                     }
 
                     FOOD_TRASH -> {
+                        showLifeMinus()
+
                         Glide.with(this)
                             .load(R.drawable.catch_game_cry_earth)
                             .into(btn)
@@ -179,8 +193,7 @@ class CatchInGameFragment :
     }
 
     private fun gameThread() {
-        binding.ivLevelupModal.visibility = View.INVISIBLE
-        Thread{
+        Thread {
             recycleTrashThread(1500)
             recycleTrashThread(1100)
             recycleTrashThread(800)
@@ -323,7 +336,7 @@ class CatchInGameFragment :
 
     private fun timeThread() {
         CoroutineScope(Dispatchers.Main).launch {
-            while(time > 0 ){
+            while (time > 0) {
                 time -= 1
                 binding.pbTimebar.progress = time
                 delay(150 - progressTime)
@@ -340,9 +353,56 @@ class CatchInGameFragment :
 
             delay(1000)
 
-            val hideLevelUpAnim = TranslateAnimation(0f,0f,0f,binding.ivLevelupModal.width.toFloat()).apply { duration = 400 }
+            val hideLevelUpAnim = TranslateAnimation(
+                0f,
+                0f,
+                0f,
+                binding.ivLevelupModal.width.toFloat()
+            ).apply { duration = 400 }
             binding.ivLevelupModal.animation = hideLevelUpAnim
             binding.ivLevelupModal.visibility = View.GONE
+        }
+    }
+
+    private fun showLifeMinus() {
+        CoroutineScope(Dispatchers.Main).launch {
+            val showModalAnim = AlphaAnimation(0f, 1f).apply { duration = 500 }
+            val hideModalAnim = AlphaAnimation(1f, 0f).apply { duration = 500 }
+            binding.ivLifeMinusModal.animation = showModalAnim
+            binding.ivLifeMinusModal.visibility = View.VISIBLE
+
+            delay(500)
+
+            binding.ivLifeMinusModal.animation = hideModalAnim
+            binding.ivLifeMinusModal.visibility = View.GONE
+        }
+    }
+
+    private fun showHit() {
+        CoroutineScope(Dispatchers.Main).launch {
+            val showModalAnim = AlphaAnimation(0f, 1f).apply { duration = 100 }
+            val hideModalAnim = AlphaAnimation(1f, 0f).apply { duration = 100 }
+            binding.ivHitModal.animation = showModalAnim
+            binding.ivHitModal.visibility = View.VISIBLE
+
+            delay(500)
+
+            binding.ivHitModal.animation = hideModalAnim
+            binding.ivHitModal.visibility = View.GONE
+        }
+    }
+
+    private fun showMiss() {
+        CoroutineScope(Dispatchers.Main).launch {
+            val showModalAnim = AlphaAnimation(0f, 1f).apply { duration = 100 }
+            val hideModalAnim = AlphaAnimation(1f, 0f).apply { duration = 100 }
+            binding.ivMissModal.animation = showModalAnim
+            binding.ivMissModal.visibility = View.VISIBLE
+
+            delay(500)
+
+            binding.ivMissModal.animation = hideModalAnim
+            binding.ivMissModal.visibility = View.GONE
         }
     }
 
