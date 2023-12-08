@@ -271,7 +271,7 @@
             android:id="@+id/action_create_nft_or_paint_fragment_to_create_paint_fragment"
             app:destination="@id/create_paint_fragment" />
         <action
-            android:id="@+id/action_create_nft_or_paint_fragment_to_create_nft_fragment2"
+            android:id="@+id/action_create_nft_or_paint_fragment_to_create_nft_fragment"
             app:destination="@id/create_nft_fragment" />
     </fragment>
 
