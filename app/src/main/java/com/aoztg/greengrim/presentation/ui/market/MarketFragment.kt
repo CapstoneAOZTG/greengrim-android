@@ -2,6 +2,7 @@ package com.aoztg.greengrim.presentation.ui.market
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
@@ -12,6 +13,7 @@ import com.aoztg.greengrim.databinding.FragmentMarketBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
 import com.aoztg.greengrim.presentation.customview.getGrimNftSortSheet
 import com.aoztg.greengrim.presentation.ui.challenge.list.ChallengeListViewModel
+import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 import com.aoztg.greengrim.presentation.ui.market.MarketViewModel.Companion.ORIGINAL
 import com.aoztg.greengrim.presentation.ui.market.adapter.GrimItemAdapter
 import com.aoztg.greengrim.presentation.ui.toGrimDetail
@@ -22,11 +24,13 @@ import dagger.hilt.android.AndroidEntryPoint
 class MarketFragment : BaseFragment<FragmentMarketBinding>(R.layout.fragment_market) {
 
     private val viewModel: MarketViewModel by viewModels()
+    private val parentViewModel: MainViewModel by activityViewModels()
     private var sortType = GrimNftSortType.DESC
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        parentViewModel.showBNV()
         binding.vm = viewModel
         binding.rvPaintList.adapter = GrimItemAdapter()
         initEventObserver()

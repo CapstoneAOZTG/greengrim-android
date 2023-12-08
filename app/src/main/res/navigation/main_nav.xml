@@ -216,7 +216,7 @@
 
     <fragment
         android:id="@+id/wallet_password_input_fragment"
-        android:name="com.aoztg.greengrim.presentation.ui.market.wallet.WalletPasswordInputFragment"
+        android:name="com.aoztg.greengrim.presentation.ui.global.walletpasswordinput.WalletPasswordInputFragment"
         android:label="WalletPasswordInput"/>
 
     <fragment

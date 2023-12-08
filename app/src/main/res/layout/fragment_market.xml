@@ -160,5 +160,19 @@
             app:spanCount="2"
             tools:listitem="@layout/item_paint_list" />
 
+        <ImageButton
+            android:id="@+id/btn_create_nft_or_paint"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="bottom|end"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="88dp"
+            android:background="@android:color/transparent"
+            android:onClick="@{() -> vm.navigateToCreateNftOrPaint()}"
+            android:scaleType="fitCenter"
+            android:src="@drawable/icon_plus"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

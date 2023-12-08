@@ -1,4 +1,4 @@
-package com.aoztg.greengrim.presentation.ui.market.wallet
+package com.aoztg.greengrim.presentation.ui.global.walletpasswordinput
 
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentWalletPasswordInputBinding
