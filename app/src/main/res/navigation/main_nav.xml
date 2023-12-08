@@ -171,9 +171,6 @@
         <action
             android:id="@+id/action_info_fragment_to_my_nft_fragment"
             app:destination="@id/my_nft_fragment" />
-        <action
-            android:id="@+id/action_info_fragment_to_set_wallet_password_fragment"
-            app:destination="@id/set_wallet_password_fragment" />
     </fragment>
 
     <fragment
@@ -231,11 +228,21 @@
 
     <fragment
         android:id="@+id/set_wallet_password_fragment"
-        android:name="com.aoztg.greengrim.presentation.ui.info.mywallet.SetWalletPasswordFragment"
+        android:name="com.aoztg.greengrim.presentation.ui.global.setwalletpassword.SetWalletPasswordFragment"
         android:label="SetWalletPassword">
         <action
             android:id="@+id/action_set_wallet_password_fragment_to_my_wallet_fragment"
             app:destination="@id/my_wallet_fragment" />
+        <action
+            android:id="@+id/action_set_wallet_password_fragment_to_create_nft_fragment"
+            app:destination="@id/create_nft_fragment" />
+        <action
+            android:id="@+id/action_set_wallet_password_fragment_to_purchase_nft_fragment"
+            app:destination="@id/purchase_nft_fragment" />
+
+        <argument
+            android:name="nextPage"
+            app:argType="string" />
     </fragment>
 
     <fragment
@@ -258,9 +265,6 @@
         android:name="com.aoztg.greengrim.presentation.ui.global.nftdetail.NftDetailFragment"
         android:label="NftDetail">
         <action
-            android:id="@+id/action_nft_detail_fragment_to_purchase_nft_fragment"
-            app:destination="@id/purchase_nft_fragment" />
-        <action
             android:id="@+id/action_nft_detail_fragment_to_sell_nft_fragment"
             app:destination="@id/sell_nft_fragment" />
     </fragment>
@@ -268,7 +272,7 @@
     <fragment
         android:id="@+id/nft_list_fragment"
         android:name="com.aoztg.greengrim.presentation.ui.market.nftlist.NftListFragment"
-        android:label="NftList"/>
+        android:label="NftList" />
 
     <fragment
         android:id="@+id/create_nft_or_paint_fragment"
@@ -328,5 +332,9 @@
     <action
         android:id="@+id/action_global_to_editPaintNameFragment"
         app:destination="@id/edit_paint_name_fragment" />
+
+    <action
+        android:id="@+id/action_global_to_setWalletPasswordFragment"
+        app:destination="@id/set_wallet_password_fragment" />
 
 </navigation>

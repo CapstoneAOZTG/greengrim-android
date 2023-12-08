@@ -1,4 +1,4 @@
-package com.aoztg.greengrim.presentation.ui.info.mywallet
+package com.aoztg.greengrim.presentation.ui.global.setwalletpassword
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

@@ -6,6 +6,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import com.aoztg.greengrim.MainNavDirections
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentInfoBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
@@ -91,7 +92,7 @@ class InfoFragment : BaseFragment<FragmentInfoBinding>(R.layout.fragment_info) {
     }
 
     private fun NavController.toSetWalletPassword() {
-        val action = InfoFragmentDirections.actionInfoFragmentToSetWalletPasswordFragment()
+        val action = MainNavDirections.actionGlobalToSetWalletPasswordFragment()
         navigate(action)
     }
 
@@ -110,7 +111,7 @@ class InfoFragment : BaseFragment<FragmentInfoBinding>(R.layout.fragment_info) {
         navigate(action)
     }
 
-    private fun NavController.toMyKeyword(){
+    private fun NavController.toMyKeyword() {
         val action = InfoFragmentDirections.actionInfoFragmentToMyKeywordFragment()
         navigate(action)
     }
