@@ -23,6 +23,7 @@ sealed class MainEvent {
     object Logout : MainEvent()
     data class ShowToastMessage(val msg: String) : MainEvent()
     data class ShowSnackMessage(val msg: String) : MainEvent()
+    data class CopyInClipBoard(val link: String) : MainEvent()
 }
 
 enum class KeyboardState {
@@ -95,5 +96,11 @@ class MainViewModel @Inject constructor(
 
     fun hideKeyboard() {
         _keyboardState.value = KeyboardState.HIDE
+    }
+
+    fun copyInClipBoard(link: String){
+        viewModelScope.launch {
+            _events.emit(MainEvent.CopyInClipBoard(link))
+        }
     }
 }

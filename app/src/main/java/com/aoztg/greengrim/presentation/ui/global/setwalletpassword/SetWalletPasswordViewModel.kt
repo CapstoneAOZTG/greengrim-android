@@ -2,6 +2,9 @@ package com.aoztg.greengrim.presentation.ui.global.setwalletpassword
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.aoztg.greengrim.data.model.BaseState
+import com.aoztg.greengrim.data.model.request.CreateWalletRequest
+import com.aoztg.greengrim.data.repository.NftRepository
 import com.aoztg.greengrim.presentation.ui.BaseUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -22,6 +25,11 @@ sealed class SetWalletPasswordEvents {
     data class ErasePassword(val idx: Int) : SetWalletPasswordEvents()
     object ChangeModeToCheck : SetWalletPasswordEvents()
     object RemovePasswordViews : SetWalletPasswordEvents()
+    data class ShowToastMessage(val msg: String) : SetWalletPasswordEvents()
+    data class ShowSnackMessage(val msg: String) : SetWalletPasswordEvents()
+    object NavigateToBack : SetWalletPasswordEvents()
+    object ShowLoading : SetWalletPasswordEvents()
+    object DismissLoading : SetWalletPasswordEvents()
 }
 
 data class SetWalletPasswordUiState(
@@ -31,7 +39,7 @@ data class SetWalletPasswordUiState(
 
 @HiltViewModel
 class SetWalletPasswordViewModel @Inject constructor(
-
+    private val nftRepository: NftRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(SetWalletPasswordUiState())
@@ -74,9 +82,8 @@ class SetWalletPasswordViewModel @Inject constructor(
                 isCheckMode = true
             )
         }
-        _curPassword.value = ""
-
         originPassword = curPassword.value
+        _curPassword.value = ""
         observePasswordCheck()
         viewModelScope.launch {
             _events.emit(SetWalletPasswordEvents.ChangeModeToCheck)
@@ -87,8 +94,20 @@ class SetWalletPasswordViewModel @Inject constructor(
         _curPassword.onEach {
             if (it.length == 6) {
                 if (it == originPassword) {
-                    // todo 지갑생성 post
+                    _events.emit(SetWalletPasswordEvents.ShowLoading)
+                    nftRepository.createWallet(CreateWalletRequest(originPassword)).let { state ->
+                        when (state) {
+                            is BaseState.Success -> {
+                                _events.emit(SetWalletPasswordEvents.ShowToastMessage("지갑이 생성되었습니다"))
+                                navigateToBack()
+                            }
 
+                            is BaseState.Error -> {
+                                _events.emit(SetWalletPasswordEvents.ShowSnackMessage(state.msg))
+                            }
+                        }
+                    }
+                    _events.emit(SetWalletPasswordEvents.DismissLoading)
                 } else {
                     _curPassword.value = ""
                     _uiState.update { state ->
@@ -100,5 +119,11 @@ class SetWalletPasswordViewModel @Inject constructor(
                 }
             }
         }.launchIn(viewModelScope)
+    }
+
+    private fun navigateToBack() {
+        viewModelScope.launch {
+            _events.emit(SetWalletPasswordEvents.NavigateToBack)
+        }
     }
 }

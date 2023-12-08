@@ -92,7 +92,7 @@ class InfoFragment : BaseFragment<FragmentInfoBinding>(R.layout.fragment_info) {
     }
 
     private fun NavController.toSetWalletPassword() {
-        val action = MainNavDirections.actionGlobalToSetWalletPasswordFragment("MyWallet")
+        val action = MainNavDirections.actionGlobalToSetWalletPasswordFragment()
         navigate(action)
     }
 

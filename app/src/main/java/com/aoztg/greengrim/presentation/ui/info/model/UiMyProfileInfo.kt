@@ -7,5 +7,5 @@ data class UiMyProfileInfo(
     val introduction: String = "",
     val greenPoint: String = "",
     val greenCoin: String = "",
-    val hasWallet: Boolean = false
+    val hasWallet: Boolean = true
 )

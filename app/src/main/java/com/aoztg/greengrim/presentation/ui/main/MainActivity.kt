@@ -4,6 +4,8 @@ package com.aoztg.greengrim.presentation.ui.main
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.ContentValues
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -12,7 +14,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -35,7 +36,6 @@ import com.aoztg.greengrim.presentation.ui.toMultiPart
 import com.aoztg.greengrim.presentation.util.Constants
 import com.aoztg.greengrim.presentation.util.Constants.CAMERA_PERMISSION
 import com.aoztg.greengrim.presentation.util.Constants.STORAGE_PERMISSION
-import com.aoztg.greengrim.presentation.util.Constants.TAG
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -131,15 +131,16 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                     is MainEvent.Logout -> logout()
                     is MainEvent.ShowToastMessage -> showCustomToast(it.msg)
                     is MainEvent.ShowSnackMessage -> showCustomSnack(binding.snackGuide, it.msg)
+                    is MainEvent.CopyInClipBoard -> copyInClipBoard(it.link)
                 }
             }
         }
     }
 
-    private fun initSocketObserver(){
+    private fun initSocketObserver() {
         repeatOnStarted {
-            chatManager.event.collect{
-                when(it){
+            chatManager.event.collect {
+                when (it) {
                     is ChatEvent.ShowSnackMessage -> showCustomSnack(binding.snackGuide, it.msg)
                     is ChatEvent.ShowToastMessage -> showCustomToast(it.msg)
                 }
@@ -290,6 +291,13 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             finishAffinity()
             startActivity(this)
         }
+    }
+
+    private fun copyInClipBoard(text: String) {
+        val clipboard: ClipboardManager = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+        val clip = ClipData.newPlainText("내 지갑 주소", text)
+        clipboard.setPrimaryClip(clip)
+        showCustomToast("클립보드에 복사 완료")
     }
 
 }

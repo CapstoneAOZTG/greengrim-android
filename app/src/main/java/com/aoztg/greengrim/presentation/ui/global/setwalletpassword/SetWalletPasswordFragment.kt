@@ -1,19 +1,16 @@
 package com.aoztg.greengrim.presentation.ui.global.setwalletpassword
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import androidx.appcompat.widget.AppCompatButton
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.navigation.NavController
-import androidx.navigation.fragment.navArgs
+import androidx.navigation.fragment.findNavController
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentSetWalletPasswordBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
-import com.aoztg.greengrim.presentation.util.Constants.TAG
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -22,8 +19,6 @@ class SetWalletPasswordFragment :
 
     private val viewModel: SetWalletPasswordViewModel by viewModels()
     private val parentViewModel: MainViewModel by activityViewModels()
-    private val args: SetWalletPasswordFragmentArgs by navArgs()
-    private val nextPage by lazy { args.nextPage }
 
     private lateinit var numButtons: List<AppCompatButton>
     private lateinit var passwordViews: List<ImageView>
@@ -101,6 +96,16 @@ class SetWalletPasswordFragment :
                             iv.setImageResource(R.drawable.icon_password_unfill)
                         }
                     }
+
+                    is SetWalletPasswordEvents.ShowSnackMessage -> showCustomSnack(
+                        binding.tvPasswordAnnounce,
+                        it.msg
+                    )
+
+                    is SetWalletPasswordEvents.ShowToastMessage -> showCustomToast(it.msg)
+                    is SetWalletPasswordEvents.NavigateToBack -> findNavController().navigateUp()
+                    is SetWalletPasswordEvents.ShowLoading -> showLoading(requireContext())
+                    is SetWalletPasswordEvents.DismissLoading -> dismissLoading()
                 }
             }
         }
@@ -109,7 +114,6 @@ class SetWalletPasswordFragment :
     private fun setPasswordViews(type: Int, idx: Int) {
         when (type) {
             TYPE -> {
-                Log.d(TAG, idx.toString())
                 passwordViews[idx].setImageResource(R.drawable.icon_password_fill)
             }
 
@@ -118,21 +122,4 @@ class SetWalletPasswordFragment :
             }
         }
     }
-
-    private fun NavController.toMyWallet() {
-        val action = SetWalletPasswordFragmentDirections.actionSetWalletPasswordFragmentToMyWalletFragment()
-        navigate(action)
-    }
-
-    private fun NavController.toPurchaseNft() {
-        val action = SetWalletPasswordFragmentDirections.actionSetWalletPasswordFragmentToPurchaseNftFragment()
-        navigate(action)
-    }
-
-    private fun NavController.toCreateNft() {
-        val action = SetWalletPasswordFragmentDirections.actionSetWalletPasswordFragmentToCreateNftFragment()
-        navigate(action)
-    }
-
-
 }
