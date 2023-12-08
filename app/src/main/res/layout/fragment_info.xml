@@ -294,6 +294,7 @@
                 <TextView
                     android:id="@+id/tv_my_wallet"
                     style="@style/TextGgMedium"
+                    android:onClick="@{() -> vm.navigateToMyWallet()}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
