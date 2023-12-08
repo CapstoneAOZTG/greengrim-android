@@ -6,9 +6,11 @@ import androidx.core.content.ContextCompat
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.app.App
 import com.aoztg.greengrim.databinding.BottomsheetFilterBinding
+import com.aoztg.greengrim.databinding.BottomsheetGrimNftFilterBinding
 import com.aoztg.greengrim.databinding.BottomsheetInfoSettingBinding
 import com.aoztg.greengrim.databinding.BottomsheetPhotoBinding
 import com.aoztg.greengrim.presentation.ui.challenge.list.ChallengeSortType
+import com.aoztg.greengrim.presentation.ui.market.GrimNftSortType
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
 internal fun getSortSheet(
@@ -66,6 +68,41 @@ internal fun getSortSheet(
         dialog.dismiss()
     }
 
+    return dialog
+}
+
+internal fun getGrimNftSortSheet(
+    context: Context,
+    curPosition: GrimNftSortType,
+    onClickListener: (GrimNftSortType) -> Unit
+): BottomSheetDialog {
+    val dialog = BottomSheetDialog(context)
+    val binding = BottomsheetGrimNftFilterBinding.inflate(LayoutInflater.from(context))
+    dialog.setContentView(binding.root)
+
+    when (curPosition) {
+        GrimNftSortType.DESC -> binding.btnDesc.setTextColor(
+            ContextCompat.getColor(
+                App.context(),
+                R.color.white
+            )
+        )
+
+        GrimNftSortType.ASC -> binding.btnAsc.setTextColor(
+            ContextCompat.getColor(
+                App.context(),
+                R.color.white
+            )
+        )
+    }
+    binding.btnDesc.setOnClickListener {
+        onClickListener(GrimNftSortType.DESC)
+        dialog.dismiss()
+    }
+    binding.btnAsc.setOnClickListener {
+        onClickListener(GrimNftSortType.ASC)
+        dialog.dismiss()
+    }
     return dialog
 }
 

@@ -5,6 +5,10 @@
 
     <data>
 
+        <variable
+            name="vm"
+            type="com.aoztg.greengrim.presentation.ui.market.MarketViewModel" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -26,7 +30,7 @@
                 style="@style/TextHeader"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Green NFT 🌱"
+                android:text="@string/green_nft"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/btn_search"
                 app:layout_constraintStart_toStartOf="parent"
@@ -108,7 +112,7 @@
                 style="@style/TextHeader"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Green Grim 🌱"
+                android:text="@string/green_grim"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -132,6 +136,7 @@
             android:layout_width="wrap_content"
             android:layout_height="20dp"
             android:layout_marginEnd="32dp"
+            android:onClick="@{() -> vm.showBottomSheet()}"
             android:text="최신순"
             android:textAlignment="textEnd"
             app:drawableEndCompat="@drawable/icon_filter"
@@ -151,6 +156,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_filter"
+            app:list="@{vm.uiState.grimList}"
             app:spanCount="2"
             tools:listitem="@layout/item_paint_list" />
 

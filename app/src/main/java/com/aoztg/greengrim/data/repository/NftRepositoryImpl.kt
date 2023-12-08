@@ -4,13 +4,14 @@ import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.model.request.CreateWalletRequest
 import com.aoztg.greengrim.data.model.response.CheckWalletExistResponse
 import com.aoztg.greengrim.data.model.response.GetWalletInfoResponse
+import com.aoztg.greengrim.data.model.response.GrimListResponse
 import com.aoztg.greengrim.data.model.runRemote
 import com.aoztg.greengrim.data.remote.NftAPI
 import javax.inject.Inject
 
 class NftRepositoryImpl @Inject constructor(
     private val api: NftAPI
-): NftRepository {
+) : NftRepository {
 
     override suspend fun createWallet(body: CreateWalletRequest): BaseState<Unit> =
         runRemote { api.createWallet(body) }
@@ -20,4 +21,16 @@ class NftRepositoryImpl @Inject constructor(
 
     override suspend fun getWalletInfo(): BaseState<GetWalletInfoResponse> =
         runRemote { api.getWalletInfo() }
+
+    override suspend fun getGrimList(
+        page: Int,
+        size: Int,
+        sort: String
+    ): BaseState<GrimListResponse> = runRemote { api.getGrimList(page, size, sort) }
+
+    override suspend fun getMyGrimList(
+        page: Int,
+        size: Int,
+        sort: String
+    ): BaseState<GrimListResponse> = runRemote { api.getMyGrimList(page, size, sort) }
 }

@@ -6,15 +6,25 @@ import com.aoztg.greengrim.MainNavDirections
 
 internal fun NavController.toAttendCheck() {
     val action = MainNavDirections.actionGlobalToAttendCheckFragment()
-    this.navigate(action)
+    navigate(action)
 }
 
 internal fun NavController.toChallengeDetail(id: Int) {
     val action = MainNavDirections.actionGlobalToChallengeDetailFragment(id)
-    this.navigate(action)
+    navigate(action)
 }
 
 internal fun NavController.toCertificationDetail(certificationId: Int) {
     val action = MainNavDirections.actionGlobalToCertificationDetail(certificationId)
-    this.navigate(action)
+    navigate(action)
+}
+
+internal fun NavController.toNftDetail(nftId: Int){
+    val action = MainNavDirections.actionGlobalToNftDetailFragment(nftId)
+    navigate(action)
+}
+
+internal fun NavController.toGrimDetail(grimId: Int){
+    val action = MainNavDirections.actionGlobalToPaintDetailFragment(grimId)
+    navigate(action)
 }
