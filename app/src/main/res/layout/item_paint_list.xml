@@ -5,6 +5,10 @@
 
     <data>
 
+        <variable
+            name="item"
+            type="com.aoztg.greengrim.presentation.ui.market.model.UiGrimItem" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -18,6 +22,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:scaleType="centerCrop"
+            app:imgUrl="@{item.image}"
             app:layout_constraintDimensionRatio="10:9"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -32,6 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="4dp"
+            android:text="@{item.title}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/iv_image"
@@ -46,6 +52,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@id/tv_title"
             app:layout_constraintTop_toBottomOf="@id/tv_title"
+            app:profileImgUrl="@{item.profileImage}"
             tools:src="@drawable/icon_profile" />
 
         <TextView
@@ -54,6 +61,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
+            android:text="@{item.nickName}"
             app:layout_constraintBottom_toBottomOf="@id/iv_profile"
             app:layout_constraintStart_toEndOf="@id/iv_profile"
             app:layout_constraintTop_toTopOf="@id/iv_profile"

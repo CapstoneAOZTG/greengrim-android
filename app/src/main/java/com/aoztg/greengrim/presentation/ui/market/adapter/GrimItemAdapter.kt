@@ -29,6 +29,9 @@ class GrimItemAdapter: ListAdapter<UiGrimItem, GrimItemViewHolder>(DefaultDiffUt
 class GrimItemViewHolder(private val binding: ItemPaintListBinding): RecyclerView.ViewHolder(binding.root){
 
     fun bind(item: UiGrimItem){
-
+        binding.item = item
+        binding.root.setOnClickListener {
+            item.navigateToGrimDetail(item.id)
+        }
     }
 }
