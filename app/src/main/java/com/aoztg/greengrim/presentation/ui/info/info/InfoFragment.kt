@@ -51,6 +51,11 @@ class InfoFragment : BaseFragment<FragmentInfoBinding>(R.layout.fragment_info) {
                     is InfoEvents.NavigateToMyCertification -> findNavController().toMyCertification()
                     is InfoEvents.ShowToastMessage -> showCustomToast(it.msg)
                     is InfoEvents.ShowSnackMessage -> showCustomSnack(binding.ivProfile, it.msg)
+                    is InfoEvents.NavigateToSetWalletPassword -> findNavController().toSetWalletPassword()
+                    is InfoEvents.NavigateToMyWallet -> findNavController().toMyWallet()
+                    is InfoEvents.NavigateToMyNft -> findNavController().toMyNft()
+                    is InfoEvents.NavigateToMyPaint -> findNavController().toMyPaint()
+                    is InfoEvents.NavigateToMyKeywords -> findNavController().toMyKeyword()
                 }
             }
         }
@@ -77,13 +82,39 @@ class InfoFragment : BaseFragment<FragmentInfoBinding>(R.layout.fragment_info) {
 
     private fun NavController.toMyChallenge() {
         val action = InfoFragmentDirections.actionInfoFragmentToMyChallengeFragment()
-        this.navigate(action)
+        navigate(action)
     }
 
     private fun NavController.toMyCertification() {
         val action = InfoFragmentDirections.actionInfoFragmentToMyCertificationFragment()
-        this.navigate(action)
+        navigate(action)
     }
+
+    private fun NavController.toSetWalletPassword() {
+        val action = InfoFragmentDirections.actionInfoFragmentToSetWalletPasswordFragment()
+        navigate(action)
+    }
+
+    private fun NavController.toMyWallet() {
+        val action = InfoFragmentDirections.actionInfoFragmentToMyWalletFragment()
+        navigate(action)
+    }
+
+    private fun NavController.toMyNft() {
+        val action = InfoFragmentDirections.actionInfoFragmentToMyNftFragment()
+        navigate(action)
+    }
+
+    private fun NavController.toMyPaint() {
+        val action = InfoFragmentDirections.actionInfoFragmentToMyPaintFragment()
+        navigate(action)
+    }
+
+    private fun NavController.toMyKeyword(){
+        val action = InfoFragmentDirections.actionInfoFragmentToMyKeywordFragment()
+        navigate(action)
+    }
+
 
     private fun navigateToNotification() {
         showCustomToast("알림으로 이동")

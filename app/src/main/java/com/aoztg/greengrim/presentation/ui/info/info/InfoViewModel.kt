@@ -29,6 +29,11 @@ sealed class InfoEvents {
     object NavigateToAttendCheck : InfoEvents()
     object NavigateToMyChallenge : InfoEvents()
     object NavigateToMyCertification : InfoEvents()
+    object NavigateToMyWallet : InfoEvents()
+    object NavigateToSetWalletPassword : InfoEvents()
+    object NavigateToMyNft : InfoEvents()
+    object NavigateToMyPaint : InfoEvents()
+    object NavigateToMyKeywords : InfoEvents()
     data class ShowToastMessage(val msg: String) : InfoEvents()
     data class ShowSnackMessage(val msg: String) : InfoEvents()
 }
@@ -107,6 +112,35 @@ class InfoViewModel @Inject constructor(
     fun navigateToMyChallenge() {
         viewModelScope.launch {
             _events.emit(InfoEvents.NavigateToMyChallenge)
+        }
+    }
+
+    fun navigateToMyNft(){
+        viewModelScope.launch {
+            _events.emit(InfoEvents.NavigateToMyNft)
+        }
+    }
+
+    fun navigateToMyPaint(){
+        viewModelScope.launch {
+            _events.emit(InfoEvents.NavigateToMyPaint)
+        }
+    }
+
+    // todo 지갑 없으면 setwallet, 있으면 mywallet
+    fun navigateToMyWallet(){
+        viewModelScope.launch {
+            if(uiState.value.uiMyProfileInfo.hasWallet){
+                _events.emit(InfoEvents.NavigateToMyWallet)
+            } else {
+                _events.emit(InfoEvents.NavigateToSetWalletPassword)
+            }
+        }
+    }
+
+    fun navigateToMyKeyword(){
+        viewModelScope.launch {
+            _events.emit(InfoEvents.NavigateToMyKeywords)
         }
     }
 }
