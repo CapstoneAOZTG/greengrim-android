@@ -141,6 +141,9 @@
         <action
             android:id="@+id/action_market_fragment_to_create_nft_or_paint_fragment"
             app:destination="@id/create_nft_or_paint_fragment" />
+        <action
+            android:id="@+id/action_market_fragment_to_nft_list_fragment"
+            app:destination="@id/nft_list_fragment" />
     </fragment>
 
     <fragment
@@ -261,6 +264,11 @@
             android:id="@+id/action_nft_detail_fragment_to_sell_nft_fragment"
             app:destination="@id/sell_nft_fragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/nft_list_fragment"
+        android:name="com.aoztg.greengrim.presentation.ui.market.nftlist.NftListFragment"
+        android:label="NftList"/>
 
     <fragment
         android:id="@+id/create_nft_or_paint_fragment"
