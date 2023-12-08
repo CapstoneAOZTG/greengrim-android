@@ -119,7 +119,7 @@
                 style="@style/TextGgSmallGrey1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="저탄소 활동으로 그린 NFT"
+                android:text="저탄소 활동으로 그린 그림"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_paint_header" />
