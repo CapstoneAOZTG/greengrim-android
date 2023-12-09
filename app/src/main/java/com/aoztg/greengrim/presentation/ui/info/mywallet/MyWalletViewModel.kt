@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.repository.NftRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -20,17 +21,19 @@ data class MyWalletUiState(
     val link: String = ""
 )
 
-sealed class MyWalletEvents{
+sealed class MyWalletEvents {
     data class ShowSnackMessage(val msg: String) : MyWalletEvents()
     data class ShowToastMessage(val msg: String) : MyWalletEvents()
     data class CopyClipBoard(val link: String) : MyWalletEvents()
-    object NavigateToBack: MyWalletEvents()
+    object NavigateToBack : MyWalletEvents()
+    object ShowLoading : MyWalletEvents()
+    object DismissLoading : MyWalletEvents()
 }
 
 @HiltViewModel
 class MyWalletViewModel @Inject constructor(
     private val nftRepository: NftRepository
-): ViewModel() {
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow(MyWalletUiState())
     val uiState: StateFlow<MyWalletUiState> = _uiState.asStateFlow()
@@ -40,10 +43,11 @@ class MyWalletViewModel @Inject constructor(
 
     private var originLink = ""
 
-    fun getMyWalletInfo(){
+    fun getMyWalletInfo() {
         viewModelScope.launch {
-            nftRepository.getWalletInfo().let{
-                when(it){
+            _events.emit(MyWalletEvents.ShowLoading)
+            nftRepository.getWalletInfo().let {
+                when (it) {
                     is BaseState.Success -> {
                         val body = it.body
                         originLink = body.address
@@ -60,16 +64,18 @@ class MyWalletViewModel @Inject constructor(
                     }
                 }
             }
+            delay(200)
+            _events.emit(MyWalletEvents.DismissLoading)
         }
     }
 
-    fun copyClipBoard(){
+    fun copyClipBoard() {
         viewModelScope.launch {
             _events.emit(MyWalletEvents.CopyClipBoard(originLink))
         }
     }
 
-    fun navigateToBack(){
+    fun navigateToBack() {
         viewModelScope.launch {
             _events.emit(MyWalletEvents.NavigateToBack)
         }

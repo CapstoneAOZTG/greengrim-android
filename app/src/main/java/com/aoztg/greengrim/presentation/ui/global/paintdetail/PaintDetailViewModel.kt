@@ -7,6 +7,7 @@ import com.aoztg.greengrim.data.repository.NftRepository
 import com.aoztg.greengrim.presentation.ui.global.mapper.toUiGrimDetail
 import com.aoztg.greengrim.presentation.ui.global.model.UiGrimDetail
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -26,6 +27,8 @@ data class PaintDetailUiState(
 sealed class PaintDetailEvents{
     data class ShowSnackMessage(val msg: String): PaintDetailEvents()
     object NavigateToBack: PaintDetailEvents()
+    object ShowLoading: PaintDetailEvents()
+    object DismissLoading: PaintDetailEvents()
 }
 
 @HiltViewModel
@@ -41,6 +44,7 @@ class PaintDetailViewModel @Inject constructor(
 
     private fun getPaintDetail(id: Int){
         viewModelScope.launch {
+            _events.emit(PaintDetailEvents.ShowLoading)
             nftRepository.getGrimDetail(id).let{
                 when(it){
                     is BaseState.Success -> {
@@ -53,6 +57,8 @@ class PaintDetailViewModel @Inject constructor(
                     is BaseState.Error -> _events.emit(PaintDetailEvents.ShowSnackMessage(it.msg))
                 }
             }
+            delay(200)
+            _events.emit(PaintDetailEvents.DismissLoading)
         }
     }
 

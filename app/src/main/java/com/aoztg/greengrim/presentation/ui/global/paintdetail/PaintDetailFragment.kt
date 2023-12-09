@@ -21,8 +21,12 @@ class PaintDetailFragment: BaseFragment<FragmentPaintDetailBinding>(R.layout.fra
         super.onViewCreated(view, savedInstanceState)
 
         binding.vm = viewModel
-        viewModel.setId(grimId)
         initEventObserver()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.setId(grimId)
     }
 
     private fun initEventObserver(){
@@ -31,6 +35,8 @@ class PaintDetailFragment: BaseFragment<FragmentPaintDetailBinding>(R.layout.fra
                 when(it) {
                     is PaintDetailEvents.ShowSnackMessage -> showCustomSnack(binding.ivGrim,it.msg)
                     is PaintDetailEvents.NavigateToBack -> findNavController().navigateUp()
+                    is PaintDetailEvents.ShowLoading -> showLoading(requireContext())
+                    is PaintDetailEvents.DismissLoading -> dismissLoading()
                 }
             }
         }

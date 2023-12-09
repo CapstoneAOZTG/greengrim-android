@@ -52,7 +52,7 @@ class CreateNftOrPaintFragment :
             btnNext.setOnClickListener {
                 when (createType) {
                     CREATE_GRIM -> findNavController().toCreateGrim()
-                    CREATE_NFT -> findNavController().toCreateNft()
+                    CREATE_NFT -> findNavController().toChooseGrim()
                 }
             }
 
@@ -68,9 +68,9 @@ class CreateNftOrPaintFragment :
         navigate(action)
     }
 
-    private fun NavController.toCreateNft() {
-        val action =
-            CreateNftOrPaintFragmentDirections.actionCreateNftOrPaintFragmentToCreateNftFragment()
+    private fun NavController.toChooseGrim(){
+        val action = CreateNftOrPaintFragmentDirections.actionCreateNftOrPaintFragmentToChooseGrimFragment()
         navigate(action)
     }
+
 }

@@ -151,9 +151,6 @@
         <action
             android:id="@+id/action_market_fragment_to_wait_drawing_fragment"
             app:destination="@id/wait_drawing_fragment" />
-        <action
-            android:id="@+id/action_market_fragment_to_edit_paint_name_fragment"
-            app:destination="@id/edit_paint_name_fragment" />
     </fragment>
 
     <fragment
@@ -302,8 +299,8 @@
             android:id="@+id/action_create_nft_or_paint_fragment_to_create_paint_fragment"
             app:destination="@id/create_paint_fragment" />
         <action
-            android:id="@+id/action_create_nft_or_paint_fragment_to_create_nft_fragment"
-            app:destination="@id/create_nft_fragment" />
+            android:id="@+id/action_create_nft_or_paint_fragment_to_choose_grim_fragment"
+            app:destination="@id/choose_grim_fragment" />
     </fragment>
 
     <fragment
@@ -314,11 +311,6 @@
             android:id="@+id/action_create_paint_fragment_to_wait_drawing_fragment"
             app:destination="@id/wait_drawing_fragment" />
     </fragment>
-
-    <fragment
-        android:id="@+id/edit_paint_name_fragment"
-        android:name="com.aoztg.greengrim.presentation.ui.market.create.EditPaintNameFragment"
-        android:label="EditPaintName" />
 
     <fragment
         android:id="@+id/create_nft_fragment"
@@ -332,6 +324,18 @@
         <action
             android:id="@+id/action_wait_drawing_fragment_to_market_fragment"
             app:destination="@id/market_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/choose_grim_fragment"
+        android:name="com.aoztg.greengrim.presentation.ui.market.create.createnft.ChooseGrimFragment"
+        android:label="ChooseGrim">
+        <action
+            android:id="@+id/action_choose_grim_fragment_to_create_nft_fragment"
+            app:destination="@id/create_nft_fragment" />
+        <action
+            android:id="@+id/action_choose_grim_fragment_to_create_paint_fragment"
+            app:destination="@id/create_paint_fragment" />
     </fragment>
 
     <action

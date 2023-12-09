@@ -22,8 +22,12 @@ class MyWalletFragment : BaseFragment<FragmentMyWalletBinding>(R.layout.fragment
 
         parentViewModel.hideBNV()
         binding.vm = viewModel
-        viewModel.getMyWalletInfo()
         initEventsObserver()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.getMyWalletInfo()
     }
 
     private fun initEventsObserver() {
@@ -38,6 +42,8 @@ class MyWalletFragment : BaseFragment<FragmentMyWalletBinding>(R.layout.fragment
 
                     is MyWalletEvents.ShowToastMessage -> showCustomToast(it.msg)
                     is MyWalletEvents.NavigateToBack -> findNavController().navigateUp()
+                    is MyWalletEvents.ShowLoading -> showLoading(requireContext())
+                    is MyWalletEvents.DismissLoading -> dismissLoading()
                 }
             }
         }
