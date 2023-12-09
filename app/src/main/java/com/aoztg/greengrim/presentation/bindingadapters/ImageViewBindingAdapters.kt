@@ -13,10 +13,12 @@ fun bindResource(imageView: ImageView, resource: Int) {
 
 @BindingAdapter("imgUrl")
 fun bindImg(imageView: ImageView, url: String) {
-    Glide.with(imageView.context)
-        .load(url)
-        .error(R.drawable.icon_no_image)
-        .into(imageView)
+    if(url.isNotBlank()){
+        Glide.with(imageView.context)
+            .load(url)
+            .error(R.drawable.icon_no_image)
+            .into(imageView)
+    }
 }
 
 @BindingAdapter("profileImgUrl")
