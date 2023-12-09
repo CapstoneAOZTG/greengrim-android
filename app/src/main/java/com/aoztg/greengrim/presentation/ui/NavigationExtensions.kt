@@ -20,7 +20,7 @@ internal fun NavController.toCertificationDetail(certificationId: Int) {
 }
 
 internal fun NavController.toWalletPasswordInput(){
-    val action = MainNavDirections.actionGlobalToWalletPasswordInputFragment()
+    val action = MainNavDirections.actionGlobalToCheckPasswordFragment()
     navigate(action)
 }
 
