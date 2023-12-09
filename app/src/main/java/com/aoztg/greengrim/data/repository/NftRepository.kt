@@ -10,6 +10,7 @@ import com.aoztg.greengrim.data.model.response.GetWalletInfoResponse
 import com.aoztg.greengrim.data.model.response.GrimDetailResponse
 import com.aoztg.greengrim.data.model.response.GrimListResponse
 import com.aoztg.greengrim.data.model.response.HotNftResponse
+import com.aoztg.greengrim.data.model.response.MyGrimForNftResponse
 import com.aoztg.greengrim.data.model.response.NftDetailResponse
 import com.aoztg.greengrim.data.model.response.NftListResponse
 
@@ -68,6 +69,10 @@ interface NftRepository {
         sort: String
     ): BaseState<NftListResponse>
 
-
     suspend fun getHotNfts(): BaseState<HotNftResponse>
+
+    suspend fun getMyGrimForNft(
+        page: Int,
+        size: Int
+    ): BaseState<MyGrimForNftResponse>
 }

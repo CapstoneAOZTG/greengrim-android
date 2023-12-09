@@ -315,7 +315,11 @@
     <fragment
         android:id="@+id/create_nft_fragment"
         android:name="com.aoztg.greengrim.presentation.ui.market.create.createnft.CreateNftFragment"
-        android:label="CreateNft" />
+        android:label="CreateNft" >
+        <argument
+            android:name="grimId"
+            app:argType="integer"/>
+    </fragment>
 
     <fragment
         android:id="@+id/wait_drawing_fragment"
@@ -337,6 +341,11 @@
             android:id="@+id/action_choose_grim_fragment_to_create_paint_fragment"
             app:destination="@id/create_paint_fragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/edit_grim_fragment"
+        android:name="com.aoztg.greengrim.presentation.ui.global.editgrim.EditGrimFragment"
+        android:label="EditGrim"/>
 
     <action
         android:id="@+id/action_global_to_homeFragment"
@@ -365,5 +374,9 @@
     <action
         android:id="@+id/action_global_to_setWalletPasswordFragment"
         app:destination="@id/set_wallet_password_fragment"/>
+
+    <action
+        android:id="@+id/action_global_to_editGrimFragment"
+        app:destination="@id/edit_grim_fragment"/>
 
 </navigation>
