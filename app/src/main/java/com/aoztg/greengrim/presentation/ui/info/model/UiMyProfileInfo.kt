@@ -5,7 +5,7 @@ data class UiMyProfileInfo(
     val nickName: String = "",
     val profileImgUrl: String = "",
     val introduction: String = "",
-    val greenPoint: String = "",
-    val greenCoin: String = "",
+    val myPoint: String = "",
+    val email: String = "",
     val hasWallet: Boolean = true
 )
