@@ -144,6 +144,12 @@
         <action
             android:id="@+id/action_market_fragment_to_nft_list_fragment"
             app:destination="@id/nft_list_fragment" />
+        <action
+            android:id="@+id/action_market_fragment_to_wait_drawing_fragment"
+            app:destination="@id/wait_drawing_fragment" />
+        <action
+            android:id="@+id/action_market_fragment_to_edit_paint_name_fragment"
+            app:destination="@id/edit_paint_name_fragment" />
     </fragment>
 
     <fragment
@@ -278,7 +284,11 @@
     <fragment
         android:id="@+id/create_paint_fragment"
         android:name="com.aoztg.greengrim.presentation.ui.market.create.createpaint.CreatePaintFragment"
-        android:label="CreatePaint" />
+        android:label="CreatePaint" >
+        <action
+            android:id="@+id/action_create_paint_fragment_to_wait_drawing_fragment"
+            app:destination="@id/wait_drawing_fragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/edit_paint_name_fragment"
@@ -289,6 +299,11 @@
         android:id="@+id/create_nft_fragment"
         android:name="com.aoztg.greengrim.presentation.ui.market.create.createnft.CreateNftFragment"
         android:label="CreateNft" />
+
+    <fragment
+        android:id="@+id/wait_drawing_fragment"
+        android:name="com.aoztg.greengrim.presentation.ui.market.create.WaitDrawingFragment"
+        android:label="WaitDrawing"/>
 
     <action
         android:id="@+id/action_global_to_homeFragment"
@@ -317,10 +332,6 @@
     <action
         android:id="@+id/action_global_to_walletPasswordInputFragment"
         app:destination="@id/wallet_password_input_fragment" />
-
-    <action
-        android:id="@+id/action_global_to_editPaintNameFragment"
-        app:destination="@id/edit_paint_name_fragment" />
 
     <action
         android:id="@+id/action_global_to_setWalletPasswordFragment"
