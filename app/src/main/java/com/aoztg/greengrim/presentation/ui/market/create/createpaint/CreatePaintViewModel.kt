@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.model.request.DrawGrimRequest
 import com.aoztg.greengrim.data.repository.NftRepository
+import com.aoztg.greengrim.presentation.ui.market.DrawingState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -30,6 +31,7 @@ sealed class CreatePaintEvents {
     object ShowConfirmModal : CreatePaintEvents()
     data class ShowSnackMessage(val msg: String) : CreatePaintEvents()
     data class ShowToastMessage(val msg: String) : CreatePaintEvents()
+    object NavigateToWaitDrawing : CreatePaintEvents()
 }
 
 @HiltViewModel
@@ -108,7 +110,10 @@ class CreatePaintViewModel @Inject constructor(
                 )
             ).let {
                 when (it) {
-                    is BaseState.Success -> {}
+                    is BaseState.Success -> {
+                        DrawingState.DRAWING
+                        _events.emit(CreatePaintEvents.NavigateToWaitDrawing)
+                    }
                     is BaseState.Error -> _events.emit(CreatePaintEvents.ShowSnackMessage(it.msg))
                 }
             }

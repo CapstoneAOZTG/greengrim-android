@@ -5,6 +5,8 @@ import android.view.View
 import android.widget.TextView
 import androidx.core.view.children
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentCreatePaintBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
@@ -49,6 +51,7 @@ class CreatePaintFragment :
                     is CreatePaintEvents.ShowConfirmModal -> showConfirmModal()
                     is CreatePaintEvents.ShowSnackMessage -> showCustomSnack(binding.tvNounLabel, it.msg)
                     is CreatePaintEvents.ShowToastMessage -> showCustomToast(it.msg)
+                    is CreatePaintEvents.NavigateToWaitDrawing -> findNavController().toWaitDrawing()
                 }
             }
         }
@@ -103,5 +106,10 @@ class CreatePaintFragment :
                 viewModel.selectKeyword(KeywordType.STYLE, curStyleChip?.text.toString())
             }
         }
+    }
+
+    private fun NavController.toWaitDrawing(){
+        val action = CreatePaintFragmentDirections.actionCreatePaintFragmentToWaitDrawingFragment()
+        navigate(action)
     }
 }
