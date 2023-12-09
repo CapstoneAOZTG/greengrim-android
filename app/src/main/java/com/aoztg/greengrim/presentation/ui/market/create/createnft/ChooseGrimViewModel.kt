@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.repository.NftRepository
-import com.aoztg.greengrim.presentation.ui.market.adapter.ChooseGrimAdapter
 import com.aoztg.greengrim.presentation.ui.market.mapper.toUiGrimForNft
 import com.aoztg.greengrim.presentation.ui.market.model.UiGrimForNft
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -27,8 +26,9 @@ data class ChooseGrimUiState(
 sealed class ChooseGrimEvent{
     object NavigateToBack: ChooseGrimEvent()
     object NavigateToCreatePaint: ChooseGrimEvent()
-    data class NavigateToCreateNft(val grimId: Int): ChooseGrimEvent()
+    data class NavigateToCreateNft(val grimId: Int, val grimUrl: String): ChooseGrimEvent()
     data class ShowSnackMessage(val msg: String): ChooseGrimEvent()
+    object ShowNoGrimLayout: ChooseGrimEvent()
 }
 
 @HiltViewModel
@@ -51,11 +51,16 @@ class ChooseGrimViewModel @Inject constructor(
                 when(it){
                     is BaseState.Success -> {
                         val uiData = it.body.result.map{ data -> data.toUiGrimForNft(::navigateToCreateNft)}
+
+                        if(uiData.isEmpty() && it.body.page == 0){
+                            _events.emit(ChooseGrimEvent.ShowNoGrimLayout)
+                        }
+
                         _uiState.update { state ->
                             state.copy(
                                 page = it.body.page + 1,
                                 hasNext = it.body.hasNext,
-                                grimList = uiData
+                                grimList = uiState.value.grimList + uiData
                             )
                         }
                     }
@@ -65,19 +70,19 @@ class ChooseGrimViewModel @Inject constructor(
         }
     }
 
-    private fun navigateToCreateNft(grimId: Int){
+    private fun navigateToCreateNft(grimId: Int, grimUrl: String){
         viewModelScope.launch {
-            _events.emit(ChooseGrimEvent.NavigateToCreateNft(grimId))
+            _events.emit(ChooseGrimEvent.NavigateToCreateNft(grimId, grimUrl))
         }
     }
 
-    private fun navigateToCreatePaint(){
+   fun navigateToCreatePaint(){
         viewModelScope.launch {
             _events.emit(ChooseGrimEvent.NavigateToCreatePaint)
         }
     }
 
-    private fun navigateToBack(){
+    fun navigateToBack(){
         viewModelScope.launch {
             _events.emit(ChooseGrimEvent.NavigateToBack)
         }

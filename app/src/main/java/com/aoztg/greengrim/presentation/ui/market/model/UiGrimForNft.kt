@@ -4,5 +4,5 @@ data class UiGrimForNft(
     val id: Int = -1,
     val image: String = "",
     val title: String = "",
-    val selectListener: (Int) -> Unit
+    val selectListener: (Int, String) -> Unit
 )

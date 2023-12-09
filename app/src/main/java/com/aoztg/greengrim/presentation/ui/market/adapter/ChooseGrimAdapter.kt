@@ -28,9 +28,9 @@ class ChooseGrimAdapter: ListAdapter<UiGrimForNft, ChooseGrimViewHolder>(Default
 class ChooseGrimViewHolder(private val binding: ItemMyGrimForNftBinding): RecyclerView.ViewHolder(binding.root){
 
     fun bind(item: UiGrimForNft){
-
-        binding.root.setOnClickListener {
-            item.selectListener(item.id)
+        binding.item = item
+        binding.btnSelect.setOnClickListener {
+            item.selectListener(item.id, item.image)
         }
     }
 }

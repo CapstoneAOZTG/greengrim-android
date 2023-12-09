@@ -5,6 +5,10 @@
 
     <data>
 
+        <variable
+            name="item"
+            type="com.aoztg.greengrim.presentation.ui.market.model.UiGrimForNft" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -17,6 +21,7 @@
             android:layout_height="70dp"
             android:layout_marginTop="20dp"
             android:scaleType="centerCrop"
+            app:imgUrl="@{item.image}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:shapeAppearanceOverlay="@style/All28RadiusImageView"
@@ -29,6 +34,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             android:layout_marginBottom="4dp"
+            android:text="@{item.title}"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@id/iv_title_img"
             app:layout_constraintEnd_toStartOf="@id/btn_select"

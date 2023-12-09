@@ -319,6 +319,10 @@
         <argument
             android:name="grimId"
             app:argType="integer"/>
+
+        <argument
+            android:name="grimUrl"
+            app:argType="string"/>
     </fragment>
 
     <fragment

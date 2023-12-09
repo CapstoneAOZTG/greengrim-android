@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -61,6 +62,103 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iv_grim"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_marginTop="20dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/layout_toolbar"
+            app:shapeAppearanceOverlay="@style/All28RadiusImageView"
+            tools:src="@drawable/test" />
+
+        <ImageView
+            android:id="@+id/btn_choose_grim"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/icon_goto_gallery"
+            app:layout_constraintBottom_toBottomOf="@id/iv_grim"
+            app:layout_constraintEnd_toEndOf="@id/iv_grim" />
+
+        <TextView
+            android:id="@+id/tv_title_label"
+            style="@style/TextFormLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="30dp"
+            android:text="제목"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_grim" />
+
+        <TextView
+            android:id="@+id/tv_title_count"
+            style="@style/TextFormLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_title_label" />
+
+        <EditText
+            android:id="@+id/et_title"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/shape_darkfill_grey5stroke_radius10"
+            android:hint="제목을 입력해주세요"
+            android:inputType="text"
+            android:maxLength="8"
+            android:maxLines="1"
+            android:paddingHorizontal="15dp"
+            android:paddingVertical="8dp"
+            android:textColor="@color/white"
+            android:textColorHint="@color/gg_grey5"
+            android:textSize="13sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_title_label" />
+
+        <TextView
+            android:id="@+id/tv_description_label"
+            style="@style/TextFormLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="30dp"
+            android:text="자기소개"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/et_title" />
+
+        <TextView
+            android:id="@+id/tv_description_count"
+            style="@style/TextFormLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_description_label" />
+
+        <EditText
+            android:id="@+id/et_description"
+            android:layout_width="0dp"
+            android:layout_height="150dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/shape_darkfill_grey5stroke_radius10"
+            android:gravity="top"
+            android:hint="NFT 설명을 입력해주세요"
+            android:lineSpacingExtra="5dp"
+            android:maxLength="20"
+            android:maxLines="1"
+            android:paddingHorizontal="15dp"
+            android:paddingVertical="8dp"
+            android:textColor="@color/white"
+            android:textColorHint="@color/gg_grey5"
+            android:textSize="13sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_description_label" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
