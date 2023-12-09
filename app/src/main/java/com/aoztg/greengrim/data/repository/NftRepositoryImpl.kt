@@ -2,6 +2,7 @@ package com.aoztg.greengrim.data.repository
 
 import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.model.request.CreateWalletRequest
+import com.aoztg.greengrim.data.model.request.DrawGrimRequest
 import com.aoztg.greengrim.data.model.response.CheckWalletExistResponse
 import com.aoztg.greengrim.data.model.response.GetWalletInfoResponse
 import com.aoztg.greengrim.data.model.response.GrimListResponse
@@ -33,4 +34,6 @@ class NftRepositoryImpl @Inject constructor(
         size: Int,
         sort: String
     ): BaseState<GrimListResponse> = runRemote { api.getMyGrimList(page, size, sort) }
+
+    override suspend fun drawGrim(body: DrawGrimRequest): BaseState<Unit> = runRemote { api.drawGrim(body) }
 }

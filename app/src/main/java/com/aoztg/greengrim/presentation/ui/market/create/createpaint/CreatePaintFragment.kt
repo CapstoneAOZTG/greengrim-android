@@ -46,18 +46,22 @@ class CreatePaintFragment :
         repeatOnStarted {
             viewModel.events.collect {
                 when (it) {
-                    is CreatePaintEvents.ShowConfirmModal -> {
-                        TwoButtonTitleDialog(
-                            requireContext(),
-                            "500 Green Point가 소진됩니다\n키워드는 사라지지 않아요!",
-                            "정말로 그림을 그릴까요?"
-                        ) {
-                            viewModel.startDrawGrim()
-                        }.show()
-                    }
+                    is CreatePaintEvents.ShowConfirmModal -> showConfirmModal()
+                    is CreatePaintEvents.ShowSnackMessage -> showCustomSnack(binding.tvNounLabel, it.msg)
+                    is CreatePaintEvents.ShowToastMessage -> showCustomToast(it.msg)
                 }
             }
         }
+    }
+
+    private fun showConfirmModal(){
+        TwoButtonTitleDialog(
+            requireContext(),
+            "500 Green Point가 소진됩니다\n키워드는 사라지지 않아요!",
+            "정말로 그림을 그릴까요?"
+        ) {
+            viewModel.startDrawGrim()
+        }.show()
     }
 
     private fun setChipListener() {

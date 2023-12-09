@@ -2,6 +2,7 @@ package com.aoztg.greengrim.data.repository
 
 import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.model.request.CreateWalletRequest
+import com.aoztg.greengrim.data.model.request.DrawGrimRequest
 import com.aoztg.greengrim.data.model.response.CheckWalletExistResponse
 import com.aoztg.greengrim.data.model.response.GetWalletInfoResponse
 import com.aoztg.greengrim.data.model.response.GrimListResponse
@@ -27,4 +28,8 @@ interface NftRepository {
         size: Int,
         sort: String
     ): BaseState<GrimListResponse>
+
+    suspend fun drawGrim(
+        body: DrawGrimRequest
+    ): BaseState<Unit>
 }

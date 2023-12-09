@@ -1,6 +1,7 @@
 package com.aoztg.greengrim.data.remote
 
 import com.aoztg.greengrim.data.model.request.CreateWalletRequest
+import com.aoztg.greengrim.data.model.request.DrawGrimRequest
 import com.aoztg.greengrim.data.model.response.CheckWalletExistResponse
 import com.aoztg.greengrim.data.model.response.GetWalletInfoResponse
 import com.aoztg.greengrim.data.model.response.GrimListResponse
@@ -36,4 +37,9 @@ interface NftAPI {
         @Query("size") size: Int,
         @Query("sort") sort: String
     ): Response<GrimListResponse>
+
+    @POST("/visitor/grims")
+    suspend fun drawGrim(
+        @Body params: DrawGrimRequest
+    ): Response<Unit>
 }

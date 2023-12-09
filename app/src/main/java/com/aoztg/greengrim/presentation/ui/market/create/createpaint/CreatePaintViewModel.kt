@@ -2,6 +2,8 @@ package com.aoztg.greengrim.presentation.ui.market.create.createpaint
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.aoztg.greengrim.data.model.BaseState
+import com.aoztg.greengrim.data.model.request.DrawGrimRequest
 import com.aoztg.greengrim.data.repository.NftRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -24,14 +26,16 @@ data class CreatePaintUiState(
     val styleKeywords: List<String> = emptyList(),
 )
 
-sealed class CreatePaintEvents{
-    object ShowConfirmModal: CreatePaintEvents()
+sealed class CreatePaintEvents {
+    object ShowConfirmModal : CreatePaintEvents()
+    data class ShowSnackMessage(val msg: String) : CreatePaintEvents()
+    data class ShowToastMessage(val msg: String) : CreatePaintEvents()
 }
 
 @HiltViewModel
 class CreatePaintViewModel @Inject constructor(
     private val nftRepository: NftRepository
-): ViewModel() {
+) : ViewModel() {
 
 
     private val _uiState = MutableStateFlow(CreatePaintUiState())
@@ -46,7 +50,7 @@ class CreatePaintViewModel @Inject constructor(
 
     val isDataReady = combine(
         selectNoun, selectVerb, selectStyle
-    ) { noun, verb, style->
+    ) { noun, verb, style ->
         noun.isNotBlank() && verb.isNotBlank() && style.isNotBlank()
     }.stateIn(
         viewModelScope,
@@ -54,13 +58,25 @@ class CreatePaintViewModel @Inject constructor(
         false
     )
 
-    fun getKeywords(){
+    fun getKeywords() {
         // todo keywords 불러오는 API 연결
         viewModelScope.launch {
             _uiState.update { state ->
                 state.copy(
-                    nounKeywords = listOf("기본키워드", "고양이","키워드","키워드","키워드","키워드","키워드","키워드","키워드","키워드","키워드"),
-                    verbKeywords = listOf("기본키워드", "키워드","키워드","키워드","키워드","키워드","키워드","키워드"),
+                    nounKeywords = listOf(
+                        "기본키워드",
+                        "고양이",
+                        "키워드",
+                        "키워드",
+                        "키워드",
+                        "키워드",
+                        "키워드",
+                        "키워드",
+                        "키워드",
+                        "키워드",
+                        "키워드"
+                    ),
+                    verbKeywords = listOf("기본키워드", "키워드", "키워드", "키워드", "키워드", "키워드", "키워드", "키워드"),
                     styleKeywords = listOf("3d-model", "fantasy", "line art", "pixel art")
                 )
             }
@@ -68,27 +84,41 @@ class CreatePaintViewModel @Inject constructor(
         }
     }
 
-    fun selectKeyword(type: KeywordType, keyword: String){
-        when(type){
+    fun selectKeyword(type: KeywordType, keyword: String) {
+        when (type) {
             KeywordType.NOUN -> selectNoun.value = keyword
             KeywordType.VERB -> selectVerb.value = keyword
             KeywordType.STYLE -> selectStyle.value = keyword
         }
     }
 
-    fun showConfirmModal(){
+    fun showConfirmModal() {
         viewModelScope.launch {
             _events.emit(CreatePaintEvents.ShowConfirmModal)
         }
     }
 
-    fun startDrawGrim(){
-        // todo 그림 그리는 API 연결
+    fun startDrawGrim() {
+        viewModelScope.launch {
+            nftRepository.drawGrim(
+                DrawGrimRequest(
+                    selectNoun.value,
+                    selectVerb.value,
+                    selectStyle.value
+                )
+            ).let {
+                when (it) {
+                    is BaseState.Success -> {}
+                    is BaseState.Error -> _events.emit(CreatePaintEvents.ShowSnackMessage(it.msg))
+                }
+            }
+        }
+
     }
 
 }
 
-enum class KeywordType{
+enum class KeywordType {
     NOUN,
     VERB,
     STYLE
