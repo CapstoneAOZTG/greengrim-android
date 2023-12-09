@@ -3,6 +3,7 @@ package com.aoztg.greengrim.presentation.bindingadapters
 import android.graphics.Color
 import android.view.View
 import android.widget.Button
+import androidx.appcompat.widget.AppCompatButton
 import androidx.databinding.BindingAdapter
 import com.aoztg.greengrim.presentation.ui.global.model.UiChallengeDetail
 
@@ -26,6 +27,23 @@ fun bindCheckBtnState(button: Button, isVerified: String) {
         button.visibility = View.INVISIBLE
     } else {
         button.visibility = View.VISIBLE
+    }
+}
+
+@BindingAdapter("nftDetailBtnState")
+fun bindNftDetailBtnState(button: AppCompatButton, state: String){
+    if(state.isNotBlank()){
+
+        when(state){
+            "CAN_SELL" -> {
+                button.visibility = View.VISIBLE
+                button.text = "판매하기"
+            }
+            "CAN_BUY" -> {
+                button.visibility = View.VISIBLE
+                button.text = "구매하기"
+            }
+        }
     }
 }
 

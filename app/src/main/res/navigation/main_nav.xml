@@ -237,12 +237,32 @@
     <fragment
         android:id="@+id/sell_nft_fragment"
         android:name="com.aoztg.greengrim.presentation.ui.global.nftdetail.transaction.sell.SellNftFragment"
-        android:label="SellNft" />
+        android:label="SellNft" >
+
+        <argument
+            android:name="nftId"
+            app:argType="integer"/>
+
+        <action
+            android:id="@+id/action_sell_nft_fragment_to_set_wallet_password_fragment"
+            app:destination="@id/set_wallet_password_fragment" />
+
+    </fragment>
 
     <fragment
         android:id="@+id/purchase_nft_fragment"
         android:name="com.aoztg.greengrim.presentation.ui.global.nftdetail.transaction.purchase.PurchaseNftFragment"
-        android:label="PurchaseNft" />
+        android:label="PurchaseNft" >
+
+        <argument
+            android:name="nftId"
+            app:argType="integer"/>
+
+        <action
+            android:id="@+id/action_purchase_nft_fragment_to_set_wallet_password_fragment"
+            app:destination="@id/set_wallet_password_fragment" />
+
+    </fragment>
 
     <fragment
         android:id="@+id/paint_detail_fragment"
@@ -265,6 +285,9 @@
         <argument
             android:name="nftId"
             app:argType="integer" />
+        <action
+            android:id="@+id/action_nft_detail_fragment_to_purchase_nft_fragment"
+            app:destination="@id/purchase_nft_fragment" />
 
     </fragment>
 
@@ -340,9 +363,5 @@
     <action
         android:id="@+id/action_global_to_walletPasswordInputFragment"
         app:destination="@id/wallet_password_input_fragment" />
-
-    <action
-        android:id="@+id/action_global_to_setWalletPasswordFragment"
-        app:destination="@id/set_wallet_password_fragment" />
 
 </navigation>
