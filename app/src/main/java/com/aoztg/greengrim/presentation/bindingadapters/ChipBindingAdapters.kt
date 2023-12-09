@@ -8,7 +8,23 @@ import com.aoztg.greengrim.data.model.response.ChallengeSimpleTags
 import com.aoztg.greengrim.data.model.response.HotChallengeTags
 import com.aoztg.greengrim.presentation.ui.challenge.create.KeywordState
 import com.aoztg.greengrim.presentation.ui.toCategoryText
+import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
+
+
+@BindingAdapter("keywordChips")
+fun bindKeywordChips(chipGroup: ChipGroup, keyword: List<String>){
+    chipGroup.removeAllViews()
+    keyword.forEach {
+        val chip = TextView(chipGroup.context).apply{
+            setBackgroundResource(R.drawable.shape_grey7fill_nostroke_15radius)
+            text = it
+            setTextAppearance(R.style.TextGgSmallBold)
+            setPadding(30, 20, 30, 20)
+        }
+        chipGroup.addView(chip)
+    }
+}
 
 @BindingAdapter("challengeListChips")
 fun bindChallengeListChips(chipGroup: ChipGroup, chips: ChallengeSimpleTags) {
