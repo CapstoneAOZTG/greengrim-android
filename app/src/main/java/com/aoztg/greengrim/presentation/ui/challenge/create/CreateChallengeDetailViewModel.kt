@@ -59,52 +59,6 @@ class CreateChallengeDetailViewModel @Inject constructor(
     private val chatRepository: ChatRepository
 ) : ViewModel() {
 
-    companion object {
-        val keywordsWhat = listOf(
-            "꽃다발",
-            "개",
-            "고양이",
-            "버스",
-            "감자튀김",
-            "컵",
-            "운동화",
-            "기타",
-            "모자",
-            "소파",
-            "우주선",
-            "접시",
-            "나무",
-            "럭비공",
-            "모래성",
-            "초콜릿",
-            "피망",
-            "책",
-            "포도"
-        )
-        val keywordsPlace = listOf(
-            "공원",
-            "바다",
-            "숲",
-            "도시",
-            "부엌",
-            "모래사장",
-            "농장",
-            "학교",
-            "커피숍",
-            "동굴",
-            "운동장",
-            "다리",
-            "회사",
-            "골목",
-            "절벽",
-            "슈퍼마켓",
-            "우주",
-            "지하철",
-            "박물관",
-            "언덕",
-        )
-    }
-
     private val _uiState = MutableStateFlow(CreateChallengeDetailUiState())
     val uiState: StateFlow<CreateChallengeDetailUiState> = _uiState.asStateFlow()
 
@@ -247,17 +201,29 @@ class CreateChallengeDetailViewModel @Inject constructor(
 
     fun setRandomKeywords() {
 
-        val randKeywords = mutableListOf<String>()
-        while (randKeywords.size != 5) {
-            val keyword = keywordsWhat.random()
-            if (keyword !in randKeywords) randKeywords.add(keyword)
+        viewModelScope.launch {
+            challengeRepository.getRandomKeywords().let{
+                when(it){
+                    is BaseState.Success -> {
+                        _uiState.update { state ->
+                            state.copy(
+                                randomKeywordState = KeywordState.Set(it.body)
+                            )
+                        }
+                    }
+                    is BaseState.Error -> {
+                        _uiState.update { state ->
+                            state.copy(
+                                randomKeywordState = KeywordState.Empty
+                            )
+                        }
+                        _events.emit(CreateChallengeDetailEvents.ShowSnackMessage(it.msg))
+                    }
+                }
+            }
         }
 
-        _uiState.update { state ->
-            state.copy(
-                randomKeywordState = KeywordState.Set(randKeywords.toList())
-            )
-        }
+
     }
 
     fun setCategory(data: String) {
