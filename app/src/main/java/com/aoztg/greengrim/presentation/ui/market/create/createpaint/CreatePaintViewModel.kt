@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.model.request.DrawGrimRequest
+import com.aoztg.greengrim.data.repository.InfoRepository
 import com.aoztg.greengrim.data.repository.NftRepository
 import com.aoztg.greengrim.presentation.ui.market.DrawingState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -36,7 +37,8 @@ sealed class CreatePaintEvents {
 
 @HiltViewModel
 class CreatePaintViewModel @Inject constructor(
-    private val nftRepository: NftRepository
+    private val nftRepository: NftRepository,
+    private val infoRepository: InfoRepository
 ) : ViewModel() {
 
 
@@ -61,28 +63,22 @@ class CreatePaintViewModel @Inject constructor(
     )
 
     fun getKeywords() {
-        // todo keywords 불러오는 API 연결
         viewModelScope.launch {
-            _uiState.update { state ->
-                state.copy(
-                    nounKeywords = listOf(
-                        "기본키워드",
-                        "고양이",
-                        "키워드",
-                        "키워드",
-                        "키워드",
-                        "키워드",
-                        "키워드",
-                        "키워드",
-                        "키워드",
-                        "키워드",
-                        "키워드"
-                    ),
-                    verbKeywords = listOf("기본키워드", "키워드", "키워드", "키워드", "키워드", "키워드", "키워드", "키워드"),
-                    styleKeywords = listOf("3d-model", "fantasy", "line art", "pixel art")
-                )
-            }
+            infoRepository.getMyKeywords().let {
+                when (it) {
+                    is BaseState.Success -> {
+                        _uiState.update { state ->
+                            state.copy(
+                                nounKeywords = it.body.noun,
+                                verbKeywords = it.body.verb,
+                                styleKeywords = it.body.style
+                            )
+                        }
+                    }
 
+                    is BaseState.Error -> {}
+                }
+            }
         }
     }
 
@@ -114,6 +110,7 @@ class CreatePaintViewModel @Inject constructor(
                         DrawingState.DRAWING
                         _events.emit(CreatePaintEvents.NavigateToWaitDrawing)
                     }
+
                     is BaseState.Error -> _events.emit(CreatePaintEvents.ShowSnackMessage(it.msg))
                 }
             }
