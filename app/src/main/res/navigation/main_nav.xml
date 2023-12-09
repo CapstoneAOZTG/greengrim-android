@@ -7,7 +7,11 @@
     <fragment
         android:id="@+id/home_fragment"
         android:name="com.aoztg.greengrim.presentation.ui.home.HomeFragment"
-        android:label="Home" />
+        android:label="Home" >
+        <action
+            android:id="@+id/action_home_fragment_to_nft_list_fragment"
+            app:destination="@id/nft_list_fragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/challenge_category_fragment"

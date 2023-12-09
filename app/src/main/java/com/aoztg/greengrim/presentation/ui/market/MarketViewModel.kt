@@ -126,6 +126,12 @@ class MarketViewModel @Inject constructor(
         }
     }
 
+    fun navigateToNftList(){
+        viewModelScope.launch {
+            _events.emit(MarketEvents.NavigateToNftList)
+        }
+    }
+
     fun showBottomSheet() {
         viewModelScope.launch {
             _events.emit(MarketEvents.ShowBottomSheet)
