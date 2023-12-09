@@ -303,7 +303,11 @@
     <fragment
         android:id="@+id/wait_drawing_fragment"
         android:name="com.aoztg.greengrim.presentation.ui.market.create.WaitDrawingFragment"
-        android:label="WaitDrawing"/>
+        android:label="WaitDrawing">
+        <action
+            android:id="@+id/action_wait_drawing_fragment_to_market_fragment"
+            app:destination="@id/market_fragment" />
+    </fragment>
 
     <action
         android:id="@+id/action_global_to_homeFragment"
