@@ -20,7 +20,7 @@ class CreateNftFragment: BaseFragment<FragmentCreateNftBinding>(R.layout.fragmen
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
+        viewModel.setImgUrl(grimUrl)
     }
 
 

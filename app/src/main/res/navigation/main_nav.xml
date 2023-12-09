@@ -323,6 +323,9 @@
         <argument
             android:name="grimUrl"
             app:argType="string"/>
+        <action
+            android:id="@+id/action_create_nft_fragment_to_wallet_password_input_fragment"
+            app:destination="@id/wallet_password_input_fragment" />
     </fragment>
 
     <fragment
