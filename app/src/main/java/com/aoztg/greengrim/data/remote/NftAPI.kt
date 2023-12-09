@@ -8,6 +8,7 @@ import com.aoztg.greengrim.data.model.response.CreateNftResponse
 import com.aoztg.greengrim.data.model.response.GetWalletInfoResponse
 import com.aoztg.greengrim.data.model.response.GrimDetailResponse
 import com.aoztg.greengrim.data.model.response.GrimListResponse
+import com.aoztg.greengrim.data.model.response.HotNftResponse
 import com.aoztg.greengrim.data.model.response.NftDetailResponse
 import com.aoztg.greengrim.data.model.response.NftListResponse
 import retrofit2.Response
@@ -79,6 +80,6 @@ interface NftAPI {
     ): Response<NftListResponse>
 
     @GET("/home/nfts")
-    suspend fun getHotNfts(): Response<NftListResponse>
+    suspend fun getHotNfts(): Response<HotNftResponse>
 
 }

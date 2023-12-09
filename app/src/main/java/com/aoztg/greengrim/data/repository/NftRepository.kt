@@ -9,14 +9,9 @@ import com.aoztg.greengrim.data.model.response.CreateNftResponse
 import com.aoztg.greengrim.data.model.response.GetWalletInfoResponse
 import com.aoztg.greengrim.data.model.response.GrimDetailResponse
 import com.aoztg.greengrim.data.model.response.GrimListResponse
+import com.aoztg.greengrim.data.model.response.HotNftResponse
 import com.aoztg.greengrim.data.model.response.NftDetailResponse
 import com.aoztg.greengrim.data.model.response.NftListResponse
-import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Path
-import retrofit2.http.Query
 
 interface NftRepository {
 
@@ -74,5 +69,5 @@ interface NftRepository {
     ): BaseState<NftListResponse>
 
 
-    suspend fun getHotNfts(): BaseState<NftListResponse>
+    suspend fun getHotNfts(): BaseState<HotNftResponse>
 }

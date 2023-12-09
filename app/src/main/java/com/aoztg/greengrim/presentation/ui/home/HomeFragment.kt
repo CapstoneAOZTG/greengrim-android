@@ -19,6 +19,7 @@ import com.aoztg.greengrim.presentation.ui.home.adapter.MoreActivityAdapter
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 import com.aoztg.greengrim.presentation.ui.toAttendCheck
 import com.aoztg.greengrim.presentation.ui.toChallengeDetail
+import com.aoztg.greengrim.presentation.ui.toNftDetail
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import me.relex.circleindicator.CircleIndicator2
@@ -85,6 +86,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
                         val intent = Intent(requireContext(),CatchGameActivity::class.java)
                         startActivity(intent)
                     }
+                    is HomeEvents.NavigateToNftDetail -> findNavController().toNftDetail(it.id)
                 }
             }
         }

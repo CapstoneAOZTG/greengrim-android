@@ -5,13 +5,14 @@ import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.repository.HomeRepository
-import com.aoztg.greengrim.presentation.ui.LoadingState
+import com.aoztg.greengrim.data.repository.NftRepository
 import com.aoztg.greengrim.presentation.ui.home.mapper.toUiHomeInfo
 import com.aoztg.greengrim.presentation.ui.home.mapper.toUiHotChallenge
+import com.aoztg.greengrim.presentation.ui.home.mapper.toUiNftItemMapper
 import com.aoztg.greengrim.presentation.ui.home.model.UiHomeInfo
 import com.aoztg.greengrim.presentation.ui.home.model.UiHotChallenge
-import com.aoztg.greengrim.presentation.ui.home.model.UiHotNft
 import com.aoztg.greengrim.presentation.ui.home.model.UiMoreActivity
+import com.aoztg.greengrim.presentation.ui.market.model.UiNftItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,7 +27,7 @@ import javax.inject.Inject
 data class HomeUiState(
     val uiHotChallengeList: List<UiHotChallenge> = emptyList(),
     val uiMoreActivityList: List<UiMoreActivity> = emptyList(),
-    val uiHotNftList: List<UiHotNft> = emptyList(),
+    val uiHotNftList: List<UiNftItem> = emptyList(),
     val uiHomeInfo: UiHomeInfo = UiHomeInfo()
 )
 
@@ -38,11 +39,13 @@ sealed class HomeEvents {
     object GoToGameActivity : HomeEvents()
     object ShowLoading : HomeEvents()
     object DismissLoading : HomeEvents()
+    data class NavigateToNftDetail(val id: Int) : HomeEvents()
 }
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val homeRepository: HomeRepository
+    private val homeRepository: HomeRepository,
+    private val nftRepository: NftRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(HomeUiState())
@@ -52,7 +55,7 @@ class HomeViewModel @Inject constructor(
     val events: SharedFlow<HomeEvents> = _events.asSharedFlow()
 
     fun getHomeData() {
-        viewModelScope.launch{
+        viewModelScope.launch {
             _events.emit(HomeEvents.ShowLoading)
             getHomeInfo()
             getHotChallenges()
@@ -105,21 +108,40 @@ class HomeViewModel @Inject constructor(
         _uiState.update { state ->
             state.copy(
                 uiMoreActivityList = listOf(
-                    UiMoreActivity(R.drawable.icon_home_game, "쓰레기 잡기", "지금 플레이하면", "+ 10 G", ::goToGameActivity),
-                    UiMoreActivity(R.drawable.icon_home_attend_check, "출석 체크", "지금 상호 인증하면", "+ 10 G", ::navigateToAttendCheck)
+                    UiMoreActivity(
+                        R.drawable.icon_home_game,
+                        "쓰레기 잡기",
+                        "지금 플레이하면",
+                        "+ 10 G",
+                        ::goToGameActivity
+                    ),
+                    UiMoreActivity(
+                        R.drawable.icon_home_attend_check,
+                        "출석 체크",
+                        "지금 상호 인증하면",
+                        "+ 10 G",
+                        ::navigateToAttendCheck
+                    )
                 )
             )
         }
     }
 
     private suspend fun getHotNft() {
-        _uiState.update { state ->
-            state.copy(
-                uiHotNftList = listOf(
-                    UiHotNft("", "장화 신은 고양이", "", "Noah", "15.7 C"),
-                    UiHotNft("", "레인보우 빨대", "", "Bora", "13.1 C")
-                )
-            )
+        viewModelScope.launch {
+            nftRepository.getHotNfts().let {
+                when (it) {
+                    is BaseState.Success -> {
+                        _uiState.update { state ->
+                            state.copy(
+                                uiHotNftList = it.body.homeNftInfos.map { data -> data.toUiNftItemMapper(::navigateToNftDetail) }
+                            )
+                        }
+                    }
+
+                    is BaseState.Error -> _events.emit(HomeEvents.ShowSnackMessage(it.msg))
+                }
+            }
         }
     }
 
@@ -129,15 +151,21 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun navigateToAttendCheck(){
+    private fun navigateToAttendCheck() {
         viewModelScope.launch {
             _events.emit(HomeEvents.NavigateToAttendCheck)
         }
     }
 
-    private fun goToGameActivity(){
+    private fun goToGameActivity() {
         viewModelScope.launch {
             _events.emit(HomeEvents.GoToGameActivity)
+        }
+    }
+
+    private fun navigateToNftDetail(id: Int) {
+        viewModelScope.launch {
+            _events.emit(HomeEvents.NavigateToNftDetail(id))
         }
     }
 

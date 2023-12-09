@@ -5,6 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.repository.NftRepository
 import com.aoztg.greengrim.presentation.ui.challenge.list.ChallengeListViewModel
+import com.aoztg.greengrim.presentation.ui.home.HomeEvents
+import com.aoztg.greengrim.presentation.ui.home.mapper.toUiNftItemMapper
 import com.aoztg.greengrim.presentation.ui.market.mapper.toUiGrimItem
 import com.aoztg.greengrim.presentation.ui.market.model.UiGrimItem
 import com.aoztg.greengrim.presentation.ui.market.model.UiNftItem
@@ -21,7 +23,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 data class MarketUiState(
-    val recentNftList: List<UiNftItem> = emptyList(),
+    val hotNftList: List<UiNftItem> = emptyList(),
     val grimList: List<UiGrimItem> = emptyList(),
     val sortType: GrimNftSortType = GrimNftSortType.DESC,
     val page: Int = 0,
@@ -56,12 +58,6 @@ class MarketViewModel @Inject constructor(
     private val _events = MutableSharedFlow<MarketEvents>()
     val events: SharedFlow<MarketEvents> = _events.asSharedFlow()
 
-    fun getRecentNftList() {
-        viewModelScope.launch {
-
-        }
-    }
-
     fun getGrimList(option: Int) {
 
         if (uiState.value.hasNext) {
@@ -93,7 +89,24 @@ class MarketViewModel @Inject constructor(
                 }
             }
         }
+    }
 
+    fun getHotNft() {
+        viewModelScope.launch {
+            nftRepository.getHotNfts().let {
+                when (it) {
+                    is BaseState.Success -> {
+                        _uiState.update { state ->
+                            state.copy(
+                                hotNftList = it.body.homeNftInfos.map { data -> data.toUiNftItemMapper(::navigateToNftDetail) }
+                            )
+                        }
+                    }
+
+                    is BaseState.Error -> _events.emit(MarketEvents.ShowSnackMessage(it.msg))
+                }
+            }
+        }
     }
 
     private fun navigateToNftDetail(id: Int) {
