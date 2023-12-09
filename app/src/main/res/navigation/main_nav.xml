@@ -7,7 +7,7 @@
     <fragment
         android:id="@+id/home_fragment"
         android:name="com.aoztg.greengrim.presentation.ui.home.HomeFragment"
-        android:label="Home" >
+        android:label="Home">
         <action
             android:id="@+id/action_home_fragment_to_nft_list_fragment"
             app:destination="@id/nft_list_fragment" />
@@ -222,9 +222,9 @@
         android:label="AttendCheck" />
 
     <fragment
-        android:id="@+id/wallet_password_input_fragment"
-        android:name="com.aoztg.greengrim.presentation.ui.global.walletpasswordinput.WalletPasswordInputFragment"
-        android:label="WalletPasswordInput"/>
+        android:id="@+id/check_password_fragment"
+        android:name="com.aoztg.greengrim.presentation.ui.global.walletpasswordinput.CheckPasswordFragment"
+        android:label="CheckPassword" />
 
     <fragment
         android:id="@+id/set_wallet_password_fragment"
@@ -234,28 +234,22 @@
     <fragment
         android:id="@+id/sell_nft_fragment"
         android:name="com.aoztg.greengrim.presentation.ui.global.nftdetail.transaction.sell.SellNftFragment"
-        android:label="SellNft" >
+        android:label="SellNft">
 
         <argument
             android:name="nftId"
-            app:argType="integer"/>
-        <action
-            android:id="@+id/action_sell_nft_fragment_to_wallet_password_input_fragment"
-            app:destination="@id/wallet_password_input_fragment" />
+            app:argType="integer" />
 
     </fragment>
 
     <fragment
         android:id="@+id/purchase_nft_fragment"
         android:name="com.aoztg.greengrim.presentation.ui.global.nftdetail.transaction.purchase.PurchaseNftFragment"
-        android:label="PurchaseNft" >
+        android:label="PurchaseNft">
 
         <argument
             android:name="nftId"
-            app:argType="integer"/>
-        <action
-            android:id="@+id/action_purchase_nft_fragment_to_wallet_password_input_fragment"
-            app:destination="@id/wallet_password_input_fragment" />
+            app:argType="integer" />
 
     </fragment>
 
@@ -306,7 +300,7 @@
     <fragment
         android:id="@+id/create_paint_fragment"
         android:name="com.aoztg.greengrim.presentation.ui.market.create.createpaint.CreatePaintFragment"
-        android:label="CreatePaint" >
+        android:label="CreatePaint">
         <action
             android:id="@+id/action_create_paint_fragment_to_wait_drawing_fragment"
             app:destination="@id/wait_drawing_fragment" />
@@ -315,17 +309,14 @@
     <fragment
         android:id="@+id/create_nft_fragment"
         android:name="com.aoztg.greengrim.presentation.ui.market.create.createnft.CreateNftFragment"
-        android:label="CreateNft" >
+        android:label="CreateNft">
         <argument
             android:name="grimId"
-            app:argType="integer"/>
+            app:argType="integer" />
 
         <argument
             android:name="grimUrl"
-            app:argType="string"/>
-        <action
-            android:id="@+id/action_create_nft_fragment_to_wallet_password_input_fragment"
-            app:destination="@id/wallet_password_input_fragment" />
+            app:argType="string" />
     </fragment>
 
     <fragment
@@ -352,7 +343,7 @@
     <fragment
         android:id="@+id/edit_grim_fragment"
         android:name="com.aoztg.greengrim.presentation.ui.global.editgrim.EditGrimFragment"
-        android:label="EditGrim"/>
+        android:label="EditGrim" />
 
     <action
         android:id="@+id/action_global_to_homeFragment"
@@ -380,10 +371,14 @@
 
     <action
         android:id="@+id/action_global_to_setWalletPasswordFragment"
-        app:destination="@id/set_wallet_password_fragment"/>
+        app:destination="@id/set_wallet_password_fragment" />
 
     <action
         android:id="@+id/action_global_to_editGrimFragment"
-        app:destination="@id/edit_grim_fragment"/>
+        app:destination="@id/edit_grim_fragment" />
+
+    <action
+        android:id="@+id/action_global_to_checkPasswordFragment"
+        app:destination="@id/check_password_fragment" />
 
 </navigation>

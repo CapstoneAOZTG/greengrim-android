@@ -19,6 +19,11 @@ internal fun NavController.toCertificationDetail(certificationId: Int) {
     navigate(action)
 }
 
+internal fun NavController.toWalletPasswordInput(){
+    val action = MainNavDirections.actionGlobalToWalletPasswordInputFragment()
+    navigate(action)
+}
+
 internal fun NavController.toNftDetail(nftId: Int){
     val action = MainNavDirections.actionGlobalToNftDetailFragment(nftId)
     navigate(action)
