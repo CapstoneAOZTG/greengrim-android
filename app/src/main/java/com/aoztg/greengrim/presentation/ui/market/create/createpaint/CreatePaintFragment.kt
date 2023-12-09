@@ -26,6 +26,7 @@ class CreatePaintFragment :
         binding.vm = viewModel
         viewModel.getKeywords()
         initUiStateObserver()
+        initEventsObserver()
     }
 
     private fun initUiStateObserver(){
@@ -34,6 +35,16 @@ class CreatePaintFragment :
                 if(it.nounKeywords.isNotEmpty()){
                     delay(200)
                     setChipListener()
+                }
+            }
+        }
+    }
+
+    private fun initEventsObserver(){
+        repeatOnStarted {
+            viewModel.events.collect{
+                when(it){
+                    is CreatePaintEvents.ShowConfirmModal -> {}
                 }
             }
         }

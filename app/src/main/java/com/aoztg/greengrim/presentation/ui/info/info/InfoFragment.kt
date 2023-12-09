@@ -10,7 +10,7 @@ import com.aoztg.greengrim.MainNavDirections
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentInfoBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
-import com.aoztg.greengrim.presentation.customview.getInfoSettingSheet
+import com.aoztg.greengrim.presentation.customview.SettingBottomSheet
 import com.aoztg.greengrim.presentation.ui.SocialLoginType
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 import com.aoztg.greengrim.presentation.ui.toAttendCheck
@@ -63,7 +63,7 @@ class InfoFragment : BaseFragment<FragmentInfoBinding>(R.layout.fragment_info) {
     }
 
     private fun showBottomSheet() {
-        getInfoSettingSheet(
+        SettingBottomSheet(
             requireContext(),
             onEditProfileClickListener = ::navigateToEditProfile,
             onNotificationClickListener = ::navigateToNotification,

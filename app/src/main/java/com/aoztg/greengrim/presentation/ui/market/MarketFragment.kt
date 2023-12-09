@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentMarketBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
-import com.aoztg.greengrim.presentation.customview.getGrimNftSortSheet
+import com.aoztg.greengrim.presentation.customview.GrimNftFilterBottomSheet
 import com.aoztg.greengrim.presentation.ui.challenge.list.ChallengeListViewModel
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 import com.aoztg.greengrim.presentation.ui.market.MarketViewModel.Companion.ORIGINAL
@@ -79,7 +79,7 @@ class MarketFragment : BaseFragment<FragmentMarketBinding>(R.layout.fragment_mar
     }
 
     private fun showBottomSheet() {
-        getGrimNftSortSheet(requireContext(), sortType) { type ->
+        GrimNftFilterBottomSheet(requireContext(), sortType){ type ->
             sortType = type
             viewModel.setSortType(type)
             binding.tvFilter.text = type.text

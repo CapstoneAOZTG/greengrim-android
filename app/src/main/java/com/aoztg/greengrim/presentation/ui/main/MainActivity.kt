@@ -29,7 +29,7 @@ import com.aoztg.greengrim.databinding.ActivityMainBinding
 import com.aoztg.greengrim.presentation.base.BaseActivity
 import com.aoztg.greengrim.presentation.chatmanager.ChatEvent
 import com.aoztg.greengrim.presentation.chatmanager.ChatManager
-import com.aoztg.greengrim.presentation.customview.getPhotoSheet
+import com.aoztg.greengrim.presentation.customview.PhotoBottomSheet
 import com.aoztg.greengrim.presentation.ui.home.HomeFragmentDirections
 import com.aoztg.greengrim.presentation.ui.intro.IntroActivity
 import com.aoztg.greengrim.presentation.ui.toMultiPart
@@ -149,7 +149,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     }
 
     private fun showPhotoBottomSheet() {
-        getPhotoSheet(
+        PhotoBottomSheet(
             this,
             onPhotoClickListener = ::onCheckCameraPermission,
             onGalleryClickListener = ::onCheckStoragePermissions

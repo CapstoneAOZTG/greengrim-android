@@ -3,9 +3,12 @@ package com.aoztg.greengrim.presentation.ui.market.create.createpaint
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
@@ -20,12 +23,19 @@ data class CreatePaintUiState(
     val styleKeywords: List<String> = emptyList(),
 )
 
+sealed class CreatePaintEvents{
+    object ShowConfirmModal: CreatePaintEvents()
+}
+
 @HiltViewModel
 class CreatePaintViewModel @Inject constructor(): ViewModel() {
 
 
     private val _uiState = MutableStateFlow(CreatePaintUiState())
     val uiState: StateFlow<CreatePaintUiState> = _uiState.asStateFlow()
+
+    private val _events = MutableSharedFlow<CreatePaintEvents>()
+    val events: SharedFlow<CreatePaintEvents> = _events.asSharedFlow()
 
     private val selectNoun = MutableStateFlow("")
     private val selectVerb = MutableStateFlow("")
@@ -59,6 +69,12 @@ class CreatePaintViewModel @Inject constructor(): ViewModel() {
             KeywordType.NOUN -> selectNoun.value = keyword
             KeywordType.VERB -> selectVerb.value = keyword
             KeywordType.STYLE -> selectStyle.value = keyword
+        }
+    }
+
+    fun showConfirmModal(){
+        viewModelScope.launch {
+            _events.emit(CreatePaintEvents.ShowConfirmModal)
         }
     }
 

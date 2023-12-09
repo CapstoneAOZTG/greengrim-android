@@ -1,4 +1,4 @@
-package com.aoztg.greengrim.presentation.ui.market.create.createpaint
+package com.aoztg.greengrim.presentation.ui.market.create
 
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentEditPaintNameBinding

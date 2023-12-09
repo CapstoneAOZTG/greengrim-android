@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentMyChallengeBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
-import com.aoztg.greengrim.presentation.customview.getSortSheet
+import com.aoztg.greengrim.presentation.customview.ChallengeFilterBottomSheet
 import com.aoztg.greengrim.presentation.ui.LoadingState
 import com.aoztg.greengrim.presentation.ui.challenge.adapter.ChallengeRoomAdapter
 import com.aoztg.greengrim.presentation.ui.challenge.list.ChallengeSortType
@@ -99,7 +99,7 @@ class MyChallengeFragment :
     }
 
     private fun showBottomSheet() {
-        getSortSheet(requireContext(), sortType) { type ->
+        ChallengeFilterBottomSheet(requireContext(), sortType) { type ->
             sortType = type
             viewModel.setSortType(type)
             binding.tvFilter.text = type.text
