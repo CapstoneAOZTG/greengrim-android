@@ -1,8 +1,8 @@
 package com.aoztg.greengrim.data.remote
 
+import com.aoztg.greengrim.data.model.request.CreateChallengeRequest
 import com.aoztg.greengrim.data.model.response.ChallengeDetailResponse
 import com.aoztg.greengrim.data.model.response.ChallengeListResponse
-import com.aoztg.greengrim.data.model.request.CreateChallengeRequest
 import com.aoztg.greengrim.data.model.response.CreateChallengeResponse
 import retrofit2.Response
 import retrofit2.http.Body
@@ -42,4 +42,7 @@ interface ChallengeAPI {
     suspend fun exitChallenge(
         @Query("id") id: Int
     ): Response<Unit>
+
+    @GET("/visitor/keywords/random")
+    suspend fun getRandomKeywords(): Response<List<String>>
 }
