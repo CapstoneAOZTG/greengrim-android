@@ -1,6 +1,5 @@
 package com.aoztg.greengrim.presentation.ui.market.create.createpaint
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
@@ -9,8 +8,11 @@ import androidx.fragment.app.viewModels
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentCreatePaintBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
+import com.aoztg.greengrim.presentation.customview.TwoButtonTitleDialog
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 
+@AndroidEntryPoint
 class CreatePaintFragment :
     BaseFragment<FragmentCreatePaintBinding>(R.layout.fragment_create_paint) {
 
@@ -29,10 +31,10 @@ class CreatePaintFragment :
         initEventsObserver()
     }
 
-    private fun initUiStateObserver(){
+    private fun initUiStateObserver() {
         repeatOnStarted {
-            viewModel.uiState.collect{
-                if(it.nounKeywords.isNotEmpty()){
+            viewModel.uiState.collect {
+                if (it.nounKeywords.isNotEmpty()) {
                     delay(200)
                     setChipListener()
                 }
@@ -40,11 +42,19 @@ class CreatePaintFragment :
         }
     }
 
-    private fun initEventsObserver(){
+    private fun initEventsObserver() {
         repeatOnStarted {
-            viewModel.events.collect{
-                when(it){
-                    is CreatePaintEvents.ShowConfirmModal -> {}
+            viewModel.events.collect {
+                when (it) {
+                    is CreatePaintEvents.ShowConfirmModal -> {
+                        TwoButtonTitleDialog(
+                            requireContext(),
+                            "500 Green Point가 소진됩니다\n키워드는 사라지지 않아요!",
+                            "정말로 그림을 그릴까요?"
+                        ) {
+                            viewModel.startDrawGrim()
+                        }.show()
+                    }
                 }
             }
         }

@@ -2,6 +2,7 @@ package com.aoztg.greengrim.presentation.ui.market.create.createpaint
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.aoztg.greengrim.data.repository.NftRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -28,7 +29,9 @@ sealed class CreatePaintEvents{
 }
 
 @HiltViewModel
-class CreatePaintViewModel @Inject constructor(): ViewModel() {
+class CreatePaintViewModel @Inject constructor(
+    private val nftRepository: NftRepository
+): ViewModel() {
 
 
     private val _uiState = MutableStateFlow(CreatePaintUiState())
@@ -52,6 +55,7 @@ class CreatePaintViewModel @Inject constructor(): ViewModel() {
     )
 
     fun getKeywords(){
+        // todo keywords 불러오는 API 연결
         viewModelScope.launch {
             _uiState.update { state ->
                 state.copy(
@@ -76,6 +80,10 @@ class CreatePaintViewModel @Inject constructor(): ViewModel() {
         viewModelScope.launch {
             _events.emit(CreatePaintEvents.ShowConfirmModal)
         }
+    }
+
+    fun startDrawGrim(){
+        // todo 그림 그리는 API 연결
     }
 
 }
