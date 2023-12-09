@@ -242,10 +242,9 @@
         <argument
             android:name="nftId"
             app:argType="integer"/>
-
         <action
-            android:id="@+id/action_sell_nft_fragment_to_set_wallet_password_fragment"
-            app:destination="@id/set_wallet_password_fragment" />
+            android:id="@+id/action_sell_nft_fragment_to_wallet_password_input_fragment"
+            app:destination="@id/wallet_password_input_fragment" />
 
     </fragment>
 
@@ -257,10 +256,9 @@
         <argument
             android:name="nftId"
             app:argType="integer"/>
-
         <action
-            android:id="@+id/action_purchase_nft_fragment_to_set_wallet_password_fragment"
-            app:destination="@id/set_wallet_password_fragment" />
+            android:id="@+id/action_purchase_nft_fragment_to_wallet_password_input_fragment"
+            app:destination="@id/wallet_password_input_fragment" />
 
     </fragment>
 
@@ -361,7 +359,7 @@
         app:destination="@id/nft_detail_fragment" />
 
     <action
-        android:id="@+id/action_global_to_walletPasswordInputFragment"
-        app:destination="@id/wallet_password_input_fragment" />
+        android:id="@+id/action_global_to_setWalletPasswordFragment"
+        app:destination="@id/set_wallet_password_fragment"/>
 
 </navigation>

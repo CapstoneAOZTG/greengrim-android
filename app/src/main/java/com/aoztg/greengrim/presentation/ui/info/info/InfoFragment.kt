@@ -37,7 +37,7 @@ class InfoFragment : BaseFragment<FragmentInfoBinding>(R.layout.fragment_info) {
         parentViewModel.showBNV()
         binding.vm = viewModel
         initEventObserver()
-        viewModel.getProfileInfo()
+        viewModel.getMyInfo()
     }
 
     private fun initEventObserver() {

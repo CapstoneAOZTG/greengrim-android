@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.repository.InfoRepository
-import com.aoztg.greengrim.presentation.ui.info.mapper.toUiMyProfileInfo
-import com.aoztg.greengrim.presentation.ui.info.model.UiMyProfileInfo
+import com.aoztg.greengrim.presentation.ui.info.mapper.toUiMyInfo
+import com.aoztg.greengrim.presentation.ui.info.model.UiMyInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,7 +19,7 @@ import javax.inject.Inject
 
 
 data class InfoUiState(
-    val uiMyProfileInfo: UiMyProfileInfo = UiMyProfileInfo()
+    val uiMyInfo: UiMyInfo = UiMyInfo()
 )
 
 sealed class InfoEvents {
@@ -55,14 +55,14 @@ class InfoViewModel @Inject constructor(
         }
     }
 
-    fun getProfileInfo() {
+    fun getMyInfo() {
         viewModelScope.launch {
-            infoRepository.getProfile().let {
+            infoRepository.getMyInfo().let {
                 when (it) {
                     is BaseState.Success -> {
                         _uiState.update { state ->
                             state.copy(
-                                uiMyProfileInfo = it.body.toUiMyProfileInfo()
+                                uiMyInfo = it.body.toUiMyInfo()
                             )
                         }
                     }
@@ -130,7 +130,7 @@ class InfoViewModel @Inject constructor(
     // todo 지갑 없으면 setwallet, 있으면 mywallet
     fun navigateToMyWallet(){
         viewModelScope.launch {
-            if(uiState.value.uiMyProfileInfo.hasWallet){
+            if(uiState.value.uiMyInfo.hasWallet){
                 _events.emit(InfoEvents.NavigateToMyWallet)
             } else {
                 _events.emit(InfoEvents.NavigateToSetWalletPassword)

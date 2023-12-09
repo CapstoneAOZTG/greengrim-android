@@ -82,3 +82,12 @@ fun bindProgressText(view: TextView, progressState: ProgressState) {
 fun bindCertificationRoundText(textView: TextView, round: Int) {
     textView.text = "${round}회차 인증"
 }
+
+@BindingAdapter("hasWallet")
+fun bindHasWallet(textView: TextView, hasWallet: Boolean){
+    if(hasWallet){
+        textView.visibility = View.GONE
+    } else {
+        textView.visibility = View.VISIBLE
+    }
+}
