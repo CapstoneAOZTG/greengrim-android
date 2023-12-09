@@ -8,7 +8,7 @@ import com.aoztg.greengrim.data.repository.HomeRepository
 import com.aoztg.greengrim.data.repository.NftRepository
 import com.aoztg.greengrim.presentation.ui.home.mapper.toUiHomeInfo
 import com.aoztg.greengrim.presentation.ui.home.mapper.toUiHotChallenge
-import com.aoztg.greengrim.presentation.ui.home.mapper.toUiNftItemMapper
+import com.aoztg.greengrim.presentation.ui.home.mapper.toUiNftItem
 import com.aoztg.greengrim.presentation.ui.home.model.UiHomeInfo
 import com.aoztg.greengrim.presentation.ui.home.model.UiHotChallenge
 import com.aoztg.greengrim.presentation.ui.home.model.UiMoreActivity
@@ -134,7 +134,7 @@ class HomeViewModel @Inject constructor(
                     is BaseState.Success -> {
                         _uiState.update { state ->
                             state.copy(
-                                uiHotNftList = it.body.homeNftInfos.map { data -> data.toUiNftItemMapper(::navigateToNftDetail) }
+                                uiHotNftList = it.body.homeNftInfos.map { data -> data.toUiNftItem(::navigateToNftDetail) }
                             )
                         }
                     }

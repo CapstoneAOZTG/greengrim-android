@@ -5,8 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.repository.NftRepository
 import com.aoztg.greengrim.presentation.ui.challenge.list.ChallengeListViewModel
-import com.aoztg.greengrim.presentation.ui.home.HomeEvents
-import com.aoztg.greengrim.presentation.ui.home.mapper.toUiNftItemMapper
+import com.aoztg.greengrim.presentation.ui.home.mapper.toUiNftItem
 import com.aoztg.greengrim.presentation.ui.market.mapper.toUiGrimItem
 import com.aoztg.greengrim.presentation.ui.market.model.UiGrimItem
 import com.aoztg.greengrim.presentation.ui.market.model.UiNftItem
@@ -98,7 +97,7 @@ class MarketViewModel @Inject constructor(
                     is BaseState.Success -> {
                         _uiState.update { state ->
                             state.copy(
-                                hotNftList = it.body.homeNftInfos.map { data -> data.toUiNftItemMapper(::navigateToNftDetail) }
+                                hotNftList = it.body.homeNftInfos.map { data -> data.toUiNftItem(::navigateToNftDetail) }
                             )
                         }
                     }
