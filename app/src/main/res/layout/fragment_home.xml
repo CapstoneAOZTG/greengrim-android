@@ -243,6 +243,7 @@
                     android:id="@+id/btn_see_more_nft"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:onClick="@{() -> vm.navigateToNftList()}"
                     android:background="@android:color/transparent"
                     android:src="@drawable/icon_see_more"
                     app:layout_constraintBottom_toBottomOf="@id/tv_detail_hot_nft"

@@ -16,6 +16,8 @@ import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 import com.aoztg.greengrim.presentation.ui.market.GrimNftSortType
 import com.aoztg.greengrim.presentation.ui.market.MarketViewModel
 import com.aoztg.greengrim.presentation.ui.market.adapter.GrimItemAdapter
+import com.aoztg.greengrim.presentation.ui.market.adapter.NftItemAdapter
+import com.aoztg.greengrim.presentation.ui.market.nftlist.NftListViewModel.Companion.ORIGINAL
 import com.aoztg.greengrim.presentation.ui.toNftDetail
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -31,14 +33,14 @@ class NftListFragment : BaseFragment<FragmentNftListBinding>(R.layout.fragment_n
 
         parentViewModel.hideBNV()
         binding.vm = viewModel
-        binding.rvNftList.adapter = GrimItemAdapter()
+        binding.rvNftList.adapter = NftItemAdapter()
         initEventObserver()
         setScrollEventListener()
     }
 
     override fun onResume() {
         super.onResume()
-        viewModel.getGrimList(ChallengeListViewModel.ORIGINAL)
+        viewModel.getGrimList(ORIGINAL)
     }
 
     private fun initEventObserver() {

@@ -170,7 +170,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun navigateToNftList(){
+    fun navigateToNftList(){
         viewModelScope.launch {
             _events.emit(HomeEvents.NavigateToNftList)
         }
