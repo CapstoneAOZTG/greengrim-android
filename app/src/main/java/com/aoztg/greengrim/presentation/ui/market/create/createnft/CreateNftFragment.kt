@@ -9,7 +9,7 @@ import com.aoztg.greengrim.R
 import com.aoztg.greengrim.data.model.request.CreateNftRequest
 import com.aoztg.greengrim.databinding.FragmentCreateNftBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
-import com.aoztg.greengrim.presentation.ui.global.walletpasswordinput.FormBeforePasswordInput
+import com.aoztg.greengrim.presentation.ui.global.checkpassword.FormBeforePasswordInput
 import com.aoztg.greengrim.presentation.ui.toWalletPasswordInput
 import dagger.hilt.android.AndroidEntryPoint
 

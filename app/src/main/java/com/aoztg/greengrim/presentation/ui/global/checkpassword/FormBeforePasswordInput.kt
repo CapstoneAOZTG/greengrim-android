@@ -1,4 +1,4 @@
-package com.aoztg.greengrim.presentation.ui.global.walletpasswordinput
+package com.aoztg.greengrim.presentation.ui.global.checkpassword
 
 import com.aoztg.greengrim.data.model.request.CreateNftRequest
 

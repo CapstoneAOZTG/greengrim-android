@@ -223,7 +223,7 @@
 
     <fragment
         android:id="@+id/check_password_fragment"
-        android:name="com.aoztg.greengrim.presentation.ui.global.walletpasswordinput.CheckPasswordFragment"
+        android:name="com.aoztg.greengrim.presentation.ui.global.checkpassword.CheckPasswordFragment"
         android:label="CheckPassword" />
 
     <fragment
