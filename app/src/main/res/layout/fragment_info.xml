@@ -111,48 +111,6 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@id/iv_profile" />
 
-                <TextView
-                    android:id="@+id/tv_own_label"
-                    style="@style/TextHeader"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:text="보유"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/iv_profile" />
-
-                <ImageView
-                    android:id="@+id/iv_green_point"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:layout_marginTop="12dp"
-                    android:src="@drawable/icon_green_point"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_own_label" />
-
-                <TextView
-                    android:id="@+id/tv_green_point_label"
-                    style="@style/TextGgSmallGrey1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:text="그린 포인트"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toTopOf="@id/tv_green_point"
-                    app:layout_constraintStart_toEndOf="@id/iv_green_point"
-                    app:layout_constraintTop_toTopOf="@id/iv_green_point" />
-
-                <TextView
-                    android:id="@+id/tv_green_point"
-                    style="@style/TextGgMedium"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@{vm.uiState.uiMyProfileInfo.greenPoint}"
-                    app:layout_constraintBottom_toBottomOf="@id/iv_green_point"
-                    app:layout_constraintStart_toStartOf="@id/tv_green_point_label"
-                    app:layout_constraintTop_toBottomOf="@id/tv_green_point_label"
-                    tools:text="1,000 G" />
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guideline_own"
@@ -160,38 +118,6 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     app:layout_constraintGuide_percent="0.55" />
-
-                <ImageView
-                    android:id="@+id/iv_green_coin"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:layout_marginTop="12dp"
-                    android:src="@drawable/icon_green_coin"
-                    app:layout_constraintStart_toEndOf="@id/guideline_own"
-                    app:layout_constraintTop_toBottomOf="@id/tv_own_label" />
-
-                <TextView
-                    android:id="@+id/tv_green_coin_label"
-                    style="@style/TextGgSmallGrey1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:text="그린 코인"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toTopOf="@id/tv_green_coin"
-                    app:layout_constraintStart_toEndOf="@id/iv_green_coin"
-                    app:layout_constraintTop_toTopOf="@id/iv_green_coin" />
-
-                <TextView
-                    android:id="@+id/tv_green_coin"
-                    style="@style/TextGgMedium"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@{vm.uiState.uiMyProfileInfo.greenCoin}"
-                    app:layout_constraintBottom_toBottomOf="@id/iv_green_coin"
-                    app:layout_constraintStart_toStartOf="@id/tv_green_coin_label"
-                    app:layout_constraintTop_toBottomOf="@id/tv_green_coin_label"
-                    tools:text="475 C" />
 
                 <TextView
                     android:id="@+id/tv_info_label"
@@ -202,7 +128,7 @@
                     android:text="정보"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/iv_green_point" />
+                    app:layout_constraintTop_toBottomOf="@id/iv_profile" />
 
                 <TextView
                     android:id="@+id/tv_myaccount_label"
@@ -281,6 +207,26 @@
                     app:layout_constraintTop_toBottomOf="@id/tv_my_challenge" />
 
                 <TextView
+                    android:id="@+id/tv_my_point_label"
+                    style="@style/TextGgMedium"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="내 포인트"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@id/tv_my_challenge"
+                    app:layout_constraintTop_toBottomOf="@id/tv_my_certificate_history" />
+
+                <TextView
+                    android:id="@+id/tv_my_point"
+                    style="@style/TextGgSmallGrey1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1,000P"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_my_point_label"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+                <TextView
                     android:id="@+id/tv_nft_label"
                     style="@style/TextHeader"
                     android:layout_width="0dp"
@@ -289,16 +235,16 @@
                     android:text="NFT"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_my_certificate_history" />
+                    app:layout_constraintTop_toBottomOf="@id/tv_my_point_label" />
 
                 <TextView
                     android:id="@+id/tv_my_wallet"
                     style="@style/TextGgMedium"
-                    android:onClick="@{() -> vm.navigateToMyWallet()}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="12dp"
+                    android:onClick="@{() -> vm.navigateToMyWallet()}"
                     android:text="내 지갑"
                     app:layout_constraintStart_toStartOf="@id/tv_nft_label"
                     app:layout_constraintTop_toBottomOf="@id/tv_nft_label" />
