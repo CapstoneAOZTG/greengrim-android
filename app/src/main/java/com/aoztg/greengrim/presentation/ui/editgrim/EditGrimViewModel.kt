@@ -96,12 +96,14 @@ class EditGrimViewModel @Inject constructor(
 
     fun goToCreateNft(){
         viewModelScope.launch {
+            CompleteGrim.grimState = GrimState.NONE
             _events.emit(EditGrimEvents.GoToCreateNft(uiState.value.grimId, uiState.value.grimUrl))
         }
     }
 
     fun goToGrimDetail(){
         viewModelScope.launch {
+            CompleteGrim.grimState = GrimState.NONE
             _events.emit(EditGrimEvents.GoToGrimDetail(uiState.value.grimId))
         }
     }

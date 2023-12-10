@@ -7,6 +7,7 @@ import android.app.PendingIntent
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.graphics.Color
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.app.App

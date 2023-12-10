@@ -38,3 +38,8 @@ internal fun NavController.toMarket(){
     val action = MainNavDirections.actionGlobalToMarketFragment()
     navigate(action)
 }
+
+internal fun NavController.toCreateNft(grimId: Int, grimUrl: String){
+    val action = MainNavDirections.actionGlobalToCreateNftFragment(grimId, grimUrl)
+    navigate(action)
+}

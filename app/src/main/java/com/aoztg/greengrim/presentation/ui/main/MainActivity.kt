@@ -14,12 +14,14 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
@@ -35,10 +37,13 @@ import com.aoztg.greengrim.presentation.ui.editgrim.EditGrimActivity
 import com.aoztg.greengrim.presentation.ui.editgrim.GrimState
 import com.aoztg.greengrim.presentation.ui.home.HomeFragmentDirections
 import com.aoztg.greengrim.presentation.ui.intro.IntroActivity
+import com.aoztg.greengrim.presentation.ui.toCreateNft
+import com.aoztg.greengrim.presentation.ui.toGrimDetail
 import com.aoztg.greengrim.presentation.ui.toMultiPart
 import com.aoztg.greengrim.presentation.util.Constants
 import com.aoztg.greengrim.presentation.util.Constants.CAMERA_PERMISSION
 import com.aoztg.greengrim.presentation.util.Constants.STORAGE_PERMISSION
+import com.aoztg.greengrim.presentation.util.Constants.TAG
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -68,6 +73,29 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.main_frag) as NavHotFragment
+        navController = navHostFragment.navController
+
+        if (intent.hasExtra("target")) {
+            when (intent.getStringExtra("target")) {
+                "GRIM_DETAIL" -> {
+                    intent.getIntExtra("grimId", -1).let {
+                        navController.toGrimDetail(it)
+                    }
+                }
+
+                "MARKET" -> {
+                }
+
+                "CREATE_NFT" -> {
+                    val grimId = intent.getIntExtra("grimId", -1)
+                    intent.getStringExtra("grimUrl")?.let {
+                        navController.toCreateNft(grimId, it)
+                    }
+                }
+            }
+        }
 
         binding.vm = viewModel
         binding.chatVm = chatManager
@@ -90,9 +118,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     }
 
     private fun setBottomNavigation() {
-        val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.main_frag) as NavHostFragment
-        navController = navHostFragment.navController
+
 
         with(binding) {
             bnv.itemIconTintList = null
@@ -101,7 +127,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             bnv.apply {
                 setupWithNavController(navController)
                 setOnItemSelectedListener { item ->
-                    if(item.itemId == R.id.market_fragment && CompleteGrim.grimState != GrimState.NONE){
+                    if (item.itemId == R.id.market_fragment && CompleteGrim.grimState != GrimState.NONE) {
                         val intent = Intent(this@MainActivity, EditGrimActivity::class.java)
                         startActivity(intent)
                     }
