@@ -148,9 +148,6 @@
         <action
             android:id="@+id/action_market_fragment_to_nft_list_fragment"
             app:destination="@id/nft_list_fragment" />
-        <action
-            android:id="@+id/action_market_fragment_to_wait_drawing_fragment"
-            app:destination="@id/wait_drawing_fragment" />
     </fragment>
 
     <fragment

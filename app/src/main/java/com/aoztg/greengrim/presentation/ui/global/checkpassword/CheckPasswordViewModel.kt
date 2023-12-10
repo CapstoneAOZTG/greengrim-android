@@ -123,6 +123,7 @@ class CheckPasswordViewModel @Inject constructor(
 
                         is BaseState.Error -> {
                             _events.emit(CheckPasswordEvents.ShowSnackMessage(state.msg))
+                            _events.emit(CheckPasswordEvents.NavigateToMarket)
                         }
                     }
                 }

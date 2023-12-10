@@ -101,6 +101,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             bnv.apply {
                 setupWithNavController(navController)
                 setOnItemSelectedListener { item ->
+                    if(item.itemId == R.id.market_fragment && CompleteGrim.grimState != GrimState.NONE){
+                        val intent = Intent(this@MainActivity, EditGrimActivity::class.java)
+                        startActivity(intent)
+                    }
                     NavigationUI.onNavDestinationSelected(item, navController)
                     navController.popBackStack(item.itemId, inclusive = false)
                     true
@@ -120,13 +124,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             if (destination.id == R.id.home_fragment) {
                 val menu = binding.bnv.menu
                 menu.getItem(2).isChecked = true
-            }
-
-            if (destination.id == R.id.market_fragment) {
-                if (CompleteGrim.grimState != GrimState.NONE) {
-                    val intent = Intent(this, EditGrimActivity::class.java)
-                    startActivity(intent)
-                }
             }
         }
     }

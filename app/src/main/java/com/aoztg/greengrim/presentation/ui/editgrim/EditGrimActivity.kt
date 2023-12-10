@@ -17,6 +17,7 @@ class EditGrimActivity : BaseActivity<ActivityEditGrimBinding>(ActivityEditGrimB
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        binding.vm = viewModel
         initEventObserver()
         initStateObserver()
     }

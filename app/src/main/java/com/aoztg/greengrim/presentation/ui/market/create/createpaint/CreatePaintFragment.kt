@@ -51,7 +51,9 @@ class CreatePaintFragment :
                     is CreatePaintEvents.ShowConfirmModal -> showConfirmModal()
                     is CreatePaintEvents.ShowSnackMessage -> showCustomSnack(binding.tvNounLabel, it.msg)
                     is CreatePaintEvents.ShowToastMessage -> showCustomToast(it.msg)
-                    is CreatePaintEvents.NavigateToWaitDrawing -> findNavController().toWaitDrawing()
+                    is CreatePaintEvents.NavigateToWaitDrawing -> {
+                        findNavController().toWaitDrawing()
+                    }
                 }
             }
         }
