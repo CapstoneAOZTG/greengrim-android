@@ -33,3 +33,8 @@ internal fun NavController.toGrimDetail(grimId: Int){
     val action = MainNavDirections.actionGlobalToPaintDetailFragment(grimId)
     navigate(action)
 }
+
+internal fun NavController.toMarket(){
+    val action = MainNavDirections.actionGlobalToMarketFragment()
+    navigate(action)
+}

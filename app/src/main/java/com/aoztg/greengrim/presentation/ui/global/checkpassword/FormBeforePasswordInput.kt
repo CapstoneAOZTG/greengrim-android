@@ -10,6 +10,7 @@ object FormBeforePasswordInput {
     fun createNft(
         data : CreateNftRequest
     ){
+        work = WorkType.CREATE_NFT
         createNftRequest = data
     }
 

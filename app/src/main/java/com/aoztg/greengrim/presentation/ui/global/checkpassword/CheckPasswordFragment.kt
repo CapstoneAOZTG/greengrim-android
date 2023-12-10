@@ -11,6 +11,7 @@ import com.aoztg.greengrim.databinding.FragmentCheckPasswordBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
 import com.aoztg.greengrim.presentation.ui.global.setwalletpassword.SetWalletPasswordEvents
 import com.aoztg.greengrim.presentation.ui.global.setwalletpassword.SetWalletPasswordFragment
+import com.aoztg.greengrim.presentation.ui.toMarket
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -90,6 +91,10 @@ class CheckPasswordFragment: BaseFragment<FragmentCheckPasswordBinding>(R.layout
                     is CheckPasswordEvents.NavigateToBack -> findNavController().navigateUp()
                     is CheckPasswordEvents.ShowLoading -> showLoading(requireContext())
                     is CheckPasswordEvents.DismissLoading -> dismissLoading()
+                    is CheckPasswordEvents.NavigateToMarket -> {
+                        findNavController().popBackStack()
+                        findNavController().toMarket()
+                    }
                 }
             }
         }

@@ -381,4 +381,8 @@
         android:id="@+id/action_global_to_checkPasswordFragment"
         app:destination="@id/check_password_fragment" />
 
+    <action
+        android:id="@+id/action_global_to_marketFragment"
+        app:destination="@id/market_fragment" />
+
 </navigation>
