@@ -52,7 +52,6 @@ class CreateNftFragment : BaseFragment<FragmentCreateNftBinding>(R.layout.fragme
                 grimId = grimId,
                 title = title,
                 description = description,
-                asset = grimUrl
             )
         )
         findNavController().toCheckPassword()

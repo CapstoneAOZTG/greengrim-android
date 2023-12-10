@@ -7,33 +7,33 @@ import com.aoztg.greengrim.data.model.request.SellNftRequest
 object FormBeforePasswordInput {
 
     var work: WorkType = WorkType.EMPTY
-    var createNftRequest: CreateNftRequest?=null
-    var purchaseNftRequest: PurchaseNftRequest?=null
-    var sellNftRequest: SellNftRequest?=null
+    var createNftRequest: CreateNftRequest? = null
+    var purchaseNftRequest: PurchaseNftRequest? = null
+    var sellNftRequest: SellNftRequest? = null
 
     fun createNft(
-        data : CreateNftRequest
-    ){
+        data: CreateNftRequest
+    ) {
         work = WorkType.CREATE_NFT
         createNftRequest = data
     }
 
     fun purchaseNft(
-        data : PurchaseNftRequest
-    ){
+        data: PurchaseNftRequest
+    ) {
         work = WorkType.PURCHASE_NFT
         purchaseNftRequest = data
     }
 
     fun sellNft(
-        data : SellNftRequest
-    ){
+        data: SellNftRequest
+    ) {
         work = WorkType.SELL_NFT
         sellNftRequest = data
     }
 }
 
-enum class WorkType{
+enum class WorkType {
     EMPTY,
     CREATE_NFT,
     PURCHASE_NFT,

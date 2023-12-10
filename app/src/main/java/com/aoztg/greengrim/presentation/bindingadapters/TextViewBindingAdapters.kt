@@ -9,6 +9,7 @@ import com.aoztg.greengrim.R
 import com.aoztg.greengrim.presentation.ui.BaseUiState
 import com.aoztg.greengrim.presentation.ui.challenge.create.ProgressState
 import com.aoztg.greengrim.presentation.ui.toCategoryText
+import com.aoztg.greengrim.presentation.util.Constants.ONE_KLAY
 
 @BindingAdapter("checkCompleteViewState")
 fun bindCheckCompleteViewState(textView: TextView, isVerified: String) {
@@ -105,13 +106,21 @@ fun bindWrongCount(tv: TextView, wrongCount: Int) {
 
 @BindingAdapter("balanceTextColor")
 fun bindBalanceTextColor(tv: TextView, balanceAfterPurchase: String) {
-    tv.setTextColor(Color.WHITE)
-    tv.text = "$balanceAfterPurchase KLAY"
-//    if (balanceAfterPurchase.toDouble() < 0.0) {
-//        tv.setTextColor(Color.RED)
-//        tv.text = "보유 KLAY 부족"
-//    } else {
-//        tv.setTextColor(Color.WHITE)
-//        tv.text = "$balanceAfterPurchase KLAY"
-//    }
+    if (balanceAfterPurchase.isNotBlank()) {
+        if (balanceAfterPurchase.toDouble() < 0.0) {
+            tv.setTextColor(Color.RED)
+            tv.text = "보유 KLAY 부족"
+        } else {
+            tv.setTextColor(Color.WHITE)
+            tv.text = "$balanceAfterPurchase KLAY"
+        }
+    }
+
+}
+
+@BindingAdapter("klayToWon")
+fun bindKlayToWon(tv: TextView, price: String) {
+    if (price.isNotBlank()) {
+        tv.text = "≈ " + (price.toDouble() * ONE_KLAY).toString() + " KRW"
+    }
 }

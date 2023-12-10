@@ -5,5 +5,4 @@ data class CreateNftRequest(
     val grimId: Int,
     val title: String,
     val description: String,
-    val asset: String
 )
