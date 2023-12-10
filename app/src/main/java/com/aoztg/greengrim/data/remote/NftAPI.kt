@@ -14,6 +14,8 @@ import com.aoztg.greengrim.data.model.response.GetWalletInfoResponse
 import com.aoztg.greengrim.data.model.response.GrimDetailResponse
 import com.aoztg.greengrim.data.model.response.GrimListResponse
 import com.aoztg.greengrim.data.model.response.HotNftResponse
+import com.aoztg.greengrim.data.model.response.InfoBeforePurchaseNftResponse
+import com.aoztg.greengrim.data.model.response.InfoBeforeSellNftResponse
 import com.aoztg.greengrim.data.model.response.MyGrimForNftResponse
 import com.aoztg.greengrim.data.model.response.NftDetailResponse
 import com.aoztg.greengrim.data.model.response.NftListResponse
@@ -114,5 +116,15 @@ interface NftAPI {
     suspend fun sellNft(
         @Body params: SellNftRequest
     ): Response<Unit>
+
+    @GET("/member/nfts/{id}/sales")
+    suspend fun getInfoBeforeSellNft(
+        @Path("id") id: Int
+    ): Response<InfoBeforeSellNftResponse>
+
+    @GET("/member/nfts/{id}/purchases")
+    suspend fun getInfoBeforePurchaseNft(
+        @Path("id") id: Int
+    ): Response<InfoBeforePurchaseNftResponse>
 
 }

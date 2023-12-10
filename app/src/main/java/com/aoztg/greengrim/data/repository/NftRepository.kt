@@ -15,6 +15,8 @@ import com.aoztg.greengrim.data.model.response.GetWalletInfoResponse
 import com.aoztg.greengrim.data.model.response.GrimDetailResponse
 import com.aoztg.greengrim.data.model.response.GrimListResponse
 import com.aoztg.greengrim.data.model.response.HotNftResponse
+import com.aoztg.greengrim.data.model.response.InfoBeforePurchaseNftResponse
+import com.aoztg.greengrim.data.model.response.InfoBeforeSellNftResponse
 import com.aoztg.greengrim.data.model.response.MyGrimForNftResponse
 import com.aoztg.greengrim.data.model.response.NftDetailResponse
 import com.aoztg.greengrim.data.model.response.NftListResponse
@@ -96,4 +98,12 @@ interface NftRepository {
     suspend fun sellNft(
         body: SellNftRequest
     ): BaseState<Unit>
+
+    suspend fun getInfoBeforeSellNft(
+        id: Int
+    ): BaseState<InfoBeforeSellNftResponse>
+
+    suspend fun getInfoBeforePurchaseNft(
+        id: Int
+    ): BaseState<InfoBeforePurchaseNftResponse>
 }

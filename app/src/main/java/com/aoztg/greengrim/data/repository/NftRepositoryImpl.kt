@@ -15,6 +15,8 @@ import com.aoztg.greengrim.data.model.response.GetWalletInfoResponse
 import com.aoztg.greengrim.data.model.response.GrimDetailResponse
 import com.aoztg.greengrim.data.model.response.GrimListResponse
 import com.aoztg.greengrim.data.model.response.HotNftResponse
+import com.aoztg.greengrim.data.model.response.InfoBeforePurchaseNftResponse
+import com.aoztg.greengrim.data.model.response.InfoBeforeSellNftResponse
 import com.aoztg.greengrim.data.model.response.MyGrimForNftResponse
 import com.aoztg.greengrim.data.model.response.NftDetailResponse
 import com.aoztg.greengrim.data.model.response.NftListResponse
@@ -87,4 +89,10 @@ class NftRepositoryImpl @Inject constructor(
 
     override suspend fun sellNft(body: SellNftRequest): BaseState<Unit> =
         runRemote { api.sellNft(body) }
+
+    override suspend fun getInfoBeforeSellNft(id: Int): BaseState<InfoBeforeSellNftResponse> =
+        runRemote { api.getInfoBeforeSellNft(id) }
+
+    override suspend fun getInfoBeforePurchaseNft(id: Int): BaseState<InfoBeforePurchaseNftResponse> =
+        runRemote { api.getInfoBeforePurchaseNft(id) }
 }
