@@ -3,6 +3,7 @@ package com.aoztg.greengrim.presentation.ui.global.checkpassword
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.data.model.BaseState
+import com.aoztg.greengrim.data.model.request.CheckPasswordRequest
 import com.aoztg.greengrim.data.repository.NftRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -32,6 +33,7 @@ class CheckPasswordViewModel @Inject constructor(
     private val nftRepository: NftRepository
 ): ViewModel() {
 
+    val wrongCount = MutableStateFlow(0)
 
     private val _events = MutableSharedFlow<CheckPasswordEvents>()
     val events: SharedFlow<CheckPasswordEvents> = _events.asSharedFlow()
@@ -50,7 +52,7 @@ class CheckPasswordViewModel @Inject constructor(
             viewModelScope.launch {
                 _events.emit(CheckPasswordEvents.TypePassword(curPassword.value.length - 1))
             }
-            postFormData()
+            checkPassword()
         }
     }
 
@@ -59,6 +61,25 @@ class CheckPasswordViewModel @Inject constructor(
             _curPassword.value = curPassword.value.substring(0, curPassword.value.length - 1)
             viewModelScope.launch {
                 _events.emit(CheckPasswordEvents.ErasePassword(curPassword.value.length))
+            }
+        }
+    }
+
+    private fun checkPassword(){
+        viewModelScope.launch {
+            nftRepository.checkPassword(CheckPasswordRequest(curPassword.value)).let{
+                when(it){
+                    is BaseState.Success -> {
+                        if(it.body.matched){
+                            postFormData()
+                        } else {
+                            wrongCount.value = it.body.wrongCount
+                        }
+                    }
+                    is BaseState.Error -> {
+                        _events.emit(CheckPasswordEvents.ShowSnackMessage(it.msg))
+                    }
+                }
             }
         }
     }

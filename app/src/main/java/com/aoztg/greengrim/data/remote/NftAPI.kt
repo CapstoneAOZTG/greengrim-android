@@ -1,9 +1,11 @@
 package com.aoztg.greengrim.data.remote
 
+import com.aoztg.greengrim.data.model.request.CheckPasswordRequest
 import com.aoztg.greengrim.data.model.request.CreateNftRequest
 import com.aoztg.greengrim.data.model.request.CreateWalletRequest
 import com.aoztg.greengrim.data.model.request.DrawGrimRequest
 import com.aoztg.greengrim.data.model.request.PatchGrimNameRequest
+import com.aoztg.greengrim.data.model.response.CheckPasswordResponse
 import com.aoztg.greengrim.data.model.response.CheckWalletExistResponse
 import com.aoztg.greengrim.data.model.response.CreateNftResponse
 import com.aoztg.greengrim.data.model.response.GetWalletInfoResponse
@@ -95,5 +97,10 @@ interface NftAPI {
     suspend fun patchGrimTitle(
         @Body params: PatchGrimNameRequest
     ): Response<Unit>
+
+    @POST("/member/wallets/password")
+    suspend fun checkPassword(
+        @Body params: CheckPasswordRequest
+    ): Response<CheckPasswordResponse>
 
 }

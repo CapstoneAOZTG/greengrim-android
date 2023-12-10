@@ -84,10 +84,20 @@ fun bindCertificationRoundText(textView: TextView, round: Int) {
 }
 
 @BindingAdapter("hasWallet")
-fun bindHasWallet(textView: TextView, hasWallet: Boolean){
-    if(hasWallet){
+fun bindHasWallet(textView: TextView, hasWallet: Boolean) {
+    if (hasWallet) {
         textView.visibility = View.GONE
     } else {
         textView.visibility = View.VISIBLE
+    }
+}
+
+@BindingAdapter("wrongCount")
+fun bindWrongCount(tv: TextView, wrongCount: Int) {
+    if (wrongCount > 0) {
+        tv.visibility = View.VISIBLE
+        tv.text = "($wrongCount/5)"
+    } else {
+        tv.visibility = View.GONE
     }
 }
