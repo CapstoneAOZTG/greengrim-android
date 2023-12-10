@@ -30,6 +30,9 @@ import com.aoztg.greengrim.presentation.base.BaseActivity
 import com.aoztg.greengrim.presentation.chatmanager.ChatEvent
 import com.aoztg.greengrim.presentation.chatmanager.ChatManager
 import com.aoztg.greengrim.presentation.customview.PhotoBottomSheet
+import com.aoztg.greengrim.presentation.ui.editgrim.CompleteGrim
+import com.aoztg.greengrim.presentation.ui.editgrim.EditGrimActivity
+import com.aoztg.greengrim.presentation.ui.editgrim.GrimState
 import com.aoztg.greengrim.presentation.ui.home.HomeFragmentDirections
 import com.aoztg.greengrim.presentation.ui.intro.IntroActivity
 import com.aoztg.greengrim.presentation.ui.toMultiPart
@@ -117,6 +120,13 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             if (destination.id == R.id.home_fragment) {
                 val menu = binding.bnv.menu
                 menu.getItem(2).isChecked = true
+            }
+
+            if (destination.id == R.id.market_fragment) {
+                if (CompleteGrim.grimState != GrimState.NONE) {
+                    val intent = Intent(this, EditGrimActivity::class.java)
+                    startActivity(intent)
+                }
             }
         }
     }

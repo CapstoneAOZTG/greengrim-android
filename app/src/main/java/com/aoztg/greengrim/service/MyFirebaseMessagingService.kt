@@ -22,7 +22,7 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
-class MyFirebaseMessagingService: FirebaseMessagingService() {
+class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     override fun onCreate() {
         super.onCreate()
@@ -37,12 +37,13 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
         PushUtils.acquireWakeLock(App.context())
         //수신한 메시지를 처리
 
-        when(message.data["type"]){
+        when (message.data["type"]) {
             "SUCCESS" -> {
                 val grimId = message.data["grimId"]
                 val grimImgUrl = message.data["grimImgUrl"]
                 sendGrimCompleteNotification(grimId?.toInt(), grimImgUrl)
             }
+
             "FAIL" -> sendGrimFailNotification()
             "TALK" -> {
                 val nickName = message.data["nickName"]
@@ -52,11 +53,16 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
         }
     }
 
-    private fun sendChatNotification(sender: String?="", message: String?="") {
+    private fun sendChatNotification(sender: String? = "", message: String? = "") {
 
         val uniId = (System.currentTimeMillis() / 7).toInt()
         val intent = Intent(this, SplashActivity::class.java)
-        val pIntent = PendingIntent.getActivity(this, uniId, intent, PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE)
+        val pIntent = PendingIntent.getActivity(
+            this,
+            uniId,
+            intent,
+            PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE
+        )
 
         val channelId = "greengrim"
 
@@ -66,7 +72,7 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
             setContentText(message)
             setContentIntent(pIntent)
             setAutoCancel(true)
-            color = Color.argb(1,120,63,59)
+            color = Color.argb(1, 120, 63, 59)
             setColorized(true)
             setLargeIcon(BitmapFactory.decodeResource(resources, R.drawable.gg_logo))
             setSmallIcon(R.drawable.gg_logo)
@@ -90,7 +96,12 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
 
         val uniId = (System.currentTimeMillis() / 7).toInt()
         val intent = Intent(this, EditGrimActivity::class.java)
-        val pIntent = PendingIntent.getActivity(this, uniId, intent, PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE)
+        val pIntent = PendingIntent.getActivity(
+            this,
+            uniId,
+            intent,
+            PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE
+        )
 
         val channelId = "greengrim"
         CompleteGrim.grimId = id
@@ -99,8 +110,8 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
 
         val notificationBuilder = NotificationCompat.Builder(this, channelId).apply {
             priority = NotificationCompat.PRIORITY_HIGH
-            setContentTitle("그림이 완성됐어요!")
-            setContentText("보러가기")
+            setContentTitle("그림 그리기")
+            setContentText("그림이 완성됐어요!")
             setContentIntent(pIntent)
             setAutoCancel(true)
             setLargeIcon(BitmapFactory.decodeResource(resources, R.drawable.gg_logo))
@@ -125,7 +136,12 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
 
         val uniId = (System.currentTimeMillis() / 7).toInt()
         val intent = Intent(this, SplashActivity::class.java)
-        val pIntent = PendingIntent.getActivity(this, uniId, intent, PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE)
+        val pIntent = PendingIntent.getActivity(
+            this,
+            uniId,
+            intent,
+            PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE
+        )
 
         val channelId = "greengrim"
         CompleteGrim.grimId = -1
@@ -133,13 +149,13 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
 
         val notificationBuilder = NotificationCompat.Builder(this, channelId).apply {
             priority = NotificationCompat.PRIORITY_HIGH
-            setContentTitle("그림 그리기에 실패했어요 ㅠㅠ")
-            setContentText("보러가기")
+            setContentTitle("그림 그리기")
+            setContentText("그림 그리기에 실패했어요 ㅠㅠ")
             setContentIntent(pIntent)
             setAutoCancel(true)
-            color = Color.argb(1,120,63,59)
+            color = Color.argb(1, 120, 63, 59)
             setColorized(true)
-            setLargeIcon(BitmapFactory.decodeResource(resources, R.drawable.icon_no_certification))
+            setLargeIcon(BitmapFactory.decodeResource(resources, R.drawable.icon_sad))
             setSmallIcon(R.drawable.gg_logo)
         }
 
@@ -163,7 +179,9 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
                 val token = task.result
                 continuation.resume(token)
             } else {
-                continuation.resumeWithException(task.exception ?: RuntimeException("Error getting FCM token"))
+                continuation.resumeWithException(
+                    task.exception ?: RuntimeException("Error getting FCM token")
+                )
             }
         }
     }
