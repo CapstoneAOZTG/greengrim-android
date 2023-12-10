@@ -10,7 +10,7 @@ import com.aoztg.greengrim.data.model.request.CreateNftRequest
 import com.aoztg.greengrim.databinding.FragmentCreateNftBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
 import com.aoztg.greengrim.presentation.ui.global.checkpassword.FormBeforePasswordInput
-import com.aoztg.greengrim.presentation.ui.toWalletPasswordInput
+import com.aoztg.greengrim.presentation.ui.toCheckPassword
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -55,7 +55,7 @@ class CreateNftFragment : BaseFragment<FragmentCreateNftBinding>(R.layout.fragme
                 asset = grimUrl
             )
         )
-        findNavController().toWalletPasswordInput()
+        findNavController().toCheckPassword()
     }
 
 }

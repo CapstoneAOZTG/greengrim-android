@@ -16,6 +16,7 @@ import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 import com.aoztg.greengrim.presentation.ui.market.GrimNftSortType
 import com.aoztg.greengrim.presentation.ui.market.MarketViewModel
 import com.aoztg.greengrim.presentation.ui.market.adapter.GrimItemAdapter
+import com.aoztg.greengrim.presentation.ui.market.adapter.NftItemAdapter
 import com.aoztg.greengrim.presentation.ui.toNftDetail
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -31,7 +32,7 @@ class MyNftFragment : BaseFragment<FragmentMyNftBinding>(R.layout.fragment_my_nf
 
         parentViewModel.hideBNV()
         binding.vm = viewModel
-        binding.rvNftList.adapter = GrimItemAdapter()
+        binding.rvNftList.adapter = NftItemAdapter()
         initEventObserver()
         setScrollEventListener()
     }

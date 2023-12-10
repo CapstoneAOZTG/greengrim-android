@@ -1,6 +1,7 @@
 package com.aoztg.greengrim.presentation.bindingadapters
 
 import android.annotation.SuppressLint
+import android.graphics.Color
 import android.view.View
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
@@ -100,4 +101,17 @@ fun bindWrongCount(tv: TextView, wrongCount: Int) {
     } else {
         tv.visibility = View.INVISIBLE
     }
+}
+
+@BindingAdapter("balanceTextColor")
+fun bindBalanceTextColor(tv: TextView, balanceAfterPurchase: String) {
+    tv.setTextColor(Color.WHITE)
+    tv.text = "$balanceAfterPurchase KLAY"
+//    if (balanceAfterPurchase.toDouble() < 0.0) {
+//        tv.setTextColor(Color.RED)
+//        tv.text = "보유 KLAY 부족"
+//    } else {
+//        tv.setTextColor(Color.WHITE)
+//        tv.text = "$balanceAfterPurchase KLAY"
+//    }
 }

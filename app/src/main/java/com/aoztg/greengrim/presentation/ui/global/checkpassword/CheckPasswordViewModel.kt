@@ -94,7 +94,7 @@ class CheckPasswordViewModel @Inject constructor(
             }
 
             WorkType.PURCHASE_NFT -> {
-
+                purchaseNft()
             }
 
             WorkType.SELL_NFT -> {
@@ -118,6 +118,32 @@ class CheckPasswordViewModel @Inject constructor(
                     when (state) {
                         is BaseState.Success -> {
                             _events.emit(CheckPasswordEvents.ShowToastMessage("Nft 생성 성공!"))
+                            _events.emit(CheckPasswordEvents.NavigateToMarket)
+                        }
+
+                        is BaseState.Error -> {
+                            _events.emit(CheckPasswordEvents.ShowSnackMessage(state.msg))
+                            _events.emit(CheckPasswordEvents.NavigateToMarket)
+                        }
+                    }
+                }
+                _events.emit(CheckPasswordEvents.DismissLoading)
+            }
+        }
+    }
+
+    private fun purchaseNft(){
+        FormBeforePasswordInput.purchaseNftRequest?.let{
+            val formData = it.copy(
+                payPassword = curPassword.value
+            )
+
+            viewModelScope.launch {
+                _events.emit(CheckPasswordEvents.ShowLoading)
+                nftRepository.purchaseNft(formData).let { state ->
+                    when (state) {
+                        is BaseState.Success -> {
+                            _events.emit(CheckPasswordEvents.ShowToastMessage("NFT 구매가 완료되었어요!"))
                             _events.emit(CheckPasswordEvents.NavigateToMarket)
                         }
 
