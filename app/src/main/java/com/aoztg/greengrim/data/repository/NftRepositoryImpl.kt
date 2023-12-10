@@ -6,6 +6,8 @@ import com.aoztg.greengrim.data.model.request.CreateNftRequest
 import com.aoztg.greengrim.data.model.request.CreateWalletRequest
 import com.aoztg.greengrim.data.model.request.DrawGrimRequest
 import com.aoztg.greengrim.data.model.request.PatchGrimNameRequest
+import com.aoztg.greengrim.data.model.request.PurchaseNftRequest
+import com.aoztg.greengrim.data.model.request.SellNftRequest
 import com.aoztg.greengrim.data.model.response.CheckPasswordResponse
 import com.aoztg.greengrim.data.model.response.CheckWalletExistResponse
 import com.aoztg.greengrim.data.model.response.CreateNftResponse
@@ -79,4 +81,10 @@ class NftRepositoryImpl @Inject constructor(
 
     override suspend fun checkPassword(body: CheckPasswordRequest): BaseState<CheckPasswordResponse> =
         runRemote { api.checkPassword(body) }
+
+    override suspend fun purchaseNft(body: PurchaseNftRequest): BaseState<Unit> =
+        runRemote { api.purchaseNft(body) }
+
+    override suspend fun sellNft(body: SellNftRequest): BaseState<Unit> =
+        runRemote { api.sellNft(body) }
 }

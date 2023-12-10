@@ -6,6 +6,8 @@ import com.aoztg.greengrim.data.model.request.CreateNftRequest
 import com.aoztg.greengrim.data.model.request.CreateWalletRequest
 import com.aoztg.greengrim.data.model.request.DrawGrimRequest
 import com.aoztg.greengrim.data.model.request.PatchGrimNameRequest
+import com.aoztg.greengrim.data.model.request.PurchaseNftRequest
+import com.aoztg.greengrim.data.model.request.SellNftRequest
 import com.aoztg.greengrim.data.model.response.CheckPasswordResponse
 import com.aoztg.greengrim.data.model.response.CheckWalletExistResponse
 import com.aoztg.greengrim.data.model.response.CreateNftResponse
@@ -86,4 +88,12 @@ interface NftRepository {
     suspend fun checkPassword(
         body: CheckPasswordRequest
     ): BaseState<CheckPasswordResponse>
+
+    suspend fun purchaseNft(
+        body: PurchaseNftRequest
+    ): BaseState<Unit>
+
+    suspend fun sellNft(
+        body: SellNftRequest
+    ): BaseState<Unit>
 }

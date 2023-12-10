@@ -5,6 +5,8 @@ import com.aoztg.greengrim.data.model.request.CreateNftRequest
 import com.aoztg.greengrim.data.model.request.CreateWalletRequest
 import com.aoztg.greengrim.data.model.request.DrawGrimRequest
 import com.aoztg.greengrim.data.model.request.PatchGrimNameRequest
+import com.aoztg.greengrim.data.model.request.PurchaseNftRequest
+import com.aoztg.greengrim.data.model.request.SellNftRequest
 import com.aoztg.greengrim.data.model.response.CheckPasswordResponse
 import com.aoztg.greengrim.data.model.response.CheckWalletExistResponse
 import com.aoztg.greengrim.data.model.response.CreateNftResponse
@@ -102,5 +104,15 @@ interface NftAPI {
     suspend fun checkPassword(
         @Body params: CheckPasswordRequest
     ): Response<CheckPasswordResponse>
+
+    @POST("/member/markets/nfts")
+    suspend fun purchaseNft(
+        @Body params: PurchaseNftRequest
+    ): Response<Unit>
+
+    @POST("/member/markets")
+    suspend fun sellNft(
+        @Body params: SellNftRequest
+    ): Response<Unit>
 
 }
