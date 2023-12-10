@@ -11,5 +11,11 @@ data class UiNftDetail(
     val contractAddress: String = "",
     val tokenId: String = "",
     val price: String = "",
-    val btnState: String = "",
+    val btnState: NftState = NftState.NONE,
 )
+
+enum class NftState{
+    CAN_BUY,
+    CAN_SELL,
+    NONE
+}

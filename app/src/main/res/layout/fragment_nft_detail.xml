@@ -228,7 +228,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:visibility="gone"
-            app:nftDetailBtnState="@{vm.btnState}"
             android:layout_marginBottom="40dp"
             android:background="@drawable/selector_next_btn"
             android:textColor="@color/selector_next_btn_text"

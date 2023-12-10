@@ -30,20 +30,5 @@ fun bindCheckBtnState(button: Button, isVerified: String) {
     }
 }
 
-@BindingAdapter("nftDetailBtnState")
-fun bindNftDetailBtnState(button: AppCompatButton, state: String){
-    if(state.isNotBlank()){
 
-        when(state){
-            "CAN_SELL" -> {
-                button.visibility = View.VISIBLE
-                button.text = "판매하기"
-            }
-            "CAN_BUY" -> {
-                button.visibility = View.VISIBLE
-                button.text = "구매하기"
-            }
-        }
-    }
-}
 

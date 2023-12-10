@@ -9,6 +9,6 @@ internal fun NftListItem.toUiNftItem(onItemClickListener: (Int) -> Unit) = UiNft
     title = nftAndMemberInfo.nftSimpleInfo.title,
     profileImage = nftAndMemberInfo.memberSimpleInfo.profileImgUrl,
     nickName = nftAndMemberInfo.memberSimpleInfo.nickName,
-    price = price,
+    price = if (price == "NOT SALE") price else "$price KLAY",
     navigateToNftDetail = onItemClickListener
 )

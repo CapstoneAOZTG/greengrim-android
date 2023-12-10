@@ -1,6 +1,7 @@
 package com.aoztg.greengrim.presentation.ui.global.nftdetail
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -10,7 +11,9 @@ import androidx.navigation.fragment.navArgs
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentNftDetailBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
+import com.aoztg.greengrim.presentation.ui.global.model.NftState
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
+import com.aoztg.greengrim.presentation.util.Constants.TAG
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -34,17 +37,27 @@ class NftDetailFragment : BaseFragment<FragmentNftDetailBinding>(R.layout.fragme
         repeatOnStarted {
             viewModel.uiState.collect {
                 when (it.nftDetail.btnState) {
-                    "CAN_SELL" -> {
-                        binding.btnNext.setOnClickListener {
-                            findNavController().toNftSell(nftId)
+                    NftState.CAN_SELL -> {
+                        with(binding.btnNext) {
+                            visibility = View.VISIBLE
+                            text = "판매하기"
+                            setOnClickListener {
+                                findNavController().toNftSell(nftId)
+                            }
                         }
                     }
 
-                    "CAN_BUY" -> {
-                        binding.btnNext.setOnClickListener {
-                            findNavController().toNftPurchase(nftId)
+                    NftState.CAN_BUY -> {
+                        with(binding.btnNext) {
+                            visibility = View.VISIBLE
+                            text = "구매하기"
+                            setOnClickListener {
+                                findNavController().toNftPurchase(nftId)
+                            }
                         }
                     }
+
+                    else -> {}
                 }
             }
         }
