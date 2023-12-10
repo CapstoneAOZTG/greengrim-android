@@ -24,7 +24,7 @@
             app:imgUrl="@{item.image}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:shapeAppearanceOverlay="@style/All28RadiusImageView"
+            app:shapeAppearanceOverlay="@style/All16RadiusImageView"
             tools:src="@drawable/test" />
 
         <TextView

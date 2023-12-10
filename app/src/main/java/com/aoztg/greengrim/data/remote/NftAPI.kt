@@ -64,7 +64,7 @@ interface NftAPI {
         @Path("id") id: Int
     ): Response<GrimDetailResponse>
 
-    @POST("/memeber/nfts")
+    @POST("/member/nfts")
     suspend fun createNft(
         @Body params: CreateNftRequest
     ): Response<CreateNftResponse>
