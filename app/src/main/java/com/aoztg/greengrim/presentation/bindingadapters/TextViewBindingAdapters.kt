@@ -98,6 +98,6 @@ fun bindWrongCount(tv: TextView, wrongCount: Int) {
         tv.visibility = View.VISIBLE
         tv.text = "($wrongCount/5)"
     } else {
-        tv.visibility = View.GONE
+        tv.visibility = View.INVISIBLE
     }
 }

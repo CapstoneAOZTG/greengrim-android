@@ -25,13 +25,13 @@ sealed class CheckPasswordEvents {
     object NavigateToBack : CheckPasswordEvents()
     object ShowLoading : CheckPasswordEvents()
     object DismissLoading : CheckPasswordEvents()
-    object NavigateToMarket: CheckPasswordEvents()
+    object NavigateToMarket : CheckPasswordEvents()
 }
 
 @HiltViewModel
 class CheckPasswordViewModel @Inject constructor(
     private val nftRepository: NftRepository
-): ViewModel() {
+) : ViewModel() {
 
     val wrongCount = MutableStateFlow(0)
 
@@ -65,17 +65,20 @@ class CheckPasswordViewModel @Inject constructor(
         }
     }
 
-    private fun checkPassword(){
+    private fun checkPassword() {
         viewModelScope.launch {
-            nftRepository.checkPassword(CheckPasswordRequest(curPassword.value)).let{
-                when(it){
+            nftRepository.checkPassword(CheckPasswordRequest(curPassword.value)).let {
+                when (it) {
                     is BaseState.Success -> {
-                        if(it.body.matched){
+                        if (it.body.matched) {
                             postFormData()
                         } else {
+                            _curPassword.value = ""
+                            _events.emit(CheckPasswordEvents.RemovePasswordViews)
                             wrongCount.value = it.body.wrongCount
                         }
                     }
+
                     is BaseState.Error -> {
                         _events.emit(CheckPasswordEvents.ShowSnackMessage(it.msg))
                     }
@@ -84,39 +87,42 @@ class CheckPasswordViewModel @Inject constructor(
         }
     }
 
-    private fun postFormData(){
-        when(FormBeforePasswordInput.work){
+    private fun postFormData() {
+        when (FormBeforePasswordInput.work) {
             WorkType.CREATE_NFT -> {
                 createNft()
             }
+
             WorkType.PURCHASE_NFT -> {
 
             }
+
             WorkType.SELL_NFT -> {
 
             }
+
             WorkType.EMPTY -> {
 
             }
         }
     }
 
-    private fun createNft(){
-        FormBeforePasswordInput.createNftRequest?.let{
+    private fun createNft() {
+        FormBeforePasswordInput.createNftRequest?.let {
             val formData = it.copy(
                 password = curPassword.value
             )
             viewModelScope.launch {
                 _events.emit(CheckPasswordEvents.ShowLoading)
-                nftRepository.createNft(formData).let{ state ->
-                    when(state){
+                nftRepository.createNft(formData).let { state ->
+                    when (state) {
                         is BaseState.Success -> {
                             _events.emit(CheckPasswordEvents.ShowToastMessage("Nft 생성 성공!"))
                             _events.emit(CheckPasswordEvents.NavigateToMarket)
                         }
+
                         is BaseState.Error -> {
-                            _curPassword.value = ""
-                            _events.emit(CheckPasswordEvents.RemovePasswordViews)
+                            _events.emit(CheckPasswordEvents.ShowSnackMessage(state.msg))
                         }
                     }
                 }
