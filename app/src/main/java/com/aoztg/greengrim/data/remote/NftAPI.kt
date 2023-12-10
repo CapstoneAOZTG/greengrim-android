@@ -3,6 +3,7 @@ package com.aoztg.greengrim.data.remote
 import com.aoztg.greengrim.data.model.request.CreateNftRequest
 import com.aoztg.greengrim.data.model.request.CreateWalletRequest
 import com.aoztg.greengrim.data.model.request.DrawGrimRequest
+import com.aoztg.greengrim.data.model.request.PatchGrimNameRequest
 import com.aoztg.greengrim.data.model.response.CheckWalletExistResponse
 import com.aoztg.greengrim.data.model.response.CreateNftResponse
 import com.aoztg.greengrim.data.model.response.GetWalletInfoResponse
@@ -15,6 +16,7 @@ import com.aoztg.greengrim.data.model.response.NftListResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -88,5 +90,10 @@ interface NftAPI {
         @Query("page") page: Int,
         @Query("size") size: Int
     ): Response<MyGrimForNftResponse>
+
+    @PATCH("/visitor/grims")
+    suspend fun patchGrimTitle(
+        @Body params: PatchGrimNameRequest
+    ): Response<Unit>
 
 }

@@ -4,6 +4,7 @@ import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.model.request.CreateNftRequest
 import com.aoztg.greengrim.data.model.request.CreateWalletRequest
 import com.aoztg.greengrim.data.model.request.DrawGrimRequest
+import com.aoztg.greengrim.data.model.request.PatchGrimNameRequest
 import com.aoztg.greengrim.data.model.response.CheckWalletExistResponse
 import com.aoztg.greengrim.data.model.response.CreateNftResponse
 import com.aoztg.greengrim.data.model.response.GetWalletInfoResponse
@@ -75,4 +76,8 @@ interface NftRepository {
         page: Int,
         size: Int
     ): BaseState<MyGrimForNftResponse>
+
+    suspend fun patchGrimTitle(
+        body: PatchGrimNameRequest
+    ): BaseState<Unit>
 }

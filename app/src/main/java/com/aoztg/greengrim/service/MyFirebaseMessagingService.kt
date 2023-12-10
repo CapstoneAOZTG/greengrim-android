@@ -10,7 +10,9 @@ import android.graphics.Color
 import androidx.core.app.NotificationCompat
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.app.App
-import com.aoztg.greengrim.presentation.ui.market.create.CompleteGrim
+import com.aoztg.greengrim.presentation.ui.editgrim.CompleteGrim
+import com.aoztg.greengrim.presentation.ui.editgrim.EditGrimActivity
+import com.aoztg.greengrim.presentation.ui.editgrim.GrimState
 import com.aoztg.greengrim.presentation.ui.splash.SplashActivity
 import com.aoztg.greengrim.presentation.util.PushUtils
 import com.google.firebase.messaging.FirebaseMessaging
@@ -87,12 +89,13 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
     private fun sendGrimCompleteNotification(id: Int?, imgUrl: String?) {
 
         val uniId = (System.currentTimeMillis() / 7).toInt()
-        val intent = Intent(this, SplashActivity::class.java)
+        val intent = Intent(this, EditGrimActivity::class.java)
         val pIntent = PendingIntent.getActivity(this, uniId, intent, PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE)
 
         val channelId = "greengrim"
         CompleteGrim.grimId = id
         CompleteGrim.grimImgUrl = imgUrl
+        CompleteGrim.grimState = GrimState.GRIM_DRAWED
 
         val notificationBuilder = NotificationCompat.Builder(this, channelId).apply {
             priority = NotificationCompat.PRIORITY_HIGH

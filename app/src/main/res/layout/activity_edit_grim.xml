@@ -7,7 +7,7 @@
 
         <variable
             name="vm"
-            type="com.aoztg.greengrim.presentation.ui.global.paintdetail.PaintDetailViewModel" />
+            type="com.aoztg.greengrim.presentation.ui.editgrim.EditGrimViewModel" />
 
     </data>
 
@@ -37,18 +37,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageButton
-                android:id="@+id/btn_back"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:background="@android:color/transparent"
-                android:scaleType="fitCenter"
-                android:src="@drawable/icon_back"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
             <TextView
                 android:id="@+id/tv_header"
                 style="@style/TextHeader"
@@ -66,8 +54,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
+                android:enabled="@{vm.isDataReady()}"
                 android:minWidth="0dp"
                 android:minHeight="0dp"
+                android:onClick="@{() -> vm.patchGrimTitle()}"
                 android:text="완료"
                 android:textColor="@color/selector_complete_text"
                 android:textSize="16sp"
@@ -105,7 +95,6 @@
             android:layout_height="0dp"
             android:layout_marginTop="16dp"
             android:scaleType="centerCrop"
-            app:imgUrl="@{vm.uiState.uiDetailData.imgUrl}"
             app:layout_constraintDimensionRatio="8:7"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -113,49 +102,64 @@
             app:shapeAppearanceOverlay="@style/All28RadiusImageView"
             tools:src="@drawable/test" />
 
-        <TextView
-            android:id="@+id/tv_title_label"
-            style="@style/TextFormLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="제목"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/iv_grim" />
-
-        <TextView
-            android:id="@+id/tv_title_count"
-            style="@style/TextFormLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/tv_title_label" />
-
-        <EditText
-            android:id="@+id/et_title"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_before_edit"
             android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/shape_darkfill_grey5stroke_radius10"
-            android:hint="그림의 제목을 입력해주세요"
-            android:inputType="text"
-            android:maxLength="50"
-            android:maxLines="1"
-            android:paddingHorizontal="15dp"
-            android:paddingVertical="8dp"
-            android:textColor="@color/white"
-            android:textColorHint="@color/gg_grey5"
-            android:textSize="13sp"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_title_label" />
+            app:layout_constraintTop_toBottomOf="@id/iv_grim">
+
+            <TextView
+                android:id="@+id/tv_title_label"
+                style="@style/TextFormLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="제목"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_title_count"
+                style="@style/TextFormLabel"
+                textLength="@{vm.title}"
+                textLimit="@{30}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tv_title_label" />
+
+            <EditText
+                android:id="@+id/et_title"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/shape_darkfill_grey5stroke_radius10"
+                android:hint="그림의 제목을 입력해주세요"
+                android:inputType="text"
+                android:maxLength="50"
+                android:maxLines="1"
+                android:paddingHorizontal="15dp"
+                android:paddingVertical="8dp"
+                android:text="@={vm.title}"
+                android:textColor="@color/white"
+                android:textColorHint="@color/gg_grey5"
+                android:textSize="13sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_title_label" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_after_edit"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="16dp"
-            android:visibility="gone"
+            android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -166,7 +170,7 @@
                 style="@style/TextHeader"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{vm.uiState.uiDetailData.title}"
+                android:text="@{vm.uiState.uiGrimDetail.title}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="떠도는 풀쑾" />
@@ -178,7 +182,7 @@
                 android:layout_marginTop="8dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_title"
-                app:profileImgUrl="@{vm.uiState.uiDetailData.profileImgUrl}"
+                app:profileImgUrl="@{vm.uiState.uiGrimDetail.profileImgUrl}"
                 tools:src="@drawable/test" />
 
             <TextView
@@ -187,7 +191,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
-                android:text="@{vm.uiState.uiDetailData.nickName}"
+                android:text="@{vm.uiState.uiGrimDetail.nickName}"
                 android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="@id/iv_profile_img"
                 app:layout_constraintStart_toEndOf="@id/iv_profile_img"
@@ -199,7 +203,7 @@
                 style="@style/TextGgSmallGrey5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{vm.uiState.uiDetailData.date}"
+                android:text="@{vm.uiState.uiGrimDetail.date}"
                 app:layout_constraintBottom_toBottomOf="@id/iv_profile_img"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/iv_profile_img"
@@ -215,6 +219,7 @@
                 android:layout_marginBottom="32dp"
                 android:background="@drawable/shape_grey2fill_nostroke_radius10"
                 android:minHeight="0dp"
+                android:onClick="@{() -> vm.goToGrimDetail()}"
                 android:paddingVertical="10dp"
                 android:text="그림 저장하기"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -229,6 +234,7 @@
                 android:layout_marginEnd="20dp"
                 android:background="@drawable/shape_greenfill_nostroke_radius10"
                 android:minHeight="0dp"
+                android:onClick="@{() -> vm.goToCreateNft()}"
                 android:paddingVertical="10dp"
                 android:text="NFT 생성하기"
                 app:layout_constraintBottom_toBottomOf="@id/btn_store_grim"

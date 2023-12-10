@@ -4,6 +4,7 @@ import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.model.request.CreateNftRequest
 import com.aoztg.greengrim.data.model.request.CreateWalletRequest
 import com.aoztg.greengrim.data.model.request.DrawGrimRequest
+import com.aoztg.greengrim.data.model.request.PatchGrimNameRequest
 import com.aoztg.greengrim.data.model.response.CheckWalletExistResponse
 import com.aoztg.greengrim.data.model.response.CreateNftResponse
 import com.aoztg.greengrim.data.model.response.GetWalletInfoResponse
@@ -70,4 +71,7 @@ class NftRepositoryImpl @Inject constructor(
 
     override suspend fun getMyGrimForNft(page: Int, size: Int): BaseState<MyGrimForNftResponse> =
         runRemote { api.getMyGrimForNft(page,size) }
+
+    override suspend fun patchGrimTitle(body: PatchGrimNameRequest): BaseState<Unit> =
+        runRemote { api.patchGrimTitle(body) }
 }

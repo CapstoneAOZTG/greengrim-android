@@ -342,7 +342,7 @@
 
     <fragment
         android:id="@+id/edit_grim_fragment"
-        android:name="com.aoztg.greengrim.presentation.ui.global.editgrim.EditGrimFragment"
+        android:name="com.aoztg.greengrim.presentation.ui.editgrim.EditGrimActivity"
         android:label="EditGrim" />
 
     <action
