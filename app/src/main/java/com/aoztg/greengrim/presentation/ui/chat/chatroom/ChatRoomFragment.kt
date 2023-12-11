@@ -29,6 +29,7 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
     private val args: ChatRoomFragmentArgs by navArgs()
     private val chatId by lazy { args.chatId }
     private val challengeId by lazy { args.challengeId }
+    private val chatName by lazy { args.chatName }
     private val popupLocation = IntArray(2)
     private val adapter = ChatMessageAdapter()
 
@@ -36,6 +37,7 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
         super.onViewCreated(view, savedInstanceState)
         readChat()
         binding.vm = viewModel
+        binding.tvHeader.text = chatName
         parentViewModel.hideBNV()
         binding.rvChat.adapter = adapter
         binding.rvChat.itemAnimator = null

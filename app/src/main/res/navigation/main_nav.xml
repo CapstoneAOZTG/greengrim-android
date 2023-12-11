@@ -91,6 +91,10 @@
         android:name="com.aoztg.greengrim.presentation.ui.chat.chatroom.ChatRoomFragment"
         android:label="ChatRoom">
         <argument
+            android:name="chatName"
+            app:argType="string"
+            android:defaultValue="채팅방"/>
+        <argument
             android:name="chatId"
             app:argType="integer" />
         <argument

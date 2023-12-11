@@ -25,7 +25,9 @@ data class ChatListUiState(
 )
 
 sealed class ChatListEvents {
-    data class NavigateToChatRoom(val chatId: Int, val challengeId: Int) : ChatListEvents()
+    data class NavigateToChatRoom(val chatName: String, val chatId: Int, val challengeId: Int) :
+        ChatListEvents()
+
     data class ShowToastMessage(val msg: String) : ChatListEvents()
     object CallUnReadChatData : ChatListEvents()
     data class ShowSnackMessage(val msg: String) : ChatListEvents()
@@ -100,9 +102,9 @@ class ChatListViewModel @Inject constructor(
         }
     }
 
-    private fun navigateToChatRoom(chatId: Int, challengeId: Int) {
+    private fun navigateToChatRoom(chatName: String, chatId: Int, challengeId: Int) {
         viewModelScope.launch {
-            _events.emit(ChatListEvents.NavigateToChatRoom(chatId, challengeId))
+            _events.emit(ChatListEvents.NavigateToChatRoom(chatName, chatId, challengeId))
         }
     }
 }

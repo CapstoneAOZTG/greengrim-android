@@ -39,7 +39,7 @@ class ChatListFragment : BaseFragment<FragmentChatListBinding>(R.layout.fragment
         repeatOnStarted {
             viewModel.events.collect {
                 when (it) {
-                    is ChatListEvents.NavigateToChatRoom -> findNavController().toChatRoom(it.chatId, it.challengeId)
+                    is ChatListEvents.NavigateToChatRoom -> findNavController().toChatRoom(it.chatName, it.chatId, it.challengeId)
                     is ChatListEvents.CallUnReadChatData -> viewModel.setUnReadChatData(chatManager.unReadChatData)
                     is ChatListEvents.ShowLoading -> showLoading(requireContext())
                     is ChatListEvents.DismissLoading -> dismissLoading()
@@ -58,8 +58,8 @@ class ChatListFragment : BaseFragment<FragmentChatListBinding>(R.layout.fragment
         }
     }
 
-    private fun NavController.toChatRoom(chatId: Int, challengeId: Int) {
-        val action = ChatListFragmentDirections.actionChatListFragmentToChatRoomFragment(chatId, challengeId)
+    private fun NavController.toChatRoom(chatName: String, chatId: Int, challengeId: Int) {
+        val action = ChatListFragmentDirections.actionChatListFragmentToChatRoomFragment(chatId, challengeId, chatName)
         this.navigate(action)
     }
 }
