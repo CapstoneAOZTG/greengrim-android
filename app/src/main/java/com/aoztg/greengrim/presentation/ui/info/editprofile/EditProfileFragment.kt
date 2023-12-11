@@ -59,12 +59,18 @@ class EditProfileFragment :
         }
     }
 
-    private fun initEventObserver(){
+    private fun initEventObserver() {
         repeatOnStarted {
-            viewModel.events.collect{
-                when(it){
+            viewModel.events.collect {
+                when (it) {
                     is EditProfileEvents.NavigateToBack -> findNavController().navigateUp()
                     is EditProfileEvents.ShowToastMessage -> showCustomToast(it.msg)
+                    is EditProfileEvents.ShowLoading -> showLoading(requireContext())
+                    is EditProfileEvents.DismissLoading -> dismissLoading()
+                    is EditProfileEvents.ShowSnackMessage -> showCustomSnack(
+                        binding.ivProfile,
+                        it.msg
+                    )
                 }
             }
         }
@@ -72,10 +78,14 @@ class EditProfileFragment :
 
     private fun initImageObserver() {
         repeatOnStarted {
-            parentViewModel.image.collect {
-                if (it.isNotBlank()) {
-                    viewModel.setProfileImg(it)
-                }
+            parentViewModel.imageUri.collect {
+                binding.ivProfile.setImageURI(it)
+            }
+        }
+
+        repeatOnStarted {
+            parentViewModel.imageFile.collect {
+                viewModel.setImageFile(it)
             }
         }
     }

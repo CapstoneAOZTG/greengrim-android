@@ -5,9 +5,11 @@ import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.model.request.CheckNickRequest
 import com.aoztg.greengrim.data.model.request.PatchProfileRequest
+import com.aoztg.greengrim.data.repository.ImageRepository
 import com.aoztg.greengrim.data.repository.InfoRepository
 import com.aoztg.greengrim.data.repository.IntroRepository
 import com.aoztg.greengrim.presentation.ui.BaseUiState
+import com.aoztg.greengrim.presentation.ui.challenge.create.CreateChallengeDetailEvents
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,6 +24,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import okhttp3.MultipartBody
 import javax.inject.Inject
 
 data class EditProfileUiState(
@@ -40,12 +43,16 @@ sealed class ProfileState {
 sealed class EditProfileEvents {
     object NavigateToBack : EditProfileEvents()
     data class ShowToastMessage(val msg: String) : EditProfileEvents()
+    data class ShowSnackMessage(val msg: String) : EditProfileEvents()
+    object ShowLoading : EditProfileEvents()
+    object DismissLoading : EditProfileEvents()
 }
 
 @HiltViewModel
 class EditProfileViewModel @Inject constructor(
     private val introRepository: IntroRepository,
-    private val infoRepository: InfoRepository
+    private val infoRepository: InfoRepository,
+    private val imageRepository: ImageRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(EditProfileUiState())
@@ -58,24 +65,32 @@ class EditProfileViewModel @Inject constructor(
     private var curIntroduce = ""
     private var curProfileUrl = ""
 
+    val profileUrl = MutableStateFlow("")
     val nickname = MutableStateFlow("")
     val introduce = MutableStateFlow("")
-    val profileUrl = MutableStateFlow("")
-
+    val isImageSet = MutableStateFlow(false)
+    private var imgFile: MultipartBody.Part? = null
     private val isNicknameValid = MutableStateFlow(false)
 
     val isDataChanged = combine(
         nickname,
         introduce,
-        profileUrl,
+        isImageSet,
         isNicknameValid
-    ) { nick, introduce, profileUrl, nickValid ->
-        (curNickname != nick && nickValid) || curIntroduce != introduce || profileUrl != curProfileUrl
+    ) { nick, introduce, isImageSet, nickValid ->
+        (curNickname != nick && nickValid) || curIntroduce != introduce || isImageSet
     }.stateIn(
         viewModelScope,
         SharingStarted.WhileSubscribed(),
         false
     )
+
+    fun setImageFile(
+        file: MultipartBody.Part
+    ) {
+        isImageSet.value = true
+        imgFile = file
+    }
 
     init {
         getProfileData()
@@ -154,27 +169,49 @@ class EditProfileViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    fun setProfileImg(url: String) {
-        profileUrl.value = url
+    fun imageToUrl() {
+        viewModelScope.launch {
+            _events.emit(EditProfileEvents.ShowLoading)
+
+            imgFile?.let { img ->
+                imageRepository.imageToUrl(img).let {
+                    when (it) {
+                        is BaseState.Success -> {
+                            editProfile(it.body.imgUrl)
+                        }
+
+                        is BaseState.Error -> {
+                            _events.emit(EditProfileEvents.ShowSnackMessage(it.msg))
+                            _events.emit(EditProfileEvents.DismissLoading)
+                        }
+                    }
+                }
+            } ?: run {
+                _events.emit(EditProfileEvents.ShowSnackMessage("이미지 로딩 실패"))
+                _events.emit(EditProfileEvents.DismissLoading)
+            }
+        }
     }
 
-    fun editProfile() {
+    fun editProfile(imgUrl: String) {
         viewModelScope.launch {
 
             infoRepository.patchProfile(
                 PatchProfileRequest(
                     nickName = nickname.value,
                     introduction = introduce.value,
-                    profileImgUrl = profileUrl.value
+                    profileImgUrl = imgUrl
                 )
             ).let {
+                _events.emit(EditProfileEvents.DismissLoading)
                 when (it) {
                     is BaseState.Success -> {
+                        _events.emit(EditProfileEvents.ShowToastMessage("프로필 수정 성공"))
                         _events.emit(EditProfileEvents.NavigateToBack)
                     }
 
                     is BaseState.Error -> {
-                        _events.emit(EditProfileEvents.ShowToastMessage(it.msg))
+                        _events.emit(EditProfileEvents.ShowSnackMessage(it.msg))
                     }
                 }
             }

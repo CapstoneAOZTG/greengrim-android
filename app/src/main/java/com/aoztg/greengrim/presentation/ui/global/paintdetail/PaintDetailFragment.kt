@@ -45,6 +45,4 @@ class PaintDetailFragment: BaseFragment<FragmentPaintDetailBinding>(R.layout.fra
             }
         }
     }
-
-
 }

@@ -41,7 +41,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_title"
-            app:profileImgUrl="@{pvm.profileImg}"
             app:shapeAppearanceOverlay="@style/All40RadiusImageView"
             tools:src="@drawable/icon_profile" />
 
@@ -154,7 +153,7 @@
             android:layout_marginBottom="40dp"
             android:background="@drawable/selector_next_btn"
             android:enabled="false"
-            android:onClick="@{() -> vm.signUp()}"
+            android:onClick="@{() -> vm.imageToUrl()}"
             android:text="다음으로"
             android:textColor="@color/selector_next_btn_text"
             android:textSize="16sp"

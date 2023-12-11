@@ -36,12 +36,14 @@ class EditGrimActivity : BaseActivity<ActivityEditGrimBinding>(ActivityEditGrimB
                             .putExtra("target","GRIM_DETAIL")
                             .putExtra("grimId",it.grimId)
                         startActivity(intent)
+                        finish()
                     }
 
                     is EditGrimEvents.GoToMainActivity -> {
                         val intent = Intent(this@EditGrimActivity, MainActivity::class.java)
                             .putExtra("target","MARKET")
                         startActivity(intent)
+                        finish()
                     }
 
                     is EditGrimEvents.GoToCreateNft -> {
@@ -50,6 +52,7 @@ class EditGrimActivity : BaseActivity<ActivityEditGrimBinding>(ActivityEditGrimB
                             .putExtra("grimId",it.grimId)
                             .putExtra("grimUrl", it.grimUrl)
                         startActivity(intent)
+                        finish()
                     }
                 }
             }

@@ -55,12 +55,15 @@ class IntroActivity : BaseActivity<ActivityIntroBinding>(ActivityIntroBinding::i
         repeatOnStarted {
             viewModel.events.collect {
                 when (it) {
-                    is IntroEvent.GoToMainActivity -> startActivity(
-                        Intent(
-                            this@IntroActivity,
-                            MainActivity::class.java
+                    is IntroEvent.GoToMainActivity -> {
+                        startActivity(
+                            Intent(
+                                this@IntroActivity,
+                                MainActivity::class.java
+                            )
                         )
-                    )
+                        finish()
+                    }
 
                     is IntroEvent.ShowPhotoBottomSheet -> showPhotoBottomSheet()
                     is IntroEvent.ShowToastMessage -> showCustomToast(it.msg)
@@ -147,7 +150,9 @@ class IntroActivity : BaseActivity<ActivityIntroBinding>(ActivityIntroBinding::i
                 val uri = result.data?.data
 
                 uri?.let {
-                    viewModel.imageToUrl(it.toMultiPart(this))
+                    viewModel.setImage(
+                        it, it.toMultiPart(this)
+                    )
                 }
             }
         }
@@ -177,7 +182,9 @@ class IntroActivity : BaseActivity<ActivityIntroBinding>(ActivityIntroBinding::i
     private val cameraLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if(result.resultCode == RESULT_OK){
-                viewModel.imageToUrl(tempCameraUri.toMultiPart(this))
+                viewModel.setImage(
+                    tempCameraUri, tempCameraUri.toMultiPart(this)
+                )
             }
         }
 

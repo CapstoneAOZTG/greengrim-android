@@ -260,7 +260,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                 val uri = result.data?.data
 
                 uri?.let {
-                    viewModel.imageToUrl(it.toMultiPart(this))
+                    viewModel.setImage(
+                        it, it.toMultiPart(this)
+                    )
                 }
             }
         }
@@ -290,7 +292,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     private val cameraLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == RESULT_OK) {
-                viewModel.imageToUrl(tempCameraUri.toMultiPart(this))
+                viewModel.setImage(
+                    tempCameraUri, tempCameraUri.toMultiPart(this)
+                )
             }
         }
 

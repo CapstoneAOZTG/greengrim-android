@@ -55,10 +55,14 @@ class SignupFragment : BaseFragment<FragmentSignupBinding>(R.layout.fragment_sig
         }
 
         repeatOnStarted {
-            parentViewModel.profileImg.collect {
-                if (it.isNotBlank()) {
-                    viewModel.setProfileImg(it)
-                }
+            parentViewModel.imageUri.collect {
+                binding.ivProfile.setImageURI(it)
+            }
+        }
+
+        repeatOnStarted {
+            parentViewModel.imageFile.collect{
+                viewModel.setImageFile(it)
             }
         }
     }
