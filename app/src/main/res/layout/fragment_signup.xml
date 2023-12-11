@@ -38,11 +38,11 @@
             android:layout_marginTop="30dp"
             android:onClick="@{() -> pvm.goToGallery()}"
             android:scaleType="centerCrop"
+            android:src="@drawable/icon_profile"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_title"
-            app:shapeAppearanceOverlay="@style/All40RadiusImageView"
-            tools:src="@drawable/icon_profile" />
+            app:shapeAppearanceOverlay="@style/All40RadiusImageView" />
 
         <ImageView
             android:id="@+id/btn_goto_gallery"

@@ -22,6 +22,7 @@ class SignupFragment : BaseFragment<FragmentSignupBinding>(R.layout.fragment_sig
         binding.pvm = parentViewModel
         binding.vm = viewModel
         initStateObserver()
+        initEventObserver()
     }
 
     private fun initStateObserver() {
@@ -61,8 +62,21 @@ class SignupFragment : BaseFragment<FragmentSignupBinding>(R.layout.fragment_sig
         }
 
         repeatOnStarted {
-            parentViewModel.imageFile.collect{
+            parentViewModel.imageFile.collect {
                 viewModel.setImageFile(it)
+            }
+        }
+    }
+
+    private fun initEventObserver() {
+        repeatOnStarted {
+            viewModel.events.collect {
+                when (it) {
+                    is SignupEvents.ShowLoading -> showLoading(requireContext())
+                    is SignupEvents.DismissLoading -> dismissLoading()
+                    is SignupEvents.ShowSnackMessage -> showCustomSnack(binding.ivProfile, it.msg)
+                    is SignupEvents.ShowToastMessage -> showCustomToast(it.msg)
+                }
             }
         }
     }
