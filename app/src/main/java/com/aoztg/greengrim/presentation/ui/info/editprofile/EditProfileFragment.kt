@@ -71,6 +71,12 @@ class EditProfileFragment :
                         binding.ivProfile,
                         it.msg
                     )
+                    is EditProfileEvents.SetProfileUrl -> {
+                        Glide.with(requireContext())
+                            .load(it.profileUrl)
+                            .error(R.drawable.icon_no_image)
+                            .into(binding.ivProfile)
+                    }
                 }
             }
         }

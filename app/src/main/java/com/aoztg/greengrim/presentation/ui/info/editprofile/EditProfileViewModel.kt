@@ -46,6 +46,7 @@ sealed class EditProfileEvents {
     data class ShowSnackMessage(val msg: String) : EditProfileEvents()
     object ShowLoading : EditProfileEvents()
     object DismissLoading : EditProfileEvents()
+    data class SetProfileUrl(val profileUrl: String) : EditProfileEvents()
 }
 
 @HiltViewModel
@@ -65,7 +66,6 @@ class EditProfileViewModel @Inject constructor(
     private var curIntroduce = ""
     private var curProfileUrl = ""
 
-    val profileUrl = MutableStateFlow("")
     val nickname = MutableStateFlow("")
     val introduce = MutableStateFlow("")
     val isImageSet = MutableStateFlow(false)
@@ -106,17 +106,13 @@ class EditProfileViewModel @Inject constructor(
                         curProfileUrl = it.body.profileImgUrl
                         nickname.value = it.body.nickName
                         introduce.value = it.body.introduction
-                        profileUrl.value = it.body.profileImgUrl
 
-                        _uiState.update { state ->
-                            state.copy(getProfileState = ProfileState.Success(it.body.profileImgUrl))
-                        }
+                        _events.emit(EditProfileEvents.SetProfileUrl(it.body.profileImgUrl))
+
                     }
 
                     is BaseState.Error -> {
-                        _uiState.update { state ->
-                            state.copy(getProfileState = ProfileState.Error(it.msg))
-                        }
+                        _events.emit(EditProfileEvents.ShowSnackMessage(it.msg))
                     }
                 }
             }
@@ -146,7 +142,7 @@ class EditProfileViewModel @Inject constructor(
                         }
 
                         is BaseState.Error -> {
-                            _events.emit(EditProfileEvents.ShowToastMessage(it.msg))
+                            _events.emit(EditProfileEvents.ShowSnackMessage(it.msg))
                         }
                     }
                 }

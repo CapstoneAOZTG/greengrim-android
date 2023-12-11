@@ -108,4 +108,10 @@ class EditGrimViewModel @Inject constructor(
         }
     }
 
+    fun goToMainActivity(){
+        viewModelScope.launch {
+            _events.emit(EditGrimEvents.GoToMainActivity)
+        }
+    }
+
 }
