@@ -69,9 +69,10 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(R.layout.fragment_login
     }
 
     fun googleLogin() {
-        val googleSignInClient = GoogleSignIn.getClient(requireContext(), gso)
-        val signInIntent = googleSignInClient.signInIntent
-        resultLauncher.launch(signInIntent)
+        viewModel.startLogin("qkrwlstjd2@naver.com")
+//        val googleSignInClient = GoogleSignIn.getClient(requireContext(), gso)
+//        val signInIntent = googleSignInClient.signInIntent
+//        resultLauncher.launch(signInIntent)
     }
 
     private val resultLauncher =
