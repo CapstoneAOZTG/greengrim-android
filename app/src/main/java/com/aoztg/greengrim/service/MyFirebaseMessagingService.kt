@@ -75,8 +75,8 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             setAutoCancel(true)
             color = Color.argb(1, 120, 63, 59)
             setColorized(true)
-            setLargeIcon(BitmapFactory.decodeResource(resources, R.drawable.gg_logo))
-            setSmallIcon(R.drawable.gg_logo)
+            setLargeIcon(BitmapFactory.decodeResource(resources, R.mipmap.ic_app_logo))
+            setSmallIcon(R.mipmap.ic_app_logo)
         }
 
         // Head up 알람 설정
@@ -115,8 +115,8 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             setContentText("그림이 완성됐어요!")
             setContentIntent(pIntent)
             setAutoCancel(true)
-            setLargeIcon(BitmapFactory.decodeResource(resources, R.drawable.gg_logo))
-            setSmallIcon(R.drawable.gg_logo)
+            setLargeIcon(BitmapFactory.decodeResource(resources, R.mipmap.ic_app_logo))
+            setSmallIcon(R.mipmap.ic_app_logo)
         }
 
         // Head up 알람 설정
@@ -157,7 +157,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             color = Color.argb(1, 120, 63, 59)
             setColorized(true)
             setLargeIcon(BitmapFactory.decodeResource(resources, R.drawable.icon_sad))
-            setSmallIcon(R.drawable.gg_logo)
+            setSmallIcon(R.mipmap.ic_app_logo)
         }
 
         // Head up 알람 설정
