@@ -3,15 +3,16 @@ package com.aoztg.greengrim.presentation.ui.catchgame
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.data.repository.ChallengeRepository
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+class CatchGameViewModel @Inject constructor(
+    private val challengeRepository: ChallengeRepository
+): ViewModel() {
 
-
-
-@HiltViewModel
-class CatchInGameViewModel @Inject constructor(): ViewModel() {
-
-
+    fun postPoint(){
+        viewModelScope.launch {
+            challengeRepository.postPoint()
+        }
+    }
 }

@@ -172,6 +172,7 @@ class SignupViewModel @Inject constructor(
                             .putLong(Constants.MEMBER_ID, it.body.memberId)
                             .apply()
 
+                        _events.emit(SignupEvents.ShowToastMessage("회원가입 완료!"))
                         _uiState.update { state ->
                             state.copy(signupState = BaseUiState.Success)
                         }

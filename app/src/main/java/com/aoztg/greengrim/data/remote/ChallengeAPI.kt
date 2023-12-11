@@ -45,4 +45,7 @@ interface ChallengeAPI {
 
     @GET("/visitor/keywords/random")
     suspend fun getRandomKeywords(): Response<List<String>>
+
+    @POST("/visitor/point")
+    suspend fun postPoint(): Response<Unit>
 }

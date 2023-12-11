@@ -9,6 +9,7 @@ import android.view.View
 import android.view.animation.AlphaAnimation
 import android.view.animation.TranslateAnimation
 import android.widget.ImageButton
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.aoztg.greengrim.R
@@ -27,7 +28,7 @@ import kotlinx.coroutines.launch
 class CatchInGameFragment :
     BaseFragment<FragmentCatchIngameFragmentBinding>(R.layout.fragment_catch_ingame_fragment) {
 
-    private val viewModel: CatchInGameViewModel by viewModels()
+    private val parentViewModel: CatchGameViewModel by activityViewModels()
     private lateinit var trashViews: Array<ImageButton>
 
     private val showLevelUpAnim = TranslateAnimation(0f, 0f, 200f, 0f).apply {
@@ -109,19 +110,19 @@ class CatchInGameFragment :
         mediaPlayer = MediaPlayer.create(requireContext(), R.raw.bgm)
 
         binding.btnMusic.setOnClickListener {
-            if(musicstate){
+            if (musicstate) {
                 Glide.with(this)
                     .load(R.drawable.catch_game_sound_off)
                     .into(binding.btnMusic)
                 mediaPlayer.pause()
                 musicstate = false
-            }else{
+            } else {
                 Glide.with(this)
                     .load(R.drawable.catch_game_sound_on)
                     .into(binding.btnMusic)
                 mediaPlayer.start()
 
-                musicstate =  true
+                musicstate = true
             }
         }
 
@@ -131,11 +132,11 @@ class CatchInGameFragment :
 
     private fun setTrashBtnListener() {
 
-        val hitsound = soundPool.load(requireContext(), R.raw.hitsound,1)
+        val hitsound = soundPool.load(requireContext(), R.raw.hitsound, 1)
         trashViews.forEachIndexed { i, btn ->
             btn.setOnClickListener {
                 it.isClickable = false
-                soundPool.play(hitsound, 1.0f, 1.0f, 0,0,1.0f)
+                soundPool.play(hitsound, 1.0f, 1.0f, 0, 0, 1.0f)
 
                 when (trashState[i]) {
                     RECYCLE_TRASH -> {
@@ -245,6 +246,9 @@ class CatchInGameFragment :
             }
 
             // 게임 Over
+            if (score > 100) {
+                parentViewModel.postPoint()
+            }
             Handler(Looper.getMainLooper()).post {
                 showGameOverDialog()
             }
@@ -399,7 +403,7 @@ class CatchInGameFragment :
     private fun showLevelUp() {
         CoroutineScope(Dispatchers.Main).launch {
             val levelupsound = soundPool.load(requireContext(), R.raw.levelupsound, 1)
-            soundPool.play(levelupsound, 1.0f, 1.0f, 0,0,1.0f)
+            soundPool.play(levelupsound, 1.0f, 1.0f, 0, 0, 1.0f)
             level++
             binding.tvLevel.text = level.toString()
             binding.ivLevelupModal.animation = showLevelUpAnim
