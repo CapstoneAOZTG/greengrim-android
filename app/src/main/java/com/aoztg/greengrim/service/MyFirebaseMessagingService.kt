@@ -204,7 +204,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             setAutoCancel(true)
             color = Color.argb(1, 120, 63, 59)
             setColorized(true)
-            setLargeIcon(BitmapFactory.decodeResource(resources, R.drawable.icon_sad))
+            setLargeIcon(BitmapFactory.decodeResource(resources, R.mipmap.ic_app_logo))
             setSmallIcon(R.mipmap.ic_app_logo)
         }
 

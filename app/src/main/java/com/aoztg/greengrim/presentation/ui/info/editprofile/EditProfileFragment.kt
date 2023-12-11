@@ -1,6 +1,7 @@
 package com.aoztg.greengrim.presentation.ui.info.editprofile
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -10,6 +11,7 @@ import com.aoztg.greengrim.databinding.FragmentEditProfileBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
 import com.aoztg.greengrim.presentation.ui.BaseUiState
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
+import com.aoztg.greengrim.presentation.util.Constants.TAG
 import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -27,8 +29,8 @@ class EditProfileFragment :
         binding.vm = viewModel
         binding.pvm = parentViewModel
         initStateObserver()
-        initEventObserver()
         initImageObserver()
+        initEventObserver()
     }
 
     private fun initStateObserver() {
@@ -74,7 +76,7 @@ class EditProfileFragment :
                     is EditProfileEvents.SetProfileUrl -> {
                         Glide.with(requireContext())
                             .load(it.profileUrl)
-                            .error(R.drawable.icon_no_image)
+                            .error(R.drawable.icon_profile)
                             .into(binding.ivProfile)
                     }
                 }
@@ -85,7 +87,9 @@ class EditProfileFragment :
     private fun initImageObserver() {
         repeatOnStarted {
             parentViewModel.imageUri.collect {
-                binding.ivProfile.setImageURI(it)
+                Glide.with(requireContext())
+                    .load(it)
+                    .into(binding.ivProfile)
             }
         }
 
