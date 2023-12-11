@@ -30,5 +30,23 @@ fun bindCheckBtnState(button: Button, isVerified: String) {
     }
 }
 
+@BindingAdapter("balanceState", "checkState")
+fun bindPurchaseBtnState(button: Button, balanceAfterPurchase: String, checkState: Boolean) {
+    if (balanceAfterPurchase.isNotBlank()) {
+        if (balanceAfterPurchase.toDouble() < 0.0) {
+            button.text = "보유 KLAY 가 부족합니다"
+            button.isEnabled = false
+        } else {
+            if(checkState){
+                button.text = "구매하기"
+                button.isEnabled =  true
+            } else {
+                button.text = "구매하기"
+                button.isEnabled =  false
+            }
+        }
+    }
+}
+
 
 
