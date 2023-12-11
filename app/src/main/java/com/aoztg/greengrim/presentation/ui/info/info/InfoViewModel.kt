@@ -116,9 +116,12 @@ class InfoViewModel @Inject constructor(
     }
 
     fun navigateToMyNft(){
-        // todo 지갑여부 check
         viewModelScope.launch {
-            _events.emit(InfoEvents.NavigateToMyNft)
+            if(uiState.value.uiMyInfo.hasWallet){
+                _events.emit(InfoEvents.NavigateToMyNft)
+            } else {
+                _events.emit(InfoEvents.ShowSnackMessage("지갑을 먼저 생성해주세요!"))
+            }
         }
     }
 
