@@ -116,6 +116,7 @@ class InfoViewModel @Inject constructor(
     }
 
     fun navigateToMyNft(){
+        // todo 지갑여부 check
         viewModelScope.launch {
             _events.emit(InfoEvents.NavigateToMyNft)
         }

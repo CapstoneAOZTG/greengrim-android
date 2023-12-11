@@ -24,6 +24,11 @@ class NftDetailFragment : BaseFragment<FragmentNftDetailBinding>(R.layout.fragme
     private val args: NftDetailFragmentArgs by navArgs()
     private val nftId by lazy { args.nftId }
 
+    companion object {
+        const val PURCHASE = 0
+        const val SELL = 1
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -31,6 +36,7 @@ class NftDetailFragment : BaseFragment<FragmentNftDetailBinding>(R.layout.fragme
         parentViewModel.hideBNV()
         viewModel.setNftId(nftId)
         initStateObserver()
+        initEventObserver()
     }
 
     private fun initStateObserver() {
@@ -42,7 +48,7 @@ class NftDetailFragment : BaseFragment<FragmentNftDetailBinding>(R.layout.fragme
                             visibility = View.VISIBLE
                             text = "판매하기"
                             setOnClickListener {
-                                findNavController().toNftSell(nftId)
+                                viewModel.checkWallet(SELL)
                             }
                         }
                     }
@@ -52,12 +58,24 @@ class NftDetailFragment : BaseFragment<FragmentNftDetailBinding>(R.layout.fragme
                             visibility = View.VISIBLE
                             text = "구매하기"
                             setOnClickListener {
-                                findNavController().toNftPurchase(nftId)
+                                viewModel.checkWallet(PURCHASE)
                             }
                         }
                     }
 
                     else -> {}
+                }
+            }
+        }
+    }
+
+    private fun initEventObserver() {
+        repeatOnStarted {
+            viewModel.events.collect {
+                when (it) {
+                    is NftDetailEvents.ShowSnackMessage -> showCustomSnack(binding.ivGrim, it.msg)
+                    is NftDetailEvents.NavigateToPurchase -> findNavController().toNftPurchase(it.nftId)
+                    is NftDetailEvents.NavigateToSell -> findNavController().toNftSell(it.nftId)
                 }
             }
         }
