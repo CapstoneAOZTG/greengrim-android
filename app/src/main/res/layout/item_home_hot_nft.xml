@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.aoztg.greengrim.presentation.ui.market.model.UiNftItem" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="230dp"
+        android:layout_height="170dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/shape_lightblack2fill_nostroke_10radius">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.65" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iv_image"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:scaleType="centerCrop"
+            app:imgUrl="@{item.image}"
+            app:layout_constraintBottom_toBottomOf="@id/guideline_item"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/Top8RadiusImageView"
+            tools:src="@drawable/test" />
+
+        <TextView
+            android:id="@+id/tv_price"
+            style="@style/TextGgSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/shape_blackfill_nostroke_15radius"
+            android:paddingHorizontal="6dp"
+            android:paddingVertical="2dp"
+            android:text="@{item.price}"
+            app:layout_constraintBottom_toBottomOf="@id/guideline_item"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="159.00 KLAY" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            style="@style/TextGgMedium"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="12dp"
+            android:text="@{item.title}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/guideline_item"
+            tools:text="장화 신은 고양이" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/iv_profile"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@id/tv_title"
+            app:layout_constraintTop_toBottomOf="@id/tv_title"
+            app:profileImgUrl="@{item.profileImage}"
+            tools:src="@drawable/icon_profile" />
+
+        <TextView
+            android:id="@+id/tv_user_name"
+            style="@style/TextGgSmallGrey1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@{item.nickName}"
+            app:layout_constraintBottom_toBottomOf="@id/iv_profile"
+            app:layout_constraintStart_toEndOf="@id/iv_profile"
+            app:layout_constraintTop_toTopOf="@id/iv_profile"
+            tools:text="아오지탄감" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

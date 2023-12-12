@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.aoztg.greengrim.presentation.ui.market.model.UiGrimForNft" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iv_title_img"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginTop="20dp"
+            android:scaleType="centerCrop"
+            app:imgUrl="@{item.image}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/All16RadiusImageView"
+            tools:src="@drawable/test" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            style="@style/TextGgMedium"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginBottom="4dp"
+            android:text="@{item.title}"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/iv_title_img"
+            app:layout_constraintEnd_toStartOf="@id/btn_select"
+            app:layout_constraintStart_toEndOf="@id/iv_title_img"
+            app:layout_constraintTop_toTopOf="@id/iv_title_img"
+            tools:text="인하대학교 쓰레기 줍기" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_select"
+            style="@style/TextGgMediumBlackBold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_grey2fill_nostroke_radius10"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="6dp"
+            android:text="선택"
+            app:layout_constraintBottom_toBottomOf="@id/iv_title_img"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/iv_title_img" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

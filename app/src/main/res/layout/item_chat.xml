@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.aoztg.greengrim.presentation.ui.chat.model.UiChatMessage" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iv_profile"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="12dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:profileImgUrl="@{item.profileImg}"
+            app:shapeAppearanceOverlay="@style/All20RadiusImageView"
+            tools:src="@drawable/test" />
+
+        <TextView
+            android:id="@+id/tv_nick"
+            style="@style/TextGgMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:text="@{item.nickName}"
+            app:layout_constraintStart_toEndOf="@id/iv_profile"
+            app:layout_constraintTop_toTopOf="@id/iv_profile"
+            tools:text="킹노아" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/shape_darkfill_nostroke_radius10"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="8dp"
+            app:layout_constraintStart_toStartOf="@id/tv_nick"
+            app:layout_constraintTop_toBottomOf="@id/tv_nick">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/iv_image"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:paddingBottom="12dp"
+                android:scaleType="centerCrop"
+                android:visibility="gone"
+                app:chatImgUrl="@{item.certImg}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@drawable/test" />
+
+            <TextView
+                android:id="@+id/tv_message"
+                style="@style/TextGgSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{item.message}"
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/iv_image"
+                tools:text="우왕 개이득 ㅋㅋㅋㅋ" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            style="@style/TextGgSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:text="@{item.sentTime}"
+            android:textColor="@color/gg_grey4"
+            app:layout_constraintBottom_toBottomOf="@id/layout_message"
+            app:layout_constraintStart_toEndOf="@id/layout_message" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

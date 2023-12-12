@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.aoztg.greengrim.presentation.ui.chat.model.UiChatListItem" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iv_title_img"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:scaleType="centerCrop"
+            app:imgUrl="@{item.titleImg}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/All28RadiusImageView" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            style="@style/TextGgMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginBottom="4dp"
+            android:text="@{item.title}"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/tv_recent_chat"
+            app:layout_constraintStart_toEndOf="@id/iv_title_img"
+            app:layout_constraintTop_toTopOf="@id/iv_title_img"
+            tools:text="인하대학교 쓰레기 줍기" />
+
+        <TextView
+            android:id="@+id/tv_recent_chat"
+            style="@style/TextGgSmallGrey1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{item.recentChat}"
+            app:layout_constraintBottom_toBottomOf="@id/iv_title_img"
+            app:layout_constraintStart_toStartOf="@id/tv_title"
+            app:layout_constraintTop_toBottomOf="@id/tv_title"
+            tools:text="지구를 지켜 지수" />
+
+        <TextView
+            android:id="@+id/tv_message_cnt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/shape_redfill_nostroke_radius100"
+            android:paddingHorizontal="5dp"
+            android:textColor="@color/white"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@id/tv_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:unReadChatCount="@{item.chatCount}"
+            tools:text="5" />
+
+
+        <TextView
+            android:id="@+id/tv_recent_date"
+            style="@style/TextGgTiny"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:text="@{item.recentTime}"
+            app:layout_constraintBottom_toBottomOf="@id/tv_recent_chat"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="오전 5:31" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

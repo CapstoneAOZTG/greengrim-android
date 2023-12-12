@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.aoztg.greengrim.presentation.ui.global.certificationdetail.CertificationDetailViewModel" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="@dimen/padding_large"
+            android:paddingVertical="@dimen/padding_middle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_scrollFlags="scroll|enterAlways">
+
+            <ImageButton
+                android:id="@+id/btn_back"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:background="@android:color/transparent"
+                android:onClick="@{() -> vm.navigateToBack()}"
+                android:scaleType="fitCenter"
+                android:src="@drawable/icon_back"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_header"
+                style="@style/TextHeader"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="인증 상세보기"
+                android:textAlignment="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/btn_more"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="end"
+                android:background="@android:color/transparent"
+                android:scaleType="fitCenter"
+                android:src="@drawable/icon_more"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:paddingBottom="200dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/layout_toolbar">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tv_title"
+                    style="@style/TextGgMedium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:paddingStart="@dimen/padding_large"
+                    android:text="@{vm.uiState.uiCertificationDetail.challengeTitle}"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="인하대학교 쓰레기 줍기" />
+
+                <TextView
+                    android:id="@+id/tv_keyword_category"
+                    style="@style/TextGgSmallBlackBold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:background="@drawable/shape_purplefill_nostroke_radius20"
+                    android:paddingHorizontal="8dp"
+                    android:paddingVertical="2dp"
+                    android:text="@{vm.uiState.uiCertificationDetail.category}"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_title"
+                    app:layout_constraintStart_toEndOf="@id/tv_title"
+                    app:layout_constraintTop_toTopOf="@id/tv_title"
+                    tools:text="줍킹" />
+
+                <TextView
+                    android:id="@+id/tv_keyword_ticket"
+                    style="@style/TextGgSmallBlackBold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:background="@drawable/shape_greenfill_nostroke_radius20"
+                    android:paddingHorizontal="8dp"
+                    android:paddingVertical="2dp"
+                    android:text="@{vm.uiState.uiCertificationDetail.ticketCount}"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_title"
+                    app:layout_constraintStart_toEndOf="@id/tv_keyword_category"
+                    app:layout_constraintTop_toTopOf="@id/tv_title"
+                    tools:text="티켓 5/30" />
+
+                <TextView
+                    android:id="@+id/tv_description"
+                    style="@style/TextGgSmallGrey1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="32dp"
+                    android:text="@{vm.uiState.uiCertificationDetail.challengeDescription}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_title"
+                    tools:text="함께 쓰레기를 주우며 인증하고 키워드 얻어봐요! 각자 취미에 대해 편안하게 이야기 할 수 있는 챌린지 방입니다. 인하대 후문에서 쓰레기 줍고 있습니다!" />
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/iv_profile"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="20dp"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_description"
+                    app:profileImgUrl="@{vm.uiState.uiCertificationDetail.profileUrl}"
+                    app:shapeAppearanceOverlay="@style/All16RadiusImageView"
+                    tools:src="@drawable/test" />
+
+                <TextView
+                    android:id="@+id/tv_nick"
+                    style="@style/TextGgMedium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:text="@{vm.uiState.uiCertificationDetail.nickName}"
+                    app:layout_constraintBottom_toBottomOf="@id/iv_profile"
+                    app:layout_constraintStart_toEndOf="@id/iv_profile"
+                    app:layout_constraintTop_toTopOf="@id/iv_profile"
+                    tools:text="킹노아" />
+
+                <ImageView
+                    android:id="@+id/iv_certification_photo"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="16dp"
+                    android:scaleType="centerCrop"
+                    app:imgUrl="@{vm.uiState.uiCertificationDetail.certificationImgUrl}"
+                    app:layout_constraintDimensionRatio="3:2"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/iv_profile"
+                    tools:src="@drawable/test" />
+
+                <TextView
+                    android:id="@+id/tv_certification_count"
+                    style="@style/TextGgMedium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="20dp"
+                    android:text="@{vm.uiState.uiCertificationDetail.certificationTitle}"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/iv_certification_photo"
+                    tools:text="[14회차 인증]" />
+
+                <TextView
+                    android:id="@+id/tv_date"
+                    style="@style/TextGgTiny"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="20dp"
+                    android:text="@{vm.uiState.uiCertificationDetail.date}"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_certification_count"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    tools:text="2023년 9월 26일" />
+
+                <TextView
+                    android:id="@+id/tv_certification_description"
+                    style="@style/TextGgTiny"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@{vm.uiState.uiCertificationDetail.certificationDescription}"
+                    app:layout_constraintStart_toStartOf="@id/tv_certification_count"
+                    app:layout_constraintTop_toBottomOf="@id/tv_certification_count"
+                    tools:text="쓰레기도 줍고 치킨도 주웠다." />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </androidx.core.widget.NestedScrollView>
+
+
+        <ImageView
+            android:id="@+id/iv_leaf"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginBottom="16dp"
+            android:src="@drawable/icon_leaf"
+            app:layout_constraintBottom_toTopOf="@id/btn_false"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_check_description"
+            style="@style/TextGgSmallBold"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:text="유저 상호 인증에 참여해주세요! 검토에 참여할 때마다 10 GP를 드려요!"
+            app:checkAnnounceViewState="@{vm.uiState.uiCertificationDetail.isVerified}"
+            app:layout_constraintBottom_toBottomOf="@id/iv_leaf"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/iv_leaf"
+            app:layout_constraintTop_toTopOf="@id/iv_leaf" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_false"
+            style="@style/TextGgSmallBlackBold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginBottom="32dp"
+            android:background="@drawable/shape_grey2fill_nostroke_radius10"
+            android:minHeight="0dp"
+            android:onClick="@{() -> vm.verifyCertification(false)}"
+            android:paddingHorizontal="20dp"
+            android:paddingVertical="10dp"
+            android:text="올바르지 않은 사진이에요"
+            app:checkBtnState="@{vm.uiState.uiCertificationDetail.isVerified}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btn_true"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_true"
+            style="@style/TextGgSmallBlackBold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/shape_greenfill_nostroke_radius10"
+            android:minHeight="0dp"
+            android:onClick="@{() -> vm.verifyCertification(true)}"
+            android:paddingHorizontal="40dp"
+            android:paddingVertical="10dp"
+            android:text="올바른 사진이에요"
+            app:checkBtnState="@{vm.uiState.uiCertificationDetail.isVerified}"
+            app:layout_constraintBottom_toBottomOf="@id/btn_false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/btn_false" />
+
+        <TextView
+            android:id="@+id/tv_certification_complete"
+            style="@style/TextGgSmallBold"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginBottom="32dp"
+            android:background="@drawable/shape_darkfill_nostroke_radius10"
+            android:minHeight="0dp"
+            android:paddingVertical="10dp"
+            android:text="참여 완료"
+            android:textAlignment="center"
+            android:visibility="invisible"
+            app:checkCompleteViewState="@{vm.uiState.uiCertificationDetail.isVerified}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

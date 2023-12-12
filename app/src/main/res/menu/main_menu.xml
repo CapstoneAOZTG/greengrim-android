@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <item
+        android:id="@+id/challenge_category_fragment"
+        android:icon="@drawable/selector_challenge"
+        android:title="챌린지"/>
+
+    <item
+        android:id="@+id/chat_list_fragment"
+        android:icon="@drawable/selector_chatting"
+        android:title="채팅방"/>
+
+    <item
+        android:id="@+id/placeholder"
+        android:title=""/>
+
+    <item
+        android:id="@+id/market_fragment"
+        android:icon="@drawable/selector_market"
+        android:title="마켓"/>
+
+    <item
+        android:id="@+id/info_fragment"
+        android:icon="@drawable/selector_more"
+        android:title="더보기"/>
+</menu>
