@@ -9,6 +9,7 @@ import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentCatchGameLobbyBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
 import com.aoztg.greengrim.presentation.ui.main.MainActivity
+import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -17,6 +18,9 @@ class CatchGameLobbyFragment: BaseFragment<FragmentCatchGameLobbyBinding>(R.layo
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setBtnListener()
+        Glide.with(requireContext())
+            .load(R.raw.catch_game_announce_black)
+            .into(binding.ivGif)
     }
 
     private fun setBtnListener(){

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_darkfill_nostroke_radius20"
+        android:paddingHorizontal="20dp"
+        android:paddingTop="30dp"
+        android:paddingBottom="20dp">
+
+        <TextView
+            android:id="@+id/tv_title"
+            style="@style/TextGgMedium"
+            android:textSize="20sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="500 Green Point가 소진됩니다\n키워드는 사라지지 않아요!" />
+
+        <TextView
+            android:id="@+id/tv_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:textColor="@color/gg_grey4"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_title"
+            tools:text="정말로 그림을 그릴까요?" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_cancel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:background="@android:color/transparent"
+            android:text="취소하기"
+            android:textColor="@color/white"
+            android:minHeight="0dp"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="@id/guide"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_description" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_confirm"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:background="@android:color/transparent"
+            android:text="그리기"
+            android:textColor="@color/gg_green"
+            android:textSize="18sp"
+            android:minHeight="0dp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/guide"
+            app:layout_constraintTop_toBottomOf="@id/tv_description" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -1,13 +1,16 @@
 package com.aoztg.greengrim.presentation.ui.challenge.create
 
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.model.request.CreateChallengeRequest
 import com.aoztg.greengrim.data.repository.ChallengeRepository
 import com.aoztg.greengrim.data.repository.ChatRepository
+import com.aoztg.greengrim.data.repository.ImageRepository
 import com.aoztg.greengrim.presentation.ui.BaseUiState
 import com.aoztg.greengrim.presentation.ui.LoadingState
+import com.aoztg.greengrim.presentation.ui.chat.createcertification.CreateCertificationEvents
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,6 +25,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import okhttp3.MultipartBody
 import javax.inject.Inject
 
 
@@ -55,55 +59,10 @@ sealed class CreateChallengeDetailEvents {
 
 @HiltViewModel
 class CreateChallengeDetailViewModel @Inject constructor(
+    private val imageRepository: ImageRepository,
     private val challengeRepository: ChallengeRepository,
     private val chatRepository: ChatRepository
 ) : ViewModel() {
-
-    companion object {
-        val keywordsWhat = listOf(
-            "꽃다발",
-            "개",
-            "고양이",
-            "버스",
-            "감자튀김",
-            "컵",
-            "운동화",
-            "기타",
-            "모자",
-            "소파",
-            "우주선",
-            "접시",
-            "나무",
-            "럭비공",
-            "모래성",
-            "초콜릿",
-            "피망",
-            "책",
-            "포도"
-        )
-        val keywordsPlace = listOf(
-            "공원",
-            "바다",
-            "숲",
-            "도시",
-            "부엌",
-            "모래사장",
-            "농장",
-            "학교",
-            "커피숍",
-            "동굴",
-            "운동장",
-            "다리",
-            "회사",
-            "골목",
-            "절벽",
-            "슈퍼마켓",
-            "우주",
-            "지하철",
-            "박물관",
-            "언덕",
-        )
-    }
 
     private val _uiState = MutableStateFlow(CreateChallengeDetailUiState())
     val uiState: StateFlow<CreateChallengeDetailUiState> = _uiState.asStateFlow()
@@ -113,13 +72,13 @@ class CreateChallengeDetailViewModel @Inject constructor(
 
     val title = MutableStateFlow("")
     val description = MutableStateFlow("")
-    val imageUrl = MutableStateFlow("")
     val keyword = MutableStateFlow("")
     val category = MutableStateFlow("")
-
     val certificateProgress = MutableStateFlow(0)
     val ticketProgress = MutableStateFlow(0)
     val minCertificateProgress = MutableStateFlow(0)
+    val isImageSet = MutableStateFlow(false)
+    private var imgFile: MultipartBody.Part? = null
 
     private var goalCount = 0
     private var ticketTotalCount = 0
@@ -128,20 +87,23 @@ class CreateChallengeDetailViewModel @Inject constructor(
     val isDataReady = combine(
         title,
         description,
-        imageUrl,
+        isImageSet,
         keyword,
         category
-    ) { title, description, img, keyword, category ->
+    ) { title, description, imgSet, keyword, category ->
         title.length >= 2 && description.length >= 2
-                && img.isNotBlank() && keyword.isNotBlank() && category.isNotBlank()
+                && imgSet && keyword.isNotBlank() && category.isNotBlank()
     }.stateIn(
         viewModelScope,
         SharingStarted.WhileSubscribed(),
         false
     )
 
-    fun setImageUrl(url: String) {
-        imageUrl.value = url
+    fun setImageFile(
+        file: MultipartBody.Part
+    ) {
+        isImageSet.value = true
+        imgFile = file
     }
 
     fun setKeyword(text: String) {
@@ -247,17 +209,30 @@ class CreateChallengeDetailViewModel @Inject constructor(
 
     fun setRandomKeywords() {
 
-        val randKeywords = mutableListOf<String>()
-        while (randKeywords.size != 5) {
-            val keyword = keywordsWhat.random()
-            if (keyword !in randKeywords) randKeywords.add(keyword)
+        viewModelScope.launch {
+            challengeRepository.getRandomKeywords().let {
+                when (it) {
+                    is BaseState.Success -> {
+                        _uiState.update { state ->
+                            state.copy(
+                                randomKeywordState = KeywordState.Set(it.body)
+                            )
+                        }
+                    }
+
+                    is BaseState.Error -> {
+                        _uiState.update { state ->
+                            state.copy(
+                                randomKeywordState = KeywordState.Empty
+                            )
+                        }
+                        _events.emit(CreateChallengeDetailEvents.ShowSnackMessage(it.msg))
+                    }
+                }
+            }
         }
 
-        _uiState.update { state ->
-            state.copy(
-                randomKeywordState = KeywordState.Set(randKeywords.toList())
-            )
-        }
+
     }
 
     fun setCategory(data: String) {
@@ -270,16 +245,39 @@ class CreateChallengeDetailViewModel @Inject constructor(
         }
     }
 
-    fun createChallenge() {
+    fun imageToUrl() {
         viewModelScope.launch {
             _events.emit(CreateChallengeDetailEvents.ShowLoading)
+
+            imgFile?.let { img ->
+                imageRepository.imageToUrl(img).let {
+                    when (it) {
+                        is BaseState.Success -> {
+                            createChallenge(it.body.imgUrl)
+                        }
+
+                        is BaseState.Error -> {
+                            _events.emit(CreateChallengeDetailEvents.ShowSnackMessage(it.msg))
+                            _events.emit(CreateChallengeDetailEvents.DismissLoading)
+                        }
+                    }
+                }
+            } ?: run {
+                _events.emit(CreateChallengeDetailEvents.ShowSnackMessage("이미지 로딩 실패"))
+                _events.emit(CreateChallengeDetailEvents.DismissLoading)
+            }
+        }
+    }
+
+    fun createChallenge(imgUrl: String) {
+        viewModelScope.launch {
 
             challengeRepository.createChallenge(
                 CreateChallengeRequest(
                     category = category.value,
                     title = title.value,
                     description = description.value,
-                    imgUrl = imageUrl.value,
+                    imgUrl = imgUrl,
                     goalCount = goalCount,
                     ticketTotalCount = ticketTotalCount,
                     weekMinCount = weekMinCount,

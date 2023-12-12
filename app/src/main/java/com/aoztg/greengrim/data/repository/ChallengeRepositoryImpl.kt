@@ -34,4 +34,8 @@ class ChallengeRepositoryImpl @Inject constructor(private val api: ChallengeAPI)
 
     override suspend fun exitChallenge(id: Int): BaseState<Unit> =
         runRemote { api.exitChallenge(id) }
+
+    override suspend fun getRandomKeywords(): BaseState<List<String>> = runRemote { api.getRandomKeywords() }
+
+    override suspend fun postPoint(): BaseState<Unit> = runRemote { api.postPoint() }
 }

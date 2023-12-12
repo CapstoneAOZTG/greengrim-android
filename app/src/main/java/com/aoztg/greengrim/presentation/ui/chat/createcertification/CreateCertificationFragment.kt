@@ -38,10 +38,14 @@ class CreateCertificationFragment :
 
     private fun initImgObserver() {
         repeatOnStarted {
-            parentViewModel.image.collect {
-                if (it.isNotBlank()) {
-                    viewModel.setImgUrl(it)
-                }
+            parentViewModel.imageUri.collect {
+                binding.ivAddPhoto.setImageURI(it)
+            }
+        }
+
+        repeatOnStarted {
+            parentViewModel.imageFile.collect{
+                viewModel.setImageFile(it)
             }
         }
     }

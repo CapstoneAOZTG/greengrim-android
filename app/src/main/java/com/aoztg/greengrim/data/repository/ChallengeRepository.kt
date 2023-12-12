@@ -32,4 +32,8 @@ interface ChallengeRepository {
     suspend fun exitChallenge(
         id: Int
     ): BaseState<Unit>
+
+    suspend fun getRandomKeywords(): BaseState<List<String>>
+
+    suspend fun postPoint(): BaseState<Unit>
 }

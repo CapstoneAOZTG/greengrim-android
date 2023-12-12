@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -19,6 +20,7 @@ import com.aoztg.greengrim.presentation.ui.home.adapter.MoreActivityAdapter
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 import com.aoztg.greengrim.presentation.ui.toAttendCheck
 import com.aoztg.greengrim.presentation.ui.toChallengeDetail
+import com.aoztg.greengrim.presentation.ui.toNftDetail
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import me.relex.circleindicator.CircleIndicator2
@@ -82,18 +84,21 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
                     is HomeEvents.ShowSnackMessage -> showCustomSnack(binding.tvBannerName, it.msg)
                     is HomeEvents.NavigateToAttendCheck -> findNavController().toAttendCheck()
                     is HomeEvents.GoToGameActivity -> {
-                        val intent = Intent(requireContext(),CatchGameActivity::class.java)
+                        val intent = Intent(requireContext(), CatchGameActivity::class.java)
                         startActivity(intent)
                     }
+
+                    is HomeEvents.NavigateToNftDetail -> findNavController().toNftDetail(it.id)
+                    is HomeEvents.NavigateToNftList -> findNavController().toNftList()
                 }
             }
         }
     }
 
-    private fun initParentObserver(){
+    private fun initParentObserver() {
         repeatOnStarted {
             chatManager.firstConnect.collectLatest {
-                if(it)viewModel.getHomeData()
+                if (it) viewModel.getHomeData()
             }
         }
     }
@@ -107,6 +112,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         pagerSnapHelper.attachToRecyclerView(recycler)
 
         indicator.attachToRecyclerView(recycler, pagerSnapHelper)
+    }
+
+    private fun NavController.toNftList() {
+        val action = HomeFragmentDirections.actionHomeFragmentToNftListFragment()
+        navigate(action)
     }
 
     override fun onDestroyView() {

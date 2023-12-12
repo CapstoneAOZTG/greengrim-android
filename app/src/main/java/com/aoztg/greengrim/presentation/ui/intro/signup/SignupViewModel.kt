@@ -7,16 +7,21 @@ import com.aoztg.greengrim.app.App.Companion.sharedPreferences
 import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.model.request.CheckNickRequest
 import com.aoztg.greengrim.data.model.request.SignupRequest
+import com.aoztg.greengrim.data.repository.ImageRepository
 import com.aoztg.greengrim.data.repository.IntroRepository
 import com.aoztg.greengrim.presentation.ui.BaseUiState
+import com.aoztg.greengrim.presentation.ui.challenge.create.CreateChallengeDetailEvents
 import com.aoztg.greengrim.presentation.ui.intro.EmailData
 import com.aoztg.greengrim.presentation.util.Constants
 import com.aoztg.greengrim.presentation.util.Constants.X_ACCESS_TOKEN
 import com.aoztg.greengrim.presentation.util.Constants.X_REFRESH_TOKEN
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
@@ -24,6 +29,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import okhttp3.MultipartBody
 import javax.inject.Inject
 
 
@@ -33,18 +39,32 @@ data class SignupUiState(
     val signupState: BaseUiState = BaseUiState.Empty
 )
 
+sealed class SignupEvents {
+    object ShowLoading : SignupEvents()
+    object DismissLoading : SignupEvents()
+    data class ShowSnackMessage(val msg: String) : SignupEvents()
+    data class ShowToastMessage(val msg: String) : SignupEvents()
+}
+
 @HiltViewModel
-class SignupViewModel @Inject constructor(private val introRepository: IntroRepository) :
+class SignupViewModel @Inject constructor(
+    private val introRepository: IntroRepository,
+    private val imageRepository: ImageRepository
+) :
     ViewModel() {
 
     private val _uiState = MutableStateFlow(SignupUiState())
     val uiState: StateFlow<SignupUiState> = _uiState.asStateFlow()
 
+    private val _events = MutableSharedFlow<SignupEvents>()
+    val events: SharedFlow<SignupEvents> = _events.asSharedFlow()
+
     val nickname = MutableStateFlow("")
     val introduce = MutableStateFlow("")
-    private var profileUrl = ""
-
     private val isNicknameValid = MutableStateFlow(false)
+    val isImageSet = MutableStateFlow(false)
+    private var imgFile: MultipartBody.Part? = null
+
     private val isDataReady = combine(nickname, isNicknameValid) { nick, nickValid ->
         nick.isNotBlank() && nickValid
     }.stateIn(
@@ -52,6 +72,13 @@ class SignupViewModel @Inject constructor(private val introRepository: IntroRepo
         SharingStarted.WhileSubscribed(),
         false
     )
+
+    fun setImageFile(
+        file: MultipartBody.Part
+    ) {
+        isImageSet.value = true
+        imgFile = file
+    }
 
     init {
         checkNickDuplicate()
@@ -101,11 +128,30 @@ class SignupViewModel @Inject constructor(private val introRepository: IntroRepo
         }.launchIn(viewModelScope)
     }
 
-    fun setProfileImg(url: String) {
-        profileUrl = url
+    fun imageToUrl() {
+        viewModelScope.launch {
+            _events.emit(SignupEvents.ShowLoading)
+
+            imgFile?.let { img ->
+                imageRepository.imageToUrl(img).let {
+                    when (it) {
+                        is BaseState.Success -> {
+                            signUp(it.body.imgUrl)
+                        }
+
+                        is BaseState.Error -> {
+                            _events.emit(SignupEvents.ShowSnackMessage(it.msg))
+                            _events.emit(SignupEvents.DismissLoading)
+                        }
+                    }
+                }
+            } ?: run {
+                signUp("")
+            }
+        }
     }
 
-    fun signUp() {
+    fun signUp(imgUrl: String) {
         viewModelScope.launch {
             // 통신로직
             introRepository.signup(
@@ -113,7 +159,7 @@ class SignupViewModel @Inject constructor(private val introRepository: IntroRepo
                     email = EmailData.email,
                     nickName = nickname.value,
                     introduction = introduce.value,
-                    profileImgUrl = profileUrl,
+                    profileImgUrl = imgUrl,
                     App.fcmToken
                 )
             ).let {
@@ -125,6 +171,7 @@ class SignupViewModel @Inject constructor(private val introRepository: IntroRepo
                             .putLong(Constants.MEMBER_ID, it.body.memberId)
                             .apply()
 
+                        _events.emit(SignupEvents.ShowToastMessage("회원가입 완료!"))
                         _uiState.update { state ->
                             state.copy(signupState = BaseUiState.Success)
                         }

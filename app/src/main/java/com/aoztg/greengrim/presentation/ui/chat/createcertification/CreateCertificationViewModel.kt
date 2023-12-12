@@ -6,6 +6,7 @@ import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.model.request.CreateCertificationRequest
 import com.aoztg.greengrim.data.model.response.CertificationDefaultDataResponse
 import com.aoztg.greengrim.data.repository.CertificationRepository
+import com.aoztg.greengrim.data.repository.ImageRepository
 import com.aoztg.greengrim.presentation.ui.BaseUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -19,6 +20,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import okhttp3.MultipartBody
 import javax.inject.Inject
 
 
@@ -43,7 +45,8 @@ sealed class CreateCertificationEvents {
 
 @HiltViewModel
 class CreateCertificationViewModel @Inject constructor(
-    private val certificationRepository: CertificationRepository
+    private val certificationRepository: CertificationRepository,
+    private val imageRepository: ImageRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(CreateCertificationUiState())
@@ -53,11 +56,12 @@ class CreateCertificationViewModel @Inject constructor(
     val events: SharedFlow<CreateCertificationEvents> = _events.asSharedFlow()
 
     val description = MutableStateFlow("")
-    val certificationImgUrl = MutableStateFlow("")
+    val isImageSet = MutableStateFlow(false)
+    private var imgFile: MultipartBody.Part? = null
     private var challengeId = -1
 
-    val isDataReady = combine(description, certificationImgUrl) { description, imgUrl ->
-        description.isNotBlank() && imgUrl.isNotBlank()
+    val isDataReady = combine(description, isImageSet) { description, isImageSet ->
+        description.isNotBlank() && isImageSet
     }.stateIn(
         viewModelScope,
         SharingStarted.WhileSubscribed(),
@@ -87,16 +91,38 @@ class CreateCertificationViewModel @Inject constructor(
         }
     }
 
-    fun createCertification() {
+    fun imageToUrl() {
+        viewModelScope.launch {
+            _events.emit(CreateCertificationEvents.ShowLoading)
+
+            imgFile?.let { img ->
+                imageRepository.imageToUrl(img).let {
+                    when (it) {
+                        is BaseState.Success -> {
+                            createCertification(it.body.imgUrl)
+                        }
+
+                        is BaseState.Error -> {
+                            _events.emit(CreateCertificationEvents.ShowSnackMessage(it.msg))
+                            _events.emit(CreateCertificationEvents.DismissLoading)
+                        }
+                    }
+                }
+            } ?: run {
+                _events.emit(CreateCertificationEvents.ShowSnackMessage("이미지 로딩 실패"))
+                _events.emit(CreateCertificationEvents.DismissLoading)
+            }
+        }
+    }
+
+    fun createCertification(imgUrl: String) {
 
         viewModelScope.launch {
-
-            _events.emit(CreateCertificationEvents.ShowLoading)
 
             certificationRepository.createCertification(
                 CreateCertificationRequest(
                     challengeId = challengeId,
-                    imgUrl = certificationImgUrl.value,
+                    imgUrl = imgUrl,
                     description = description.value,
                     round = _uiState.value.certificationDefaultData.round
                 )
@@ -125,8 +151,11 @@ class CreateCertificationViewModel @Inject constructor(
         }
     }
 
-    fun setImgUrl(url: String) {
-        certificationImgUrl.value = url
+    fun setImageFile(
+        file: MultipartBody.Part
+    ) {
+        isImageSet.value = true
+        imgFile = file
     }
 
     fun setIds(challengeIdData: Int) {

@@ -150,6 +150,7 @@ class ChatRoomViewModel @Inject constructor(
                     chatMessages = newMessages
                 )
             }
+            scrollBottom()
         }
     }
 
@@ -179,7 +180,7 @@ class ChatRoomViewModel @Inject constructor(
 
     private fun scrollBottom() {
         viewModelScope.launch {
-            delay(10)
+            delay(50)
             _events.emit(ChatRoomEvents.ScrollBottom)
         }
     }

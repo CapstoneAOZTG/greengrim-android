@@ -1,10 +1,8 @@
 package com.aoztg.greengrim.presentation.ui.main
 
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.aoztg.greengrim.data.model.BaseState
-import com.aoztg.greengrim.data.repository.FcmRepository
-import com.aoztg.greengrim.data.repository.ImageRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,6 +21,7 @@ sealed class MainEvent {
     object Logout : MainEvent()
     data class ShowToastMessage(val msg: String) : MainEvent()
     data class ShowSnackMessage(val msg: String) : MainEvent()
+    data class CopyInClipBoard(val link: String) : MainEvent()
 }
 
 enum class KeyboardState {
@@ -32,16 +31,17 @@ enum class KeyboardState {
 }
 
 @HiltViewModel
-class MainViewModel @Inject constructor(
-    private val imageRepository: ImageRepository,
-) :
+class MainViewModel @Inject constructor() :
     ViewModel() {
 
     private val _events: MutableSharedFlow<MainEvent> = MutableSharedFlow()
     val event: SharedFlow<MainEvent> = _events
 
-    private val _image = MutableSharedFlow<String>()
-    val image: SharedFlow<String> = _image.asSharedFlow()
+    private val _imageUri = MutableSharedFlow<Uri>()
+    val imageUri: SharedFlow<Uri> = _imageUri.asSharedFlow()
+
+    private val _imageFile = MutableSharedFlow<MultipartBody.Part>()
+    val imageFile: SharedFlow<MultipartBody.Part> = _imageFile.asSharedFlow()
 
     private val _keyboardState = MutableStateFlow(KeyboardState.NONE)
     val keyboardState: StateFlow<KeyboardState> = _keyboardState.asStateFlow()
@@ -67,19 +67,13 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun imageToUrl(file: MultipartBody.Part) {
+    fun setImage(
+        uri: Uri,
+        file: MultipartBody.Part
+    ) {
         viewModelScope.launch {
-            imageRepository.imageToUrl(file).let {
-                when (it) {
-                    is BaseState.Success -> {
-                        _image.emit(it.body.imgUrl)
-                    }
-
-                    is BaseState.Error -> {
-                        _events.emit(MainEvent.ShowSnackMessage(it.msg))
-                    }
-                }
-            }
+            _imageUri.emit(uri)
+            _imageFile.emit(file)
         }
     }
 
@@ -96,4 +90,11 @@ class MainViewModel @Inject constructor(
     fun hideKeyboard() {
         _keyboardState.value = KeyboardState.HIDE
     }
+
+    fun copyInClipBoard(link: String) {
+        viewModelScope.launch {
+            _events.emit(MainEvent.CopyInClipBoard(link))
+        }
+    }
+
 }

@@ -1,5 +1,7 @@
 package com.aoztg.greengrim.data.model
 
+import android.util.Log
+import com.aoztg.greengrim.presentation.util.Constants.TAG
 import com.google.gson.Gson
 import retrofit2.Response
 
@@ -22,6 +24,7 @@ suspend fun <T> runRemote(block: suspend () -> Response<T>): BaseState<T> {
             BaseState.Error(error.message, error.code)
         }
     } catch (e: Exception) {
+        Log.d(TAG,e.message.toString())
         BaseState.Error("네트워크 통신 에러", "EMPTY")
     }
 }

@@ -1,15 +1,13 @@
 package com.aoztg.greengrim.presentation.ui.catchgame
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.aoztg.greengrim.data.repository.ChallengeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
-data class CatchInGameUiState(
-    val level: Int = 0,
-    val score: Int = 0,
-    val time: Int = 100
-)
 
 
 @HiltViewModel

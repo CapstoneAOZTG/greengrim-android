@@ -6,10 +6,11 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import com.aoztg.greengrim.MainNavDirections
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentInfoBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
-import com.aoztg.greengrim.presentation.customview.getInfoSettingSheet
+import com.aoztg.greengrim.presentation.customview.SettingBottomSheet
 import com.aoztg.greengrim.presentation.ui.SocialLoginType
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 import com.aoztg.greengrim.presentation.ui.toAttendCheck
@@ -36,7 +37,7 @@ class InfoFragment : BaseFragment<FragmentInfoBinding>(R.layout.fragment_info) {
         parentViewModel.showBNV()
         binding.vm = viewModel
         initEventObserver()
-        viewModel.getProfileInfo()
+        viewModel.getMyInfo()
     }
 
     private fun initEventObserver() {
@@ -51,13 +52,18 @@ class InfoFragment : BaseFragment<FragmentInfoBinding>(R.layout.fragment_info) {
                     is InfoEvents.NavigateToMyCertification -> findNavController().toMyCertification()
                     is InfoEvents.ShowToastMessage -> showCustomToast(it.msg)
                     is InfoEvents.ShowSnackMessage -> showCustomSnack(binding.ivProfile, it.msg)
+                    is InfoEvents.NavigateToSetWalletPassword -> findNavController().toSetWalletPassword()
+                    is InfoEvents.NavigateToMyWallet -> findNavController().toMyWallet()
+                    is InfoEvents.NavigateToMyNft -> findNavController().toMyNft()
+                    is InfoEvents.NavigateToMyPaint -> findNavController().toMyPaint()
+                    is InfoEvents.NavigateToMyKeywords -> findNavController().toMyKeyword()
                 }
             }
         }
     }
 
     private fun showBottomSheet() {
-        getInfoSettingSheet(
+        SettingBottomSheet(
             requireContext(),
             onEditProfileClickListener = ::navigateToEditProfile,
             onNotificationClickListener = ::navigateToNotification,
@@ -77,13 +83,39 @@ class InfoFragment : BaseFragment<FragmentInfoBinding>(R.layout.fragment_info) {
 
     private fun NavController.toMyChallenge() {
         val action = InfoFragmentDirections.actionInfoFragmentToMyChallengeFragment()
-        this.navigate(action)
+        navigate(action)
     }
 
     private fun NavController.toMyCertification() {
         val action = InfoFragmentDirections.actionInfoFragmentToMyCertificationFragment()
-        this.navigate(action)
+        navigate(action)
     }
+
+    private fun NavController.toSetWalletPassword() {
+        val action = MainNavDirections.actionGlobalToSetWalletPasswordFragment()
+        navigate(action)
+    }
+
+    private fun NavController.toMyWallet() {
+        val action = InfoFragmentDirections.actionInfoFragmentToMyWalletFragment()
+        navigate(action)
+    }
+
+    private fun NavController.toMyNft() {
+        val action = InfoFragmentDirections.actionInfoFragmentToMyNftFragment()
+        navigate(action)
+    }
+
+    private fun NavController.toMyPaint() {
+        val action = InfoFragmentDirections.actionInfoFragmentToMyPaintFragment()
+        navigate(action)
+    }
+
+    private fun NavController.toMyKeyword() {
+        val action = InfoFragmentDirections.actionInfoFragmentToMyKeywordFragment()
+        navigate(action)
+    }
+
 
     private fun navigateToNotification() {
         showCustomToast("알림으로 이동")

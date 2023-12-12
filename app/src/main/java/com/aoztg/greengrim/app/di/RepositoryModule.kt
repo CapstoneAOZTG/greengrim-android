@@ -18,6 +18,8 @@ import com.aoztg.greengrim.data.repository.InfoRepository
 import com.aoztg.greengrim.data.repository.InfoRepositoryImpl
 import com.aoztg.greengrim.data.repository.IntroRepository
 import com.aoztg.greengrim.data.repository.IntroRepositoryImpl
+import com.aoztg.greengrim.data.repository.NftRepository
+import com.aoztg.greengrim.data.repository.NftRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -82,4 +84,10 @@ abstract class RepositoryModule {
     abstract fun bindFcmRepository(
         fcmRepositoryImpl: FcmRepositoryImpl
     ): FcmRepository
+
+    @Singleton
+    @Binds
+    abstract fun bindNftRepository(
+        nftRepositoryImpl: NftRepositoryImpl
+    ): NftRepository
 }

@@ -12,11 +12,17 @@ class ChatListAdapter : ListAdapter<UiChatListItem, ChatListViewHolder>(diffCall
 
     companion object {
         val diffCallback = object : DiffUtil.ItemCallback<UiChatListItem>() {
-            override fun areItemsTheSame(oldItem: UiChatListItem, newItem: UiChatListItem): Boolean {
+            override fun areItemsTheSame(
+                oldItem: UiChatListItem,
+                newItem: UiChatListItem
+            ): Boolean {
                 return oldItem.chatId == newItem.chatId
             }
 
-            override fun areContentsTheSame(oldItem: UiChatListItem, newItem: UiChatListItem): Boolean {
+            override fun areContentsTheSame(
+                oldItem: UiChatListItem,
+                newItem: UiChatListItem
+            ): Boolean {
                 return oldItem == newItem
             }
         }
@@ -43,7 +49,7 @@ class ChatListViewHolder(private val binding: ItemChatListBinding) :
     fun bind(item: UiChatListItem) {
         binding.item = item
         binding.root.setOnClickListener {
-            item.onClickListener(item.chatId, item.challengeId)
+            item.onClickListener(item.title, item.chatId, item.challengeId)
         }
     }
 

@@ -39,7 +39,7 @@
             android:textColor="@color/white"
             android:textSize="30sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@id/btn_restart"
+            app:layout_constraintEnd_toStartOf="@id/btn_resume"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/guide" />

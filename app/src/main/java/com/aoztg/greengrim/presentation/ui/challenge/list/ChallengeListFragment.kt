@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentChallengeListBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
-import com.aoztg.greengrim.presentation.customview.getSortSheet
+import com.aoztg.greengrim.presentation.customview.ChallengeFilterBottomSheet
 import com.aoztg.greengrim.presentation.ui.challenge.adapter.ChallengeRoomAdapter
 import com.aoztg.greengrim.presentation.ui.challenge.list.ChallengeListViewModel.Companion.ORIGINAL
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
@@ -84,7 +84,7 @@ class ChallengeListFragment :
     }
 
     private fun showBottomSheet() {
-        getSortSheet(requireContext(), sortType) { type ->
+        ChallengeFilterBottomSheet(requireContext(), sortType) { type ->
             sortType = type
             viewModel.setSortType(type)
             binding.tvFilter.text = type.text

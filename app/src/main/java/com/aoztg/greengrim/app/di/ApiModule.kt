@@ -9,6 +9,7 @@ import com.aoztg.greengrim.data.remote.HomeAPI
 import com.aoztg.greengrim.data.remote.ImageAPI
 import com.aoztg.greengrim.data.remote.InfoAPI
 import com.aoztg.greengrim.data.remote.IntroAPI
+import com.aoztg.greengrim.data.remote.NftAPI
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -72,6 +73,12 @@ object ApiModule {
     @Provides
     fun provideFcmService(retrofit: Retrofit): FcmAPI{
         return retrofit.create(FcmAPI::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun provideNftService(retrofit: Retrofit): NftAPI{
+        return retrofit.create(NftAPI::class.java)
     }
 
 }

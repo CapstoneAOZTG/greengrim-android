@@ -46,8 +46,14 @@ class CreateChallengeDetailFragment :
 
     private fun initStateObserver() {
         repeatOnStarted {
-            parentViewModel.image.collect {
-                viewModel.setImageUrl(it)
+            parentViewModel.imageUri.collect {
+                binding.ivAddPhoto.setImageURI(it)
+            }
+        }
+
+        repeatOnStarted {
+            parentViewModel.imageFile.collect{
+                viewModel.setImageFile(it)
             }
         }
 

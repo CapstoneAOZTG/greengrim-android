@@ -9,5 +9,5 @@ data class UiChatListItem(
     val recentChat: String = "",
     val recentTime: String = "",
     val creationDday: String,
-    val onClickListener: (Int, Int) -> Unit
+    val onClickListener: (String, Int, Int) -> Unit
 )

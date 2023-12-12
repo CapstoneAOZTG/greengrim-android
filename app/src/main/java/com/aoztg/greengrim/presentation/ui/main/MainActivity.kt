@@ -1,9 +1,10 @@
 package com.aoztg.greengrim.presentation.ui.main
 
-
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.ContentValues
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -12,7 +13,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -28,14 +28,19 @@ import com.aoztg.greengrim.databinding.ActivityMainBinding
 import com.aoztg.greengrim.presentation.base.BaseActivity
 import com.aoztg.greengrim.presentation.chatmanager.ChatEvent
 import com.aoztg.greengrim.presentation.chatmanager.ChatManager
-import com.aoztg.greengrim.presentation.customview.getPhotoSheet
+import com.aoztg.greengrim.presentation.customview.PhotoBottomSheet
+import com.aoztg.greengrim.presentation.ui.editgrim.CompleteGrim
+import com.aoztg.greengrim.presentation.ui.editgrim.EditGrimActivity
+import com.aoztg.greengrim.presentation.ui.editgrim.GrimState
 import com.aoztg.greengrim.presentation.ui.home.HomeFragmentDirections
 import com.aoztg.greengrim.presentation.ui.intro.IntroActivity
+import com.aoztg.greengrim.presentation.ui.toCreateNft
+import com.aoztg.greengrim.presentation.ui.toGrimDetail
 import com.aoztg.greengrim.presentation.ui.toMultiPart
 import com.aoztg.greengrim.presentation.util.Constants
 import com.aoztg.greengrim.presentation.util.Constants.CAMERA_PERMISSION
+import com.aoztg.greengrim.presentation.util.Constants.NOTIFICATION_PERMISSION
 import com.aoztg.greengrim.presentation.util.Constants.STORAGE_PERMISSION
-import com.aoztg.greengrim.presentation.util.Constants.TAG
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -60,14 +65,39 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             )
         }
     private val cameraPermission = Manifest.permission.CAMERA
+    private val notificationPermission = Manifest.permission.POST_NOTIFICATIONS
 
     private lateinit var tempCameraUri: Uri
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.main_frag) as NavHostFragment
+        navController = navHostFragment.navController
+
+        if (intent.hasExtra("target")) {
+            when (intent.getStringExtra("target")) {
+                "GRIM_DETAIL" -> {
+                    intent.getIntExtra("grimId", -1).let {
+                        navController.toGrimDetail(it)
+                    }
+                }
+
+                "MARKET" -> {
+                }
+
+                "CREATE_NFT" -> {
+                    val grimId = intent.getIntExtra("grimId", -1)
+                    intent.getStringExtra("grimUrl")?.let {
+                        navController.toCreateNft(grimId, it)
+                    }
+                }
+            }
+        }
 
         binding.vm = viewModel
         binding.chatVm = chatManager
+        checkNotificationPermission()
         setBottomNavigation()
         setBottomNavigationListener()
         initEventObserver()
@@ -86,10 +116,20 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         chatManager.disconnectChat()
     }
 
+    private fun checkNotificationPermission(){
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
+            if (ContextCompat.checkSelfPermission(
+                    this,
+                    notificationPermission
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                ActivityCompat.requestPermissions(this, arrayOf(notificationPermission), NOTIFICATION_PERMISSION)
+            }
+        }
+    }
+
     private fun setBottomNavigation() {
-        val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.main_frag) as NavHostFragment
-        navController = navHostFragment.navController
+
 
         with(binding) {
             bnv.itemIconTintList = null
@@ -98,6 +138,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             bnv.apply {
                 setupWithNavController(navController)
                 setOnItemSelectedListener { item ->
+                    if (item.itemId == R.id.market_fragment && CompleteGrim.grimState != GrimState.NONE) {
+                        val intent = Intent(this@MainActivity, EditGrimActivity::class.java)
+                        startActivity(intent)
+                    }
                     NavigationUI.onNavDestinationSelected(item, navController)
                     navController.popBackStack(item.itemId, inclusive = false)
                     true
@@ -131,15 +175,16 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                     is MainEvent.Logout -> logout()
                     is MainEvent.ShowToastMessage -> showCustomToast(it.msg)
                     is MainEvent.ShowSnackMessage -> showCustomSnack(binding.snackGuide, it.msg)
+                    is MainEvent.CopyInClipBoard -> copyInClipBoard(it.link)
                 }
             }
         }
     }
 
-    private fun initSocketObserver(){
+    private fun initSocketObserver() {
         repeatOnStarted {
-            chatManager.event.collect{
-                when(it){
+            chatManager.event.collect {
+                when (it) {
                     is ChatEvent.ShowSnackMessage -> showCustomSnack(binding.snackGuide, it.msg)
                     is ChatEvent.ShowToastMessage -> showCustomToast(it.msg)
                 }
@@ -148,7 +193,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     }
 
     private fun showPhotoBottomSheet() {
-        getPhotoSheet(
+        PhotoBottomSheet(
             this,
             onPhotoClickListener = ::onCheckCameraPermission,
             onGalleryClickListener = ::onCheckStoragePermissions
@@ -230,7 +275,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                 val uri = result.data?.data
 
                 uri?.let {
-                    viewModel.imageToUrl(it.toMultiPart(this))
+                    viewModel.setImage(
+                        it, it.toMultiPart(this)
+                    )
                 }
             }
         }
@@ -260,7 +307,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     private val cameraLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == RESULT_OK) {
-                viewModel.imageToUrl(tempCameraUri.toMultiPart(this))
+                viewModel.setImage(
+                    tempCameraUri, tempCameraUri.toMultiPart(this)
+                )
             }
         }
 
@@ -290,6 +339,13 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             finishAffinity()
             startActivity(this)
         }
+    }
+
+    private fun copyInClipBoard(text: String) {
+        val clipboard: ClipboardManager = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+        val clip = ClipData.newPlainText("내 지갑 주소", text)
+        clipboard.setPrimaryClip(clip)
+        showCustomToast("클립보드에 복사 완료")
     }
 
 }

@@ -16,9 +16,9 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.aoztg.greengrim.databinding.ActivityIntroBinding
 import com.aoztg.greengrim.presentation.base.BaseActivity
+import com.aoztg.greengrim.presentation.customview.PhotoBottomSheet
 import com.aoztg.greengrim.presentation.ui.main.MainActivity
 import com.aoztg.greengrim.presentation.util.Constants
-import com.aoztg.greengrim.presentation.customview.getPhotoSheet
 import com.aoztg.greengrim.presentation.ui.toMultiPart
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
@@ -55,12 +55,15 @@ class IntroActivity : BaseActivity<ActivityIntroBinding>(ActivityIntroBinding::i
         repeatOnStarted {
             viewModel.events.collect {
                 when (it) {
-                    is IntroEvent.GoToMainActivity -> startActivity(
-                        Intent(
-                            this@IntroActivity,
-                            MainActivity::class.java
+                    is IntroEvent.GoToMainActivity -> {
+                        startActivity(
+                            Intent(
+                                this@IntroActivity,
+                                MainActivity::class.java
+                            )
                         )
-                    )
+                        finish()
+                    }
 
                     is IntroEvent.ShowPhotoBottomSheet -> showPhotoBottomSheet()
                     is IntroEvent.ShowToastMessage -> showCustomToast(it.msg)
@@ -71,7 +74,7 @@ class IntroActivity : BaseActivity<ActivityIntroBinding>(ActivityIntroBinding::i
     }
 
     private fun showPhotoBottomSheet(){
-        getPhotoSheet(
+        PhotoBottomSheet(
             this,
             onPhotoClickListener = ::onCheckCameraPermission,
             onGalleryClickListener = ::onCheckStoragePermissions
@@ -147,7 +150,9 @@ class IntroActivity : BaseActivity<ActivityIntroBinding>(ActivityIntroBinding::i
                 val uri = result.data?.data
 
                 uri?.let {
-                    viewModel.imageToUrl(it.toMultiPart(this))
+                    viewModel.setImage(
+                        it, it.toMultiPart(this)
+                    )
                 }
             }
         }
@@ -177,7 +182,9 @@ class IntroActivity : BaseActivity<ActivityIntroBinding>(ActivityIntroBinding::i
     private val cameraLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if(result.resultCode == RESULT_OK){
-                viewModel.imageToUrl(tempCameraUri.toMultiPart(this))
+                viewModel.setImage(
+                    tempCameraUri, tempCameraUri.toMultiPart(this)
+                )
             }
         }
 
