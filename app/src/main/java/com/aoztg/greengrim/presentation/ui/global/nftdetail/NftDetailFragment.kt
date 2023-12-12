@@ -76,6 +76,7 @@ class NftDetailFragment : BaseFragment<FragmentNftDetailBinding>(R.layout.fragme
                     is NftDetailEvents.ShowSnackMessage -> showCustomSnack(binding.ivGrim, it.msg)
                     is NftDetailEvents.NavigateToPurchase -> findNavController().toNftPurchase(it.nftId)
                     is NftDetailEvents.NavigateToSell -> findNavController().toNftSell(it.nftId)
+                    is NftDetailEvents.NavigateToBack -> findNavController().navigateUp()
                 }
             }
         }

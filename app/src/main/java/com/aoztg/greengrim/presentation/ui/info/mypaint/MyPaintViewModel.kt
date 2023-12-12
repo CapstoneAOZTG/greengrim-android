@@ -94,7 +94,7 @@ class MyPaintViewModel @Inject constructor(
         }
     }
 
-    private fun navigateToBack(){
+    fun navigateToBack(){
         viewModelScope.launch {
             _events.emit(MyPaintEvents.NavigateToBack)
         }

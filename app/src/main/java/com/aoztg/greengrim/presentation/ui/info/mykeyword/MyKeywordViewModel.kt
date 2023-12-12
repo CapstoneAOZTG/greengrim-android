@@ -24,6 +24,7 @@ data class MyKeywordUiState(
 
 sealed class MyKeywordEvents{
     data class ShowSnackMessage(val msg: String): MyKeywordEvents()
+    object NavigateToBack: MyKeywordEvents()
 }
 
 @HiltViewModel
@@ -56,6 +57,12 @@ class MyKeywordViewModel @Inject constructor(
                     }
                 }
             }
+        }
+    }
+
+    fun navigateToBack(){
+        viewModelScope.launch {
+            _events.emit(MyKeywordEvents.NavigateToBack)
         }
     }
 }

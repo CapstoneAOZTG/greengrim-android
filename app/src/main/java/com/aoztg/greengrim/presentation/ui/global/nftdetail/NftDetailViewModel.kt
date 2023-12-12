@@ -27,7 +27,7 @@ sealed class NftDetailEvents {
     data class ShowSnackMessage(val msg: String) : NftDetailEvents()
     data class NavigateToPurchase(val nftId: Int) : NftDetailEvents()
     data class NavigateToSell(val nftId: Int) : NftDetailEvents()
-
+    object NavigateToBack: NftDetailEvents()
 }
 
 @HiltViewModel
@@ -91,5 +91,11 @@ class NftDetailViewModel @Inject constructor(
     fun setNftId(id: Int) {
         nftId = id
         getNftDetail()
+    }
+
+    fun navigateToBack(){
+        viewModelScope.launch {
+            _events.emit(NftDetailEvents.NavigateToBack)
+        }
     }
 }

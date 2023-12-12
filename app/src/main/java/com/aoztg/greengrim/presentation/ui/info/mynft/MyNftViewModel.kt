@@ -94,7 +94,7 @@ class MyNftViewModel @Inject constructor(
         }
     }
 
-    private fun navigateToBack() {
+    fun navigateToBack() {
         viewModelScope.launch {
             _events.emit(MyNftEvents.NavigateToBack)
         }
@@ -114,6 +114,5 @@ class MyNftViewModel @Inject constructor(
         )
         getGrimList(MarketViewModel.SORT)
     }
-
 
 }
