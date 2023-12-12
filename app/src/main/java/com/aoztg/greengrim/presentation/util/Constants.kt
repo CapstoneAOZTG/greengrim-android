@@ -11,6 +11,7 @@ object Constants {
 
     const val STORAGE_PERMISSION = 1000
     const val CAMERA_PERMISSION = 1001
+    const val NOTIFICATION_PERMISSION = 1002
 
     const val NOTHING = -1
     const val MY_CHAT = 0

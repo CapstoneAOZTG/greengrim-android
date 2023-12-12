@@ -146,8 +146,7 @@ class SignupViewModel @Inject constructor(
                     }
                 }
             } ?: run {
-                _events.emit(SignupEvents.ShowSnackMessage("이미지 로딩 실패"))
-                _events.emit(SignupEvents.DismissLoading)
+                signUp("")
             }
         }
     }

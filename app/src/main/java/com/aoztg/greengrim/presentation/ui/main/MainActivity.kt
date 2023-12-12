@@ -39,6 +39,7 @@ import com.aoztg.greengrim.presentation.ui.toGrimDetail
 import com.aoztg.greengrim.presentation.ui.toMultiPart
 import com.aoztg.greengrim.presentation.util.Constants
 import com.aoztg.greengrim.presentation.util.Constants.CAMERA_PERMISSION
+import com.aoztg.greengrim.presentation.util.Constants.NOTIFICATION_PERMISSION
 import com.aoztg.greengrim.presentation.util.Constants.STORAGE_PERMISSION
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
@@ -64,6 +65,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             )
         }
     private val cameraPermission = Manifest.permission.CAMERA
+    private val notificationPermission = Manifest.permission.POST_NOTIFICATIONS
 
     private lateinit var tempCameraUri: Uri
 
@@ -95,6 +97,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
         binding.vm = viewModel
         binding.chatVm = chatManager
+        checkNotificationPermission()
         setBottomNavigation()
         setBottomNavigationListener()
         initEventObserver()
@@ -111,6 +114,18 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         super.onStop()
         chatManager.subscribeFcm()
         chatManager.disconnectChat()
+    }
+
+    private fun checkNotificationPermission(){
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
+            if (ContextCompat.checkSelfPermission(
+                    this,
+                    notificationPermission
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                ActivityCompat.requestPermissions(this, arrayOf(notificationPermission), NOTIFICATION_PERMISSION)
+            }
+        }
     }
 
     private fun setBottomNavigation() {

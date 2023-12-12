@@ -183,8 +183,7 @@ class EditProfileViewModel @Inject constructor(
                     }
                 }
             } ?: run {
-                _events.emit(EditProfileEvents.ShowSnackMessage("이미지 로딩 실패"))
-                _events.emit(EditProfileEvents.DismissLoading)
+                editProfile(curProfileUrl)
             }
         }
     }
