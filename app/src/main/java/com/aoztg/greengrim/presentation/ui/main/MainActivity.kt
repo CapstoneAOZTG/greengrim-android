@@ -66,9 +66,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         }
     private val cameraPermission = Manifest.permission.CAMERA
     private val notificationPermission = Manifest.permission.POST_NOTIFICATIONS
-
     private lateinit var tempCameraUri: Uri
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val navHostFragment =
@@ -89,8 +87,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                 "CREATE_NFT" -> {
                     val grimId = intent.getIntExtra("grimId", -1)
                     intent.getStringExtra("grimUrl")?.let {
-                        navController.toCreateNft(grimId, it)
-                    }
+                        navController.toCreateNft(grimId, it) }
                 }
             }
         }

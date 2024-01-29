@@ -66,7 +66,7 @@
                 android:onClick="@{() -> vm.imageToUrl()}"
                 android:text="완료"
                 android:textColor="@color/selector_complete_text"
-                android:textSize="16sp"
+                android:textSize="16dp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -132,7 +132,7 @@
             android:text="@={vm.nickname}"
             android:textColor="@color/white"
             android:textColorHint="@color/gg_grey5"
-            android:textSize="13sp"
+            android:textSize="13dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_nickname_label" />
@@ -184,7 +184,7 @@
             android:text="@={vm.introduce}"
             android:textColor="@color/white"
             android:textColorHint="@color/gg_grey5"
-            android:textSize="13sp"
+            android:textSize="13dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_introduce_label" />
