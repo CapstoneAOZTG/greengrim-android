@@ -1,7 +1,7 @@
 package com.aoztg.greengrim.presentation.ui.global.model
 
 data class UiNftDetail(
-    val nftId: Int = -1,
+    val nftId: Long = -1,
     val nftImage: String = "",
     val title: String = "",
     val description: String = "",

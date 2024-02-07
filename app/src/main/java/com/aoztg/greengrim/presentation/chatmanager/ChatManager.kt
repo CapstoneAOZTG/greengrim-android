@@ -45,8 +45,8 @@ class ChatManager @Inject constructor(
     private val _firstConnect = MutableStateFlow(false)
     val firstConnect: StateFlow<Boolean> = _firstConnect.asStateFlow()
 
-    private val _initialConnectChatIds = MutableStateFlow<List<Int>>(emptyList())
-    val initialConnectChatIds: StateFlow<List<Int>> = _initialConnectChatIds.asStateFlow()
+    private val _initialConnectChatIds = MutableStateFlow<List<Long>>(emptyList())
+    val initialConnectChatIds: StateFlow<List<Long>> = _initialConnectChatIds.asStateFlow()
 
     var unReadChatData = listOf<UiUnReadChatData>()
 
@@ -128,7 +128,7 @@ class ChatManager @Inject constructor(
         }
     }
 
-    fun subscribeNewChat(chatId: Int) {
+    fun subscribeNewChat(chatId: Long) {
         initialConnectChatIds.value.forEach {
             if (chatId == it) {
                 unReadChatData = unReadChatData + UiUnReadChatData(chatId = chatId)
@@ -140,7 +140,7 @@ class ChatManager @Inject constructor(
         unReadChatData = unReadChatData + UiUnReadChatData(chatId = chatId)
     }
 
-    fun sendMessage(chatId: Int, message: String) {
+    fun sendMessage(chatId: Long, message: String) {
         chatSocket.sendMessage(
             memberId,
             chatId,
@@ -148,7 +148,7 @@ class ChatManager @Inject constructor(
         )
     }
 
-    fun sendCertificationMessage(chatId: Int, message: String, certId: Int, certImg: String) {
+    fun sendCertificationMessage(chatId: Long, message: String, certId: Long, certImg: String) {
         chatSocket.sendCertification(
             memberId,
             chatId,
@@ -206,7 +206,7 @@ class ChatManager @Inject constructor(
         }
     }
 
-    fun readChat(chatId: Int) {
+    fun readChat(chatId: Long) {
         unReadChatData = unReadChatData.map {
             if (it.chatId == chatId) {
                 _unReadCnt.value = unReadCnt.value - it.unReadCount
@@ -233,7 +233,7 @@ class ChatManager @Inject constructor(
         }
     }
 
-    fun exitChat(chatId: Int) {
+    fun exitChat(chatId: Long) {
         viewModelScope.launch {
             chatRepository.deleteUnReadChatData(chatId)
             unReadChatData = unReadChatData.filter {

@@ -28,7 +28,7 @@ data class ChallengeListUiState(
 )
 
 sealed class ChallengeListEvents {
-    data class NavigateToChallengeDetail(val id: Int) : ChallengeListEvents()
+    data class NavigateToChallengeDetail(val id: Long) : ChallengeListEvents()
     object NavigateToCreateChallenge : ChallengeListEvents()
     object ShowBottomSheet : ChallengeListEvents()
     object ScrollToTop : ChallengeListEvents()
@@ -88,7 +88,7 @@ class ChallengeListViewModel @Inject constructor(
         }
     }
 
-    private fun navigateToChallengeDetail(id: Int) {
+    private fun navigateToChallengeDetail(id: Long) {
         viewModelScope.launch {
             _events.emit(ChallengeListEvents.NavigateToChallengeDetail(id))
         }

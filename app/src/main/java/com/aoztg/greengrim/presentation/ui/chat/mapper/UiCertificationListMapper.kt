@@ -4,7 +4,7 @@ import com.aoztg.greengrim.data.model.response.CertificationListResponse
 import com.aoztg.greengrim.presentation.ui.chat.model.UiCertificationList
 import com.aoztg.greengrim.presentation.ui.chat.model.UiCertificationItem
 
-internal fun CertificationListResponse.toUiCertificationList(onItemClickListener: (Int) -> Unit) = UiCertificationList(
+internal fun CertificationListResponse.toUiCertificationList(onItemClickListener: (Long) -> Unit) = UiCertificationList(
     page = page,
     hasNext = hasNext,
     result = result.map{

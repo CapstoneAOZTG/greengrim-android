@@ -49,7 +49,7 @@ interface NftRepository {
 
 
     suspend fun getGrimDetail(
-        id: Int
+        id: Long
     ): BaseState<GrimDetailResponse>
 
 
@@ -59,7 +59,7 @@ interface NftRepository {
 
 
     suspend fun getNftDetail(
-        id: Int
+        id: Long
     ): BaseState<NftDetailResponse>
 
 
@@ -100,10 +100,10 @@ interface NftRepository {
     ): BaseState<Unit>
 
     suspend fun getInfoBeforeSellNft(
-        id: Int
+        id: Long
     ): BaseState<InfoBeforeSellNftResponse>
 
     suspend fun getInfoBeforePurchaseNft(
-        id: Int
+        id: Long
     ): BaseState<InfoBeforePurchaseNftResponse>
 }

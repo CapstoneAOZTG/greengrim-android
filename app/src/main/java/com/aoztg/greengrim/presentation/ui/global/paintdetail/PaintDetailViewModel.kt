@@ -42,7 +42,7 @@ class PaintDetailViewModel @Inject constructor(
     private val _events = MutableSharedFlow<PaintDetailEvents>()
     val events: SharedFlow<PaintDetailEvents> = _events.asSharedFlow()
 
-    private fun getPaintDetail(id: Int){
+    private fun getPaintDetail(id: Long){
         viewModelScope.launch {
             _events.emit(PaintDetailEvents.ShowLoading)
             nftRepository.getGrimDetail(id).let{
@@ -62,7 +62,7 @@ class PaintDetailViewModel @Inject constructor(
         }
     }
 
-    fun setId(id: Int){
+    fun setId(id: Long){
         getPaintDetail(id)
     }
 

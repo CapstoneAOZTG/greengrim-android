@@ -26,7 +26,7 @@ data class ChooseGrimUiState(
 sealed class ChooseGrimEvent{
     object NavigateToBack: ChooseGrimEvent()
     object NavigateToCreatePaint: ChooseGrimEvent()
-    data class NavigateToCreateNft(val grimId: Int, val grimUrl: String): ChooseGrimEvent()
+    data class NavigateToCreateNft(val grimId: Long, val grimUrl: String): ChooseGrimEvent()
     data class ShowSnackMessage(val msg: String): ChooseGrimEvent()
     object ShowNoGrimLayout: ChooseGrimEvent()
 }
@@ -70,7 +70,7 @@ class ChooseGrimViewModel @Inject constructor(
         }
     }
 
-    private fun navigateToCreateNft(grimId: Int, grimUrl: String){
+    private fun navigateToCreateNft(grimId: Long, grimUrl: String){
         viewModelScope.launch {
             _events.emit(ChooseGrimEvent.NavigateToCreateNft(grimId, grimUrl))
         }

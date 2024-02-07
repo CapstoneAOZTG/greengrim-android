@@ -9,7 +9,7 @@ import androidx.room.Query
 interface ChatDao {
 
     @Query("DELETE FROM unread_chat_data WHERE chatId = :chatId")
-    fun deleteUnReadChatData(chatId: Int)
+    fun deleteUnReadChatData(chatId: Long)
 
     @Insert(onConflict = REPLACE)
     fun addUnReadChatData(unReadChatEntity: UnReadChatEntity)

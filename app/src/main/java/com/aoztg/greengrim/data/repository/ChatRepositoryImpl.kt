@@ -18,13 +18,13 @@ class ChatRepositoryImpl @Inject constructor(
     private val chatDao: ChatDao
 ) : ChatRepository {
 
-    override suspend fun enterChat(challengeId: Int): BaseState<EnterChatResponse> =
+    override suspend fun enterChat(challengeId: Long): BaseState<EnterChatResponse> =
         runRemote { api.enterChat(challengeId) }
 
     override suspend fun getChatRooms(): BaseState<List<ChatRoomsResponse>> =
         runRemote { api.getChatList() }
 
-    override suspend fun exitChatRoom(id: Int): BaseState<Unit> =
+    override suspend fun exitChatRoom(id: Long): BaseState<Unit> =
         runRemote { api.exitChatRoom(id) }
 
     override suspend fun addUnReadChatData(unReadChatEntity: UnReadChatEntity): BaseState<Unit> {
@@ -39,7 +39,7 @@ class ChatRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun deleteUnReadChatData(chatId: Int): BaseState<Unit> {
+    override suspend fun deleteUnReadChatData(chatId: Long): BaseState<Unit> {
         return try {
             val response = CoroutineScope(Dispatchers.IO).async {
                 chatDao.deleteUnReadChatData(chatId)
@@ -64,7 +64,7 @@ class ChatRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getChatMessage(
-        roomId: Int,
+        roomId: Long,
         page: Int,
         size: Int
     ): BaseState<ChatMessageResponse> =

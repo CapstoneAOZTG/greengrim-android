@@ -39,7 +39,7 @@ class ChatSocket(
 
 
     @SuppressLint("CheckResult")
-    fun subscribeChat(chatId: Int) {
+    fun subscribeChat(chatId: Long) {
         try{
             stompClient.topic("/sub/chat/room/$chatId").subscribe { topicMessage ->
                 acceptChat(topicMessage.payload)
@@ -51,7 +51,7 @@ class ChatSocket(
     }
 
     @SuppressLint("CheckResult")
-    fun subscribeNewChat(chatId: Int){
+    fun subscribeNewChat(chatId: Long){
         try{
             stompClient.topic("/sub/chat/room/$chatId").subscribe { topicMessage -> }
         } catch(e: Exception){
@@ -59,7 +59,7 @@ class ChatSocket(
         }
     }
 
-    fun sendMessage(memberId: Long, chatId: Int, message: String) {
+    fun sendMessage(memberId: Long, chatId: Long, message: String) {
         try{
             val data = JSONObject()
             data.put("senderId", memberId)
@@ -72,7 +72,7 @@ class ChatSocket(
         }
     }
 
-    fun sendCertification(memberId: Long, chatId: Int, message: String, certId: Int, certImg: String, ) {
+    fun sendCertification(memberId: Long, chatId: Long, message: String, certId: Long, certImg: String, ) {
         try{
             val data = JSONObject()
             data.put("senderId", memberId)

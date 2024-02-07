@@ -9,9 +9,9 @@ import com.aoztg.greengrim.presentation.util.Constants.NOTHING
 import com.aoztg.greengrim.presentation.util.Constants.OTHER_CHAT
 
 
-internal fun ChatMessage.toUiChatMessage(memberId: Long, onCertClickListener: (Int) -> Unit) :UiChatMessage{
+internal fun ChatMessage.toUiChatMessage(memberId: Long, onCertClickListener: (Long) -> Unit) :UiChatMessage{
 
-    fun empty(empty: Int){}
+    fun empty(empty: Long){}
     return UiChatMessage(
         type = when (type) {
             "TALK", "CERT" -> {
@@ -33,7 +33,7 @@ internal fun ChatMessage.toUiChatMessage(memberId: Long, onCertClickListener: (I
         profileImg = profileImg,
         certId = certId,
         certImg = certImg,
-        onCertClickListener = if(certId == -1) {
+        onCertClickListener = if(certId == -1L) {
             ::empty
         } else {
             onCertClickListener
@@ -42,7 +42,7 @@ internal fun ChatMessage.toUiChatMessage(memberId: Long, onCertClickListener: (I
 }
 
 internal fun ChatMessageItem.toUiChatMessage(
-    onCertClickListener: (Int) -> Unit,
+    onCertClickListener: (Long) -> Unit,
     type: Int
 ) = UiChatMessage(
     type = type,

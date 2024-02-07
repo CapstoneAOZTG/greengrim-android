@@ -29,7 +29,7 @@ data class MyNftUiState(
 )
 
 sealed class MyNftEvents {
-    data class NavigateToNftDetail(val id: Int) : MyNftEvents()
+    data class NavigateToNftDetail(val id: Long) : MyNftEvents()
     object ShowBottomSheet : MyNftEvents()
     object ScrollToTop : MyNftEvents()
     data class ShowSnackMessage(val msg: String) : MyNftEvents()
@@ -88,7 +88,7 @@ class MyNftViewModel @Inject constructor(
 
     }
 
-    private fun navigateToNftDetail(id: Int) {
+    private fun navigateToNftDetail(id: Long) {
         viewModelScope.launch {
             _events.emit(MyNftEvents.NavigateToNftDetail(id))
         }

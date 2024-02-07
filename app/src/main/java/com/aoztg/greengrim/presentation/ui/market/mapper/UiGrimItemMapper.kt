@@ -6,7 +6,7 @@ import com.aoztg.greengrim.presentation.ui.market.model.UiGrimItem
 
 
 internal fun GrimListItem.toUiGrimItem(
-    itemClickListener: (Int) -> Unit
+    itemClickListener: (Long) -> Unit
 ) = UiGrimItem(
     id = id,
     image = imgUrl,

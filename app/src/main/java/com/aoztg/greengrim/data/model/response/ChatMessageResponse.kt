@@ -7,14 +7,14 @@ data class ChatMessageResponse(
 )
 
 data class ChatMessageItem(
-    val certId: Int,
+    val certId: Long,
     val certImg: String,
     val createdAt: Int,
     val message: String,
     val nickName: String,
     val profileImg: String,
-    val roomId: Int,
-    val senderId: Int,
+    val roomId: Long,
+    val senderId: Long,
     val sentDate: String,
     val sentTime: String,
     val type: String

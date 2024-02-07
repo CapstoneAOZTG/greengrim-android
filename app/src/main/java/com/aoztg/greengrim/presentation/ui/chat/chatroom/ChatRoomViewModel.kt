@@ -40,9 +40,9 @@ sealed class ChatRoomEvents {
     object ExitChat : ChatRoomEvents()
     object ShowPopupMenu : ChatRoomEvents()
     object NavigateToCreateCertification : ChatRoomEvents()
-    data class NavigateToCertificationList(val id: Int) : ChatRoomEvents()
-    data class NavigateToCertificationDetail(val id: Int) : ChatRoomEvents()
-    data class SendMessage(val chatId: Int, val message: String) : ChatRoomEvents()
+    data class NavigateToCertificationList(val id: Long) : ChatRoomEvents()
+    data class NavigateToCertificationDetail(val id: Long) : ChatRoomEvents()
+    data class SendMessage(val chatId: Long, val message: String) : ChatRoomEvents()
     object ScrollBottom : ChatRoomEvents()
     data class ShowToastMessage(val msg: String) : ChatRoomEvents()
     data class ShowSnackMessage(val msg: String) : ChatRoomEvents()
@@ -56,8 +56,8 @@ class ChatRoomViewModel @Inject constructor(
     private val challengeRepository: ChallengeRepository
 ) : ViewModel() {
 
-    var chatRoomId = -1
-    var challengeId = -1
+    var chatRoomId = -1L
+    var challengeId = -1L
 
     companion object {
         const val SCROLL_GET = 0
@@ -171,7 +171,7 @@ class ChatRoomViewModel @Inject constructor(
         }
     }
 
-    private fun navigateToCertificationDetail(certId: Int) {
+    private fun navigateToCertificationDetail(certId: Long) {
         viewModelScope.launch {
             _events.emit(ChatRoomEvents.NavigateToCertificationDetail(certId))
         }
@@ -190,7 +190,7 @@ class ChatRoomViewModel @Inject constructor(
         }
     }
 
-    fun setIds(chatIdData: Int, challengeIdData: Int) {
+    fun setIds(chatIdData: Long, challengeIdData: Long) {
         chatRoomId = chatIdData
         challengeId = challengeIdData
         getChatMessageData()

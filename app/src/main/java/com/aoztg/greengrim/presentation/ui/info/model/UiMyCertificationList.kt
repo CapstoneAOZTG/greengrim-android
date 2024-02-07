@@ -7,7 +7,7 @@ data class UiMyCertificationList(
 )
 
 data class UiMyCertification (
-    val id: Int,
+    val id: Long,
     val categoryImg: String,
     val title: String,
     val category: String,
@@ -15,5 +15,5 @@ data class UiMyCertification (
     val certificationCount: String,
     val date: String,
     val description: String,
-    val onItemClickListener: (Int) -> Unit
+    val onItemClickListener: (Long) -> Unit
 )

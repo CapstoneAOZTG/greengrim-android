@@ -22,7 +22,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 data class EditGrimUiState(
-    val grimId: Int = CompleteGrim.grimId.toString().toInt(),
+    val grimId: Long = CompleteGrim.grimId.toString().toLong(),
     val grimUrl: String = CompleteGrim.grimImgUrl.toString(),
     val grimState: GrimState = CompleteGrim.grimState,
     val uiGrimDetail: UiGrimDetail = UiGrimDetail()
@@ -31,8 +31,8 @@ data class EditGrimUiState(
 sealed class EditGrimEvents {
     data class ShowSnackMessage(val msg: String) : EditGrimEvents()
     object GoToMainActivity: EditGrimEvents()
-    data class GoToGrimDetail(val grimId: Int): EditGrimEvents()
-    data class GoToCreateNft(val grimId: Int, val grimUrl: String): EditGrimEvents()
+    data class GoToGrimDetail(val grimId: Long): EditGrimEvents()
+    data class GoToCreateNft(val grimId: Long, val grimUrl: String): EditGrimEvents()
 }
 
 @HiltViewModel

@@ -1,7 +1,7 @@
 package com.aoztg.greengrim.presentation.ui.info.model
 
 data class UiMyInfo(
-    val id: Int = -1,
+    val id: Long = -1,
     val nickName: String = "",
     val profileImgUrl: String = "",
     val introduction: String = "",

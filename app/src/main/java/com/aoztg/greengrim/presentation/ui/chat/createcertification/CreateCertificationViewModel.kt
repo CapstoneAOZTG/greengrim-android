@@ -33,7 +33,7 @@ sealed class CreateCertificationEvents {
     object NavigateToBack : CreateCertificationEvents()
     data class SendCertificationMessage(
         val message: String,
-        val certId: Int,
+        val certId: Long,
         var certImg: String
     ) : CreateCertificationEvents()
 
@@ -58,7 +58,7 @@ class CreateCertificationViewModel @Inject constructor(
     val description = MutableStateFlow("")
     val isImageSet = MutableStateFlow(false)
     private var imgFile: MultipartBody.Part? = null
-    private var challengeId = -1
+    private var challengeId = -1L
 
     val isDataReady = combine(description, isImageSet) { description, isImageSet ->
         description.isNotBlank() && isImageSet
@@ -158,7 +158,7 @@ class CreateCertificationViewModel @Inject constructor(
         imgFile = file
     }
 
-    fun setIds(challengeIdData: Int) {
+    fun setIds(challengeIdData: Long) {
         challengeId = challengeIdData
     }
 

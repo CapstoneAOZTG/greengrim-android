@@ -17,22 +17,22 @@ class CertificationRepositoryImpl @Inject constructor(private val api: Certifica
     CertificationRepository {
 
 
-    override suspend fun getCertificationDefaultData(id: Int): BaseState<CertificationDefaultDataResponse> =
+    override suspend fun getCertificationDefaultData(id: Long): BaseState<CertificationDefaultDataResponse> =
         runRemote { api.getCertificationDefaultData(id) }
 
     override suspend fun getCertificationDate(
-        challengeId: Int
+        challengeId: Long
     ): BaseState<CertificationDatesResponse> = runRemote { api.getCertificationDate(challengeId) }
 
     override suspend fun getCertificationList(
-        challengeId: Int,
+        challengeId: Long,
         date: String,
         page: Int,
         size: Int
     ): BaseState<CertificationListResponse> =
         runRemote { api.getCertificationList(challengeId, date, page, size) }
 
-    override suspend fun getCertificationDetail(id: Int): BaseState<CertificationDetailResponse> =
+    override suspend fun getCertificationDetail(id: Long): BaseState<CertificationDetailResponse> =
         runRemote { api.getCertificationDetail(id) }
 
     override suspend fun getMyCertificationDate(): BaseState<CertificationDatesResponse> =
@@ -51,7 +51,7 @@ class CertificationRepositoryImpl @Inject constructor(private val api: Certifica
     override suspend fun createCertification(data: CreateCertificationRequest): BaseState<CreateCertificationResponse> =
         runRemote { api.createCertification(data) }
 
-    override suspend fun deleteCertification(id: Int): BaseState<Unit> =
+    override suspend fun deleteCertification(id: Long): BaseState<Unit> =
         runRemote { api.deleteCertification(id) }
 
 }

@@ -29,7 +29,7 @@ data class MyPaintUiState(
 )
 
 sealed class MyPaintEvents {
-    data class NavigateToGrimDetail(val id: Int) : MyPaintEvents()
+    data class NavigateToGrimDetail(val id: Long) : MyPaintEvents()
     object ShowBottomSheet : MyPaintEvents()
     object ScrollToTop : MyPaintEvents()
     data class ShowSnackMessage(val msg: String) : MyPaintEvents()
@@ -88,7 +88,7 @@ class MyPaintViewModel @Inject constructor(
 
     }
 
-    private fun navigateToGrimDetail(id: Int) {
+    private fun navigateToGrimDetail(id: Long) {
         viewModelScope.launch {
             _events.emit(MyPaintEvents.NavigateToGrimDetail(id))
         }

@@ -39,7 +39,7 @@ class SellNftViewModel @Inject constructor(
     private val _events = MutableSharedFlow<SellNftEvents>()
     val events: SharedFlow<SellNftEvents> = _events.asSharedFlow()
 
-    private var nftId: Int = -1
+    private var nftId: Long = -1L
     val price = MutableStateFlow("")
     val termState = MutableStateFlow(false)
 
@@ -68,7 +68,7 @@ class SellNftViewModel @Inject constructor(
         }
     }
 
-    fun setNftId(id: Int){
+    fun setNftId(id: Long){
         nftId = id
         getNftInfo()
     }

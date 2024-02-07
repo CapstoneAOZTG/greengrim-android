@@ -9,7 +9,7 @@ import com.aoztg.greengrim.data.model.response.EnterChatResponse
 interface ChatRepository {
 
     suspend fun enterChat(
-        challengeId: Int
+        challengeId: Long
     ): BaseState<EnterChatResponse>
 
     suspend fun getChatRooms(): BaseState<List<ChatRoomsResponse>>
@@ -18,12 +18,12 @@ interface ChatRepository {
 
     suspend fun addUnReadChatData(unReadChatEntity: UnReadChatEntity): BaseState<Unit>
 
-    suspend fun deleteUnReadChatData(chatId: Int): BaseState<Unit>
+    suspend fun deleteUnReadChatData(chatId: Long): BaseState<Unit>
 
-    suspend fun exitChatRoom(id: Int): BaseState<Unit>
+    suspend fun exitChatRoom(id: Long): BaseState<Unit>
 
     suspend fun getChatMessage(
-        roomId: Int,
+        roomId: Long,
         page: Int,
         size: Int
     ): BaseState<ChatMessageResponse>

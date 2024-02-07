@@ -13,7 +13,7 @@ interface ChallengeRepository {
     ): BaseState<CreateChallengeResponse>
 
     suspend fun getChallengeDetail(
-        id: Int
+        id: Long
     ): BaseState<ChallengeDetailResponse>
 
     suspend fun getChallengeList(
@@ -30,7 +30,7 @@ interface ChallengeRepository {
     ): BaseState<ChallengeListResponse>
 
     suspend fun exitChallenge(
-        id: Int
+        id: Long
     ): BaseState<Unit>
 
     suspend fun getRandomKeywords(): BaseState<List<String>>

@@ -7,12 +7,12 @@ data class UiCertificationList(
 )
 
 data class UiCertificationItem(
-    val id: Int,
+    val id: Long,
     val profileImg: String,
     val nick: String,
     val certificationImg: String,
     val certificationCount: String,
     val date: String,
     val description: String,
-    val onItemClickListener: (Int) -> Unit
+    val onItemClickListener: (Long) -> Unit
 )
