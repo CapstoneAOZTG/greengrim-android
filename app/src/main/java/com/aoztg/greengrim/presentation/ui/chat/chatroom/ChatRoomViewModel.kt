@@ -11,7 +11,9 @@ import com.aoztg.greengrim.presentation.ui.chat.mapper.toUiChatMessage
 import com.aoztg.greengrim.presentation.ui.chat.model.UiChatMessage
 import com.aoztg.greengrim.presentation.util.Constants
 import com.aoztg.greengrim.presentation.util.Constants.DATE
+import com.aoztg.greengrim.presentation.util.Constants.MY_CHAT
 import com.aoztg.greengrim.presentation.util.Constants.NOTHING
+import com.aoztg.greengrim.presentation.util.Constants.OTHER_CHAT
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -108,10 +110,13 @@ class ChatRoomViewModel @Inject constructor(
     fun getChatMessageData() {
         if (uiState.value.hasNext) {
             viewModelScope.launch {
-                when (val response = chatRepository.getChat(chatRoomId, uiState.value.page)) {
+                when (val response = chatRepository.getChatMessage(chatRoomId, uiState.value.page, 20)) {
                     is BaseState.Success -> {
-                        val list = response.body.chatEntityList.map {
-                            it.toUiChatMessage(::navigateToCertificationDetail)
+                        val list = response.body.result.map {
+                            it.toUiChatMessage(::navigateToCertificationDetail,
+                                if(memberId == it.senderId) MY_CHAT
+                                else OTHER_CHAT
+                                )
                         }
                         _uiState.update { state ->
                             state.copy(

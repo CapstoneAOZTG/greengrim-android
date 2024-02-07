@@ -1,5 +1,6 @@
 package com.aoztg.greengrim.data.remote
 
+import com.aoztg.greengrim.data.model.response.ChatMessageResponse
 import com.aoztg.greengrim.data.model.response.ChatRoomsResponse
 import com.aoztg.greengrim.data.model.response.EnterChatResponse
 import retrofit2.Response
@@ -21,4 +22,12 @@ interface ChatAPI {
     suspend fun exitChatRoom(
         @Query("chatroomId") id: Int
     ): Response<Unit>
+
+    @GET("/chat/message")
+    suspend fun getChatMessage(
+        @Query("roomId") roomId: Int,
+        @Query("page") page: Int,
+        @Query("size") size: Int
+    ): Response<ChatMessageResponse>
+
 }

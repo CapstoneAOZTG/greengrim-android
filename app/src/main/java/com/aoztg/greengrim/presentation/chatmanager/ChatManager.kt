@@ -4,18 +4,14 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.app.App
-import com.aoztg.greengrim.data.local.ChatEntity
 import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.repository.ChatRepository
 import com.aoztg.greengrim.data.repository.FcmRepository
-import com.aoztg.greengrim.presentation.chatmanager.mapper.toChatEntity
 import com.aoztg.greengrim.presentation.chatmanager.mapper.toUiUnReadChatData
 import com.aoztg.greengrim.presentation.chatmanager.mapper.toUnReadChatEntity
 import com.aoztg.greengrim.presentation.chatmanager.model.ChatMessage
 import com.aoztg.greengrim.presentation.chatmanager.model.UiUnReadChatData
 import com.aoztg.greengrim.presentation.util.Constants
-import com.aoztg.greengrim.presentation.util.Constants.DATE
-import com.aoztg.greengrim.presentation.util.Constants.NOTHING
 import com.aoztg.greengrim.presentation.util.Constants.TAG
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -168,7 +164,6 @@ class ChatManager @Inject constructor(
             _newChat.emit(chatMessage)
         }
         updateUnReadChatData(chatMessage)
-        storeChatMessage(chatMessage)
     }
 
     private fun updateUnReadChatData(chatMessage: ChatMessage) {
@@ -211,38 +206,6 @@ class ChatManager @Inject constructor(
         }
     }
 
-    private fun storeChatMessage(message: ChatMessage) {
-        viewModelScope.launch {
-            val newMessage = message.toChatEntity(memberId)
-
-            // 해당 chatId 의 recentChatDate 와 현재 메세지의 sentDate 가 다르면, Date type 메세지 로컬에 저장
-            unReadChatData.forEach { data ->
-                if (data.chatId == newMessage.chatId) {
-                    if (newMessage.sentDate != data.recentChatDate) {
-                        storeDateMessage(newMessage.chatId, newMessage.sentDate)
-                        return@forEach
-                    }
-                }
-            }
-
-            if (newMessage.type != NOTHING) {
-                chatRepository.addChat(newMessage)
-            }
-        }
-    }
-
-    private fun storeDateMessage(chatId: Int, date: String) {
-        viewModelScope.launch {
-            chatRepository.addChat(
-                ChatEntity(
-                    chatId = chatId,
-                    type = DATE,
-                    message = date,
-                )
-            )
-        }
-    }
-
     fun readChat(chatId: Int) {
         unReadChatData = unReadChatData.map {
             if (it.chatId == chatId) {
@@ -272,7 +235,6 @@ class ChatManager @Inject constructor(
 
     fun exitChat(chatId: Int) {
         viewModelScope.launch {
-            chatRepository.deleteChat(chatId)
             chatRepository.deleteUnReadChatData(chatId)
             unReadChatData = unReadChatData.filter {
                 it.chatId != chatId
