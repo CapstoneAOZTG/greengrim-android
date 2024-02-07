@@ -185,7 +185,7 @@
             android:onClick="@{() -> vm.showConfirmModal()}"
             android:text="그림 그리기"
             android:textColor="@color/selector_next_btn_text"
-            android:textSize="16sp"
+            android:textSize="16dp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent" />
 

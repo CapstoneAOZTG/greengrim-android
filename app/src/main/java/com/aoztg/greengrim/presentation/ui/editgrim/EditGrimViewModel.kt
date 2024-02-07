@@ -66,6 +66,12 @@ class EditGrimViewModel @Inject constructor(
                 when (it) {
                     is BaseState.Success -> {
                         CompleteGrim.grimState = GrimState.GRIM_TITLED
+                        _uiState.update { state ->
+                            state.copy(
+                                grimState = GrimState.GRIM_TITLED
+                            )
+
+                        }
                         getGrimDetail()
                     }
 

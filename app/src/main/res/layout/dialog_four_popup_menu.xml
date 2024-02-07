@@ -15,7 +15,7 @@
             android:layout_marginTop="12dp"
             android:text="챌린지 정보 보기"
             android:textColor="@color/white"
-            android:textSize="16sp"
+            android:textSize="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -48,7 +48,7 @@
             android:layout_marginTop="8dp"
             android:text="인증 모아보기"
             android:textColor="@color/white"
-            android:textSize="16sp"
+            android:textSize="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/divider1" />
@@ -81,7 +81,7 @@
             android:layout_marginTop="8dp"
             android:text="신고하기"
             android:textColor="@color/white"
-            android:textSize="16sp"
+            android:textSize="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/divider2" />

@@ -92,7 +92,7 @@
                         android:layout_height="wrap_content"
                         android:text="@{vm.uiState.uiHomeInfo.nickName}"
                         android:textColor="@color/white"
-                        android:textSize="18sp"
+                        android:textSize="18dp"
                         app:layout_constraintEnd_toEndOf="@id/guide_banner"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
