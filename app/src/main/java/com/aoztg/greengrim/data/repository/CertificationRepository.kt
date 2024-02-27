@@ -14,19 +14,19 @@ import retrofit2.Response
 interface CertificationRepository {
 
     suspend fun getCertificationDefaultData(
-        id: Int
+        id: Long
     ): BaseState<CertificationDefaultDataResponse>
 
     suspend fun getCertificationDetail(
-        id: Int
+        id: Long
     ): BaseState<CertificationDetailResponse>
 
     suspend fun getCertificationDate(
-        challengeId: Int,
+        challengeId: Long,
     ): BaseState<CertificationDatesResponse>
 
     suspend fun getCertificationList(
-        challengeId: Int,
+        challengeId: Long,
         date: String,
         page: Int,
         size: Int
@@ -49,6 +49,6 @@ interface CertificationRepository {
     ): BaseState<CreateCertificationResponse>
 
     suspend fun deleteCertification(
-        id: Int
+        id: Long
     ): BaseState<Unit>
 }

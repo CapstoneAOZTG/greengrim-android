@@ -2,7 +2,7 @@ package com.aoztg.greengrim.presentation.ui.editgrim
 
 object CompleteGrim {
     var grimState: GrimState = GrimState.NONE
-    var grimId: Int? = -1
+    var grimId: Long? = -1
     var grimImgUrl: String? = ""
 }
 

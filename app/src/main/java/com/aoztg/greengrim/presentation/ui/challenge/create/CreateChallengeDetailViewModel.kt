@@ -50,7 +50,7 @@ sealed class KeywordState {
 
 sealed class CreateChallengeDetailEvents {
     object NavigateToBack : CreateChallengeDetailEvents()
-    data class NavigateToChatList(val chatId: Int) : CreateChallengeDetailEvents()
+    data class NavigateToChatList(val chatId: Long) : CreateChallengeDetailEvents()
     data class ShowToastMessage(val msg: String) : CreateChallengeDetailEvents()
     data class ShowSnackMessage(val msg: String) : CreateChallengeDetailEvents()
     object ShowLoading : CreateChallengeDetailEvents()

@@ -61,7 +61,7 @@ interface NftAPI {
 
     @GET("/grims/{id}")
     suspend fun getGrimDetail(
-        @Path("id") id: Int
+        @Path("id") id: Long
     ): Response<GrimDetailResponse>
 
     @POST("/member/nfts")
@@ -71,7 +71,7 @@ interface NftAPI {
 
     @GET("/nfts/{id}")
     suspend fun getNftDetail(
-        @Path("id") id: Int
+        @Path("id") id: Long
     ): Response<NftDetailResponse>
 
     @GET("/member/nfts")
@@ -119,12 +119,12 @@ interface NftAPI {
 
     @GET("/member/nfts/{id}/sales")
     suspend fun getInfoBeforeSellNft(
-        @Path("id") id: Int
+        @Path("id") id: Long
     ): Response<InfoBeforeSellNftResponse>
 
     @GET("/member/nfts/{id}/purchases")
     suspend fun getInfoBeforePurchaseNft(
-        @Path("id") id: Int
+        @Path("id") id: Long
     ): Response<InfoBeforePurchaseNftResponse>
 
 }

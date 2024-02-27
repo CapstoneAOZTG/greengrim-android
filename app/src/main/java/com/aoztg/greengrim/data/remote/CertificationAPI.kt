@@ -19,22 +19,22 @@ interface CertificationAPI {
 
     @GET("/visitor/challenges/preview/{id}")
     suspend fun getCertificationDefaultData(
-        @Path("id") id: Int
+        @Path("id") id: Long
     ): Response<CertificationDefaultDataResponse>
 
     @GET("/certifications/{id}")
     suspend fun getCertificationDetail(
-        @Path("id") id: Int
+        @Path("id") id: Long
     ): Response<CertificationDetailResponse>
 
     @GET("/certifications/month")
     suspend fun getCertificationDate(
-        @Query("challengeId") challengeId: Int
+        @Query("challengeId") challengeId: Long
     ): Response<CertificationDatesResponse>
 
     @GET("/certifications/date")
     suspend fun getCertificationList(
-        @Query("challengeId") challengeId: Int,
+        @Query("challengeId") challengeId: Long,
         @Query("date") date: String,
         @Query("page") page: Int,
         @Query("size") size: Int
@@ -63,7 +63,7 @@ interface CertificationAPI {
 
     @POST("/visitor/certifications/{id}")
     suspend fun deleteCertification(
-        @Path("id") id: Int
+        @Path("id") id: Long
     ): Response<Unit>
 
 }

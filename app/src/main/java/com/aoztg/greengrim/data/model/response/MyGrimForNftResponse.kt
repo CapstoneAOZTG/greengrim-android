@@ -7,7 +7,7 @@ data class MyGrimForNftResponse(
 )
 
 data class MyGrimSimpleData(
-    val id: Int,
+    val id: Long,
     val imgUrl: String,
     val title: String
 )

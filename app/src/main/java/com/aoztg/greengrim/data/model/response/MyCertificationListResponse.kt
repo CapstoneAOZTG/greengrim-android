@@ -12,7 +12,7 @@ data class MyCertificationItem(
 )
 
 data class ChallengeTitleInfo(
-    val id: Int,
+    val id: Long,
     val category: String,
     val imgUrl: String,
     val title: String

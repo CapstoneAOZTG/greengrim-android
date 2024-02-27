@@ -7,7 +7,7 @@ data class UiChatMessage(
     val sentDate: String = "",
     val sentTime: String = "",
     val profileImg: String = "",
-    val certId: Int = -1,
+    val certId: Long = -1,
     val certImg: String = "",
-    val onCertClickListener: (Int) -> Unit
+    val onCertClickListener: (Long) -> Unit
 )

@@ -69,7 +69,7 @@ class ChooseGrimFragment : BaseFragment<FragmentChooseGrimBinding>(R.layout.frag
         })
     }
 
-    private fun NavController.toCreateNft(grimId: Int, grimUrl: String) {
+    private fun NavController.toCreateNft(grimId: Long, grimUrl: String) {
         val action =
             ChooseGrimFragmentDirections.actionChooseGrimFragmentToCreateNftFragment(
                 grimId,

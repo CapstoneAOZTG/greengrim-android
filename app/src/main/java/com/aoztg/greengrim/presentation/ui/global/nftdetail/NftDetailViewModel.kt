@@ -25,8 +25,8 @@ data class NftDetailUiState(
 
 sealed class NftDetailEvents {
     data class ShowSnackMessage(val msg: String) : NftDetailEvents()
-    data class NavigateToPurchase(val nftId: Int) : NftDetailEvents()
-    data class NavigateToSell(val nftId: Int) : NftDetailEvents()
+    data class NavigateToPurchase(val nftId: Long) : NftDetailEvents()
+    data class NavigateToSell(val nftId: Long) : NftDetailEvents()
     object NavigateToBack: NftDetailEvents()
 }
 
@@ -43,7 +43,7 @@ class NftDetailViewModel @Inject constructor(
 
     val btnState = MutableStateFlow("")
 
-    private var nftId = -1
+    private var nftId = -1L
 
     fun checkWallet(target: Int){
         viewModelScope.launch {
@@ -88,7 +88,7 @@ class NftDetailViewModel @Inject constructor(
         }
     }
 
-    fun setNftId(id: Int) {
+    fun setNftId(id: Long) {
         nftId = id
         getNftDetail()
     }

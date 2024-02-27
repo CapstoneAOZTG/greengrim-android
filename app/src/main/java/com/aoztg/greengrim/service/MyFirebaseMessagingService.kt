@@ -41,7 +41,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             "SUCCESS" -> {
                 val grimId = message.data["grimId"]
                 val grimImgUrl = message.data["grimImgUrl"]
-                sendGrimCompleteNotification(grimId?.toInt(), grimImgUrl)
+                sendGrimCompleteNotification(grimId?.toLong(), grimImgUrl)
             }
 
             "FAIL" -> sendGrimFailNotification()
@@ -102,7 +102,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         }
     }
 
-    private fun sendGrimCompleteNotification(id: Int?, imgUrl: String?) {
+    private fun sendGrimCompleteNotification(id: Long?, imgUrl: String?) {
 
         val uniId = (System.currentTimeMillis() / 7).toInt()
         val intent = Intent(this, EditGrimActivity::class.java)

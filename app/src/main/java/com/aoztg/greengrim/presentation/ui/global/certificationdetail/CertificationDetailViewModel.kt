@@ -43,7 +43,7 @@ class CertificationDetailViewModel @Inject constructor(
     private val _events = MutableSharedFlow<CertificationDetailEvents>()
     val events: SharedFlow<CertificationDetailEvents> = _events.asSharedFlow()
 
-    private var certificationId = -1
+    private var certificationId = -1L
 
     fun getCertificationDetail() {
         viewModelScope.launch {
@@ -98,7 +98,7 @@ class CertificationDetailViewModel @Inject constructor(
     }
 
 
-    fun setCertificationId(id: Int) {
+    fun setCertificationId(id: Long) {
         certificationId = id
     }
 

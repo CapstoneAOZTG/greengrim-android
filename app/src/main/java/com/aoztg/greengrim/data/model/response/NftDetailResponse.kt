@@ -11,7 +11,7 @@ data class NftDetailResponse(
 )
 
 data class NftDetailInfo(
-    val id: Int,
+    val id: Long,
     val imgUrl: String,
     val title: String,
     val description: String,

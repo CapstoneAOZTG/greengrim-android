@@ -34,7 +34,7 @@ data class MyCertificationUiState(
 
 sealed class MyCertificationEvents {
     data class ShowYearMonthPicker(val curYear: Int, val curMonth: Int) : MyCertificationEvents()
-    data class NavigateToCertificationDetail(val certificationId: Int) : MyCertificationEvents()
+    data class NavigateToCertificationDetail(val certificationId: Long) : MyCertificationEvents()
     data class ShowToastMessage(val msg: String) : MyCertificationEvents()
     data class ShowSnackMessage(val msg: String) : MyCertificationEvents()
     object NavigateToBack : MyCertificationEvents()
@@ -159,7 +159,7 @@ class MyCertificationViewModel @Inject constructor(
         }
     }
 
-    private fun navigateToCertificationDetail(certificationId: Int) {
+    private fun navigateToCertificationDetail(certificationId: Long) {
         viewModelScope.launch {
             _events.emit(MyCertificationEvents.NavigateToCertificationDetail(certificationId))
         }

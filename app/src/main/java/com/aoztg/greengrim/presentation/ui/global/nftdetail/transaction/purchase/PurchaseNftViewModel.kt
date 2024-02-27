@@ -41,7 +41,7 @@ class PurchaseNftViewModel @Inject constructor(
 
     val termState = MutableStateFlow(false)
 
-    private var nftId: Int = -1
+    private var nftId: Long = -1L
 
     private fun getNftInfo(){
         viewModelScope.launch {
@@ -64,7 +64,7 @@ class PurchaseNftViewModel @Inject constructor(
         }
     }
 
-    fun setNftId(id: Int){
+    fun setNftId(id: Long){
         nftId = id
         getNftInfo()
     }

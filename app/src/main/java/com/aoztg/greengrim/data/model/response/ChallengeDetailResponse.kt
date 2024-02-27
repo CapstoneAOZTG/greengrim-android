@@ -9,7 +9,7 @@ data class ChallengeDetailResponse(
 
 data class ChallengeDetailInfo(
     val description: String,
-    val id: Int,
+    val id: Long,
     val imgUrl: String,
     val title: String
 )

@@ -17,7 +17,7 @@ data class NftAndMemberInfo(
 )
 
 data class NftSimpleInfo(
-    val id: Int,
+    val id: Long,
     val imgUrl: String,
     val title: String
 )

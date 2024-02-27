@@ -10,10 +10,10 @@ data class UiChallengeList(
 )
 
 data class UiChallengeRoom(
-    val id: Int,
+    val id: Long,
     val imgUrl: String,
     val title: String,
     val keywords: ChallengeSimpleTags,
-    val onItemClicked: (Int) -> Unit,
+    val onItemClicked: (Long) -> Unit,
 )
 

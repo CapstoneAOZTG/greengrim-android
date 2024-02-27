@@ -32,14 +32,14 @@ data class HomeUiState(
 )
 
 sealed class HomeEvents {
-    data class NavigateToChallengeDetail(val id: Int) : HomeEvents()
+    data class NavigateToChallengeDetail(val id: Long) : HomeEvents()
     data class ShowToastMessage(val msg: String) : HomeEvents()
     data class ShowSnackMessage(val msg: String) : HomeEvents()
     object NavigateToAttendCheck : HomeEvents()
     object GoToGameActivity : HomeEvents()
     object ShowLoading : HomeEvents()
     object DismissLoading : HomeEvents()
-    data class NavigateToNftDetail(val id: Int) : HomeEvents()
+    data class NavigateToNftDetail(val id: Long) : HomeEvents()
     object NavigateToNftList: HomeEvents()
 }
 
@@ -146,7 +146,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun navigateToChallengeDetail(id: Int) {
+    private fun navigateToChallengeDetail(id: Long) {
         viewModelScope.launch {
             _events.emit(HomeEvents.NavigateToChallengeDetail(id))
         }
@@ -164,7 +164,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun navigateToNftDetail(id: Int) {
+    private fun navigateToNftDetail(id: Long) {
         viewModelScope.launch {
             _events.emit(HomeEvents.NavigateToNftDetail(id))
         }

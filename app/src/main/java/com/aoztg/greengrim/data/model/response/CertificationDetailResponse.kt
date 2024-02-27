@@ -8,7 +8,7 @@ data class CertificationDetailResponse(
 )
 
 data class ChallengeShortInfo(
-    val id: Int,
+    val id: Long,
     val title: String,
     val description: String,
     val category: String,
@@ -16,7 +16,7 @@ data class ChallengeShortInfo(
 )
 
 data class CertificationInfo(
-    val id: Int,
+    val id: Long,
     val createdAt: String,
     val description: String,
     val imgUrl: String,
@@ -24,7 +24,7 @@ data class CertificationInfo(
 )
 
 data class MemberSimpleInfo(
-    val id: Int,
+    val id: Long,
     val nickName: String,
     val profileImgUrl: String
 )
