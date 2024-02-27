@@ -7,7 +7,7 @@ import com.aoztg.greengrim.presentation.ui.info.model.UiMyCertificationList
 import com.aoztg.greengrim.presentation.ui.toCategoryText
 
 
-internal fun MyCertificationListResponse.toUiMyCertificationList(onItemClickListener: (Int) -> Unit): UiMyCertificationList{
+internal fun MyCertificationListResponse.toUiMyCertificationList(onItemClickListener: (Long) -> Unit): UiMyCertificationList{
     return UiMyCertificationList(
         hasNext = this.hasNext,
         page = this.page,

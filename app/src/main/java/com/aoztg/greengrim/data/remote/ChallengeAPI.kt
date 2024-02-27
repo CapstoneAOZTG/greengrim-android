@@ -20,7 +20,7 @@ interface ChallengeAPI {
 
     @GET("/challenges/{id}")
     suspend fun getChallengeDetail(
-        @Path("id") id : Int
+        @Path("id") id : Long
     ): Response<ChallengeDetailResponse>
 
     @GET("/challenges")
@@ -40,7 +40,7 @@ interface ChallengeAPI {
 
     @POST("/visitor/challenges/exit")
     suspend fun exitChallenge(
-        @Query("id") id: Int
+        @Query("id") id: Long
     ): Response<Unit>
 
     @GET("/visitor/keywords/random")

@@ -71,7 +71,7 @@ class ChallengeDetailFragment :
         )
     }
 
-    private fun NavController.toChatRoom(chatId: Int, challengeId: Int) {
+    private fun NavController.toChatRoom(chatId: Long, challengeId: Long) {
         val action = ChallengeDetailFragmentDirections.actionChallengeDetailFragmentToChatRoomFragment(chatId, challengeId)
         this.navigate(action)
     }

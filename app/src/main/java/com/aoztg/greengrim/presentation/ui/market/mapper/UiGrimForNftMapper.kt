@@ -5,7 +5,7 @@ import com.aoztg.greengrim.presentation.ui.market.model.UiGrimForNft
 
 
 internal fun MyGrimSimpleData.toUiGrimForNft(
-    itemSelectListener: (Int, String) -> Unit
+    itemSelectListener: (Long, String) -> Unit
 ) = UiGrimForNft(
     id = id,
     image = imgUrl,

@@ -41,7 +41,7 @@ sealed class CertificationListEvents {
     data class ShowYearMonthPicker(val curYear: Int, val curMonth: Int) : CertificationListEvents()
     data class ShowToastMessage(val msg: String) : CertificationListEvents()
     object ShowCalendar : CertificationListEvents()
-    data class NavigateToCertificationDetail(val certificationId: Int) : CertificationListEvents()
+    data class NavigateToCertificationDetail(val certificationId: Long) : CertificationListEvents()
     object NavigateToBack : CertificationListEvents()
     data class ShowSnackMessage(val msg: String) : CertificationListEvents()
 }
@@ -63,7 +63,7 @@ class CertificationListViewModel @Inject constructor(
     private val _events = MutableSharedFlow<CertificationListEvents>()
     val events: SharedFlow<CertificationListEvents> = _events.asSharedFlow()
 
-    private var challengeId = -1
+    private var challengeId = -1L
     private var curYear = 1980
     private var curMonth = 1
 
@@ -182,7 +182,7 @@ class CertificationListViewModel @Inject constructor(
         }
     }
 
-    fun setChallengeId(id: Int) {
+    fun setChallengeId(id: Long) {
         challengeId = id
     }
 
@@ -192,7 +192,7 @@ class CertificationListViewModel @Inject constructor(
         }
     }
 
-    private fun navigateToCertificationDetail(certificationId: Int) {
+    private fun navigateToCertificationDetail(certificationId: Long) {
         viewModelScope.launch {
             _events.emit(CertificationListEvents.NavigateToCertificationDetail(certificationId))
         }

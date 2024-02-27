@@ -13,7 +13,7 @@ data class ChallengeListItem(
 
 data class ChallengeInfo(
     val description: String,
-    val id: Int,
+    val id: Long,
     val imgUrl: String,
     val title: String
 )

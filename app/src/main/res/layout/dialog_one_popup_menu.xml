@@ -15,7 +15,7 @@
             android:layout_height="wrap_content"
             android:text="신고하기"
             android:textColor="@color/gg_red"
-            android:textSize="16sp"
+            android:textSize="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

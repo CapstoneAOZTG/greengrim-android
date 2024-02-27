@@ -9,12 +9,12 @@ internal fun NavController.toAttendCheck() {
     navigate(action)
 }
 
-internal fun NavController.toChallengeDetail(id: Int) {
+internal fun NavController.toChallengeDetail(id: Long) {
     val action = MainNavDirections.actionGlobalToChallengeDetailFragment(id)
     navigate(action)
 }
 
-internal fun NavController.toCertificationDetail(certificationId: Int) {
+internal fun NavController.toCertificationDetail(certificationId: Long) {
     val action = MainNavDirections.actionGlobalToCertificationDetail(certificationId)
     navigate(action)
 }
@@ -24,12 +24,12 @@ internal fun NavController.toCheckPassword(){
     navigate(action)
 }
 
-internal fun NavController.toNftDetail(nftId: Int){
+internal fun NavController.toNftDetail(nftId: Long){
     val action = MainNavDirections.actionGlobalToNftDetailFragment(nftId)
     navigate(action)
 }
 
-internal fun NavController.toGrimDetail(grimId: Int){
+internal fun NavController.toGrimDetail(grimId: Long){
     val action = MainNavDirections.actionGlobalToPaintDetailFragment(grimId)
     navigate(action)
 }
@@ -39,7 +39,7 @@ internal fun NavController.toMarket(){
     navigate(action)
 }
 
-internal fun NavController.toCreateNft(grimId: Int, grimUrl: String){
+internal fun NavController.toCreateNft(grimId: Long, grimUrl: String){
     val action = MainNavDirections.actionGlobalToCreateNftFragment(grimId, grimUrl)
     navigate(action)
 }

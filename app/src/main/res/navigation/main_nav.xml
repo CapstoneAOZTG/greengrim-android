@@ -71,7 +71,7 @@
         android:label="ChallengeDetail">
         <argument
             android:name="challengeId"
-            app:argType="integer" />
+            app:argType="long" />
         <action
             android:id="@+id/action_challenge_detail_fragment_to_chat_room_fragment"
             app:destination="@id/chat_room_fragment" />
@@ -96,10 +96,10 @@
             android:defaultValue="채팅방"/>
         <argument
             android:name="chatId"
-            app:argType="integer" />
+            app:argType="long" />
         <argument
             android:name="challengeId"
-            app:argType="integer" />
+            app:argType="long" />
         <action
             android:id="@+id/action_chat_room_fragment_to_certification_list_fragment"
             app:destination="@id/certification_list_fragment" />
@@ -118,7 +118,7 @@
 
         <argument
             android:name="challengeId"
-            app:argType="integer" />
+            app:argType="long" />
     </fragment>
 
     <fragment
@@ -127,10 +127,10 @@
         android:label="CreateCertification">
         <argument
             android:name="challengeId"
-            app:argType="integer" />
+            app:argType="long" />
         <argument
             android:name="chatId"
-            app:argType="integer" />
+            app:argType="long" />
     </fragment>
 
     <fragment
@@ -139,7 +139,7 @@
         android:label="CertificationDetail">
         <argument
             android:name="certificationId"
-            app:argType="integer" />
+            app:argType="long" />
     </fragment>
 
     <fragment
@@ -239,7 +239,7 @@
 
         <argument
             android:name="nftId"
-            app:argType="integer" />
+            app:argType="long" />
 
     </fragment>
 
@@ -250,7 +250,7 @@
 
         <argument
             android:name="nftId"
-            app:argType="integer" />
+            app:argType="long" />
 
     </fragment>
 
@@ -260,7 +260,7 @@
         android:label="PaintDetail">
         <argument
             android:name="grimId"
-            app:argType="integer" />
+            app:argType="long" />
 
     </fragment>
 
@@ -274,7 +274,7 @@
 
         <argument
             android:name="nftId"
-            app:argType="integer" />
+            app:argType="long" />
         <action
             android:id="@+id/action_nft_detail_fragment_to_purchase_nft_fragment"
             app:destination="@id/purchase_nft_fragment" />
@@ -313,7 +313,7 @@
         android:label="CreateNft">
         <argument
             android:name="grimId"
-            app:argType="integer" />
+            app:argType="long" />
 
         <argument
             android:name="grimUrl"

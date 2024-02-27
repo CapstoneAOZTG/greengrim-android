@@ -1,7 +1,7 @@
 package com.aoztg.greengrim.presentation.ui.global.model
 
 data class UiCertificationDetail(
-    val certificationId: Int = -1,
+    val certificationId: Long = -1,
     val challengeTitle: String = "",
     val category: String = "",
     val ticketCount: String = "",

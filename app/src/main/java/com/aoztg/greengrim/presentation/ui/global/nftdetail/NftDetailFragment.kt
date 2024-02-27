@@ -82,12 +82,12 @@ class NftDetailFragment : BaseFragment<FragmentNftDetailBinding>(R.layout.fragme
         }
     }
 
-    private fun NavController.toNftSell(nftId: Int) {
+    private fun NavController.toNftSell(nftId: Long) {
         val action = NftDetailFragmentDirections.actionNftDetailFragmentToSellNftFragment(nftId)
         navigate(action)
     }
 
-    private fun NavController.toNftPurchase(nftId: Int) {
+    private fun NavController.toNftPurchase(nftId: Long) {
         val action = NftDetailFragmentDirections.actionNftDetailFragmentToPurchaseNftFragment(nftId)
         navigate(action)
     }

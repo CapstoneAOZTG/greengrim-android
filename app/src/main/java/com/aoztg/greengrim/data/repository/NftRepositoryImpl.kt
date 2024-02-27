@@ -57,7 +57,7 @@ class NftRepositoryImpl @Inject constructor(
     override suspend fun createNft(body: CreateNftRequest): BaseState<CreateNftResponse> =
         runRemote { api.createNft(body) }
 
-    override suspend fun getGrimDetail(id: Int): BaseState<GrimDetailResponse> =
+    override suspend fun getGrimDetail(id: Long): BaseState<GrimDetailResponse> =
         runRemote { api.getGrimDetail(id) }
 
     override suspend fun getMoreNft(
@@ -72,7 +72,7 @@ class NftRepositoryImpl @Inject constructor(
         sort: String
     ): BaseState<NftListResponse> = runRemote { api.getMyNftList(page, size, sort) }
 
-    override suspend fun getNftDetail(id: Int): BaseState<NftDetailResponse> =
+    override suspend fun getNftDetail(id: Long): BaseState<NftDetailResponse> =
         runRemote { api.getNftDetail(id) }
 
     override suspend fun getMyGrimForNft(page: Int, size: Int): BaseState<MyGrimForNftResponse> =
@@ -90,9 +90,9 @@ class NftRepositoryImpl @Inject constructor(
     override suspend fun sellNft(body: SellNftRequest): BaseState<Unit> =
         runRemote { api.sellNft(body) }
 
-    override suspend fun getInfoBeforeSellNft(id: Int): BaseState<InfoBeforeSellNftResponse> =
+    override suspend fun getInfoBeforeSellNft(id: Long): BaseState<InfoBeforeSellNftResponse> =
         runRemote { api.getInfoBeforeSellNft(id) }
 
-    override suspend fun getInfoBeforePurchaseNft(id: Int): BaseState<InfoBeforePurchaseNftResponse> =
+    override suspend fun getInfoBeforePurchaseNft(id: Long): BaseState<InfoBeforePurchaseNftResponse> =
         runRemote { api.getInfoBeforePurchaseNft(id) }
 }

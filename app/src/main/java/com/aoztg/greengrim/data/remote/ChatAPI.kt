@@ -1,5 +1,6 @@
 package com.aoztg.greengrim.data.remote
 
+import com.aoztg.greengrim.data.model.response.ChatMessageResponse
 import com.aoztg.greengrim.data.model.response.ChatRoomsResponse
 import com.aoztg.greengrim.data.model.response.EnterChatResponse
 import retrofit2.Response
@@ -11,7 +12,7 @@ interface ChatAPI {
 
     @POST("/visitor/challenges/enter")
     suspend fun enterChat(
-        @Query("id") challengeId: Int
+        @Query("id") challengeId: Long
     ): Response<EnterChatResponse>
 
     @GET("/visitor/challenges/chatrooms")
@@ -19,6 +20,14 @@ interface ChatAPI {
 
     @POST("/visitor/chatrooms/exit")
     suspend fun exitChatRoom(
-        @Query("chatroomId") id: Int
+        @Query("chatroomId") id: Long
     ): Response<Unit>
+
+    @GET("/chat/message")
+    suspend fun getChatMessage(
+        @Query("roomId") roomId: Long,
+        @Query("page") page: Int,
+        @Query("size") size: Int
+    ): Response<ChatMessageResponse>
+
 }

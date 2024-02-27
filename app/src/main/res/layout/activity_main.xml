@@ -94,7 +94,7 @@
                 android:background="@drawable/shape_redfill_nostroke_radius100"
                 android:paddingHorizontal="5dp"
                 android:textColor="@color/white"
-                android:textSize="10sp"
+                android:textSize="10dp"
                 app:layout_constraintBottom_toBottomOf="@id/bnv"
                 app:layout_constraintStart_toEndOf="@id/guide"
                 app:layout_constraintTop_toTopOf="@id/bnv"

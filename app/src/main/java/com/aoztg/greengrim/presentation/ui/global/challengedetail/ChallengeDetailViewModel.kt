@@ -26,7 +26,7 @@ data class ChallengeDetailUiState(
 sealed class ChallengeDetailEvents {
     object NavigateBack : ChallengeDetailEvents()
     object PopUpMenu : ChallengeDetailEvents()
-    data class NavigateChatRoom(val chatId: Int, val challengeId: Int) : ChallengeDetailEvents()
+    data class NavigateChatRoom(val chatId: Long, val challengeId: Long) : ChallengeDetailEvents()
     data class ShowToastMessage(val msg: String) : ChallengeDetailEvents()
     data class ShowSnackMessage(val msg: String) : ChallengeDetailEvents()
     object ShowLoading : ChallengeDetailEvents()
@@ -45,7 +45,7 @@ class ChallengeDetailViewModel @Inject constructor(
     private val _events = MutableSharedFlow<ChallengeDetailEvents>()
     val events: SharedFlow<ChallengeDetailEvents> = _events.asSharedFlow()
 
-    private var challengeId = -1
+    private var challengeId = -1L
 
     fun getChallengeDetailInfo() {
         viewModelScope.launch {
@@ -85,7 +85,7 @@ class ChallengeDetailViewModel @Inject constructor(
         }
     }
 
-    fun enterChat(id: Int) {
+    fun enterChat(id: Long) {
         viewModelScope.launch {
 
             _events.emit(ChallengeDetailEvents.ShowLoading)
@@ -112,7 +112,7 @@ class ChallengeDetailViewModel @Inject constructor(
         }
     }
 
-    fun setChallengeId(data: Int) {
+    fun setChallengeId(data: Long) {
         challengeId = data
     }
 

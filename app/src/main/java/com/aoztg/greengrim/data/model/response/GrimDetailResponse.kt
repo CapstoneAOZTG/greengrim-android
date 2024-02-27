@@ -7,7 +7,7 @@ data class GrimDetailResponse(
 )
 
 data class GrimDetailItem(
-    val id: Int,
+    val id: Long,
     val imgUrl: String,
     val title: String,
     val memberSimpleInfo: MemberSimpleInfo

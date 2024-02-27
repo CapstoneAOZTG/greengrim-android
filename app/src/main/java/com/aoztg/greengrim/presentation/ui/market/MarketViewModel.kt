@@ -30,8 +30,8 @@ data class MarketUiState(
 )
 
 sealed class MarketEvents {
-    data class NavigateToGrimDetail(val id: Int) : MarketEvents()
-    data class NavigateToNftDetail(val id: Int) : MarketEvents()
+    data class NavigateToGrimDetail(val id: Long) : MarketEvents()
+    data class NavigateToNftDetail(val id: Long) : MarketEvents()
     object NavigateToCreateNftOrPaint : MarketEvents()
     object ShowBottomSheet : MarketEvents()
     object ScrollToTop : MarketEvents()
@@ -108,13 +108,13 @@ class MarketViewModel @Inject constructor(
         }
     }
 
-    private fun navigateToNftDetail(id: Int) {
+    private fun navigateToNftDetail(id: Long) {
         viewModelScope.launch {
             _events.emit(MarketEvents.NavigateToNftDetail(id))
         }
     }
 
-    private fun navigateToGrimDetail(id: Int) {
+    private fun navigateToGrimDetail(id: Long) {
         viewModelScope.launch {
             _events.emit(MarketEvents.NavigateToGrimDetail(id))
         }
