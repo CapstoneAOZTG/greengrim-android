@@ -7,7 +7,7 @@
 
         <variable
             name="vm"
-            type="com.aoztg.greengrim.presentation.ui.market.nftlist.NftListViewModel" />
+            type="com.aoztg.greengrim.presentation.ui.nft.nftlist.NftListViewModel" />
 
     </data>
 

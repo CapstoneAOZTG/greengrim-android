@@ -60,26 +60,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:menu="@menu/main_menu" />
 
-            <View
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:background="@drawable/shape_dark_circle"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-
-            <ImageButton
-                android:id="@+id/btn_home"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_marginBottom="10dp"
-                android:background="@android:color/transparent"
-                android:scaleType="fitCenter"
-                android:src="@drawable/menu_earth"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guide"
                 android:layout_width="wrap_content"

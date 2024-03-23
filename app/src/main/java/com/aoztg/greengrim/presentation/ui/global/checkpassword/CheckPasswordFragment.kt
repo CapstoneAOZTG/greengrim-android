@@ -92,7 +92,7 @@ class CheckPasswordFragment: BaseFragment<FragmentCheckPasswordBinding>(R.layout
                     is CheckPasswordEvents.ShowLoading -> showLoading(requireContext())
                     is CheckPasswordEvents.DismissLoading -> dismissLoading()
                     is CheckPasswordEvents.NavigateToMarket -> {
-                        findNavController().popBackStack(R.id.market_fragment,true)
+                        findNavController().popBackStack(R.id.nft_fragment,true)
                         findNavController().toMarket()
                     }
                 }

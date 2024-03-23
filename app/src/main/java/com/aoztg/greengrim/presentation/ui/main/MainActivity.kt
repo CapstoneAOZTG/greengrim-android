@@ -32,7 +32,6 @@ import com.aoztg.greengrim.presentation.customview.PhotoBottomSheet
 import com.aoztg.greengrim.presentation.ui.editgrim.CompleteGrim
 import com.aoztg.greengrim.presentation.ui.editgrim.EditGrimActivity
 import com.aoztg.greengrim.presentation.ui.editgrim.GrimState
-import com.aoztg.greengrim.presentation.ui.home.HomeFragmentDirections
 import com.aoztg.greengrim.presentation.ui.intro.IntroActivity
 import com.aoztg.greengrim.presentation.ui.toCreateNft
 import com.aoztg.greengrim.presentation.ui.toGrimDetail
@@ -129,13 +128,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
 
         with(binding) {
-            bnv.itemIconTintList = null
-            bnv.selectedItemId = R.id.placeholder
 
             bnv.apply {
                 setupWithNavController(navController)
                 setOnItemSelectedListener { item ->
-                    if (item.itemId == R.id.market_fragment && CompleteGrim.grimState != GrimState.NONE) {
+                    if (item.itemId == R.id.nft_fragment && CompleteGrim.grimState != GrimState.NONE) {
                         val intent = Intent(this@MainActivity, EditGrimActivity::class.java)
                         startActivity(intent)
                     }
@@ -143,11 +140,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                     navController.popBackStack(item.itemId, inclusive = false)
                     true
                 }
-            }
-
-            btnHome.setOnClickListener {
-                val action = HomeFragmentDirections.actionGlobalToHomeFragment()
-                navController.navigate(action)
             }
 
         }

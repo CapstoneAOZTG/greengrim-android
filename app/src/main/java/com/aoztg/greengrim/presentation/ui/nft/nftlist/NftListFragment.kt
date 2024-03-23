@@ -1,4 +1,4 @@
-package com.aoztg.greengrim.presentation.ui.info.mynft
+package com.aoztg.greengrim.presentation.ui.nft.nftlist
 
 import android.os.Bundle
 import android.view.View
@@ -8,21 +8,21 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.aoztg.greengrim.R
-import com.aoztg.greengrim.databinding.FragmentMyNftBinding
+import com.aoztg.greengrim.databinding.FragmentNftListBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
 import com.aoztg.greengrim.presentation.customview.GrimNftFilterBottomSheet
-import com.aoztg.greengrim.presentation.ui.challenge.list.ChallengeListViewModel
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 import com.aoztg.greengrim.presentation.ui.nft.GrimNftSortType
 import com.aoztg.greengrim.presentation.ui.nft.MarketViewModel
 import com.aoztg.greengrim.presentation.ui.nft.adapter.NftItemAdapter
+import com.aoztg.greengrim.presentation.ui.nft.nftlist.NftListViewModel.Companion.ORIGINAL
 import com.aoztg.greengrim.presentation.ui.toNftDetail
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MyNftFragment : BaseFragment<FragmentMyNftBinding>(R.layout.fragment_my_nft) {
+class NftListFragment : BaseFragment<FragmentNftListBinding>(R.layout.fragment_nft_list) {
 
-    private val viewModel: MyNftViewModel by viewModels()
+    private val viewModel: NftListViewModel by viewModels()
     private val parentViewModel: MainViewModel by activityViewModels()
     private var sortType = GrimNftSortType.DESC
 
@@ -38,24 +38,24 @@ class MyNftFragment : BaseFragment<FragmentMyNftBinding>(R.layout.fragment_my_nf
 
     override fun onResume() {
         super.onResume()
-        viewModel.getGrimList(ChallengeListViewModel.ORIGINAL)
+        viewModel.getGrimList(ORIGINAL)
     }
 
     private fun initEventObserver() {
         repeatOnStarted {
             viewModel.events.collect {
                 when (it) {
-                    is MyNftEvents.NavigateToNftDetail -> findNavController().toNftDetail(it.id)
-                    is MyNftEvents.ShowBottomSheet -> showBottomSheet()
-                    is MyNftEvents.ScrollToTop -> binding.rvNftList.smoothScrollToPosition(0)
-                    is MyNftEvents.ShowLoading -> showLoading(requireContext())
-                    is MyNftEvents.DismissLoading -> dismissLoading()
-                    is MyNftEvents.ShowSnackMessage -> showCustomSnack(
+                    is NftListEvents.NavigateToNftDetail -> findNavController().toNftDetail(it.id)
+                    is NftListEvents.ShowBottomSheet -> showBottomSheet()
+                    is NftListEvents.ScrollToTop -> binding.rvNftList.smoothScrollToPosition(0)
+                    is NftListEvents.ShowLoading -> showLoading(requireContext())
+                    is NftListEvents.DismissLoading -> dismissLoading()
+                    is NftListEvents.ShowSnackMessage -> showCustomSnack(
                         binding.rvNftList,
                         it.msg
                     )
 
-                    is MyNftEvents.NavigateToBack -> findNavController().navigateUp()
+                    is NftListEvents.NavigateToBack -> findNavController().navigateUp()
                 }
             }
         }

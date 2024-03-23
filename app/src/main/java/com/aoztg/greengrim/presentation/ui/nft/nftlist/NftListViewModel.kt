@@ -1,4 +1,4 @@
-package com.aoztg.greengrim.presentation.ui.info.mynft
+package com.aoztg.greengrim.presentation.ui.nft.nftlist
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -21,25 +21,27 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-data class MyNftUiState(
+
+data class NftListUiState(
     val nftList: List<UiNftItem> = emptyList(),
     val sortType: GrimNftSortType = GrimNftSortType.DESC,
     val page: Int = 0,
     val hasNext: Boolean = true,
 )
 
-sealed class MyNftEvents {
-    data class NavigateToNftDetail(val id: Long) : MyNftEvents()
-    object ShowBottomSheet : MyNftEvents()
-    object ScrollToTop : MyNftEvents()
-    data class ShowSnackMessage(val msg: String) : MyNftEvents()
-    object ShowLoading : MyNftEvents()
-    object DismissLoading : MyNftEvents()
-    object NavigateToBack : MyNftEvents()
+sealed class NftListEvents {
+    data class NavigateToNftDetail(val id: Long) : NftListEvents()
+    object ShowBottomSheet : NftListEvents()
+    object ScrollToTop : NftListEvents()
+    data class ShowSnackMessage(val msg: String) : NftListEvents()
+    object ShowLoading : NftListEvents()
+    object DismissLoading : NftListEvents()
+    object NavigateToBack : NftListEvents()
 }
 
+
 @HiltViewModel
-class MyNftViewModel @Inject constructor(
+class NftListViewModel @Inject constructor(
     private val nftRepository: NftRepository
 ) : ViewModel() {
 
@@ -48,19 +50,19 @@ class MyNftViewModel @Inject constructor(
         const val ORIGINAL = 1
     }
 
-    private val _uiState = MutableStateFlow(MyNftUiState())
-    val uiState: StateFlow<MyNftUiState> = _uiState.asStateFlow()
+    private val _uiState = MutableStateFlow(NftListUiState())
+    val uiState: StateFlow<NftListUiState> = _uiState.asStateFlow()
 
-    private val _events = MutableSharedFlow<MyNftEvents>()
-    val events: SharedFlow<MyNftEvents> = _events.asSharedFlow()
+    private val _events = MutableSharedFlow<NftListEvents>()
+    val events: SharedFlow<NftListEvents> = _events.asSharedFlow()
 
     fun getGrimList(option: Int) {
 
         if (uiState.value.hasNext) {
             viewModelScope.launch {
-                _events.emit(MyNftEvents.ShowLoading)
+                _events.emit(NftListEvents.ShowLoading)
 
-                nftRepository.getMyNftList(
+                nftRepository.getMoreNft(
                     uiState.value.page,
                     20,
                     uiState.value.sortType.value
@@ -78,10 +80,10 @@ class MyNftViewModel @Inject constructor(
                             }
                         }
 
-                        is BaseState.Error -> _events.emit(MyNftEvents.ShowSnackMessage(it.msg))
+                        is BaseState.Error -> _events.emit(NftListEvents.ShowSnackMessage(it.msg))
                     }
                     delay(500)
-                    _events.emit(MyNftEvents.DismissLoading)
+                    _events.emit(NftListEvents.DismissLoading)
                 }
             }
         }
@@ -90,19 +92,19 @@ class MyNftViewModel @Inject constructor(
 
     private fun navigateToNftDetail(id: Long) {
         viewModelScope.launch {
-            _events.emit(MyNftEvents.NavigateToNftDetail(id))
+            _events.emit(NftListEvents.NavigateToNftDetail(id))
         }
     }
 
-    fun navigateToBack() {
+    private fun navigateToBack() {
         viewModelScope.launch {
-            _events.emit(MyNftEvents.NavigateToBack)
+            _events.emit(NftListEvents.NavigateToBack)
         }
     }
 
     fun showBottomSheet() {
         viewModelScope.launch {
-            _events.emit(MyNftEvents.ShowBottomSheet)
+            _events.emit(NftListEvents.ShowBottomSheet)
         }
     }
 
@@ -114,5 +116,4 @@ class MyNftViewModel @Inject constructor(
         )
         getGrimList(MarketViewModel.SORT)
     }
-
 }

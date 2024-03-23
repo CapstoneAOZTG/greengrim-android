@@ -6,7 +6,7 @@ import androidx.core.content.ContextCompat
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.app.App
 import com.aoztg.greengrim.databinding.BottomsheetGrimNftFilterBinding
-import com.aoztg.greengrim.presentation.ui.market.GrimNftSortType
+import com.aoztg.greengrim.presentation.ui.nft.GrimNftSortType
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
 class GrimNftFilterBottomSheet(

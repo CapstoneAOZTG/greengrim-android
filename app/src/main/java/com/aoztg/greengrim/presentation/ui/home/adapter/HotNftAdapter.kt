@@ -4,8 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.aoztg.greengrim.databinding.ItemHomeHotNftBinding
-import com.aoztg.greengrim.databinding.ItemNftListBinding
-import com.aoztg.greengrim.presentation.ui.market.model.UiNftItem
+import com.aoztg.greengrim.presentation.ui.nft.model.UiNftItem
 
 class HotNftAdapter(val data: List<UiNftItem>) : RecyclerView.Adapter<HotNftViewHolder>() {
 
