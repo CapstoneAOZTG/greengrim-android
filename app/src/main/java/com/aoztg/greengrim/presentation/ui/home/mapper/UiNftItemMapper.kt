@@ -1,7 +1,7 @@
 package com.aoztg.greengrim.presentation.ui.home.mapper
 
 import com.aoztg.greengrim.data.model.response.NftListItem
-import com.aoztg.greengrim.presentation.ui.market.model.UiNftItem
+import com.aoztg.greengrim.presentation.ui.nft.model.UiNftItem
 
 internal fun NftListItem.toUiNftItem(onItemClickListener: (Long) -> Unit) = UiNftItem(
     id = nftAndMemberInfo.nftSimpleInfo.id,

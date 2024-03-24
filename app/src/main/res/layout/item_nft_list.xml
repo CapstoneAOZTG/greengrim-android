@@ -7,7 +7,7 @@
 
         <variable
             name="item"
-            type="com.aoztg.greengrim.presentation.ui.market.model.UiNftItem" />
+            type="com.aoztg.greengrim.presentation.ui.nft.model.UiNftItem" />
 
     </data>
 

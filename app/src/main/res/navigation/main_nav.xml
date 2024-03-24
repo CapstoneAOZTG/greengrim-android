@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_nav"
     app:startDestination="@id/home_fragment">
 
     <fragment
         android:id="@+id/home_fragment"
         android:name="com.aoztg.greengrim.presentation.ui.home.HomeFragment"
-        android:label="Home">
+        android:label="Home"
+        tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_home_fragment_to_nft_list_fragment"
             app:destination="@id/nft_list_fragment" />
@@ -16,7 +18,8 @@
     <fragment
         android:id="@+id/challenge_category_fragment"
         android:name="com.aoztg.greengrim.presentation.ui.challenge.category.ChallengeCategoryFragment"
-        android:label="Challenge">
+        android:label="Challenge"
+        tools:layout="@layout/fragment_challenge_category">
         <action
             android:id="@+id/action_challenge_category_fragment_to_create_challenge_fragment"
             app:destination="@id/create_challenge_fragment" />
@@ -28,7 +31,8 @@
     <fragment
         android:id="@+id/challenge_list_fragment"
         android:name="com.aoztg.greengrim.presentation.ui.challenge.list.ChallengeListFragment"
-        android:label="ChallengeList">
+        android:label="ChallengeList"
+        tools:layout="@layout/fragment_challenge_list">
         <argument
             android:name="categoryText"
             app:argType="string" />
@@ -43,7 +47,8 @@
     <fragment
         android:id="@+id/create_challenge_fragment"
         android:name="com.aoztg.greengrim.presentation.ui.challenge.create.CreateChallengeFragment"
-        android:label="CreateChallenget">
+        android:label="CreateChallenget"
+        tools:layout="@layout/fragment_create_challenge">
         <action
             android:id="@+id/action_create_challenge_fragment_to_create_challenge_detail_fragment"
             app:destination="@id/create_challenge_detail_fragment" />
@@ -52,7 +57,8 @@
     <fragment
         android:id="@+id/create_challenge_detail_fragment"
         android:name="com.aoztg.greengrim.presentation.ui.challenge.create.CreateChallengeDetailFragment"
-        android:label="CreateChallengeDetail">
+        android:label="CreateChallengeDetail"
+        tools:layout="@layout/fragment_create_challenge_detail">
         <argument
             android:name="categoryText"
             app:argType="string" />
@@ -68,7 +74,8 @@
     <fragment
         android:id="@+id/challenge_detail_fragment"
         android:name="com.aoztg.greengrim.presentation.ui.global.challengedetail.ChallengeDetailFragment"
-        android:label="ChallengeDetail">
+        android:label="ChallengeDetail"
+        tools:layout="@layout/fragment_challenge_detail">
         <argument
             android:name="challengeId"
             app:argType="long" />
@@ -80,7 +87,8 @@
     <fragment
         android:id="@+id/chat_list_fragment"
         android:name="com.aoztg.greengrim.presentation.ui.chat.chatlist.ChatListFragment"
-        android:label="ChatList">
+        android:label="ChatList"
+        tools:layout="@layout/fragment_chat_list">
         <action
             android:id="@+id/action_chat_list_fragment_to_chat_room_fragment"
             app:destination="@id/chat_room_fragment" />
@@ -89,11 +97,12 @@
     <fragment
         android:id="@+id/chat_room_fragment"
         android:name="com.aoztg.greengrim.presentation.ui.chat.chatroom.ChatRoomFragment"
-        android:label="ChatRoom">
+        android:label="ChatRoom"
+        tools:layout="@layout/fragment_chat_room">
         <argument
             android:name="chatName"
-            app:argType="string"
-            android:defaultValue="채팅방"/>
+            android:defaultValue="채팅방"
+            app:argType="string" />
         <argument
             android:name="chatId"
             app:argType="long" />
@@ -114,7 +123,8 @@
     <fragment
         android:id="@+id/certification_list_fragment"
         android:name="com.aoztg.greengrim.presentation.ui.chat.certificationlist.CertificationListFragment"
-        android:label="CertificationList">
+        android:label="CertificationList"
+        tools:layout="@layout/fragment_certification_list">
 
         <argument
             android:name="challengeId"
@@ -124,7 +134,8 @@
     <fragment
         android:id="@+id/create_certification_fragment"
         android:name="com.aoztg.greengrim.presentation.ui.chat.createcertification.CreateCertificationFragment"
-        android:label="CreateCertification">
+        android:label="CreateCertification"
+        tools:layout="@layout/fragment_create_certification">
         <argument
             android:name="challengeId"
             app:argType="long" />
@@ -136,31 +147,31 @@
     <fragment
         android:id="@+id/certification_detail_fragment"
         android:name="com.aoztg.greengrim.presentation.ui.global.certificationdetail.CertificationDetailFragment"
-        android:label="CertificationDetail">
+        android:label="CertificationDetail"
+        tools:layout="@layout/fragment_certification_detail">
         <argument
             android:name="certificationId"
             app:argType="long" />
     </fragment>
 
     <fragment
-        android:id="@+id/market_fragment"
-        android:name="com.aoztg.greengrim.presentation.ui.market.MarketFragment"
-        android:label="Market">
+        android:id="@+id/nft_fragment"
+        android:name="com.aoztg.greengrim.presentation.ui.nft.NftFragment"
+        android:label="Nft"
+        tools:layout="@layout/fragment_nft">
         <action
-            android:id="@+id/action_market_fragment_to_create_nft_or_paint_fragment"
-            app:destination="@id/create_nft_or_paint_fragment" />
-        <action
-            android:id="@+id/action_market_fragment_to_nft_list_fragment"
+            android:id="@+id/action_nft_fragment_to_nft_list_fragment"
             app:destination="@id/nft_list_fragment" />
+        <action
+            android:id="@+id/action_nft_fragment_to_create_nft_fragment"
+            app:destination="@id/create_nft_fragment" />
     </fragment>
 
     <fragment
         android:id="@+id/info_fragment"
-        android:name="com.aoztg.greengrim.presentation.ui.info.info.InfoFragment"
+        tools:layout="@layout/fragment_info"
+        android:name="com.aoztg.greengrim.presentation.ui.info.InfoFragment"
         android:label="Info">
-        <action
-            android:id="@+id/action_info_fragment_to_edit_profile_fragment"
-            app:destination="@id/edit_profile_fragment" />
         <action
             android:id="@+id/action_info_fragment_to_my_challenge_fragment"
             app:destination="@id/my_challenge_fragment" />
@@ -171,61 +182,62 @@
             android:id="@+id/action_info_fragment_to_my_wallet_fragment"
             app:destination="@id/my_wallet_fragment" />
         <action
-            android:id="@+id/action_info_fragment_to_my_keyword_fragment"
-            app:destination="@id/my_keyword_fragment" />
-        <action
-            android:id="@+id/action_info_fragment_to_my_paint_fragment"
-            app:destination="@id/my_paint_fragment" />
-        <action
             android:id="@+id/action_info_fragment_to_my_nft_fragment"
             app:destination="@id/my_nft_fragment" />
+        <action
+            android:id="@+id/action_info_fragment_to_myProfileFragment"
+            app:destination="@id/myProfileFragment" />
+        <action
+            android:id="@+id/action_info_fragment_to_myPointFragment"
+            app:destination="@id/myPointFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/edit_profile_fragment"
+        tools:layout="@layout/fragment_edit_profile"
         android:name="com.aoztg.greengrim.presentation.ui.info.editprofile.EditProfileFragment"
         android:label="EditProfile" />
 
     <fragment
         android:id="@+id/my_challenge_fragment"
+        tools:layout="@layout/fragment_my_challenge"
         android:name="com.aoztg.greengrim.presentation.ui.info.mychallenge.MyChallengeFragment"
         android:label="MyChallenge" />
 
     <fragment
         android:id="@+id/my_certification_fragment"
+        tools:layout="@layout/fragment_my_certification"
         android:name="com.aoztg.greengrim.presentation.ui.info.mycertification.MyCertificationFragment"
         android:label="MyCertification" />
 
     <fragment
-        android:id="@+id/my_keyword_fragment"
-        android:name="com.aoztg.greengrim.presentation.ui.info.mykeyword.MyKeywordFragment"
-        android:label="MyKeyword" />
-
-    <fragment
-        android:id="@+id/my_paint_fragment"
-        android:name="com.aoztg.greengrim.presentation.ui.info.mypaint.MyPaintFragment"
-        android:label="MyPaint" />
-
-    <fragment
         android:id="@+id/my_nft_fragment"
+        tools:layout="@layout/fragment_my_nft"
         android:name="com.aoztg.greengrim.presentation.ui.info.mynft.MyNftFragment"
         android:label="MyNft" />
 
     <fragment
         android:id="@+id/my_wallet_fragment"
+        tools:layout="@layout/fragment_my_wallet"
         android:name="com.aoztg.greengrim.presentation.ui.info.mywallet.MyWalletFragment"
-        android:label="MyWallet" />
+        android:label="MyWallet" >
+        <action
+            android:id="@+id/action_my_wallet_fragment_to_addWalletFragment"
+            app:destination="@id/addWalletFragment" />
+    </fragment>
 
 
     <fragment
         android:id="@+id/attend_check_fragment"
         android:name="com.aoztg.greengrim.presentation.ui.global.attendcheck.AttendCheckFragment"
-        android:label="AttendCheck" />
+        android:label="AttendCheck"
+        tools:layout="@layout/fragment_attend_check" />
 
     <fragment
         android:id="@+id/check_password_fragment"
         android:name="com.aoztg.greengrim.presentation.ui.global.checkpassword.CheckPasswordFragment"
-        android:label="CheckPassword" />
+        android:label="CheckPassword"
+        tools:layout="@layout/fragment_check_password" />
 
     <fragment
         android:id="@+id/set_wallet_password_fragment"
@@ -233,84 +245,32 @@
         android:label="SetWalletPassword" />
 
     <fragment
-        android:id="@+id/sell_nft_fragment"
-        android:name="com.aoztg.greengrim.presentation.ui.global.nftdetail.transaction.sell.SellNftFragment"
-        android:label="SellNft">
-
-        <argument
-            android:name="nftId"
-            app:argType="long" />
-
-    </fragment>
-
-    <fragment
-        android:id="@+id/purchase_nft_fragment"
-        android:name="com.aoztg.greengrim.presentation.ui.global.nftdetail.transaction.purchase.PurchaseNftFragment"
-        android:label="PurchaseNft">
-
-        <argument
-            android:name="nftId"
-            app:argType="long" />
-
-    </fragment>
-
-    <fragment
-        android:id="@+id/paint_detail_fragment"
-        android:name="com.aoztg.greengrim.presentation.ui.global.paintdetail.PaintDetailFragment"
-        android:label="PaintDetail">
-        <argument
-            android:name="grimId"
-            app:argType="long" />
-
-    </fragment>
-
-    <fragment
         android:id="@+id/nft_detail_fragment"
         android:name="com.aoztg.greengrim.presentation.ui.global.nftdetail.NftDetailFragment"
-        android:label="NftDetail">
-        <action
-            android:id="@+id/action_nft_detail_fragment_to_sell_nft_fragment"
-            app:destination="@id/sell_nft_fragment" />
+        android:label="NftDetail"
+        tools:layout="@layout/fragment_nft_detail">
 
         <argument
             android:name="nftId"
             app:argType="long" />
-        <action
-            android:id="@+id/action_nft_detail_fragment_to_purchase_nft_fragment"
-            app:destination="@id/purchase_nft_fragment" />
 
     </fragment>
 
     <fragment
         android:id="@+id/nft_list_fragment"
-        android:name="com.aoztg.greengrim.presentation.ui.market.nftlist.NftListFragment"
-        android:label="NftList" />
-
-    <fragment
-        android:id="@+id/create_nft_or_paint_fragment"
-        android:name="com.aoztg.greengrim.presentation.ui.market.create.CreateNftOrPaintFragment"
-        android:label="CreateNftOrPaint">
+        android:name="com.aoztg.greengrim.presentation.ui.nft.nftlist.NftListFragment"
+        android:label="NftList"
+        tools:layout="@layout/fragment_nft_list">
         <action
-            android:id="@+id/action_create_nft_or_paint_fragment_to_create_paint_fragment"
-            app:destination="@id/create_paint_fragment" />
-        <action
-            android:id="@+id/action_create_nft_or_paint_fragment_to_choose_grim_fragment"
-            app:destination="@id/choose_grim_fragment" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/create_paint_fragment"
-        android:name="com.aoztg.greengrim.presentation.ui.market.create.createpaint.CreatePaintFragment"
-        android:label="CreatePaint">
-        <action
-            android:id="@+id/action_create_paint_fragment_to_wait_drawing_fragment"
-            app:destination="@id/wait_drawing_fragment" />
+            android:id="@+id/action_nft_list_fragment_to_create_nft_fragment"
+            app:destination="@id/create_nft_fragment" />
     </fragment>
 
     <fragment
         android:id="@+id/create_nft_fragment"
-        android:name="com.aoztg.greengrim.presentation.ui.market.create.createnft.CreateNftFragment"
-        android:label="CreateNft">
+        android:name="com.aoztg.greengrim.presentation.ui.nft.create.createnft.CreateNftFragment"
+        android:label="CreateNft"
+        tools:layout="@layout/fragment_create_nft">
         <argument
             android:name="grimId"
             app:argType="long" />
@@ -318,37 +278,54 @@
         <argument
             android:name="grimUrl"
             app:argType="string" />
+        <action
+            android:id="@+id/action_create_nft_fragment_to_createNftDetailFragment"
+            app:destination="@id/createNftDetailFragment" />
     </fragment>
 
     <fragment
-        android:id="@+id/wait_drawing_fragment"
-        android:name="com.aoztg.greengrim.presentation.ui.market.create.WaitDrawingFragment"
-        android:label="WaitDrawing">
+        android:id="@+id/createNftDetailFragment"
+        android:name="com.aoztg.greengrim.presentation.ui.nft.create.detail.CreateNftDetailFragment"
+        android:label="CreateNftDetailFragment"
+        tools:layout="@layout/fragment_create_nft_detail">
         <action
-            android:id="@+id/action_wait_drawing_fragment_to_market_fragment"
-            app:destination="@id/market_fragment" />
+            android:id="@+id/action_createNftDetailFragment_to_editCreatedNftFragment"
+            app:destination="@id/editCreatedNftFragment" />
     </fragment>
 
     <fragment
-        android:id="@+id/choose_grim_fragment"
-        android:name="com.aoztg.greengrim.presentation.ui.market.create.createnft.ChooseGrimFragment"
-        android:label="ChooseGrim">
+        android:id="@+id/editCreatedNftFragment"
+        android:name="com.aoztg.greengrim.presentation.ui.nft.create.edit.EditCreatedNftFragment"
+        android:label="EditCreatedNftFragment"
+        tools:layout="@layout/fragment_edit_created_nft" />
+
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.aoztg.greengrim.presentation.ui.global.profile.ProfileFragment"
+        android:label="ProfileFragment"
+        tools:layout="@layout/fragment_profile" />
+
+    <fragment
+        android:id="@+id/myProfileFragment"
+        tools:layout="@layout/fragment_my_profile"
+        android:name="com.aoztg.greengrim.presentation.ui.info.myprofile.MyProfileFragment"
+        android:label="MyProfileFragment" >
         <action
-            android:id="@+id/action_choose_grim_fragment_to_create_nft_fragment"
-            app:destination="@id/create_nft_fragment" />
-        <action
-            android:id="@+id/action_choose_grim_fragment_to_create_paint_fragment"
-            app:destination="@id/create_paint_fragment" />
+            android:id="@+id/action_myProfileFragment_to_edit_profile_fragment"
+            app:destination="@id/edit_profile_fragment" />
     </fragment>
 
     <fragment
-        android:id="@+id/edit_grim_fragment"
-        android:name="com.aoztg.greengrim.presentation.ui.editgrim.EditGrimActivity"
-        android:label="EditGrim" />
+        android:id="@+id/myPointFragment"
+        tools:layout="@layout/fragment_my_point"
+        android:name="com.aoztg.greengrim.presentation.ui.info.mypoint.MyPointFragment"
+        android:label="MyPointFragment" />
 
-    <action
-        android:id="@+id/action_global_to_homeFragment"
-        app:destination="@id/home_fragment" />
+    <fragment
+        android:id="@+id/addWalletFragment"
+        tools:layout="@layout/fragment_add_wallet"
+        android:name="com.aoztg.greengrim.presentation.ui.info.mywallet.AddWalletFragment"
+        android:label="AddWalletFragment" />
 
     <action
         android:id="@+id/action_global_to_attendCheckFragment"
@@ -363,10 +340,6 @@
         app:destination="@id/certification_detail_fragment" />
 
     <action
-        android:id="@+id/action_global_to_paintDetailFragment"
-        app:destination="@id/paint_detail_fragment" />
-
-    <action
         android:id="@+id/action_global_to_nftDetailFragment"
         app:destination="@id/nft_detail_fragment" />
 
@@ -375,19 +348,13 @@
         app:destination="@id/set_wallet_password_fragment" />
 
     <action
-        android:id="@+id/action_global_to_editGrimFragment"
-        app:destination="@id/edit_grim_fragment" />
-
-    <action
         android:id="@+id/action_global_to_checkPasswordFragment"
         app:destination="@id/check_password_fragment" />
 
     <action
-        android:id="@+id/action_global_to_marketFragment"
-        app:destination="@id/market_fragment" />
+        android:id="@+id/action_global_to_profileFragment"
+        app:destination="@id/profileFragment" />
 
-    <action
-        android:id="@+id/action_global_to_createNftFragment"
-        app:destination="@id/create_nft_fragment" />
+
 
 </navigation>

@@ -6,9 +6,9 @@ import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.repository.NftRepository
 import com.aoztg.greengrim.presentation.ui.challenge.list.ChallengeListViewModel
 import com.aoztg.greengrim.presentation.ui.home.mapper.toUiNftItem
-import com.aoztg.greengrim.presentation.ui.market.GrimNftSortType
-import com.aoztg.greengrim.presentation.ui.market.MarketViewModel
-import com.aoztg.greengrim.presentation.ui.market.model.UiNftItem
+import com.aoztg.greengrim.presentation.ui.nft.GrimNftSortType
+import com.aoztg.greengrim.presentation.ui.nft.MarketViewModel
+import com.aoztg.greengrim.presentation.ui.nft.model.UiNftItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
