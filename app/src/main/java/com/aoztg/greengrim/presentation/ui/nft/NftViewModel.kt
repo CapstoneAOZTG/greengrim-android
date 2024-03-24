@@ -30,9 +30,7 @@ data class MarketUiState(
 )
 
 sealed class MarketEvents {
-    data class NavigateToGrimDetail(val id: Long) : MarketEvents()
     data class NavigateToNftDetail(val id: Long) : MarketEvents()
-    object NavigateToCreateNftOrPaint : MarketEvents()
     object ShowBottomSheet : MarketEvents()
     object ScrollToTop : MarketEvents()
     data class ShowSnackMessage(val msg: String) : MarketEvents()
@@ -70,15 +68,6 @@ class MarketViewModel @Inject constructor(
                 ).let {
                     when (it) {
                         is BaseState.Success -> {
-                            val uiData =
-                                it.body.result.map { data -> data.toUiGrimItem(::navigateToGrimDetail) }
-                            _uiState.update { state ->
-                                state.copy(
-                                    grimList = if (option == ChallengeListViewModel.ORIGINAL) uiState.value.grimList + uiData else uiData,
-                                    hasNext = it.body.hasNext,
-                                    page = it.body.page + 1,
-                                )
-                            }
                         }
 
                         is BaseState.Error -> _events.emit(MarketEvents.ShowSnackMessage(it.msg))
@@ -114,19 +103,7 @@ class MarketViewModel @Inject constructor(
         }
     }
 
-    private fun navigateToGrimDetail(id: Long) {
-        viewModelScope.launch {
-            _events.emit(MarketEvents.NavigateToGrimDetail(id))
-        }
-    }
-
-    fun navigateToCreateNftOrPaint() {
-        viewModelScope.launch {
-            _events.emit(MarketEvents.NavigateToCreateNftOrPaint)
-        }
-    }
-
-    fun navigateToNftList(){
+    fun navigateToNftList() {
         viewModelScope.launch {
             _events.emit(MarketEvents.NavigateToNftList)
         }

@@ -7,7 +7,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 
 class SettingBottomSheet(
     context: Context,
-    private val onEditProfileClickListener: () -> Unit,
     private val onNotificationClickListener: () -> Unit,
     private val onEditPasswordClickListener: () -> Unit,
     private val onAnnouncementClickListener: () -> Unit,
@@ -26,10 +25,6 @@ class SettingBottomSheet(
     }
 
     private fun setBottomSheetListener(){
-        binding.tvEditProfile.setOnClickListener {
-            onEditProfileClickListener()
-            dismiss()
-        }
 
         binding.tvNotification.setOnClickListener {
             onNotificationClickListener()

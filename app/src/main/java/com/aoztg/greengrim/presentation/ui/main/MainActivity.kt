@@ -29,12 +29,7 @@ import com.aoztg.greengrim.presentation.base.BaseActivity
 import com.aoztg.greengrim.presentation.chatmanager.ChatEvent
 import com.aoztg.greengrim.presentation.chatmanager.ChatManager
 import com.aoztg.greengrim.presentation.customview.PhotoBottomSheet
-import com.aoztg.greengrim.presentation.ui.editgrim.CompleteGrim
-import com.aoztg.greengrim.presentation.ui.editgrim.EditGrimActivity
-import com.aoztg.greengrim.presentation.ui.editgrim.GrimState
 import com.aoztg.greengrim.presentation.ui.intro.IntroActivity
-import com.aoztg.greengrim.presentation.ui.toCreateNft
-import com.aoztg.greengrim.presentation.ui.toGrimDetail
 import com.aoztg.greengrim.presentation.ui.toMultiPart
 import com.aoztg.greengrim.presentation.util.Constants
 import com.aoztg.greengrim.presentation.util.Constants.CAMERA_PERMISSION
@@ -75,18 +70,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         if (intent.hasExtra("target")) {
             when (intent.getStringExtra("target")) {
                 "GRIM_DETAIL" -> {
-                    intent.getLongExtra("grimId", -1).let {
-                        navController.toGrimDetail(it)
-                    }
                 }
 
                 "MARKET" -> {
                 }
 
                 "CREATE_NFT" -> {
-                    val grimId = intent.getLongExtra("grimId", -1)
-                    intent.getStringExtra("grimUrl")?.let {
-                        navController.toCreateNft(grimId, it) }
                 }
             }
         }
@@ -132,10 +121,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             bnv.apply {
                 setupWithNavController(navController)
                 setOnItemSelectedListener { item ->
-                    if (item.itemId == R.id.nft_fragment && CompleteGrim.grimState != GrimState.NONE) {
-                        val intent = Intent(this@MainActivity, EditGrimActivity::class.java)
-                        startActivity(intent)
-                    }
                     NavigationUI.onNavDestinationSelected(item, navController)
                     navController.popBackStack(item.itemId, inclusive = false)
                     true

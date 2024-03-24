@@ -9,9 +9,7 @@ import androidx.navigation.fragment.findNavController
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentCheckPasswordBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
-import com.aoztg.greengrim.presentation.ui.global.setwalletpassword.SetWalletPasswordEvents
 import com.aoztg.greengrim.presentation.ui.global.setwalletpassword.SetWalletPasswordFragment
-import com.aoztg.greengrim.presentation.ui.toMarket
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -93,7 +91,6 @@ class CheckPasswordFragment: BaseFragment<FragmentCheckPasswordBinding>(R.layout
                     is CheckPasswordEvents.DismissLoading -> dismissLoading()
                     is CheckPasswordEvents.NavigateToMarket -> {
                         findNavController().popBackStack(R.id.nft_fragment,true)
-                        findNavController().toMarket()
                     }
                 }
             }
