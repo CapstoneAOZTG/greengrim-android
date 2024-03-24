@@ -12,7 +12,7 @@ import com.aoztg.greengrim.presentation.ui.home.mapper.toUiNftItem
 import com.aoztg.greengrim.presentation.ui.home.model.UiHomeInfo
 import com.aoztg.greengrim.presentation.ui.home.model.UiHotChallenge
 import com.aoztg.greengrim.presentation.ui.home.model.UiMoreActivity
-import com.aoztg.greengrim.presentation.ui.market.model.UiNftItem
+import com.aoztg.greengrim.presentation.ui.nft.model.UiNftItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow

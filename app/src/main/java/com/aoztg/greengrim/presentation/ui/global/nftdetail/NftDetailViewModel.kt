@@ -25,8 +25,6 @@ data class NftDetailUiState(
 
 sealed class NftDetailEvents {
     data class ShowSnackMessage(val msg: String) : NftDetailEvents()
-    data class NavigateToPurchase(val nftId: Long) : NftDetailEvents()
-    data class NavigateToSell(val nftId: Long) : NftDetailEvents()
     object NavigateToBack: NftDetailEvents()
 }
 
@@ -51,10 +49,6 @@ class NftDetailViewModel @Inject constructor(
                 when(it){
                     is BaseState.Success -> {
                         if(it.body.existed){
-                            when(target){
-                                PURCHASE -> _events.emit(NftDetailEvents.NavigateToPurchase(nftId))
-                                SELL -> _events.emit(NftDetailEvents.NavigateToSell(nftId))
-                            }
                         } else {
                             _events.emit(NftDetailEvents.ShowSnackMessage("지갑을 먼저 생성해주세요!"))
                         }

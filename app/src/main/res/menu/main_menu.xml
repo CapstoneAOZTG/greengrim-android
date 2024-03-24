@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-
     <item
-        android:id="@+id/challenge_category_fragment"
-        android:icon="@drawable/selector_challenge"
-        android:title="챌린지"/>
+        android:id="@+id/home_fragment"
+        android:icon="@drawable/selector_home"
+        android:title="홈"/>
 
     <item
         android:id="@+id/chat_list_fragment"
@@ -13,16 +12,18 @@
         android:title="채팅방"/>
 
     <item
-        android:id="@+id/placeholder"
-        android:title=""/>
+        android:id="@+id/challenge_category_fragment"
+        android:icon="@drawable/selector_challenge"
+        android:title="챌린지"/>
 
     <item
-        android:id="@+id/market_fragment"
-        android:icon="@drawable/selector_market"
-        android:title="마켓"/>
+        android:id="@+id/nft_fragment"
+        android:icon="@drawable/selector_nft"
+        android:title="NFT"/>
 
     <item
         android:id="@+id/info_fragment"
-        android:icon="@drawable/selector_more"
-        android:title="더보기"/>
+        android:icon="@drawable/selector_my"
+        android:title="마이"/>
+
 </menu>

@@ -13,10 +13,9 @@ import com.aoztg.greengrim.presentation.base.BaseFragment
 import com.aoztg.greengrim.presentation.customview.GrimNftFilterBottomSheet
 import com.aoztg.greengrim.presentation.ui.challenge.list.ChallengeListViewModel
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
-import com.aoztg.greengrim.presentation.ui.market.GrimNftSortType
-import com.aoztg.greengrim.presentation.ui.market.MarketViewModel
-import com.aoztg.greengrim.presentation.ui.market.adapter.GrimItemAdapter
-import com.aoztg.greengrim.presentation.ui.market.adapter.NftItemAdapter
+import com.aoztg.greengrim.presentation.ui.nft.GrimNftSortType
+import com.aoztg.greengrim.presentation.ui.nft.MarketViewModel
+import com.aoztg.greengrim.presentation.ui.nft.adapter.NftItemAdapter
 import com.aoztg.greengrim.presentation.ui.toNftDetail
 import dagger.hilt.android.AndroidEntryPoint
 

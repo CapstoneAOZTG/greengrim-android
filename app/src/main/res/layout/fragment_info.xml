@@ -7,7 +7,7 @@
 
         <variable
             name="vm"
-            type="com.aoztg.greengrim.presentation.ui.info.info.InfoViewModel" />
+            type="com.aoztg.greengrim.presentation.ui.info.InfoViewModel" />
 
     </data>
 
@@ -104,7 +104,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
-                    android:onClick="@{() -> vm.navigateToEditProfile()}"
                     android:padding="10dp"
                     android:src="@drawable/icon_next"
                     app:layout_constraintBottom_toBottomOf="@id/iv_profile"
@@ -245,7 +244,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="12dp"
-                    android:onClick="@{() -> vm.navigateToMyWallet()}"
                     android:text="내 지갑"
                     app:layout_constraintStart_toStartOf="@id/tv_nft_label"
                     app:layout_constraintTop_toBottomOf="@id/tv_nft_label" />
@@ -256,34 +254,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:hasWallet="@{vm.uiState.uiMyInfo.hasWallet}"
-                    android:onClick="@{() -> vm.navigateToMyWallet()}"
                     app:layout_constraintBottom_toBottomOf="@id/tv_my_wallet"
                     app:layout_constraintEnd_toEndOf="parent"
                     tools:text="지갑이 없어요!" />
-
-                <TextView
-                    android:id="@+id/tv_my_keywords"
-                    style="@style/TextGgMedium"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:onClick="@{() -> vm.navigateToMyKeyword()}"
-                    android:text="내 키워드"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="@id/tv_my_wallet"
-                    app:layout_constraintTop_toBottomOf="@id/tv_my_wallet" />
-
-                <TextView
-                    android:id="@+id/tv_my_paints"
-                    style="@style/TextGgMedium"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:onClick="@{() -> vm.navigateToMyPaint()}"
-                    android:text="내 그림"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="@id/tv_my_wallet"
-                    app:layout_constraintTop_toBottomOf="@id/tv_my_keywords" />
 
                 <TextView
                     android:id="@+id/tv_my_nft"
@@ -295,7 +268,7 @@
                     android:text="내 NFT"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@id/tv_my_wallet"
-                    app:layout_constraintTop_toBottomOf="@id/tv_my_paints" />
+                    app:layout_constraintTop_toBottomOf="@id/tv_my_wallet" />
 
                 <TextView
                     android:id="@+id/tv_transaction_history"

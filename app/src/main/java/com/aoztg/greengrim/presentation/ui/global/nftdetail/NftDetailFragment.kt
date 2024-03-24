@@ -1,11 +1,9 @@
 package com.aoztg.greengrim.presentation.ui.global.nftdetail
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.aoztg.greengrim.R
@@ -13,7 +11,6 @@ import com.aoztg.greengrim.databinding.FragmentNftDetailBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
 import com.aoztg.greengrim.presentation.ui.global.model.NftState
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
-import com.aoztg.greengrim.presentation.util.Constants.TAG
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -74,21 +71,9 @@ class NftDetailFragment : BaseFragment<FragmentNftDetailBinding>(R.layout.fragme
             viewModel.events.collect {
                 when (it) {
                     is NftDetailEvents.ShowSnackMessage -> showCustomSnack(binding.ivGrim, it.msg)
-                    is NftDetailEvents.NavigateToPurchase -> findNavController().toNftPurchase(it.nftId)
-                    is NftDetailEvents.NavigateToSell -> findNavController().toNftSell(it.nftId)
                     is NftDetailEvents.NavigateToBack -> findNavController().navigateUp()
                 }
             }
         }
-    }
-
-    private fun NavController.toNftSell(nftId: Long) {
-        val action = NftDetailFragmentDirections.actionNftDetailFragmentToSellNftFragment(nftId)
-        navigate(action)
-    }
-
-    private fun NavController.toNftPurchase(nftId: Long) {
-        val action = NftDetailFragmentDirections.actionNftDetailFragmentToPurchaseNftFragment(nftId)
-        navigate(action)
     }
 }
