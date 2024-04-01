@@ -84,7 +84,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         binding.chatVm = chatManager
         checkNotificationPermission()
         setBottomNavigation()
-        setBottomNavigationListener()
         initEventObserver()
         initSocketObserver()
         setKeyboardListener()
@@ -117,8 +116,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
 
         with(binding) {
-
             bnv.apply {
+                itemIconTintList = null
                 setupWithNavController(navController)
                 setOnItemSelectedListener { item ->
                     NavigationUI.onNavDestinationSelected(item, navController)
@@ -127,15 +126,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                 }
             }
 
-        }
-    }
-
-    private fun setBottomNavigationListener() {
-        navController.addOnDestinationChangedListener { _, destination, _ ->
-            if (destination.id == R.id.home_fragment) {
-                val menu = binding.bnv.menu
-                menu.getItem(2).isChecked = true
-            }
         }
     }
 

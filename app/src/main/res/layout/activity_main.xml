@@ -43,10 +43,10 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
-            <com.aoztg.greengrim.presentation.customview.GgBottomNavigationView
+            <com.google.android.material.bottomnavigation.BottomNavigationView
                 android:id="@+id/bnv"
                 android:layout_width="0dp"
-                android:layout_height="60dp"
+                android:layout_height="70dp"
                 android:layout_gravity="bottom|center"
                 android:background="@color/gg_light_black"
                 app:elevation="0dp"
