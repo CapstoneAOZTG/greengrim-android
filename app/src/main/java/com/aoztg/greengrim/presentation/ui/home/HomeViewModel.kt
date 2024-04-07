@@ -28,7 +28,6 @@ data class HomeUiState(
     val uiHotChallengeList: List<UiHotChallenge> = emptyList(),
     val uiMoreActivityList: List<UiMoreActivity> = emptyList(),
     val uiHotNftList: List<UiNftItem> = emptyList(),
-    val uiHomeInfo: UiHomeInfo = UiHomeInfo()
 )
 
 sealed class HomeEvents {
@@ -58,29 +57,10 @@ class HomeViewModel @Inject constructor(
     fun getHomeData() {
         viewModelScope.launch {
             _events.emit(HomeEvents.ShowLoading)
-            getHomeInfo()
             getHotChallenges()
             getMoreActivity()
             getHotNft()
             _events.emit(HomeEvents.DismissLoading)
-        }
-    }
-
-    private suspend fun getHomeInfo() {
-        homeRepository.getHomeInfo().let {
-            when (it) {
-                is BaseState.Success -> {
-                    _uiState.update { state ->
-                        state.copy(
-                            uiHomeInfo = it.body.toUiHomeInfo()
-                        )
-                    }
-                }
-
-                is BaseState.Error -> {
-                    _events.emit(HomeEvents.ShowSnackMessage(it.msg))
-                }
-            }
         }
     }
 
