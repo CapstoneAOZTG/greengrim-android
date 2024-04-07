@@ -1,17 +1,14 @@
 package com.aoztg.greengrim.data.model.response
 
 data class HotChallengeResponse(
-    val hotChallengeInfos: List<HotChallengeInfo>
+    val challengeInfos: List<HotChallengeInfo>
 )
 
 data class HotChallengeInfo(
-    val challengeInfo: ChallengeInfo,
-    val hotChallengeTags: HotChallengeTags
+    val id: Long,
+    val title: String,
+    val description: String,
+    val imgUrl: String
 )
 
-data class HotChallengeTags(
-    val category: String,
-    val keyword: String,
-    val ticketCount: String
-)
 

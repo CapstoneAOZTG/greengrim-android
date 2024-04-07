@@ -68,7 +68,7 @@ class HomeViewModel @Inject constructor(
         homeRepository.getHotChallenges().let {
             when (it) {
                 is BaseState.Success -> {
-                    val uiModel = it.body.hotChallengeInfos.map { data ->
+                    val uiModel = it.body.challengeInfos.map { data ->
                         data.toUiHotChallenge(::navigateToChallengeDetail)
                     }
                     _uiState.update { state ->

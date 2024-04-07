@@ -81,7 +81,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
                     is HomeEvents.ShowToastMessage -> showCustomToast(it.msg)
                     is HomeEvents.ShowLoading -> showLoading(requireContext())
                     is HomeEvents.DismissLoading -> dismissLoading()
-                    is HomeEvents.ShowSnackMessage -> showCustomSnack(binding.tvBannerName, it.msg)
+                    is HomeEvents.ShowSnackMessage -> showCustomSnack(binding.root, it.msg)
                     is HomeEvents.NavigateToAttendCheck -> findNavController().toAttendCheck()
                     is HomeEvents.GoToGameActivity -> {
                         val intent = Intent(requireContext(), CatchGameActivity::class.java)

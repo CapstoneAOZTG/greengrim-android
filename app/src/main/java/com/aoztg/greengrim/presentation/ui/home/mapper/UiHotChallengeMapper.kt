@@ -6,10 +6,10 @@ import com.aoztg.greengrim.presentation.ui.home.model.UiHotChallenge
 
 fun HotChallengeInfo.toUiHotChallenge(onItemClicked: (Long) -> Unit): UiHotChallenge {
     return UiHotChallenge(
-        id = this.challengeInfo.id,
-        imgUrl = this.challengeInfo.imgUrl,
-        title = this.challengeInfo.title,
-        keywords = this.hotChallengeTags,
+        id = this.id,
+        imgUrl = this.imgUrl,
+        title = this.title,
+        description = "\uD83D\uDD25 " + this.description,
         itemClickListener = onItemClicked
     )
 }
