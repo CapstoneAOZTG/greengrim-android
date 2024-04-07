@@ -1,6 +1,7 @@
 package com.aoztg.greengrim.presentation.ui.intro.terms
 
 import android.os.Bundle
+import android.text.method.ScrollingMovementMethod
 import android.view.View
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
@@ -15,8 +16,16 @@ class TermsFragment : BaseFragment<FragmentTermsBinding>(R.layout.fragment_terms
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setTextScrollListener()
         setListener()
         setTextListner()
+    }
+
+    private fun setTextScrollListener(){
+        with(binding){
+            tvTerms1Body.movementMethod = ScrollingMovementMethod.getInstance()
+            tvTerms2Body.movementMethod = ScrollingMovementMethod.getInstance()
+        }
     }
 
     private fun setListener() {
