@@ -45,11 +45,27 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(ActivitySplashBinding
         }
 
         Handler(Looper.getMainLooper()).postDelayed({
-
-            permissionDialog.show()
-
+            initCheckPermission()
 
         }, 1500)
+    }
+
+    private fun initCheckPermission(){
+        neededPermissionList = arrayListOf()
+
+        requiredPermissionList.forEach { permission ->
+            if (ContextCompat.checkSelfPermission(
+                    this,
+                    permission
+                ) != PackageManager.PERMISSION_GRANTED
+            ) neededPermissionList.add(permission)
+        }
+
+        if (neededPermissionList.isNotEmpty()) {
+            permissionDialog.show()
+        } else {
+            checkJwt()
+        }
     }
 
     private fun checkPermission(){
