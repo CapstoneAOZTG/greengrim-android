@@ -101,13 +101,6 @@
             app:spanCount="2"
             tools:listitem="@layout/item_challenge_list" />
 
-        <View
-            android:layout_width="0dp"
-            android:layout_height="200dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/rv_challenge_list" />
-
         <ImageButton
             android:id="@+id/btn_create_challenge"
             android:layout_width="48dp"

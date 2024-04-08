@@ -5,8 +5,17 @@ import com.aoztg.greengrim.data.model.request.CreateChallengeRequest
 import com.aoztg.greengrim.data.model.response.ChallengeDetailResponse
 import com.aoztg.greengrim.data.model.response.ChallengeListResponse
 import com.aoztg.greengrim.data.model.response.CreateChallengeResponse
+import com.aoztg.greengrim.data.model.response.HotChallengeResponse
 
 interface ChallengeRepository {
+
+    suspend fun getHotChallenges(): BaseState<HotChallengeResponse>
+
+    suspend fun getMoreHotChallenges(
+        option: String,
+        page: Int,
+        size: Int
+    ): BaseState<ChallengeListResponse>
 
     suspend fun createChallenge(
         data: CreateChallengeRequest

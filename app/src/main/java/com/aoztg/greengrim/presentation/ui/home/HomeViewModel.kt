@@ -4,12 +4,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.data.model.BaseState
-import com.aoztg.greengrim.data.repository.HomeRepository
+import com.aoztg.greengrim.data.repository.ChallengeRepository
 import com.aoztg.greengrim.data.repository.NftRepository
-import com.aoztg.greengrim.presentation.ui.home.mapper.toUiHomeInfo
 import com.aoztg.greengrim.presentation.ui.home.mapper.toUiHotChallenge
 import com.aoztg.greengrim.presentation.ui.home.mapper.toUiNftItem
-import com.aoztg.greengrim.presentation.ui.home.model.UiHomeInfo
 import com.aoztg.greengrim.presentation.ui.home.model.UiHotChallenge
 import com.aoztg.greengrim.presentation.ui.home.model.UiMoreActivity
 import com.aoztg.greengrim.presentation.ui.nft.model.UiNftItem
@@ -44,7 +42,7 @@ sealed class HomeEvents {
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val homeRepository: HomeRepository,
+    private val challengeRepository: ChallengeRepository,
     private val nftRepository: NftRepository
 ) : ViewModel() {
 
@@ -65,7 +63,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private suspend fun getHotChallenges() {
-        homeRepository.getHotChallenges().let {
+        challengeRepository.getHotChallenges().let {
             when (it) {
                 is BaseState.Success -> {
                     val uiModel = it.body.challengeInfos.map { data ->
