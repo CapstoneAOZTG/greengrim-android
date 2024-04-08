@@ -4,6 +4,7 @@ import com.aoztg.greengrim.data.model.request.CreateChallengeRequest
 import com.aoztg.greengrim.data.model.response.ChallengeDetailResponse
 import com.aoztg.greengrim.data.model.response.ChallengeListResponse
 import com.aoztg.greengrim.data.model.response.CreateChallengeResponse
+import com.aoztg.greengrim.data.model.response.HotChallengeResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -12,6 +13,16 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ChallengeAPI {
+
+    @GET("/home/challenges")
+    suspend fun getHotChallenges(): Response<HotChallengeResponse>
+
+    @GET("/hot-challenges")
+    suspend fun getMoreHotChallenges(
+        @Query("option") option: String,
+        @Query("page") page: Int,
+        @Query("size") size: Int,
+    ): Response<ChallengeListResponse>
 
     @POST("/visitor/challenges")
     suspend fun createChallenge(

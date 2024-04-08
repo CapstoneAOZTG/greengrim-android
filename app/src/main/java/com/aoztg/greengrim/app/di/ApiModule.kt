@@ -1,11 +1,10 @@
 package com.aoztg.greengrim.app.di
 
 import com.aoztg.greengrim.data.remote.AttendCheckAPI
-import com.aoztg.greengrim.data.remote.ChallengeAPI
 import com.aoztg.greengrim.data.remote.CertificationAPI
+import com.aoztg.greengrim.data.remote.ChallengeAPI
 import com.aoztg.greengrim.data.remote.ChatAPI
 import com.aoztg.greengrim.data.remote.FcmAPI
-import com.aoztg.greengrim.data.remote.HomeAPI
 import com.aoztg.greengrim.data.remote.ImageAPI
 import com.aoztg.greengrim.data.remote.InfoAPI
 import com.aoztg.greengrim.data.remote.IntroAPI
@@ -47,12 +46,6 @@ object ApiModule {
 
     @Singleton
     @Provides
-    fun provideHomeService(retrofit: Retrofit): HomeAPI {
-        return retrofit.create(HomeAPI::class.java)
-    }
-
-    @Singleton
-    @Provides
     fun provideCertificationService(retrofit: Retrofit): CertificationAPI {
         return retrofit.create(CertificationAPI::class.java)
     }
@@ -71,13 +64,13 @@ object ApiModule {
 
     @Singleton
     @Provides
-    fun provideFcmService(retrofit: Retrofit): FcmAPI{
+    fun provideFcmService(retrofit: Retrofit): FcmAPI {
         return retrofit.create(FcmAPI::class.java)
     }
 
     @Singleton
     @Provides
-    fun provideNftService(retrofit: Retrofit): NftAPI{
+    fun provideNftService(retrofit: Retrofit): NftAPI {
         return retrofit.create(NftAPI::class.java)
     }
 

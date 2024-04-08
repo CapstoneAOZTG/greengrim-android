@@ -48,11 +48,11 @@ class CreateChallengeFragment :
 
     override fun onItemClicked(view: View, category: CategoryName) {
         if (isCurViewExists) {
-            curView.setBackgroundResource(R.drawable.shape_darkfill_nostroke_radius10)
+            curView.setBackgroundResource(R.drawable.shape_darkgreyfill_nostroke_radius10)
         }
         curView = view
         isCurViewExists = true
-        view.setBackgroundResource(R.drawable.shape_darkfill_whitestroke_radius10)
+        view.setBackgroundResource(R.drawable.shape_darkgreyfill_whitestroke_radius10)
         viewModel.setSelectedCategory(category)
     }
 

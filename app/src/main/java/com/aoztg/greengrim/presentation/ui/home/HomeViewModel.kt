@@ -4,12 +4,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.data.model.BaseState
-import com.aoztg.greengrim.data.repository.HomeRepository
+import com.aoztg.greengrim.data.repository.ChallengeRepository
 import com.aoztg.greengrim.data.repository.NftRepository
-import com.aoztg.greengrim.presentation.ui.home.mapper.toUiHomeInfo
 import com.aoztg.greengrim.presentation.ui.home.mapper.toUiHotChallenge
 import com.aoztg.greengrim.presentation.ui.home.mapper.toUiNftItem
-import com.aoztg.greengrim.presentation.ui.home.model.UiHomeInfo
 import com.aoztg.greengrim.presentation.ui.home.model.UiHotChallenge
 import com.aoztg.greengrim.presentation.ui.home.model.UiMoreActivity
 import com.aoztg.greengrim.presentation.ui.nft.model.UiNftItem
@@ -28,7 +26,6 @@ data class HomeUiState(
     val uiHotChallengeList: List<UiHotChallenge> = emptyList(),
     val uiMoreActivityList: List<UiMoreActivity> = emptyList(),
     val uiHotNftList: List<UiNftItem> = emptyList(),
-    val uiHomeInfo: UiHomeInfo = UiHomeInfo()
 )
 
 sealed class HomeEvents {
@@ -41,11 +38,12 @@ sealed class HomeEvents {
     object DismissLoading : HomeEvents()
     data class NavigateToNftDetail(val id: Long) : HomeEvents()
     object NavigateToNftList: HomeEvents()
+    object NavigateToHotChallengeList: HomeEvents()
 }
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val homeRepository: HomeRepository,
+    private val challengeRepository: ChallengeRepository,
     private val nftRepository: NftRepository
 ) : ViewModel() {
 
@@ -58,7 +56,6 @@ class HomeViewModel @Inject constructor(
     fun getHomeData() {
         viewModelScope.launch {
             _events.emit(HomeEvents.ShowLoading)
-            getHomeInfo()
             getHotChallenges()
             getMoreActivity()
             getHotNft()
@@ -66,29 +63,11 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private suspend fun getHomeInfo() {
-        homeRepository.getHomeInfo().let {
-            when (it) {
-                is BaseState.Success -> {
-                    _uiState.update { state ->
-                        state.copy(
-                            uiHomeInfo = it.body.toUiHomeInfo()
-                        )
-                    }
-                }
-
-                is BaseState.Error -> {
-                    _events.emit(HomeEvents.ShowSnackMessage(it.msg))
-                }
-            }
-        }
-    }
-
     private suspend fun getHotChallenges() {
-        homeRepository.getHotChallenges().let {
+        challengeRepository.getHotChallenges().let {
             when (it) {
                 is BaseState.Success -> {
-                    val uiModel = it.body.hotChallengeInfos.map { data ->
+                    val uiModel = it.body.challengeInfos.map { data ->
                         data.toUiHotChallenge(::navigateToChallengeDetail)
                     }
                     _uiState.update { state ->
@@ -173,6 +152,12 @@ class HomeViewModel @Inject constructor(
     fun navigateToNftList(){
         viewModelScope.launch {
             _events.emit(HomeEvents.NavigateToNftList)
+        }
+    }
+
+    fun navigateToHotChallengeList(){
+        viewModelScope.launch {
+            _events.emit(HomeEvents.NavigateToHotChallengeList)
         }
     }
 

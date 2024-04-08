@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="10dp"
         android:layout_marginVertical="10dp"
-        android:background="@drawable/shape_darkfill_nostroke_radius10"
+        android:background="@drawable/shape_darkgreyfill_nostroke_radius10"
         android:paddingBottom="16dp">
 
         <ImageView

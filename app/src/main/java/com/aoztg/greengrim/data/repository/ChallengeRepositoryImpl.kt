@@ -5,12 +5,27 @@ import com.aoztg.greengrim.data.model.request.CreateChallengeRequest
 import com.aoztg.greengrim.data.model.response.ChallengeDetailResponse
 import com.aoztg.greengrim.data.model.response.ChallengeListResponse
 import com.aoztg.greengrim.data.model.response.CreateChallengeResponse
+import com.aoztg.greengrim.data.model.response.HotChallengeResponse
 import com.aoztg.greengrim.data.model.runRemote
 import com.aoztg.greengrim.data.remote.ChallengeAPI
 import javax.inject.Inject
 
 class ChallengeRepositoryImpl @Inject constructor(private val api: ChallengeAPI) :
     ChallengeRepository {
+
+    override suspend fun getHotChallenges(): BaseState<HotChallengeResponse> =
+        runRemote { api.getHotChallenges() }
+
+    override suspend fun getMoreHotChallenges(
+        option: String,
+        page: Int,
+        size: Int
+    ): BaseState<ChallengeListResponse> =
+        runRemote {
+            api.getMoreHotChallenges(
+                option, page, size
+            )
+        }
 
     override suspend fun createChallenge(data: CreateChallengeRequest): BaseState<CreateChallengeResponse> =
         runRemote { api.createChallenge(data) }

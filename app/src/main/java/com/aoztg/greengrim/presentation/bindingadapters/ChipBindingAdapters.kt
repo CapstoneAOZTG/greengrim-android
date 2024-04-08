@@ -5,7 +5,6 @@ import androidx.databinding.BindingAdapter
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.data.model.response.ChallengeDetailTags
 import com.aoztg.greengrim.data.model.response.ChallengeSimpleTags
-import com.aoztg.greengrim.data.model.response.HotChallengeTags
 import com.aoztg.greengrim.presentation.ui.challenge.create.KeywordState
 import com.aoztg.greengrim.presentation.ui.toCategoryText
 import com.google.android.material.chip.Chip
@@ -35,32 +34,26 @@ fun bindChallengeListChips(chipGroup: ChipGroup, chips: ChallengeSimpleTags) {
 
     chipList.add(TextView(chipGroup.context).apply {
         text = chips.category.toCategoryText()
-        setBackgroundResource(R.drawable.shape_purplefill_nostroke_radius20)
+        setBackgroundResource(R.drawable.shape_nofill_whitestroke_radius15)
     })
 
     chipList.add(TextView(chipGroup.context).apply {
         text = chips.ticketCount
-        setBackgroundResource(R.drawable.shape_yellowfill_nostroke_radius20)
+        setBackgroundResource(R.drawable.shape_nofill_whitestroke_radius15)
     })
 
     chipList.add(TextView(chipGroup.context).apply {
         text = chips.goalCount
-        setBackgroundResource(R.drawable.shape_grey2fill_nostroke_radius20)
-    })
-
-    chipList.add(TextView(chipGroup.context).apply {
-        text = chips.keyword
-        setBackgroundResource(R.drawable.shape_grey2fill_nostroke_radius20)
+        setBackgroundResource(R.drawable.shape_nofill_whitestroke_radius15)
     })
 
     chipList.forEach { chip ->
         chip.apply {
-            setTextAppearance(R.style.TextGgSmallBlackBold)
-            setPadding(20, 4, 20, 4)
+            setTextAppearance(R.style.TextGgSmallBold)
+            setPadding(40, 16, 40, 20)
         }
         chipGroup.addView(chip)
     }
-
 }
 
 @BindingAdapter("mainChipList")
@@ -123,39 +116,6 @@ fun bindDetailSubChips(chipGroup: ChipGroup, chips: ChallengeDetailTags?) {
     }
 }
 
-@BindingAdapter("hotChipList")
-fun bindHotChips(chipGroup: ChipGroup, chips: HotChallengeTags) {
-
-    if (chips != null) {
-        chipGroup.removeAllViews()
-
-        val chipList = mutableListOf<TextView>()
-
-        chipList.add(TextView(chipGroup.context).apply {
-            text = chips.category.toCategoryText()
-            setBackgroundResource(R.drawable.shape_purplefill_nostroke_radius20)
-        })
-
-        chipList.add(TextView(chipGroup.context).apply {
-            text = chips.ticketCount
-            setBackgroundResource(R.drawable.shape_yellowfill_nostroke_radius20)
-        })
-
-        chipList.add(TextView(chipGroup.context).apply {
-            text = chips.keyword
-            setBackgroundResource(R.drawable.shape_grey2fill_nostroke_radius20)
-        })
-
-        chipList.forEach { chip ->
-            chip.apply {
-                setTextAppearance(R.style.TextGgSmallBlackBold)
-                setPadding(20, 4, 20, 4)
-            }
-            chipGroup.addView(chip)
-        }
-    }
-
-}
 
 @BindingAdapter("selectChipList")
 fun bindSelectChips(chipGroup: ChipGroup, keywordState: KeywordState) {

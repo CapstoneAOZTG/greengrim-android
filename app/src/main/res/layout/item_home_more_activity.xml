@@ -15,7 +15,7 @@
         android:layout_width="230dp"
         android:layout_height="170dp"
         android:layout_marginEnd="20dp"
-        android:background="@drawable/shape_darkfill_nostroke_radius10">
+        android:background="@drawable/shape_darkgreyfill_nostroke_radius10">
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline_item"
