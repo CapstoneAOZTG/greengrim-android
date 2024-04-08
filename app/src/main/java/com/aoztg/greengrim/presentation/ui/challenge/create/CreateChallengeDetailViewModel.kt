@@ -1,16 +1,12 @@
 package com.aoztg.greengrim.presentation.ui.challenge.create
 
-import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.model.request.CreateChallengeRequest
 import com.aoztg.greengrim.data.repository.ChallengeRepository
-import com.aoztg.greengrim.data.repository.ChatRepository
 import com.aoztg.greengrim.data.repository.ImageRepository
 import com.aoztg.greengrim.presentation.ui.BaseUiState
-import com.aoztg.greengrim.presentation.ui.LoadingState
-import com.aoztg.greengrim.presentation.ui.chat.createcertification.CreateCertificationEvents
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -35,17 +31,11 @@ data class CreateChallengeDetailUiState(
     val certificateProgressState: ProgressState = ProgressState.Empty,
     val ticketProgressState: ProgressState = ProgressState.Empty,
     val minCertificateProgressState: ProgressState = ProgressState.Empty,
-    val randomKeywordState: KeywordState = KeywordState.Empty,
 )
 
 sealed class ProgressState {
     object Empty : ProgressState()
     data class Changed(val text: String) : ProgressState()
-}
-
-sealed class KeywordState {
-    object Empty : KeywordState()
-    data class Set(val keywords: List<String>) : KeywordState()
 }
 
 sealed class CreateChallengeDetailEvents {
@@ -60,8 +50,7 @@ sealed class CreateChallengeDetailEvents {
 @HiltViewModel
 class CreateChallengeDetailViewModel @Inject constructor(
     private val imageRepository: ImageRepository,
-    private val challengeRepository: ChallengeRepository,
-    private val chatRepository: ChatRepository
+    private val challengeRepository: ChallengeRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(CreateChallengeDetailUiState())
@@ -72,7 +61,6 @@ class CreateChallengeDetailViewModel @Inject constructor(
 
     val title = MutableStateFlow("")
     val description = MutableStateFlow("")
-    val keyword = MutableStateFlow("")
     val category = MutableStateFlow("")
     val certificateProgress = MutableStateFlow(0)
     val ticketProgress = MutableStateFlow(0)
@@ -88,11 +76,10 @@ class CreateChallengeDetailViewModel @Inject constructor(
         title,
         description,
         isImageSet,
-        keyword,
         category
-    ) { title, description, imgSet, keyword, category ->
+    ) { title, description, imgSet, category ->
         title.length >= 2 && description.length >= 2
-                && imgSet && keyword.isNotBlank() && category.isNotBlank()
+                && imgSet && category.isNotBlank()
     }.stateIn(
         viewModelScope,
         SharingStarted.WhileSubscribed(),
@@ -106,15 +93,10 @@ class CreateChallengeDetailViewModel @Inject constructor(
         imgFile = file
     }
 
-    fun setKeyword(text: String) {
-        keyword.value = text
-    }
-
     init {
         observeTitle()
         observeDescription()
         observeSeekBar()
-        setRandomKeywords()
     }
 
     private fun observeTitle() {
@@ -177,7 +159,6 @@ class CreateChallengeDetailViewModel @Inject constructor(
                     certificateProgressState = ProgressState.Changed(
                         goalCount.toString() + "회"
                     ),
-                    randomKeywordState = KeywordState.Empty
                 )
             }
         }.launchIn(viewModelScope)
@@ -189,7 +170,6 @@ class CreateChallengeDetailViewModel @Inject constructor(
                     ticketProgressState = ProgressState.Changed(
                         ticketTotalCount.toString() + "개"
                     ),
-                    randomKeywordState = KeywordState.Empty
                 )
             }
         }.launchIn(viewModelScope)
@@ -201,38 +181,9 @@ class CreateChallengeDetailViewModel @Inject constructor(
                     minCertificateProgressState = ProgressState.Changed(
                         "주 " + weekMinCount.toString() + "회"
                     ),
-                    randomKeywordState = KeywordState.Empty
                 )
             }
         }.launchIn(viewModelScope)
-    }
-
-    fun setRandomKeywords() {
-
-        viewModelScope.launch {
-            challengeRepository.getRandomKeywords().let {
-                when (it) {
-                    is BaseState.Success -> {
-                        _uiState.update { state ->
-                            state.copy(
-                                randomKeywordState = KeywordState.Set(it.body)
-                            )
-                        }
-                    }
-
-                    is BaseState.Error -> {
-                        _uiState.update { state ->
-                            state.copy(
-                                randomKeywordState = KeywordState.Empty
-                            )
-                        }
-                        _events.emit(CreateChallengeDetailEvents.ShowSnackMessage(it.msg))
-                    }
-                }
-            }
-        }
-
-
     }
 
     fun setCategory(data: String) {
@@ -269,7 +220,7 @@ class CreateChallengeDetailViewModel @Inject constructor(
         }
     }
 
-    fun createChallenge(imgUrl: String) {
+    private fun createChallenge(imgUrl: String) {
         viewModelScope.launch {
 
             challengeRepository.createChallenge(
@@ -281,7 +232,6 @@ class CreateChallengeDetailViewModel @Inject constructor(
                     goalCount = goalCount,
                     ticketTotalCount = ticketTotalCount,
                     weekMinCount = weekMinCount,
-                    keyword = keyword.value
                 )
             ).let {
                 _events.emit(CreateChallengeDetailEvents.DismissLoading)

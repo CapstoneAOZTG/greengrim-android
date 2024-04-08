@@ -3,7 +3,6 @@ package com.aoztg.greengrim.presentation.ui.challenge.model
 data class UiChallengeCategory(
     val icon: Int,
     val category: CategoryName,
-    val point: String,
 )
 
 enum class CategoryName(
@@ -19,5 +18,8 @@ enum class CategoryName(
     ELECTRIC_CAR("전기차","ELECTRIC_CAR"),
     PUBLIC_TRANSPORTATION("대중교통 이용","PUBLIC_TRANSPORTATION"),
     MAINTAINING_TEMPERATURE("적정 온도 유지","MAINTAINING_TEMPERATURE"),
-    RECYCLING("분리수거 라벨 제거","RECYCLING")
+    RECYCLING("분리수거 라벨 제거","RECYCLING"),
+    USING_STAIRS("계단 이용", "USING_STAIRS"),
+    USING_BICYCLE("자전거 이용", "USING_BICYCLE"),
+    ECO_EVENT("환경 행사 참여","ECO_EVENT")
 }

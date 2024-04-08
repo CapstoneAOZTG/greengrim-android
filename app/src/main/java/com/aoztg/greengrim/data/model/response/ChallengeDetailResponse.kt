@@ -17,7 +17,6 @@ data class ChallengeDetailInfo(
 data class ChallengeDetailTags(
     val category: String,
     val goalCount: String,
-    val keyword: String,
     val participantCount: String,
     val ticketCount: String,
     val weekMinCount: String

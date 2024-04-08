@@ -31,7 +31,7 @@ interface ChallengeAPI {
 
     @GET("/challenges/{id}")
     suspend fun getChallengeDetail(
-        @Path("id") id : Long
+        @Path("id") id: Long
     ): Response<ChallengeDetailResponse>
 
     @GET("/challenges")
@@ -39,23 +39,20 @@ interface ChallengeAPI {
         @Query("category") category: String,
         @Query("page") page: Int,
         @Query("size") size: Int,
-        @Query("sort") sort : String
+        @Query("sort") sort: String
     ): Response<ChallengeListResponse>
 
     @GET("/visitor/challenges")
     suspend fun getMyChallengeList(
         @Query("page") page: Int,
         @Query("size") size: Int,
-        @Query("sort") sort : String
+        @Query("sort") sort: String
     ): Response<ChallengeListResponse>
 
     @POST("/visitor/challenges/exit")
     suspend fun exitChallenge(
         @Query("id") id: Long
     ): Response<Unit>
-
-    @GET("/visitor/keywords/random")
-    suspend fun getRandomKeywords(): Response<List<String>>
 
     @POST("/visitor/point")
     suspend fun postPoint(): Response<Unit>
