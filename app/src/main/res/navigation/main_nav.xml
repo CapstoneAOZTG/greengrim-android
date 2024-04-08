@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_home_fragment_to_nft_list_fragment"
             app:destination="@id/nft_list_fragment" />
+        <action
+            android:id="@+id/action_home_fragment_to_hotChallengeListFragment"
+            app:destination="@id/hotChallengeListFragment" />
     </fragment>
 
     <fragment
@@ -327,6 +330,12 @@
         android:name="com.aoztg.greengrim.presentation.ui.info.mywallet.AddWalletFragment"
         android:label="AddWalletFragment" />
 
+    <fragment
+        android:id="@+id/hotChallengeListFragment"
+        tools:layout="@layout/fragment_hot_challenge_list"
+        android:name="com.aoztg.greengrim.presentation.ui.home.HotChallengeListFragment"
+        android:label="HotChallengeListFragment" />
+
     <action
         android:id="@+id/action_global_to_attendCheckFragment"
         app:destination="@id/attend_check_fragment" />
@@ -354,6 +363,7 @@
     <action
         android:id="@+id/action_global_to_profileFragment"
         app:destination="@id/profileFragment" />
+
 
 
 

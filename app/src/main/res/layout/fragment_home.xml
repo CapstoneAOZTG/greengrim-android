@@ -93,6 +93,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
+                    android:onClick="@{() -> vm.navigateToHotChallengeList()}"
                     android:src="@drawable/icon_see_more"
                     app:layout_constraintBottom_toBottomOf="@id/tv_detail_hot_challenge"
                     app:layout_constraintEnd_toEndOf="parent" />

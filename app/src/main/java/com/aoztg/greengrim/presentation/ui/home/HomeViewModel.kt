@@ -38,6 +38,7 @@ sealed class HomeEvents {
     object DismissLoading : HomeEvents()
     data class NavigateToNftDetail(val id: Long) : HomeEvents()
     object NavigateToNftList: HomeEvents()
+    object NavigateToHotChallengeList: HomeEvents()
 }
 
 @HiltViewModel
@@ -151,6 +152,12 @@ class HomeViewModel @Inject constructor(
     fun navigateToNftList(){
         viewModelScope.launch {
             _events.emit(HomeEvents.NavigateToNftList)
+        }
+    }
+
+    fun navigateToHotChallengeList(){
+        viewModelScope.launch {
+            _events.emit(HomeEvents.NavigateToHotChallengeList)
         }
     }
 

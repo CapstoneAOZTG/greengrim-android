@@ -90,6 +90,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
                     is HomeEvents.NavigateToNftDetail -> findNavController().toNftDetail(it.id)
                     is HomeEvents.NavigateToNftList -> findNavController().toNftList()
+                    is HomeEvents.NavigateToHotChallengeList -> findNavController().toHotChallengeList()
                 }
             }
         }
@@ -116,6 +117,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
     private fun NavController.toNftList() {
         val action = HomeFragmentDirections.actionHomeFragmentToNftListFragment()
+        navigate(action)
+    }
+
+    private fun NavController.toHotChallengeList() {
+        val action = HomeFragmentDirections.actionHomeFragmentToHotChallengeListFragment()
         navigate(action)
     }
 
