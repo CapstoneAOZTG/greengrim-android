@@ -2,4 +2,4 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:drawable="@drawable/menu_my_on" android:state_selected="true"/>
     <item android:drawable="@drawable/menu_my_off" android:state_selected="false"/>
-</selector>W
+</selector>
