@@ -9,5 +9,4 @@ data class CreateChallengeRequest(
     val ticketTotalCount: Int,
     val weekMinCount: Int,
     val capacity: Int = 100,
-    val keyword: String
 )

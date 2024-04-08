@@ -5,9 +5,7 @@ import androidx.databinding.BindingAdapter
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.data.model.response.ChallengeDetailTags
 import com.aoztg.greengrim.data.model.response.ChallengeSimpleTags
-import com.aoztg.greengrim.presentation.ui.challenge.create.KeywordState
 import com.aoztg.greengrim.presentation.ui.toCategoryText
-import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 
 
@@ -93,27 +91,5 @@ fun bindDetailSubChips(chipGroup: ChipGroup, chips: ChallengeDetailTags?) {
             }
             chipGroup.addView(chip)
         }
-    }
-}
-
-
-@BindingAdapter("selectChipList")
-fun bindSelectChips(chipGroup: ChipGroup, keywordState: KeywordState) {
-    when (keywordState) {
-        is KeywordState.Set -> {
-            chipGroup.removeAllViews()
-            keywordState.keywords.forEach { data ->
-                val chip = TextView(chipGroup.context).apply {
-                    text = data
-                    setBackgroundResource(R.drawable.shape_grey2fill_nostroke_radius20)
-                    setTextAppearance(R.style.TextGgSmallBlackBold)
-                    setPadding(20, 4, 20, 4)
-                }
-
-                chipGroup.addView(chip)
-            }
-        }
-
-        else -> {}
     }
 }
