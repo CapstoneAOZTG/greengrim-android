@@ -11,20 +11,6 @@ import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 
 
-@BindingAdapter("keywordChips")
-fun bindKeywordChips(chipGroup: ChipGroup, keyword: List<String>){
-    chipGroup.removeAllViews()
-    keyword.forEach {
-        val chip = TextView(chipGroup.context).apply{
-            setBackgroundResource(R.drawable.shape_grey7fill_nostroke_15radius)
-            text = it
-            setTextAppearance(R.style.TextGgSmallBold)
-            setPadding(30, 20, 30, 20)
-        }
-        chipGroup.addView(chip)
-    }
-}
-
 @BindingAdapter("challengeListChips")
 fun bindChallengeListChips(chipGroup: ChipGroup, chips: ChallengeSimpleTags) {
 
@@ -34,21 +20,19 @@ fun bindChallengeListChips(chipGroup: ChipGroup, chips: ChallengeSimpleTags) {
 
     chipList.add(TextView(chipGroup.context).apply {
         text = chips.category.toCategoryText()
-        setBackgroundResource(R.drawable.shape_nofill_whitestroke_radius15)
     })
 
     chipList.add(TextView(chipGroup.context).apply {
         text = chips.ticketCount
-        setBackgroundResource(R.drawable.shape_nofill_whitestroke_radius15)
     })
 
     chipList.add(TextView(chipGroup.context).apply {
         text = chips.goalCount
-        setBackgroundResource(R.drawable.shape_nofill_whitestroke_radius15)
     })
 
     chipList.forEach { chip ->
         chip.apply {
+            setBackgroundResource(R.drawable.shape_nofill_whitestroke_radius15)
             setTextAppearance(R.style.TextGgSmallBold)
             setPadding(40, 16, 40, 20)
         }
@@ -66,18 +50,17 @@ fun bindDetailMainChips(chipGroup: ChipGroup, chips: ChallengeDetailTags?) {
 
         chipList.add(TextView(chipGroup.context).apply {
             text = chips.category.toCategoryText()
-            setBackgroundResource(R.drawable.shape_purplefill_nostroke_radius20)
         })
 
         chipList.add(TextView(chipGroup.context).apply {
             text = chips.ticketCount
-            setBackgroundResource(R.drawable.shape_yellowfill_nostroke_radius20)
         })
 
         chipList.forEach { chip ->
             chip.apply {
-                setTextAppearance(R.style.TextGgSmallBlackBold)
-                setPadding(20, 4, 20, 4)
+                setBackgroundResource(R.drawable.shape_nofill_whitestroke_radius15)
+                setTextAppearance(R.style.TextGgSmallBold)
+                setPadding(40, 16, 40, 20)
             }
             chipGroup.addView(chip)
         }
@@ -99,17 +82,14 @@ fun bindDetailSubChips(chipGroup: ChipGroup, chips: ChallengeDetailTags?) {
             text = chips.weekMinCount
         })
         chipList.add(TextView(chipGroup.context).apply {
-            text = chips.keyword
-        })
-        chipList.add(TextView(chipGroup.context).apply {
             text = chips.participantCount
         })
 
         chipList.forEach { chip ->
             chip.apply {
-                setBackgroundResource(R.drawable.shape_grey2fill_nostroke_radius20)
-                setTextAppearance(R.style.TextGgSmallBlackBold)
-                setPadding(20, 4, 20, 4)
+                setBackgroundResource(R.drawable.shape_nofill_whitestroke_radius15)
+                setTextAppearance(R.style.TextGgSmallBold)
+                setPadding(40, 16, 40, 20)
             }
             chipGroup.addView(chip)
         }
