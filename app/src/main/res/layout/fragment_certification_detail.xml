@@ -277,7 +277,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
             android:layout_marginBottom="32dp"
-            android:background="@drawable/shape_darkfill_nostroke_radius10"
+            android:background="@drawable/shape_darkgreyfill_nostroke_radius10"
             android:minHeight="0dp"
             android:paddingVertical="10dp"
             android:text="참여 완료"

@@ -15,7 +15,7 @@
         android:layout_width="230dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="20dp"
-        android:background="@drawable/shape_darkfill_nostroke_radius10"
+        android:background="@drawable/shape_darkgreyfill_nostroke_radius10"
         android:onClick="@{() -> item.itemClickListener.invoke(item.id)}">
 
         <com.google.android.material.imageview.ShapeableImageView
