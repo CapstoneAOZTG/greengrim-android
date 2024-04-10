@@ -17,6 +17,7 @@ import javax.inject.Inject
 
 sealed class ChallengeCategoryEvents {
     object NavigateToCreateChallenge : ChallengeCategoryEvents()
+    object NavigateToSearchChallenge : ChallengeCategoryEvents()
 }
 
 @HiltViewModel
@@ -49,6 +50,12 @@ class ChallengeCategoryViewModel @Inject constructor() : ViewModel() {
     fun navigateToCreateChallenge() {
         viewModelScope.launch {
             _events.emit(ChallengeCategoryEvents.NavigateToCreateChallenge)
+        }
+    }
+
+    fun navigateToSearchChallenge(){
+        viewModelScope.launch {
+            _events.emit(ChallengeCategoryEvents.NavigateToSearchChallenge)
         }
     }
 }

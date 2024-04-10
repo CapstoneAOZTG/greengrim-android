@@ -29,6 +29,9 @@
         <action
             android:id="@+id/action_challenge_category_fragment_to_challenge_list_fragment"
             app:destination="@id/challenge_list_fragment" />
+        <action
+            android:id="@+id/action_challenge_category_fragment_to_searchChallengeFragment"
+            app:destination="@id/searchChallengeFragment" />
     </fragment>
 
     <fragment
@@ -45,6 +48,9 @@
         <action
             android:id="@+id/action_challenge_list_fragment_to_create_challenge_fragment"
             app:destination="@id/create_challenge_fragment" />
+        <action
+            android:id="@+id/action_challenge_list_fragment_to_searchChallengeFragment"
+            app:destination="@id/searchChallengeFragment" />
     </fragment>
 
     <fragment
@@ -336,6 +342,12 @@
         android:name="com.aoztg.greengrim.presentation.ui.home.HotChallengeListFragment"
         android:label="HotChallengeListFragment" />
 
+    <fragment
+        android:id="@+id/searchChallengeFragment"
+        tools:layout="@layout/fragment_challenge_search"
+        android:name="com.aoztg.greengrim.presentation.ui.challenge.search.SearchChallengeFragment"
+        android:label="SearchChallengeFragment" />
+
     <action
         android:id="@+id/action_global_to_attendCheckFragment"
         app:destination="@id/attend_check_fragment" />
@@ -363,7 +375,6 @@
     <action
         android:id="@+id/action_global_to_profileFragment"
         app:destination="@id/profileFragment" />
-
 
 
 
