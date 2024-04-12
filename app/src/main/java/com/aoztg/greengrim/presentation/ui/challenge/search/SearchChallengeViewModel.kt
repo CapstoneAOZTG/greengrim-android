@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.model.request.SearchChallengeRequest
 import com.aoztg.greengrim.data.repository.ChallengeRepository
+import com.aoztg.greengrim.presentation.ui.challenge.list.ChallengeListEvents
 import com.aoztg.greengrim.presentation.ui.challenge.mapper.toUiChallengeList
 import com.aoztg.greengrim.presentation.ui.challenge.model.UiChallengeRoom
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -28,6 +29,8 @@ data class SearchChallengeUiState(
 
 sealed class SearchChallengeEvent{
     data class ShowSnackMessage(val msg: String) : SearchChallengeEvent()
+    data class NavigateToChallengeDetail(val id : Long): SearchChallengeEvent()
+    object NavigateToBack: SearchChallengeEvent()
 }
 
 @HiltViewModel
@@ -135,6 +138,12 @@ class SearchChallengeViewModel @Inject constructor(
         }
     }
 
+    fun navigateBack(){
+        viewModelScope.launch {
+            _event.emit(SearchChallengeEvent.NavigateToBack)
+        }
+    }
+
     fun deleteKeyword(){
         keyword.value = ""
         _uiState.update { state ->
@@ -148,7 +157,7 @@ class SearchChallengeViewModel @Inject constructor(
 
     private fun navigateToChallengeDetail(id: Long){
         viewModelScope.launch {
-
+            _event.emit(SearchChallengeEvent.NavigateToChallengeDetail(id))
         }
     }
 }
