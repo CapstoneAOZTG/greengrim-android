@@ -1,6 +1,7 @@
 package com.aoztg.greengrim.data.remote
 
 import com.aoztg.greengrim.data.model.request.CreateChallengeRequest
+import com.aoztg.greengrim.data.model.request.SearchChallengeRequest
 import com.aoztg.greengrim.data.model.response.ChallengeDetailResponse
 import com.aoztg.greengrim.data.model.response.ChallengeListResponse
 import com.aoztg.greengrim.data.model.response.CreateChallengeResponse
@@ -11,6 +12,7 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
+import retrofit2.http.QueryMap
 
 interface ChallengeAPI {
 
@@ -56,4 +58,19 @@ interface ChallengeAPI {
 
     @POST("/visitor/point")
     suspend fun postPoint(): Response<Unit>
+
+    @POST("/visitor/challenges/searches")
+    suspend fun searchWholeChallenge(
+        @Query("page") page: Int,
+        @Query("size") size: Int,
+        @Body params: SearchChallengeRequest
+    ): Response<ChallengeListResponse>
+
+    @POST("/visitor/challenges/searches")
+    suspend fun searchChallenge(
+        @Query("category") category : String,
+        @Query("page") page: Int,
+        @Query("size") size: Int,
+        @Body params: SearchChallengeRequest
+    ): Response<ChallengeListResponse>
 }

@@ -13,6 +13,8 @@ import com.aoztg.greengrim.presentation.base.BaseFragment
 import com.aoztg.greengrim.presentation.ui.challenge.adapter.ChallengeCategoryAdapter
 import com.aoztg.greengrim.presentation.ui.challenge.adapter.OnCategoryItemClickListener
 import com.aoztg.greengrim.presentation.ui.challenge.model.CategoryName
+import com.aoztg.greengrim.presentation.ui.challenge.search.SearchChallengeFragment
+import com.aoztg.greengrim.presentation.ui.challenge.search.SearchChallengeFragmentDirections
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 
 class ChallengeCategoryFragment :
@@ -36,6 +38,7 @@ class ChallengeCategoryFragment :
             viewModel.events.collect {
                 when (it) {
                     is ChallengeCategoryEvents.NavigateToCreateChallenge -> findNavController().toCreateChallenge()
+                    is ChallengeCategoryEvents.NavigateToSearchChallenge -> findNavController().toSearchChallenge()
                 }
             }
         }
@@ -54,6 +57,11 @@ class ChallengeCategoryFragment :
         val action =
             ChallengeCategoryFragmentDirections.actionChallengeCategoryFragmentToCreateChallengeFragment()
         this.navigate(action)
+    }
+
+    private fun NavController.toSearchChallenge() {
+        val action = ChallengeCategoryFragmentDirections.actionChallengeCategoryFragmentToSearchChallengeFragment()
+        navigate(action)
     }
 
 }

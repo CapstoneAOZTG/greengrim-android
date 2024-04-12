@@ -2,6 +2,7 @@ package com.aoztg.greengrim.data.repository
 
 import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.model.request.CreateChallengeRequest
+import com.aoztg.greengrim.data.model.request.SearchChallengeRequest
 import com.aoztg.greengrim.data.model.response.ChallengeDetailResponse
 import com.aoztg.greengrim.data.model.response.ChallengeListResponse
 import com.aoztg.greengrim.data.model.response.CreateChallengeResponse
@@ -43,4 +44,18 @@ interface ChallengeRepository {
     ): BaseState<Unit>
 
     suspend fun postPoint(): BaseState<Unit>
+
+    suspend fun searchWholeChallenge(
+        page: Int,
+        size: Int,
+        body: SearchChallengeRequest
+    ): BaseState<ChallengeListResponse>
+
+    suspend fun searchChallenge(
+        category: String,
+        page: Int,
+        size: Int,
+        body: SearchChallengeRequest
+    ): BaseState<ChallengeListResponse>
+
 }

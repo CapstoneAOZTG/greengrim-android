@@ -2,6 +2,7 @@ package com.aoztg.greengrim.data.repository
 
 import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.model.request.CreateChallengeRequest
+import com.aoztg.greengrim.data.model.request.SearchChallengeRequest
 import com.aoztg.greengrim.data.model.response.ChallengeDetailResponse
 import com.aoztg.greengrim.data.model.response.ChallengeListResponse
 import com.aoztg.greengrim.data.model.response.CreateChallengeResponse
@@ -51,4 +52,29 @@ class ChallengeRepositoryImpl @Inject constructor(private val api: ChallengeAPI)
         runRemote { api.exitChallenge(id) }
 
     override suspend fun postPoint(): BaseState<Unit> = runRemote { api.postPoint() }
+
+    override suspend fun searchChallenge(
+        category: String,
+        page: Int,
+        size: Int,
+        body: SearchChallengeRequest
+    ): BaseState<ChallengeListResponse> = runRemote {
+        api.searchChallenge(
+            category,
+            page,
+            size,
+            body
+        )
+    }
+
+    override suspend fun searchWholeChallenge(
+        page: Int,
+        size: Int,
+        body: SearchChallengeRequest
+    ): BaseState<ChallengeListResponse> = runRemote {
+        api.searchWholeChallenge(
+            page, size, body
+        )
+    }
+
 }

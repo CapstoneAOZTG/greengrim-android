@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="vm"
+            type="com.aoztg.greengrim.presentation.ui.challenge.search.SearchChallengeViewModel" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="20dp">
+
+        <EditText
+            android:id="@+id/et_search"
+            style="@style/TextGgSmall"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/shape_lightblack2fill_nostroke_radius28"
+            android:drawableStart="@drawable/icon_grey_search"
+            android:drawablePadding="10dp"
+            android:hint="챌린지 제목, 내용"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="6dp"
+            android:text="@={vm.keyword}"
+            android:textColor="@color/gg_grey4"
+            android:textColorHint="@color/gg_grey4"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toStartOf="@id/tv_cancel"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/btn_delete_keyword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="12dp"
+            android:onClick="@{() -> vm.deleteKeyword()}"
+            android:src="@drawable/icon_search_delete"
+            android:visibility="@{vm.keyword.empty ? View.GONE : View.VISIBLE}"
+            app:layout_constraintBottom_toBottomOf="@id/et_search"
+            app:layout_constraintEnd_toEndOf="@id/et_search"
+            app:layout_constraintTop_toTopOf="@id/et_search" />
+
+        <TextView
+            android:id="@+id/tv_cancel"
+            style="@style/TextGgMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="취소"
+            android:onClick="@{() -> vm.navigateBack()}"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@id/et_search"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/et_search" />
+
+        <ImageView
+            android:id="@+id/iv_warning_img"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/icon_grey_search"
+            android:visibility="@{vm.uiState.uiChallengeRoom.empty ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toTopOf="@id/tv_warning_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/et_search"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <TextView
+            android:id="@+id/tv_warning_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="챌린지를 검색해보세요"
+            android:textColor="@color/gg_grey4"
+            android:textStyle="bold"
+            android:visibility="@{vm.uiState.uiChallengeRoom.empty ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_warning_img" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_search_result"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/et_search"
+            app:list="@{vm.uiState.uiChallengeRoom}"
+            app:spanCount="2"
+            tools:listitem="@layout/item_challenge_list" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
