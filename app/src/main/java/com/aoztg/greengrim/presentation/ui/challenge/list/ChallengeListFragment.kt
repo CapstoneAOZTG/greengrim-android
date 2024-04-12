@@ -61,6 +61,7 @@ class ChallengeListFragment :
                     is ChallengeListEvents.ShowLoading -> showLoading(requireContext())
                     is ChallengeListEvents.DismissLoading -> dismissLoading()
                     is ChallengeListEvents.ShowSnackMessage -> showCustomSnack(binding.rvChallengeList, it.msg)
+                    is ChallengeListEvents.NavigateToSearchChallenge -> findNavController().toSearchChallenge()
                 }
             }
         }
@@ -94,7 +95,12 @@ class ChallengeListFragment :
     private fun NavController.toCreateChallenge() {
         val action =
             ChallengeListFragmentDirections.actionChallengeListFragmentToCreateChallengeFragment()
-        this.navigate(action)
+        navigate(action)
+    }
+
+    private fun NavController.toSearchChallenge(){
+        val action = ChallengeListFragmentDirections.actionChallengeListFragmentToSearchChallengeFragment(categoryValue)
+        navigate(action)
     }
 }
 

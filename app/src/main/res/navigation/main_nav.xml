@@ -344,9 +344,16 @@
 
     <fragment
         android:id="@+id/searchChallengeFragment"
-        tools:layout="@layout/fragment_challenge_search"
+        tools:layout="@layout/fragment_search_challenge"
         android:name="com.aoztg.greengrim.presentation.ui.challenge.search.SearchChallengeFragment"
-        android:label="SearchChallengeFragment" />
+        android:label="SearchChallengeFragment" >
+
+        <argument
+            android:name="category"
+            app:argType="string"
+            android:defaultValue=""/>
+
+    </fragment>
 
     <action
         android:id="@+id/action_global_to_attendCheckFragment"

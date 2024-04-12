@@ -38,7 +38,7 @@ class ChallengeCategoryFragment :
             viewModel.events.collect {
                 when (it) {
                     is ChallengeCategoryEvents.NavigateToCreateChallenge -> findNavController().toCreateChallenge()
-                    is ChallengeCategoryEvents.NavigateToSearchChallenge -> findNavController()
+                    is ChallengeCategoryEvents.NavigateToSearchChallenge -> findNavController().toSearchChallenge()
                 }
             }
         }
@@ -47,7 +47,7 @@ class ChallengeCategoryFragment :
     override fun onItemClicked(view: View, category: CategoryName) {
         findNavController().toChallengeList(category)
     }
-good job boy!! it's best code
+
     private fun NavController.toChallengeList(category: CategoryName) {
         val action = ChallengeCategoryFragmentDirections.actionChallengeCategoryFragmentToChallengeListFragment(category.text, category.value)
         this.navigate(action)
@@ -60,7 +60,8 @@ good job boy!! it's best code
     }
 
     private fun NavController.toSearchChallenge() {
-        val action = ChallengeCategoryFragmentDirections.action
+        val action = ChallengeCategoryFragmentDirections.actionChallengeCategoryFragmentToSearchChallengeFragment()
+        navigate(action)
     }
 
 }
