@@ -1,15 +1,12 @@
 package com.aoztg.greengrim.presentation.ui.challenge.search
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.model.request.SearchChallengeRequest
 import com.aoztg.greengrim.data.repository.ChallengeRepository
-import com.aoztg.greengrim.presentation.ui.challenge.list.ChallengeSortType
 import com.aoztg.greengrim.presentation.ui.challenge.mapper.toUiChallengeList
 import com.aoztg.greengrim.presentation.ui.challenge.model.UiChallengeRoom
-import com.aoztg.greengrim.presentation.util.Constants.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,10 +22,8 @@ import javax.inject.Inject
 
 data class SearchChallengeUiState(
     val uiChallengeRoom: List<UiChallengeRoom> = emptyList(),
-    val sortType: ChallengeSortType = ChallengeSortType.DESC,
     val page: Int = 0,
     val hasNext: Boolean = true,
-    val option: Int = 0
 )
 
 sealed class SearchChallengeEvent{
@@ -40,10 +35,6 @@ class SearchChallengeViewModel @Inject constructor(
     private val repository: ChallengeRepository
 ): ViewModel() {
 
-    companion object {
-        const val SORT = 0
-        const val ORIGINAL = 1
-    }
 
     private val _uiState = MutableStateFlow(SearchChallengeUiState())
     val uiState : StateFlow<SearchChallengeUiState> = _uiState.asStateFlow()
@@ -65,7 +56,6 @@ class SearchChallengeViewModel @Inject constructor(
 
     private fun observeKeyword(){
         keyword.onEach {
-            Log.d(TAG,it)
             if(it.isNotBlank()){
                 val request = if(categoryValue.isNotBlank()){
                     repository.searchChallenge(
@@ -100,14 +90,12 @@ class SearchChallengeViewModel @Inject constructor(
                         }
                     }
                 }
-
             }
         }.launchIn(viewModelScope)
     }
 
     fun getChallengeList(){
         if(uiState.value.hasNext){
-
 
             viewModelScope.launch {
 
@@ -144,6 +132,17 @@ class SearchChallengeViewModel @Inject constructor(
                     }
                 }
             }
+        }
+    }
+
+    fun deleteKeyword(){
+        keyword.value = ""
+        _uiState.update { state ->
+            state.copy(
+                uiChallengeRoom = emptyList(),
+                page = 0,
+                hasNext = false,
+            )
         }
     }
 
