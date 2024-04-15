@@ -56,7 +56,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:clipToPadding="false"
-            android:paddingBottom="150dp"
+            android:paddingBottom="200dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/layout_toolbar">
@@ -123,7 +123,7 @@
 
                 <TextView
                     android:id="@+id/tv_wallet_label"
-                    style="@style/TextHeader"
+                    style="@style/TextGgMedium"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
@@ -190,7 +190,7 @@
 
                 <TextView
                     android:id="@+id/tv_info_label"
-                    style="@style/TextHeader"
+                    style="@style/TextGgMedium"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="40dp"
@@ -201,11 +201,11 @@
 
                 <TextView
                     android:id="@+id/tv_myaccount_label"
-                    style="@style/TextGgMedium"
+                    style="@style/TextGgSmallBold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:layout_marginTop="12dp"
+                    android:layout_marginTop="16dp"
                     android:onClick="@{() -> vm.navigateToMyProfile()}"
                     android:text="내 계정"
                     app:layout_constraintStart_toStartOf="parent"
@@ -224,10 +224,10 @@
 
                 <TextView
                     android:id="@+id/tv_my_attend_check_label"
-                    style="@style/TextGgMedium"
+                    style="@style/TextGgSmallBold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
+                    android:layout_marginTop="20dp"
                     android:onClick="@{() -> vm.navigateToAttendCheck()}"
                     android:text="출석 체크"
                     app:layout_constraintStart_toStartOf="@id/tv_myaccount_label"
@@ -245,10 +245,10 @@
 
                 <TextView
                     android:id="@+id/tv_my_point_label"
-                    style="@style/TextGgMedium"
+                    style="@style/TextGgSmallBold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
+                    android:layout_marginTop="20dp"
                     android:onClick="@{() -> vm.navigateToMyPoint()}"
                     android:text="내 포인트"
                     app:layout_constraintStart_toStartOf="@id/tv_my_attend_check_label"
@@ -268,7 +268,7 @@
 
                 <TextView
                     android:id="@+id/tv_etc_label"
-                    style="@style/TextHeader"
+                    style="@style/TextGgMedium"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="40dp"
@@ -279,7 +279,7 @@
 
                 <TextView
                     android:id="@+id/tv_announce"
-                    style="@style/TextGgMedium"
+                    style="@style/TextGgSmallBold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
@@ -291,10 +291,10 @@
 
                 <TextView
                     android:id="@+id/tv_terms"
-                    style="@style/TextGgMedium"
+                    style="@style/TextGgSmallBold"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="20dp"
                     android:onClick="@{() -> vm.navigateToTerms()}"
                     android:text="이용약관"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -303,10 +303,10 @@
 
                 <TextView
                     android:id="@+id/tv_privacy_policy"
-                    style="@style/TextGgMedium"
+                    style="@style/TextGgSmallBold"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="20dp"
                     android:onClick="@{() -> vm.navigateToPrivacyPolicy()}"
                     android:text="개인 정보 처리 방침"
                     app:layout_constraintEnd_toEndOf="parent"
