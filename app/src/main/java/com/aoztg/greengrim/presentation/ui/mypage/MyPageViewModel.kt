@@ -28,10 +28,12 @@ sealed class MyPageEvent {
     object NavigateToEditWallet : MyPageEvent()
     object NavigateToMyProfile : MyPageEvent()
     object NavigateToMyPoint : MyPageEvent()
-    data class NavigateToMySetting(val hasWallet : Boolean) : MyPageEvent()
+    data class NavigateToMySetting(val hasWallet: Boolean) : MyPageEvent()
     data class NavigateToWebView(val url: String) : MyPageEvent()
     data class ShowToastMessage(val msg: String) : MyPageEvent()
     data class ShowSnackMessage(val msg: String) : MyPageEvent()
+    object ShowLoading : MyPageEvent()
+    object DismissLoading : MyPageEvent()
 }
 
 @HiltViewModel
@@ -45,15 +47,19 @@ class MyPageViewModel @Inject constructor(
     private val _events = MutableSharedFlow<MyPageEvent>()
     val events: SharedFlow<MyPageEvent> = _events.asSharedFlow()
 
+
     fun getMyInfo() {
         viewModelScope.launch {
             infoRepository.getMyInfo().let {
                 when (it) {
                     is BaseState.Success -> {
-                        _uiState.update { state ->
-                            state.copy(
-                                uiMyInfo = it.body.toUiMyInfo()
-                            )
+                        val newBody = it.body.toUiMyInfo()
+                        if(!newBody.compareInfo(uiState.value.uiMyInfo)){
+                            _uiState.update { state ->
+                                state.copy(
+                                    uiMyInfo = it.body.toUiMyInfo()
+                                )
+                            }
                         }
                     }
 
@@ -73,16 +79,17 @@ class MyPageViewModel @Inject constructor(
 
                         val walletAddress = it.body.address ?: ""
                         val walletName = it.body.name ?: ""
-                        _uiState.update { state ->
-                            state.copy(
-                                uiMyInfo = uiState.value.uiMyInfo.copy(
-                                    walletAddress = walletAddress,
-                                    walletName = walletName,
-                                    hasWallet = it.body.existed
+                        if(walletAddress != uiState.value.uiMyInfo.walletAddress || walletName != uiState.value.uiMyInfo.walletName){
+                            _uiState.update { state ->
+                                state.copy(
+                                    uiMyInfo = uiState.value.uiMyInfo.copy(
+                                        walletAddress = walletAddress,
+                                        walletName = walletName,
+                                        hasWallet = it.body.existed
+                                    )
                                 )
-                            )
+                            }
                         }
-
                     }
 
                     is BaseState.Error -> {
@@ -107,7 +114,7 @@ class MyPageViewModel @Inject constructor(
 
     fun navigateToMyWallet() {
         viewModelScope.launch {
-            if(uiState.value.uiMyInfo.hasWallet){
+            if (uiState.value.uiMyInfo.hasWallet) {
                 _events.emit(MyPageEvent.NavigateToEditWallet)
             } else {
                 _events.emit(MyPageEvent.NavigateToAddWallet)

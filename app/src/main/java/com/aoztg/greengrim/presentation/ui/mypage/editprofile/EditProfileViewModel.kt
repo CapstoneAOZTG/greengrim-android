@@ -77,7 +77,7 @@ class EditProfileViewModel @Inject constructor(
         isImageSet,
         isNicknameValid
     ) { nick, introduce, isImageSet, nickValid ->
-        (curNickname != nick && nickValid) || curIntroduce != introduce || isImageSet
+        ((curNickname != nick && nickValid) || curIntroduce != introduce || isImageSet) && nick.isNotBlank() && introduce.isNotBlank()
     }.stateIn(
         viewModelScope,
         SharingStarted.WhileSubscribed(),

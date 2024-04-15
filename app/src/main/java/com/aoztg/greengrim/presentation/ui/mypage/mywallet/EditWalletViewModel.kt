@@ -38,7 +38,7 @@ class EditWalletViewModel @Inject constructor(
     val walletAddress = MutableStateFlow("")
 
     val isDataReady = combine(getWalletData, walletName, walletAddress) { flag, name, address ->
-        flag && (name != originWalletName || address != originWalletAddress)
+        flag && (name != originWalletName || address != originWalletAddress) && name.isNotBlank() && address.isNotBlank()
     }.stateIn(
         viewModelScope,
         SharingStarted.WhileSubscribed(),

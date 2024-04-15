@@ -18,7 +18,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class MyPageFragment : BaseFragment<FragmentMypageBinding>(R.layout.fragment_mypage) {
 
     private val parentViewModel: MainViewModel by activityViewModels()
-    private val viewModel: MyPageViewModel by viewModels()
+    private val viewModel: MyPageViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -43,6 +43,8 @@ class MyPageFragment : BaseFragment<FragmentMypageBinding>(R.layout.fragment_myp
                     is MyPageEvent.NavigateToWebView -> findNavController().toWebView(it.url)
                     is MyPageEvent.NavigateToMyProfile -> findNavController().toMyProfile()
                     is MyPageEvent.NavigateToMySetting -> findNavController().toMySetting(it.hasWallet)
+                    is MyPageEvent.ShowLoading -> showLoading(requireContext())
+                    is MyPageEvent.DismissLoading -> dismissLoading()
                 }
             }
         }

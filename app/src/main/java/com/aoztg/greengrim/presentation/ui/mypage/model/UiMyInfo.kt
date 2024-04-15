@@ -10,4 +10,12 @@ data class UiMyInfo(
     val hasWallet: Boolean = true,
     val walletName: String = "",
     val walletAddress : String = ""
-)
+){
+    fun compareInfo(data: UiMyInfo): Boolean{
+        return nickName == data.nickName &&
+                profileImgUrl == data.profileImgUrl &&
+                introduction == data.introduction &&
+                myPoint == data.myPoint &&
+                email == data.email
+    }
+}
