@@ -5,6 +5,7 @@ import com.aoztg.greengrim.data.model.request.PatchProfileRequest
 import com.aoztg.greengrim.data.model.response.GetProfileResponse
 import com.aoztg.greengrim.data.model.response.MyInfoResponse
 import com.aoztg.greengrim.data.model.response.MyKeywordsResponse
+import com.aoztg.greengrim.data.model.response.WalletInfoResponse
 import com.aoztg.greengrim.data.model.runRemote
 import com.aoztg.greengrim.data.remote.InfoAPI
 import javax.inject.Inject
@@ -22,5 +23,7 @@ class InfoRepositoryImpl @Inject constructor(private val api: InfoAPI) : InfoRep
     override suspend fun getMyInfo(): BaseState<MyInfoResponse> = runRemote { api.getMyInfo() }
 
     override suspend fun getMyKeywords(): BaseState<MyKeywordsResponse> = runRemote { api.getMyKeywords() }
+
+    override suspend fun getMyWalletInfo(): BaseState<WalletInfoResponse> = runRemote { api.getMyWalletInfo() }
 
 }

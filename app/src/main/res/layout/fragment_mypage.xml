@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="vm"
             type="com.aoztg.greengrim.presentation.ui.mypage.MyPageViewModel" />
@@ -132,6 +134,45 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/iv_profile" />
 
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layout_no_wallet"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:background="@drawable/shape_nofill_grey2stroke_radius15"
+                    android:onClick="@{() -> vm.navigateToMyWallet()}"
+                    android:visibility="@{vm.uiState.uiMyInfo.hasWallet ? View.INVISIBLE : View.VISIBLE}"
+                    app:layout_constraintBottom_toBottomOf="@id/layout_wallet"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_wallet_label"
+                    app:layout_constraintTop_toTopOf="@id/layout_wallet">
+
+                    <ImageView
+                        android:id="@+id/iv_3d_wallet"
+                        android:layout_width="60dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/icon_3d_wallet"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tv_announce_to_wallet"
+                        style="@style/TextGgSmall"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="전자 지갑을 등록해주세요"
+                        android:textAlignment="center"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/iv_3d_wallet" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/layout_wallet"
                     android:layout_width="0dp"
@@ -139,8 +180,9 @@
                     android:layout_marginTop="20dp"
                     android:background="@drawable/shape_greengradientfill_nostroke_15radius"
                     android:onClick="@{() -> vm.navigateToMyWallet()}"
-                    android:paddingHorizontal="30dp"
                     android:paddingVertical="20dp"
+                    android:paddingStart="30dp"
+                    android:visibility="@{vm.uiState.uiMyInfo.hasWallet ? View.VISIBLE : View.INVISIBLE}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_wallet_label">
@@ -150,7 +192,7 @@
                         style="@style/TextHeader"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="클립"
+                        android:text="@{vm.uiState.uiMyInfo.walletName}"
                         android:textStyle="normal"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -160,7 +202,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/icon_wallet"
-                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@id/btn_copy_link"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
@@ -169,6 +211,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="68dp"
+                        android:text="@{vm.uiState.uiMyInfo.walletAddress}"
                         android:textColor="@color/gg_grey3"
                         android:textSize="14dp"
                         app:layout_constraintEnd_toStartOf="@id/btn_copy_link"
@@ -180,6 +223,7 @@
                         android:id="@+id/btn_copy_link"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
+                        android:layout_marginEnd="30dp"
                         android:background="@android:color/transparent"
                         android:scaleType="centerCrop"
                         android:src="@drawable/icon_link_copy"

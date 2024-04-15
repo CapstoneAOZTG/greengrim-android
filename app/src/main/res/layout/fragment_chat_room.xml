@@ -175,7 +175,7 @@
                 android:layout_height="0dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
-                android:background="@drawable/shape_nofill_grey4stroke_radius10"
+                android:background="@drawable/shape_nofill_grey2stroke_radius10"
                 android:hint="메세지 입력..."
                 android:paddingHorizontal="12dp"
                 android:text="@={vm.chatMessage}"

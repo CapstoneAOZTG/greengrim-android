@@ -4,6 +4,7 @@ import com.aoztg.greengrim.data.model.response.GetProfileResponse
 import com.aoztg.greengrim.data.model.request.PatchProfileRequest
 import com.aoztg.greengrim.data.model.response.MyInfoResponse
 import com.aoztg.greengrim.data.model.response.MyKeywordsResponse
+import com.aoztg.greengrim.data.model.response.WalletInfoResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -28,5 +29,8 @@ interface InfoAPI {
 
     @GET("/visitor/keywords")
     suspend fun getMyKeywords(): Response<MyKeywordsResponse>
+
+    @GET("/visitor/wallets")
+    suspend fun getMyWalletInfo() : Response<WalletInfoResponse>
 
 }

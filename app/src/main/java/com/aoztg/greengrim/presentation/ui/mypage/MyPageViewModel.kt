@@ -64,7 +64,35 @@ class MyPageViewModel @Inject constructor(
         }
     }
 
-    fun navigateToMySetting(){
+    fun getMyWalletInfo() {
+        viewModelScope.launch {
+            infoRepository.getMyWalletInfo().let {
+                when (it) {
+                    is BaseState.Success -> {
+
+                        val walletAddress = it.body.address ?: ""
+                        val walletName = it.body.name ?: ""
+                        _uiState.update { state ->
+                            state.copy(
+                                uiMyInfo = uiState.value.uiMyInfo.copy(
+                                    walletAddress = walletAddress,
+                                    walletName = walletName,
+                                    hasWallet = it.body.existed
+                                )
+                            )
+                        }
+
+                    }
+
+                    is BaseState.Error -> {
+                        _events.emit(MyPageEvent.ShowSnackMessage(it.msg))
+                    }
+                }
+            }
+        }
+    }
+
+    fun navigateToMySetting() {
         viewModelScope.launch {
             _events.emit(MyPageEvent.NavigateToMySetting)
         }
@@ -75,36 +103,38 @@ class MyPageViewModel @Inject constructor(
             _events.emit(MyPageEvent.NavigateToAttendCheck)
         }
     }
-    fun navigateToMyWallet(){
+
+    fun navigateToMyWallet() {
         viewModelScope.launch {
             _events.emit(MyPageEvent.NavigateToMyWallet)
         }
     }
 
-    fun navigateToMyProfile(){
+    fun navigateToMyProfile() {
         viewModelScope.launch {
             _events.emit(MyPageEvent.NavigateToMyProfile)
         }
     }
 
-    fun navigateToMyPoint(){
+    fun navigateToMyPoint() {
         viewModelScope.launch {
             _events.emit(MyPageEvent.NavigateToMyPoint)
         }
     }
 
-    fun navigateToAnnounce(){
+    fun navigateToAnnounce() {
         viewModelScope.launch {
             _events.emit(MyPageEvent.NavigateToWebView(""))
         }
     }
 
-    fun navigateToPrivacyPolicy(){
+    fun navigateToPrivacyPolicy() {
         viewModelScope.launch {
             _events.emit(MyPageEvent.NavigateToWebView(""))
         }
     }
-    fun navigateToTerms(){
+
+    fun navigateToTerms() {
         viewModelScope.launch {
             _events.emit(MyPageEvent.NavigateToWebView(""))
         }

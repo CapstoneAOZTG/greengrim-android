@@ -27,6 +27,7 @@ class MyPageFragment : BaseFragment<FragmentMypageBinding>(R.layout.fragment_myp
         binding.vm = viewModel
         initEventObserver()
         viewModel.getMyInfo()
+        viewModel.getMyWalletInfo()
     }
 
     private fun initEventObserver() {

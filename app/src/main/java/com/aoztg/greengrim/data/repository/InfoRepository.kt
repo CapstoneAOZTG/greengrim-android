@@ -5,6 +5,7 @@ import com.aoztg.greengrim.data.model.request.PatchProfileRequest
 import com.aoztg.greengrim.data.model.response.GetProfileResponse
 import com.aoztg.greengrim.data.model.response.MyInfoResponse
 import com.aoztg.greengrim.data.model.response.MyKeywordsResponse
+import com.aoztg.greengrim.data.model.response.WalletInfoResponse
 
 interface InfoRepository {
 
@@ -19,4 +20,6 @@ interface InfoRepository {
     suspend fun getMyInfo(): BaseState<MyInfoResponse>
 
     suspend fun getMyKeywords(): BaseState<MyKeywordsResponse>
+
+    suspend fun getMyWalletInfo(): BaseState<WalletInfoResponse>
 }
