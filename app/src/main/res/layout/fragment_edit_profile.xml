@@ -11,7 +11,7 @@
 
         <variable
             name="vm"
-            type="com.aoztg.greengrim.presentation.ui.info.editprofile.EditProfileViewModel" />
+            type="com.aoztg.greengrim.presentation.ui.mypage.editprofile.EditProfileViewModel" />
 
     </data>
 
