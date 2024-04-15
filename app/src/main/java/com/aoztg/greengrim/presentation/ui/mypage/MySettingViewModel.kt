@@ -13,6 +13,7 @@ sealed class MySettingEvent{
     object NavigateToEditProfile : MySettingEvent()
     object NavigateToSetWallet : MySettingEvent()
     object NavigateToEditAlarm : MySettingEvent()
+    object NavigateToBack : MySettingEvent()
     object Logout : MySettingEvent()
     object WithDraw : MySettingEvent()
 }
@@ -51,6 +52,12 @@ class MySettingViewModel @Inject constructor(): ViewModel() {
     fun withDraw(){
         viewModelScope.launch {
             _event.emit(MySettingEvent.WithDraw)
+        }
+    }
+
+    fun navigateToBack(){
+        viewModelScope.launch {
+            _event.emit(MySettingEvent.NavigateToBack)
         }
     }
 }

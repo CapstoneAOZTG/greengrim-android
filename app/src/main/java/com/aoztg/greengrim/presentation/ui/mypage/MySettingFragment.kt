@@ -41,6 +41,7 @@ class MySettingFragment : BaseFragment<FragmentMySettingBinding>(R.layout.fragme
 
                     is MySettingEvent.NavigateToEditProfile -> findNavController().toEditProfile()
                     is MySettingEvent.NavigateToEditAlarm -> findNavController().toEditAlarm()
+                    is MySettingEvent.NavigateToBack -> findNavController().navigateUp()
                 }
             }
         }
