@@ -49,5 +49,50 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <TextView
+            android:id="@+id/tv_hasWallet_label"
+            style="@style/TextGgMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="전자 지갑이 있으시다면"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/layout_toolbar" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_navigate_to_edit"
+            style="@style/TextGgMedium"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/shape_grey4fill_nostroke_radius10"
+            android:text="지갑 주소 입력하기"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_hasWallet_label" />
+
+        <TextView
+            android:id="@+id/tv_noWallet_label"
+            style="@style/TextGgMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="전자 지갑이 없으시다면"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btn_navigate_to_edit" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_navigate_to_clip"
+            style="@style/TextGgMedium"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/shape_skybluefill_nostroke_radius10"
+            android:text="클립 지갑 생성하기"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_noWallet_label" />
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
