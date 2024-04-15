@@ -26,4 +26,6 @@ object Constants {
     const val KAKAO = "kakao"
     const val NAVER = "naver"
     const val GOOGLE = "google"
+
+    const val clipUrl = "https://klipwallet.com"
 }

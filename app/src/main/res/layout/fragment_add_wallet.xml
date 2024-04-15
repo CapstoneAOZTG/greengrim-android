@@ -60,7 +60,7 @@
             app:layout_constraintTop_toBottomOf="@id/layout_toolbar" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_navigate_to_edit"
+            android:id="@+id/btn_navigate_to_add_detail"
             style="@style/TextGgMedium"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -79,7 +79,7 @@
             android:layout_marginTop="20dp"
             android:text="전자 지갑이 없으시다면"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btn_navigate_to_edit" />
+            app:layout_constraintTop_toBottomOf="@id/btn_navigate_to_add_detail" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_navigate_to_clip"
