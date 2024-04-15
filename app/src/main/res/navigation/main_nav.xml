@@ -382,13 +382,21 @@
         android:id="@+id/editWalletFragment"
         tools:layout="@layout/fragment_edit_wallet"
         android:name="com.aoztg.greengrim.presentation.ui.mypage.mywallet.EditWalletFragment"
-        android:label="EditWalletFragment" />
+        android:label="EditWalletFragment" >
+        <action
+            android:id="@+id/action_editWalletFragment_to_myPageFragment"
+            app:destination="@id/myPageFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/addWalletDetailFragment"
         tools:layout="@layout/fragment_add_wallet_detail"
         android:name="com.aoztg.greengrim.presentation.ui.mypage.mywallet.AddWalletDetailFragment"
-        android:label="AddWalletDetailFragment" />
+        android:label="AddWalletDetailFragment" >
+        <action
+            android:id="@+id/action_addWalletDetailFragment_to_myPageFragment"
+            app:destination="@id/myPageFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/editAlarmFragment"

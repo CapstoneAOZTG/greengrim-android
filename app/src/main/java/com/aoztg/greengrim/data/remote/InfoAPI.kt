@@ -1,7 +1,8 @@
 package com.aoztg.greengrim.data.remote
 
-import com.aoztg.greengrim.data.model.response.GetProfileResponse
 import com.aoztg.greengrim.data.model.request.PatchProfileRequest
+import com.aoztg.greengrim.data.model.request.WalletInfoRequest
+import com.aoztg.greengrim.data.model.response.GetProfileResponse
 import com.aoztg.greengrim.data.model.response.MyInfoResponse
 import com.aoztg.greengrim.data.model.response.MyKeywordsResponse
 import com.aoztg.greengrim.data.model.response.WalletInfoResponse
@@ -10,6 +11,7 @@ import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.PATCH
+import retrofit2.http.POST
 
 interface InfoAPI {
 
@@ -32,5 +34,15 @@ interface InfoAPI {
 
     @GET("/visitor/wallets")
     suspend fun getMyWalletInfo() : Response<WalletInfoResponse>
+
+    @POST("/visitor/wallets")
+    suspend fun addWallet(
+        @Body params : WalletInfoRequest
+    ) : Response<Unit>
+
+    @POST("/member/wallets")
+    suspend fun editWallet(
+        @Body params : WalletInfoRequest
+    ) : Response<Unit>
 
 }

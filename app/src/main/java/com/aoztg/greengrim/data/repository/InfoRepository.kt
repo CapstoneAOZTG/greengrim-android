@@ -2,6 +2,7 @@ package com.aoztg.greengrim.data.repository
 
 import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.model.request.PatchProfileRequest
+import com.aoztg.greengrim.data.model.request.WalletInfoRequest
 import com.aoztg.greengrim.data.model.response.GetProfileResponse
 import com.aoztg.greengrim.data.model.response.MyInfoResponse
 import com.aoztg.greengrim.data.model.response.MyKeywordsResponse
@@ -22,4 +23,13 @@ interface InfoRepository {
     suspend fun getMyKeywords(): BaseState<MyKeywordsResponse>
 
     suspend fun getMyWalletInfo(): BaseState<WalletInfoResponse>
+
+    suspend fun addWallet(
+        body : WalletInfoRequest
+    ) : BaseState<Unit>
+
+    suspend fun editWallet(
+        body : WalletInfoRequest
+    ) : BaseState<Unit>
+
 }
