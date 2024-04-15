@@ -4,13 +4,16 @@
 
     <data>
 
+        <variable
+            name="vm"
+            type="com.aoztg.greengrim.presentation.ui.mypage.mywallet.AddWalletDetailViewModel" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingHorizontal="20dp">
-
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_toolbar"
@@ -54,6 +57,7 @@
                 android:minWidth="0dp"
                 android:minHeight="0dp"
                 android:text="완료"
+                android:enabled="@{vm.isDataReady()}"
                 android:textColor="@color/selector_complete_text"
                 android:textSize="16dp"
                 android:textStyle="bold"
@@ -81,7 +85,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/tv_wallet_name_label"
-            app:textLength="@{vm.nickname}"
+            app:textLength="@{vm.walletName}"
             app:textLimit="@{8}" />
 
         <EditText
@@ -96,6 +100,7 @@
             android:maxLines="1"
             android:paddingHorizontal="15dp"
             android:paddingVertical="8dp"
+            android:text="@={vm.walletName}"
             android:textColor="@color/white"
             android:textColorHint="@color/gg_grey5"
             android:textSize="13dp"
@@ -127,6 +132,7 @@
             android:maxLines="1"
             android:paddingHorizontal="15dp"
             android:paddingVertical="8dp"
+            android:text="@={vm.walletAddress}"
             android:textColor="@color/white"
             android:textColorHint="@color/gg_grey5"
             android:textSize="13dp"

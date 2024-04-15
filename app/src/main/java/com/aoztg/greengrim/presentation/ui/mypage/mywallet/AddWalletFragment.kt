@@ -11,7 +11,9 @@ import com.aoztg.greengrim.presentation.base.BaseFragment
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 import com.aoztg.greengrim.presentation.ui.toWebView
 import com.aoztg.greengrim.presentation.util.Constants
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class AddWalletFragment: BaseFragment<FragmentAddWalletBinding>(R.layout.fragment_add_wallet) {
 
     private val parentViewModel : MainViewModel by activityViewModels()
