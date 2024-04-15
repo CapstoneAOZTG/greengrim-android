@@ -236,11 +236,6 @@
         tools:layout="@layout/fragment_check_password" />
 
     <fragment
-        android:id="@+id/set_wallet_password_fragment"
-        android:name="com.aoztg.greengrim.presentation.ui.global.setwalletpassword.SetWalletPasswordFragment"
-        android:label="SetWalletPassword" />
-
-    <fragment
         android:id="@+id/nft_detail_fragment"
         android:name="com.aoztg.greengrim.presentation.ui.global.nftdetail.NftDetailFragment"
         android:label="NftDetail"
@@ -416,10 +411,6 @@
     <action
         android:id="@+id/action_global_to_nftDetailFragment"
         app:destination="@id/nft_detail_fragment" />
-
-    <action
-        android:id="@+id/action_global_to_setWalletPasswordFragment"
-        app:destination="@id/set_wallet_password_fragment" />
 
     <action
         android:id="@+id/action_global_to_checkPasswordFragment"
