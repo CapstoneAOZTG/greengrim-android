@@ -1,6 +1,7 @@
 package com.aoztg.greengrim.presentation.ui.mypage.mapper
 
 import com.aoztg.greengrim.data.model.response.MyInfoResponse
+import com.aoztg.greengrim.presentation.ui.formatNumberWithCommas
 import com.aoztg.greengrim.presentation.ui.mypage.model.UiMyInfo
 
 internal fun MyInfoResponse.toUiMyInfo() = UiMyInfo(
@@ -9,6 +10,5 @@ internal fun MyInfoResponse.toUiMyInfo() = UiMyInfo(
     profileImgUrl = memberInfo.profileImgUrl,
     introduction = memberInfo.introduction,
     email = email,
-    myPoint = point.toString() + "P",
-    hasWallet = wallet
+    myPoint = point.formatNumberWithCommas() + "P",
 )

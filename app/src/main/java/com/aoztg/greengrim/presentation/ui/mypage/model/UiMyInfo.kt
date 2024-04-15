@@ -7,5 +7,7 @@ data class UiMyInfo(
     val introduction: String = "",
     val myPoint: String = "",
     val email: String = "",
-    val hasWallet: Boolean = true
+    val hasWallet: Boolean = true,
+    val walletName: String = "",
+    val walletAddress : String = ""
 )

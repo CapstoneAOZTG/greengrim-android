@@ -64,3 +64,7 @@ internal fun String.toCategoryText(): String{
 }
 
 internal fun YearMonth.toText() = year.toString() + "년 " + monthValue + "월"
+
+internal fun Int.formatNumberWithCommas(): String {
+    return String.format("%,d", this)
+}
