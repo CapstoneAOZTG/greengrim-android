@@ -24,7 +24,8 @@ data class MyPageUiState(
 
 sealed class MyPageEvent {
     object NavigateToAttendCheck : MyPageEvent()
-    object NavigateToMyWallet : MyPageEvent()
+    object NavigateToAddWallet : MyPageEvent()
+    object NavigateToEditWallet : MyPageEvent()
     object NavigateToMyProfile : MyPageEvent()
     object NavigateToMyPoint : MyPageEvent()
     object NavigateToMySetting : MyPageEvent()
@@ -106,7 +107,11 @@ class MyPageViewModel @Inject constructor(
 
     fun navigateToMyWallet() {
         viewModelScope.launch {
-            _events.emit(MyPageEvent.NavigateToMyWallet)
+            if(uiState.value.uiMyInfo.hasWallet){
+                _events.emit(MyPageEvent.NavigateToEditWallet)
+            } else {
+                _events.emit(MyPageEvent.NavigateToAddWallet)
+            }
         }
     }
 

@@ -37,7 +37,8 @@ class MyPageFragment : BaseFragment<FragmentMypageBinding>(R.layout.fragment_myp
                     is MyPageEvent.NavigateToAttendCheck -> findNavController().toAttendCheck()
                     is MyPageEvent.ShowToastMessage -> showCustomToast(it.msg)
                     is MyPageEvent.ShowSnackMessage -> showCustomSnack(binding.ivProfile, it.msg)
-                    is MyPageEvent.NavigateToMyWallet -> findNavController().toMyWallet()
+                    is MyPageEvent.NavigateToAddWallet -> findNavController().toAddWallet()
+                    is MyPageEvent.NavigateToEditWallet -> findNavController().toEditWallet()
                     is MyPageEvent.NavigateToMyPoint -> findNavController().toMyPoint()
                     is MyPageEvent.NavigateToWebView -> findNavController().toWebView(it.url)
                     is MyPageEvent.NavigateToMyProfile -> findNavController().toMyProfile()
@@ -47,8 +48,13 @@ class MyPageFragment : BaseFragment<FragmentMypageBinding>(R.layout.fragment_myp
         }
     }
 
-    private fun NavController.toMyWallet() {
-        val action = MyPageFragmentDirections.actionMyPageFragmentToMyWalletFragment()
+    private fun NavController.toAddWallet() {
+        val action = MyPageFragmentDirections.actionMyPageFragmentToAddWalletFragment()
+        navigate(action)
+    }
+
+    private fun NavController.toEditWallet(){
+        val action = MyPageFragmentDirections.actionMyPageFragmentToEditWalletFragment()
         navigate(action)
     }
 
