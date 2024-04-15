@@ -181,6 +181,18 @@
         tools:layout="@layout/fragment_mypage"
         android:name="com.aoztg.greengrim.presentation.ui.mypage.MyPageFragment"
         android:label="Info">
+        <action
+            android:id="@+id/action_myPageFragment_to_myPointFragment"
+            app:destination="@id/myPointFragment" />
+        <action
+            android:id="@+id/action_myPageFragment_to_myProfileFragment"
+            app:destination="@id/myProfileFragment" />
+        <action
+            android:id="@+id/action_myPageFragment_to_mySettingFragment"
+            app:destination="@id/mySettingFragment" />
+        <action
+            android:id="@+id/action_myPageFragment_to_my_wallet_fragment"
+            app:destination="@id/my_wallet_fragment" />
     </fragment>
 
     <fragment
@@ -337,6 +349,25 @@
 
     </fragment>
 
+    <fragment
+        android:id="@+id/webViewFragment"
+        android:name="com.aoztg.greengrim.presentation.ui.global.webview.WebViewFragment"
+        android:label="WebViewFragment" >
+
+        <argument
+            android:name="url"
+            app:argType="string"
+            android:defaultValue=""/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/mySettingFragment"
+        tools:layout="@layout/fragment_my_setting"
+        android:name="com.aoztg.greengrim.presentation.ui.mypage.MySettingFragment"
+        android:label="MySettingFragment" />
+
+
     <action
         android:id="@+id/action_global_to_attendCheckFragment"
         app:destination="@id/attend_check_fragment" />
@@ -365,6 +396,9 @@
         android:id="@+id/action_global_to_profileFragment"
         app:destination="@id/profileFragment" />
 
+    <action
+        android:id="@+id/action_global_to_webviewFragment"
+        app:destination="@id/webViewFragment"/>
 
 
 </navigation>

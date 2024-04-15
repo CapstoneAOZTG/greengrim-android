@@ -28,3 +28,8 @@ internal fun NavController.toNftDetail(nftId: Long){
     val action = MainNavDirections.actionGlobalToNftDetailFragment(nftId)
     navigate(action)
 }
+
+internal fun NavController.toWebView(url: String){
+    val action = MainNavDirections.actionGlobalToWebviewFragment(url)
+    navigate(action)
+}

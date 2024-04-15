@@ -23,13 +23,12 @@ data class MyPageUiState(
 )
 
 sealed class MyPageEvent {
-    object ShowBottomSheet : MyPageEvent()
-    object GoToIntroActivity : MyPageEvent()
     object NavigateToAttendCheck : MyPageEvent()
-    object NavigateToMyChallenge : MyPageEvent()
-    object NavigateToMyCertification : MyPageEvent()
     object NavigateToMyWallet : MyPageEvent()
-    object NavigateToMyNft : MyPageEvent()
+    object NavigateToMyProfile : MyPageEvent()
+    object NavigateToMyPoint : MyPageEvent()
+    object NavigateToMySetting : MyPageEvent()
+    data class NavigateToWebView(val url: String) : MyPageEvent()
     data class ShowToastMessage(val msg: String) : MyPageEvent()
     data class ShowSnackMessage(val msg: String) : MyPageEvent()
 }
@@ -44,12 +43,6 @@ class MyPageViewModel @Inject constructor(
 
     private val _events = MutableSharedFlow<MyPageEvent>()
     val events: SharedFlow<MyPageEvent> = _events.asSharedFlow()
-
-    fun showBottomSheet() {
-        viewModelScope.launch {
-            _events.emit(MyPageEvent.ShowBottomSheet)
-        }
-    }
 
     fun getMyInfo() {
         viewModelScope.launch {
@@ -71,19 +64,9 @@ class MyPageViewModel @Inject constructor(
         }
     }
 
-    fun withdrawal() {
+    fun navigateToMySetting(){
         viewModelScope.launch {
-            infoRepository.withdrawal().let {
-                when (it) {
-                    is BaseState.Success -> {
-                        _events.emit(MyPageEvent.GoToIntroActivity)
-                    }
-
-                    is BaseState.Error -> {
-                        _events.emit(MyPageEvent.ShowSnackMessage(it.msg))
-                    }
-                }
-            }
+            _events.emit(MyPageEvent.NavigateToMySetting)
         }
     }
 
@@ -92,26 +75,39 @@ class MyPageViewModel @Inject constructor(
             _events.emit(MyPageEvent.NavigateToAttendCheck)
         }
     }
-
-    fun navigateToMyCertification() {
+    fun navigateToMyWallet(){
         viewModelScope.launch {
-            _events.emit(MyPageEvent.NavigateToMyCertification)
+            _events.emit(MyPageEvent.NavigateToMyWallet)
         }
     }
 
-    fun navigateToMyChallenge() {
+    fun navigateToMyProfile(){
         viewModelScope.launch {
-            _events.emit(MyPageEvent.NavigateToMyChallenge)
+            _events.emit(MyPageEvent.NavigateToMyProfile)
         }
     }
 
-    fun navigateToMyNft() {
+    fun navigateToMyPoint(){
         viewModelScope.launch {
-            if (uiState.value.uiMyInfo.hasWallet) {
-                _events.emit(MyPageEvent.NavigateToMyNft)
-            } else {
-                _events.emit(MyPageEvent.ShowSnackMessage("지갑을 먼저 생성해주세요!"))
-            }
+            _events.emit(MyPageEvent.NavigateToMyPoint)
         }
     }
+
+    fun navigateToAnnounce(){
+        viewModelScope.launch {
+            _events.emit(MyPageEvent.NavigateToWebView(""))
+        }
+    }
+
+    fun navigateToPrivacyPolicy(){
+        viewModelScope.launch {
+            _events.emit(MyPageEvent.NavigateToWebView(""))
+        }
+    }
+    fun navigateToTerms(){
+        viewModelScope.launch {
+            _events.emit(MyPageEvent.NavigateToWebView(""))
+        }
+    }
+
 }
