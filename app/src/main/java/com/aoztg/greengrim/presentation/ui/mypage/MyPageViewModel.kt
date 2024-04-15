@@ -28,7 +28,7 @@ sealed class MyPageEvent {
     object NavigateToEditWallet : MyPageEvent()
     object NavigateToMyProfile : MyPageEvent()
     object NavigateToMyPoint : MyPageEvent()
-    object NavigateToMySetting : MyPageEvent()
+    data class NavigateToMySetting(val hasWallet : Boolean) : MyPageEvent()
     data class NavigateToWebView(val url: String) : MyPageEvent()
     data class ShowToastMessage(val msg: String) : MyPageEvent()
     data class ShowSnackMessage(val msg: String) : MyPageEvent()
@@ -95,7 +95,7 @@ class MyPageViewModel @Inject constructor(
 
     fun navigateToMySetting() {
         viewModelScope.launch {
-            _events.emit(MyPageEvent.NavigateToMySetting)
+            _events.emit(MyPageEvent.NavigateToMySetting(uiState.value.uiMyInfo.hasWallet))
         }
     }
 

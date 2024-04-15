@@ -363,6 +363,12 @@
         tools:layout="@layout/fragment_my_setting"
         android:name="com.aoztg.greengrim.presentation.ui.mypage.MySettingFragment"
         android:label="MySettingFragment" >
+
+        <argument
+            android:name="hasWallet"
+            app:argType="boolean"
+            android:defaultValue="false"/>
+
         <action
             android:id="@+id/action_mySettingFragment_to_edit_profile_fragment"
             app:destination="@id/edit_profile_fragment" />
@@ -372,6 +378,9 @@
         <action
             android:id="@+id/action_mySettingFragment_to_editWalletFragment"
             app:destination="@id/editWalletFragment" />
+        <action
+            android:id="@+id/action_mySettingFragment_to_editAlarmFragment"
+            app:destination="@id/editAlarmFragment" />
     </fragment>
 
     <fragment
@@ -385,6 +394,12 @@
         tools:layout="@layout/fragment_add_wallet_detail"
         android:name="com.aoztg.greengrim.presentation.ui.mypage.mywallet.AddWalletDetailFragment"
         android:label="AddWalletDetailFragment" />
+
+    <fragment
+        android:id="@+id/editAlarmFragment"
+        tools:layout="@layout/fragment_edit_alarm"
+        android:name="com.aoztg.greengrim.presentation.ui.mypage.alarm.EditAlarmFragment"
+        android:label="EditAlarmFragment" />
 
     <action
         android:id="@+id/action_global_to_attendCheckFragment"

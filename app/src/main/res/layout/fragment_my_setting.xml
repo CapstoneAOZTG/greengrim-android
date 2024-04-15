@@ -4,6 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <variable
+            name="vm"
+            type="com.aoztg.greengrim.presentation.ui.mypage.MySettingViewModel" />
 
     </data>
 
@@ -130,25 +133,6 @@
             app:layout_constraintEnd_toEndOf="parent" />
 
         <TextView
-            android:id="@+id/tv_app_version"
-            style="@style/TextGgSmallBold"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="앱 버전"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@id/tv_alarm"
-            app:layout_constraintTop_toBottomOf="@id/tv_alarm" />
-
-        <ImageView
-            android:id="@+id/btn_app_version"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/icon_small_next"
-            app:layout_constraintBottom_toBottomOf="@id/tv_app_version"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-        <TextView
             android:id="@+id/tv_logout"
             style="@style/TextGgSmallBold"
             android:layout_width="0dp"
@@ -156,8 +140,8 @@
             android:layout_marginTop="20dp"
             android:text="로그아웃"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@id/tv_app_version"
-            app:layout_constraintTop_toBottomOf="@id/tv_app_version" />
+            app:layout_constraintStart_toStartOf="@id/tv_alarm"
+            app:layout_constraintTop_toBottomOf="@id/tv_alarm" />
 
         <ImageView
             android:id="@+id/btn_logout"
@@ -186,6 +170,26 @@
             app:layout_constraintBottom_toBottomOf="@id/tv_withdrawal"
             app:layout_constraintEnd_toEndOf="parent" />
 
+        <TextView
+            android:id="@+id/tv_app_version"
+            style="@style/TextGgSmallBold"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="앱 버전"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/tv_withdrawal"
+            app:layout_constraintTop_toBottomOf="@id/tv_withdrawal" />
+
+        <TextView
+            android:id="@+id/btn_app_version"
+            style="@style/TextGgSmallGrey1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/icon_small_next"
+            app:layout_constraintBottom_toBottomOf="@id/tv_app_version"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="1.1.0v" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
