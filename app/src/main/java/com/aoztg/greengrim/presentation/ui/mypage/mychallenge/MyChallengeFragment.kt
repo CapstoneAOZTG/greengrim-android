@@ -37,6 +37,7 @@ class MyChallengeFragment :
         initStateObserver()
         initEventObserver()
         setScrollEventListener()
+
     }
 
     private fun initStateObserver() {
