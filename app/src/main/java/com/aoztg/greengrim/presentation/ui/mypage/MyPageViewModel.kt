@@ -27,7 +27,7 @@ sealed class MyPageEvent {
     object NavigateToAddWallet : MyPageEvent()
     object NavigateToEditWallet : MyPageEvent()
     object NavigateToMyProfile : MyPageEvent()
-    object NavigateToMyPoint : MyPageEvent()
+    data class NavigateToMyPoint(val name: String, val totalPoint: String) : MyPageEvent()
     data class NavigateToMySetting(val hasWallet: Boolean) : MyPageEvent()
     data class NavigateToWebView(val url: String) : MyPageEvent()
     data class ShowToastMessage(val msg: String) : MyPageEvent()
@@ -136,7 +136,7 @@ class MyPageViewModel @Inject constructor(
 
     fun navigateToMyPoint() {
         viewModelScope.launch {
-            _events.emit(MyPageEvent.NavigateToMyPoint)
+            _events.emit(MyPageEvent.NavigateToMyPoint(uiState.value.uiMyInfo.nickName + "의 그린 포인트", uiState.value.uiMyInfo.myPoint))
         }
     }
 
@@ -157,5 +157,4 @@ class MyPageViewModel @Inject constructor(
             _events.emit(MyPageEvent.NavigateToWebView(""))
         }
     }
-
 }

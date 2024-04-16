@@ -10,5 +10,5 @@ internal fun MyInfoResponse.toUiMyInfo() = UiMyInfo(
     profileImgUrl = memberInfo.profileImgUrl,
     introduction = memberInfo.introduction,
     email = email,
-    myPoint = point.formatNumberWithCommas() + "P",
+    myPoint = point.formatNumberWithCommas() + "GP",
 )

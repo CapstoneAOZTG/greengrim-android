@@ -3,7 +3,6 @@ package com.aoztg.greengrim.presentation.ui.mypage
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.aoztg.greengrim.R
@@ -39,7 +38,7 @@ class MyPageFragment : BaseFragment<FragmentMypageBinding>(R.layout.fragment_myp
                     is MyPageEvent.ShowSnackMessage -> showCustomSnack(binding.ivProfile, it.msg)
                     is MyPageEvent.NavigateToAddWallet -> findNavController().toAddWallet()
                     is MyPageEvent.NavigateToEditWallet -> findNavController().toEditWallet()
-                    is MyPageEvent.NavigateToMyPoint -> findNavController().toMyPoint()
+                    is MyPageEvent.NavigateToMyPoint -> findNavController().toMyPoint(it.name, it.totalPoint)
                     is MyPageEvent.NavigateToWebView -> findNavController().toWebView(it.url)
                     is MyPageEvent.NavigateToMyProfile -> findNavController().toMyProfile()
                     is MyPageEvent.NavigateToMySetting -> findNavController().toMySetting(it.hasWallet)
@@ -60,8 +59,8 @@ class MyPageFragment : BaseFragment<FragmentMypageBinding>(R.layout.fragment_myp
         navigate(action)
     }
 
-    private fun NavController.toMyPoint(){
-        val action = MyPageFragmentDirections.actionMyPageFragmentToMyPointFragment()
+    private fun NavController.toMyPoint(name: String,totalPoint: String){
+        val action = MyPageFragmentDirections.actionMyPageFragmentToMyPointFragment(name, totalPoint)
         navigate(action)
     }
 

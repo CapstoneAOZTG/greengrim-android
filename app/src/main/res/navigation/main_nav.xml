@@ -310,7 +310,19 @@
         android:id="@+id/myPointFragment"
         tools:layout="@layout/fragment_my_point"
         android:name="com.aoztg.greengrim.presentation.ui.mypage.mypoint.MyPointFragment"
-        android:label="MyPointFragment" />
+        android:label="MyPointFragment" >
+
+        <argument
+            android:name="name"
+            app:argType="string"
+            android:defaultValue=""/>
+
+        <argument
+            android:name="totalPoint"
+            app:argType="string"
+            android:defaultValue=""/>
+
+    </fragment>
 
     <fragment
         android:id="@+id/addWalletFragment"

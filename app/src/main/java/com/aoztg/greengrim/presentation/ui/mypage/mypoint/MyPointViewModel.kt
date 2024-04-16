@@ -7,8 +7,11 @@ import com.aoztg.greengrim.data.repository.MemberRepository
 import com.aoztg.greengrim.presentation.ui.mypage.mapper.toUiMyPointInfo
 import com.aoztg.greengrim.presentation.ui.mypage.model.UiMyPointInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -23,6 +26,11 @@ data class MyPointUiState(
     val pointInfoList : List<UiMyPointInfo> = emptyList()
 )
 
+sealed class MyPointEvent{
+    object NavigateToBack : MyPointEvent()
+    data class ShowCustomSnack(val msg: String) : MyPointEvent()
+}
+
 @HiltViewModel
 class MyPointViewModel @Inject constructor(
     private val repository : MemberRepository
@@ -30,6 +38,24 @@ class MyPointViewModel @Inject constructor(
 
     private val _uiState = MutableStateFlow(MyPointUiState())
     val uiState : StateFlow<MyPointUiState> = _uiState.asStateFlow()
+
+    private val _event = MutableSharedFlow<MyPointEvent>()
+    val event: SharedFlow<MyPointEvent> = _event.asSharedFlow()
+
+    fun setInfo(name: String, totalPoint: String){
+        _uiState.update { state ->
+            state.copy(
+                name = name,
+                totalPoint = totalPoint
+            )
+        }
+    }
+
+    fun navigateToBack(){
+        viewModelScope.launch {
+            _event.emit(MyPointEvent.NavigateToBack)
+        }
+    }
 
     fun getMyPoint(){
         viewModelScope.launch {
@@ -49,9 +75,7 @@ class MyPointViewModel @Inject constructor(
                             }
                         }
 
-                        is BaseState.Error -> {
-
-                        }
+                        is BaseState.Error -> _event.emit(MyPointEvent.ShowCustomSnack(it.msg))
                     }
                 }
             }
