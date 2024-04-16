@@ -17,6 +17,8 @@ import com.aoztg.greengrim.presentation.ui.mypage.adapter.MyCertificationAdapter
 import com.aoztg.greengrim.presentation.ui.mypage.mycertification.MyCertificationTempDate
 import com.aoztg.greengrim.presentation.ui.mypage.mycertification.MyCertificationViewModel
 import com.aoztg.greengrim.presentation.ui.toCertificationDetail
+import com.aoztg.greengrim.presentation.ui.toChallengeDetail
+import com.aoztg.greengrim.presentation.ui.toNftDetail
 import com.kizitonwose.calendar.core.yearMonth
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.LocalDate
@@ -75,7 +77,7 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(R.layout.fragme
                     }
 
                     ProfileFilter.NFT -> {
-
+                        viewModel.getNftList(NEXT_PAGE)
                     }
                 }
             }
@@ -87,20 +89,21 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(R.layout.fragme
             viewModel.event.collect{
                 when(it){
                     is MyProfileEvent.ShowChallengeFilterBottomSheet -> showChallengeFilterBottomSheet()
-                    is MyProfileEvent.NavigateToChallengeDetail -> {
+                    is MyProfileEvent.ShowNftFilterBottomSheet -> showNftFilterBottomSheet()
 
+                    is MyProfileEvent.NavigateToChallengeDetail -> findNavController().toChallengeDetail(it.id)
+                    is MyProfileEvent.NavigateToCertificationDetail -> {
+                        MyCertificationTempDate.setTempDate(customCalendar.selectedDate)
+                        findNavController().toCertificationDetail(it.certificationId)
                     }
-                    is MyProfileEvent.ShowSnackMessage -> showCustomSnack(binding.ivProfile, it.msg)
-                    is MyProfileEvent.ShowToastMessage -> showCustomToast(it.msg)
+                    is MyProfileEvent.NavigateToNftDetail -> findNavController().toNftDetail(it.id)
+
                     is MyProfileEvent.ShowCalendar -> {
                         customCalendar.setDateWithDataList(
                             viewModel.uiState.value.certificationDateList
                         )
                     }
-                    is MyProfileEvent.NavigateToCertificationDetail -> {
-                        MyCertificationTempDate.setTempDate(customCalendar.selectedDate)
-                        findNavController().toCertificationDetail(it.certificationId)
-                    }
+
                     is MyProfileEvent.ShowYearMonthPicker -> {
                         showYearMonthDialog(
                             requireContext(),
@@ -109,11 +112,11 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(R.layout.fragme
                             ::yearMonthDatePickerConfirmListener
                         )
                     }
-
                     is MyProfileEvent.InitCalendar -> {
-                        
                         // 캘린더 초기화 작업
                     }
+                    is MyProfileEvent.ShowSnackMessage -> showCustomSnack(binding.ivProfile, it.msg)
+                    is MyProfileEvent.ShowToastMessage -> showCustomToast(it.msg)
                 }
             }
         }
@@ -134,7 +137,13 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(R.layout.fragme
         ChallengeFilterBottomSheet(requireContext(), sortType) { type ->
             sortType = type
             viewModel.setChallengeSortType(type)
-            binding.tvChallengeFilter.text = type.text
+        }.show()
+    }
+
+    private fun showNftFilterBottomSheet() {
+        ChallengeFilterBottomSheet(requireContext(), sortType) { type ->
+            sortType = type
+            viewModel.setNftSortType(type)
         }.show()
     }
 

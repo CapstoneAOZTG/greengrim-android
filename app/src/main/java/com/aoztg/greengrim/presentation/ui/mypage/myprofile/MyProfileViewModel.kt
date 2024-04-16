@@ -6,18 +6,25 @@ import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.repository.CertificationRepository
 import com.aoztg.greengrim.data.repository.ChallengeRepository
 import com.aoztg.greengrim.data.repository.NftRepository
+import com.aoztg.greengrim.presentation.ui.challenge.list.ChallengeListViewModel
 import com.aoztg.greengrim.presentation.ui.challenge.list.SortType
 import com.aoztg.greengrim.presentation.ui.challenge.mapper.toUiChallengeList
 import com.aoztg.greengrim.presentation.ui.challenge.model.UiChallengeRoom
+import com.aoztg.greengrim.presentation.ui.home.mapper.toUiNftItem
 import com.aoztg.greengrim.presentation.ui.mypage.mapper.toUiMyCertificationList
 import com.aoztg.greengrim.presentation.ui.mypage.model.UiMyCertification
 import com.aoztg.greengrim.presentation.ui.mypage.mycertification.MyCertificationEvents
 import com.aoztg.greengrim.presentation.ui.mypage.mycertification.MyCertificationViewModel
 import com.aoztg.greengrim.presentation.ui.mypage.mychallenge.MyChallengeViewModel
+import com.aoztg.greengrim.presentation.ui.mypage.mynft.MyNftEvents
+import com.aoztg.greengrim.presentation.ui.nft.GrimNftSortType
+import com.aoztg.greengrim.presentation.ui.nft.MarketViewModel
+import com.aoztg.greengrim.presentation.ui.nft.model.UiNftItem
 import com.aoztg.greengrim.presentation.ui.toHeaderText
 import com.aoztg.greengrim.presentation.ui.toLocalDate
 import com.aoztg.greengrim.presentation.ui.toText
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -41,17 +48,20 @@ data class MyProfileUiState(
     val curDate: LocalDate = LocalDate.now(),
     val certificationDateList: List<LocalDate> = emptyList(),
     val certificationList: List<UiMyCertification> = emptyList(),
+    val nftList: List<UiNftItem> = emptyList(),
 )
 
 sealed class MyProfileEvent{
     data class NavigateToChallengeDetail(val id: Long) : MyProfileEvent()
-    data class ShowToastMessage(val msg: String) : MyProfileEvent()
-    data class ShowSnackMessage(val msg: String) : MyProfileEvent()
-    object ShowChallengeFilterBottomSheet : MyProfileEvent()
-    data class ShowYearMonthPicker(val curYear: Int, val curMonth: Int) : MyProfileEvent()
+    data class NavigateToNftDetail(val id: Long) : MyProfileEvent()
     data class NavigateToCertificationDetail(val certificationId: Long) : MyProfileEvent()
+    object ShowChallengeFilterBottomSheet : MyProfileEvent()
+    object ShowNftFilterBottomSheet : MyProfileEvent()
+    data class ShowYearMonthPicker(val curYear: Int, val curMonth: Int) : MyProfileEvent()
     object ShowCalendar : MyProfileEvent()
     object InitCalendar : MyProfileEvent()
+    data class ShowToastMessage(val msg: String) : MyProfileEvent()
+    data class ShowSnackMessage(val msg: String) : MyProfileEvent()
 }
 
 @HiltViewModel
@@ -93,7 +103,7 @@ class MyProfileViewModel @Inject constructor(
             }
 
             ProfileFilter.NFT -> {
-
+                getNftList(NEW)
             }
         }
     }
@@ -252,6 +262,59 @@ class MyProfileViewModel @Inject constructor(
                     curMonth = curMonth
                 )
             )
+        }
+    }
+
+    // 여기부터 Nft 로직
+
+    fun setNftSortType(type: SortType) {
+        _uiState.value = _uiState.value.copy(
+            hasNext = true,
+            sortType = type,
+            page = 0
+        )
+        getNftList(NEW)
+    }
+
+
+    fun getNftList(option : Int){
+        if (uiState.value.hasNext) {
+            viewModelScope.launch {
+
+                nftRepository.getMyNftList(
+                    uiState.value.page,
+                    20,
+                    uiState.value.sortType.value
+                ).let {
+                    when (it) {
+                        is BaseState.Success -> {
+                            val uiData =
+                                it.body.result.map { data -> data.toUiNftItem(::navigateToNftDetail) }
+                            _uiState.update { state ->
+                                state.copy(
+                                    nftList = if (option == ChallengeListViewModel.ORIGINAL) uiState.value.nftList + uiData else uiData,
+                                    hasNext = it.body.hasNext,
+                                    page = it.body.page + 1,
+                                )
+                            }
+                        }
+
+                        is BaseState.Error -> _event.emit(MyProfileEvent.ShowSnackMessage(it.msg))
+                    }
+                }
+            }
+        }
+    }
+
+    fun showNftFilterBottomSheet() {
+        viewModelScope.launch {
+            _event.emit(MyProfileEvent.ShowNftFilterBottomSheet)
+        }
+    }
+
+    private fun navigateToNftDetail(id: Long) {
+        viewModelScope.launch {
+            _event.emit(MyProfileEvent.NavigateToNftDetail(id))
         }
     }
 
