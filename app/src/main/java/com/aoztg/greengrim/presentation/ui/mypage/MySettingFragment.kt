@@ -39,6 +39,7 @@ class MySettingFragment : BaseFragment<FragmentMySettingBinding>(R.layout.fragme
         parentViewModel.showBNV()
         binding.vm = viewModel
         initEventObserve()
+        setBtnListener()
     }
 
     private fun initEventObserve() {
@@ -64,8 +65,40 @@ class MySettingFragment : BaseFragment<FragmentMySettingBinding>(R.layout.fragme
         }
     }
 
-    private fun withDraw() {
+    private fun setBtnListener(){
+        with(binding){
+            tvLogout.setOnClickListener {
+                showTwoButtonTitleDialog(requireContext(),
+                    "로그아웃 하시겠습니까?","취소하기","로그아웃"){
+                    viewModel.logout()
+                }
+            }
 
+            btnLogout.setOnClickListener {
+                showTwoButtonTitleDialog(requireContext(),
+                    "로그아웃 하시겠습니까?","취소하기","로그아웃"){
+                    viewModel.logout()
+                }
+            }
+
+            tvWithdrawal.setOnClickListener {
+                showTwoButtonTitleDialog(requireContext(),
+                    "정말 탈퇴하시겠습니까?","취소하기","탈퇴하기"){
+                    viewModel.withDraw()
+                }
+            }
+
+            btnWithdrawal.setOnClickListener {
+                showTwoButtonTitleDialog(requireContext(),
+                    "정말 탈퇴하시겠습니까?","취소하기","탈퇴하기"){
+                    viewModel.withDraw()
+                }
+            }
+        }
+    }
+
+    private fun withDraw() {
+        showCustomToast("회원탈퇴 성공")
         when(App.sharedPreferences.getString(Constants.SOCIAL_TYPE,"")){
             Constants.KAKAO -> kakaoUnlink()
             Constants.NAVER -> naverUnlink()
@@ -74,7 +107,7 @@ class MySettingFragment : BaseFragment<FragmentMySettingBinding>(R.layout.fragme
     }
 
     private fun logout() {
-
+        showCustomToast("로그아웃 성공")
         when(App.sharedPreferences.getString(Constants.SOCIAL_TYPE,"")){
             Constants.KAKAO -> kakaoLogout()
             Constants.NAVER -> naverLogout()
@@ -146,6 +179,7 @@ class MySettingFragment : BaseFragment<FragmentMySettingBinding>(R.layout.fragme
     }
 
     private fun goToIntro(){
+
         App.sharedPreferences.edit()
             .clear()
             .apply()
