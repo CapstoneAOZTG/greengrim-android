@@ -77,4 +77,21 @@ class ChallengeRepositoryImpl @Inject constructor(private val api: ChallengeAPI)
         )
     }
 
+    override suspend fun getMemberChallengeList(
+        memberId: Long,
+        page: Int,
+        size: Int,
+        sort: String
+    ): BaseState<ChallengeListResponse> = runRemote {
+        api.getMemberChallengeList(memberId, page, size, sort)
+    }
+
+    override suspend fun getMyChallengeList(
+        page: Int,
+        size: Int,
+        sort: String
+    ): BaseState<ChallengeListResponse> = runRemote {
+        api.getMyChallengeList(page, size, sort)
+    }
+
 }

@@ -43,25 +43,6 @@ class NftDetailViewModel @Inject constructor(
 
     private var nftId = -1L
 
-    fun checkWallet(target: Int){
-        viewModelScope.launch {
-            nftRepository.checkWalletExist().let{
-                when(it){
-                    is BaseState.Success -> {
-                        if(it.body.existed){
-                        } else {
-                            _events.emit(NftDetailEvents.ShowSnackMessage("지갑을 먼저 생성해주세요!"))
-                        }
-                    }
-
-                    is BaseState.Error -> {
-                        _events.emit(NftDetailEvents.ShowSnackMessage(it.msg))
-                    }
-                }
-            }
-        }
-    }
-
     private fun getNftDetail() {
         viewModelScope.launch {
             nftRepository.getNftDetail(nftId).let {

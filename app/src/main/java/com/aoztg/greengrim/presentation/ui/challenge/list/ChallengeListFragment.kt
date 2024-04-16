@@ -29,7 +29,7 @@ class ChallengeListFragment :
     private val args: ChallengeListFragmentArgs by navArgs()
     private val categoryText by lazy { args.categoryText }
     private val categoryValue by lazy { args.categoryValue }
-    private var sortType = ChallengeSortType.DESC
+    private var sortType = SortType.DESC
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

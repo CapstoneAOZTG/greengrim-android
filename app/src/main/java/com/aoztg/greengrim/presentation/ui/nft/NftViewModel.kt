@@ -4,13 +4,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.repository.NftRepository
-import com.aoztg.greengrim.presentation.ui.challenge.list.ChallengeListViewModel
 import com.aoztg.greengrim.presentation.ui.home.mapper.toUiNftItem
-import com.aoztg.greengrim.presentation.ui.nft.mapper.toUiGrimItem
 import com.aoztg.greengrim.presentation.ui.nft.model.UiGrimItem
 import com.aoztg.greengrim.presentation.ui.nft.model.UiNftItem
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -55,29 +52,6 @@ class MarketViewModel @Inject constructor(
     private val _events = MutableSharedFlow<MarketEvents>()
     val events: SharedFlow<MarketEvents> = _events.asSharedFlow()
 
-    fun getGrimList(option: Int) {
-
-        if (uiState.value.hasNext) {
-            viewModelScope.launch {
-                _events.emit(MarketEvents.ShowLoading)
-
-                nftRepository.getGrimList(
-                    uiState.value.page,
-                    20,
-                    uiState.value.sortType.value
-                ).let {
-                    when (it) {
-                        is BaseState.Success -> {
-                        }
-
-                        is BaseState.Error -> _events.emit(MarketEvents.ShowSnackMessage(it.msg))
-                    }
-                    delay(500)
-                    _events.emit(MarketEvents.DismissLoading)
-                }
-            }
-        }
-    }
 
     fun getHotNft() {
         viewModelScope.launch {
@@ -121,7 +95,6 @@ class MarketViewModel @Inject constructor(
             sortType = type,
             page = 0
         )
-        getGrimList(SORT)
     }
 
 }

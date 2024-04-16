@@ -13,7 +13,7 @@ import com.aoztg.greengrim.presentation.base.BaseFragment
 import com.aoztg.greengrim.presentation.customview.ChallengeFilterBottomSheet
 import com.aoztg.greengrim.presentation.ui.LoadingState
 import com.aoztg.greengrim.presentation.ui.challenge.adapter.ChallengeRoomAdapter
-import com.aoztg.greengrim.presentation.ui.challenge.list.ChallengeSortType
+import com.aoztg.greengrim.presentation.ui.challenge.list.SortType
 import com.aoztg.greengrim.presentation.ui.mypage.mychallenge.MyChallengeViewModel.Companion.ORIGINAL
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 import com.aoztg.greengrim.presentation.ui.toChallengeDetail
@@ -25,7 +25,7 @@ class MyChallengeFragment :
 
     private val viewModel: MyChallengeViewModel by viewModels()
     private val parentViewModel: MainViewModel by activityViewModels()
-    private var sortType = ChallengeSortType.DESC
+    private var sortType = SortType.DESC
     private var loadingState = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -6,7 +6,7 @@ import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.repository.ChallengeRepository
 import com.aoztg.greengrim.presentation.ui.BaseUiState
 import com.aoztg.greengrim.presentation.ui.LoadingState
-import com.aoztg.greengrim.presentation.ui.challenge.list.ChallengeSortType
+import com.aoztg.greengrim.presentation.ui.challenge.list.SortType
 import com.aoztg.greengrim.presentation.ui.challenge.mapper.toUiChallengeList
 import com.aoztg.greengrim.presentation.ui.challenge.model.UiChallengeRoom
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,7 +24,7 @@ import javax.inject.Inject
 data class MyChallengeUiState(
     val loading: LoadingState = LoadingState.Empty,
     val uiChallengeRoom: List<UiChallengeRoom> = emptyList(),
-    val sortType: ChallengeSortType = ChallengeSortType.DESC,
+    val sortType: SortType = SortType.DESC,
     val page: Int = 0,
     val hasNext: Boolean = true,
     val getChallengeRoomState: BaseUiState = BaseUiState.Empty
@@ -119,7 +119,7 @@ class MyChallengeViewModel @Inject constructor(
         }
     }
 
-    fun setSortType(type: ChallengeSortType) {
+    fun setSortType(type: SortType) {
         _uiState.value = _uiState.value.copy(
             hasNext = true,
             sortType = type,

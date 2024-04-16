@@ -58,4 +58,17 @@ interface ChallengeRepository {
         body: SearchChallengeRequest
     ): BaseState<ChallengeListResponse>
 
+    suspend fun getMyChallengeList(
+        page : Int,
+        size : Int,
+        sort : String
+    ): BaseState<ChallengeListResponse>
+
+    suspend fun getMemberChallengeList(
+        memberId : Long,
+        page : Int,
+        size : Int,
+        sort : String
+    ): BaseState<ChallengeListResponse>
+
 }
