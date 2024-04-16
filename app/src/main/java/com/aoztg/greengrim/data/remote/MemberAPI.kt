@@ -10,6 +10,7 @@ import com.aoztg.greengrim.data.model.response.GetProfileResponse
 import com.aoztg.greengrim.data.model.response.LoginResponse
 import com.aoztg.greengrim.data.model.response.MyInfoResponse
 import com.aoztg.greengrim.data.model.response.MyKeywordsResponse
+import com.aoztg.greengrim.data.model.response.MyPointResponse
 import com.aoztg.greengrim.data.model.response.SignupResponse
 import com.aoztg.greengrim.data.model.response.WalletInfoResponse
 import retrofit2.Response
@@ -19,6 +20,7 @@ import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.PATCH
 import retrofit2.http.POST
+import retrofit2.http.Query
 
 interface MemberAPI {
 
@@ -77,5 +79,11 @@ interface MemberAPI {
 
     @DELETE("/visitor/delete")
     suspend fun withdraw() : Response<Unit>
+
+    @POST("/visitor/points")
+    suspend fun getMyPoint(
+        @Query("page") page : Int,
+        @Query("size") size : Int
+    ): Response<MyPointResponse>
 
 }

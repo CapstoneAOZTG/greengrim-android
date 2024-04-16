@@ -10,6 +10,7 @@ import com.aoztg.greengrim.data.model.response.CheckNickResponse
 import com.aoztg.greengrim.data.model.response.GetProfileResponse
 import com.aoztg.greengrim.data.model.response.LoginResponse
 import com.aoztg.greengrim.data.model.response.MyInfoResponse
+import com.aoztg.greengrim.data.model.response.MyPointResponse
 import com.aoztg.greengrim.data.model.response.SignupResponse
 import com.aoztg.greengrim.data.model.response.WalletInfoResponse
 import com.aoztg.greengrim.data.model.runRemote
@@ -51,5 +52,8 @@ class MemberRepositoryImpl @Inject constructor(private val api: MemberAPI) : Mem
     override suspend fun logout(): BaseState<Unit> = runRemote { api.logout() }
 
     override suspend fun withdraw(): BaseState<Unit> = runRemote { api.withdraw() }
+
+    override suspend fun getMyPointInfo(page: Int, size: Int): BaseState<MyPointResponse> =
+        runRemote { api.getMyPoint(page, size) }
 
 }
