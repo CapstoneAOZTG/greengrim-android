@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentMyProfileBinding
@@ -14,8 +15,6 @@ import com.aoztg.greengrim.presentation.ui.challenge.adapter.ChallengeRoomAdapte
 import com.aoztg.greengrim.presentation.ui.challenge.list.SortType
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 import com.aoztg.greengrim.presentation.ui.mypage.adapter.MyCertificationAdapter
-import com.aoztg.greengrim.presentation.ui.mypage.mycertification.MyCertificationTempDate
-import com.aoztg.greengrim.presentation.ui.mypage.mycertification.MyCertificationViewModel
 import com.aoztg.greengrim.presentation.ui.toCertificationDetail
 import com.aoztg.greengrim.presentation.ui.toChallengeDetail
 import com.aoztg.greengrim.presentation.ui.toNftDetail
@@ -50,6 +49,7 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(R.layout.fragme
         initEventObserve()
         binding.rvChallengeList.adapter = ChallengeRoomAdapter()
         binding.rvCertifications.adapter = MyCertificationAdapter()
+        viewModel.getMyInfo()
         viewModel.getMyChallenge(NEXT_PAGE)
     }
 
@@ -93,7 +93,7 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(R.layout.fragme
 
                     is MyProfileEvent.NavigateToChallengeDetail -> findNavController().toChallengeDetail(it.id)
                     is MyProfileEvent.NavigateToCertificationDetail -> {
-                        MyCertificationTempDate.setTempDate(customCalendar.selectedDate)
+                        MyProfileTempDate.setTempDate(customCalendar.selectedDate)
                         findNavController().toCertificationDetail(it.certificationId)
                     }
                     is MyProfileEvent.NavigateToNftDetail -> findNavController().toNftDetail(it.id)
@@ -117,6 +117,8 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(R.layout.fragme
                     }
                     is MyProfileEvent.ShowSnackMessage -> showCustomSnack(binding.ivProfile, it.msg)
                     is MyProfileEvent.ShowToastMessage -> showCustomToast(it.msg)
+                    is MyProfileEvent.NavigateToEditProfile -> findNavController().toEditProfile()
+                    is MyProfileEvent.NavigateToBack -> findNavController().navigateUp()
                 }
             }
         }
@@ -157,6 +159,11 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(R.layout.fragme
 
     private fun yearMonthDatePickerConfirmListener(year:Int, month:Int){
         customCalendar.yearMonthDatePickerConfirmListener(year, month)
+    }
+
+    private fun NavController.toEditProfile(){
+        val action = MyProfileFragmentDirections.actionMyProfileFragmentToEditProfileFragment()
+        navigate(action)
     }
 
 

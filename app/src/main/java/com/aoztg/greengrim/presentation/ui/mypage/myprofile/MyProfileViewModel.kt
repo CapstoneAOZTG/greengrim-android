@@ -5,26 +5,23 @@ import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.repository.CertificationRepository
 import com.aoztg.greengrim.data.repository.ChallengeRepository
+import com.aoztg.greengrim.data.repository.MemberRepository
 import com.aoztg.greengrim.data.repository.NftRepository
 import com.aoztg.greengrim.presentation.ui.challenge.list.ChallengeListViewModel
 import com.aoztg.greengrim.presentation.ui.challenge.list.SortType
 import com.aoztg.greengrim.presentation.ui.challenge.mapper.toUiChallengeList
 import com.aoztg.greengrim.presentation.ui.challenge.model.UiChallengeRoom
 import com.aoztg.greengrim.presentation.ui.home.mapper.toUiNftItem
+import com.aoztg.greengrim.presentation.ui.mypage.MyPageEvent
 import com.aoztg.greengrim.presentation.ui.mypage.mapper.toUiMyCertificationList
+import com.aoztg.greengrim.presentation.ui.mypage.mapper.toUiMyInfo
 import com.aoztg.greengrim.presentation.ui.mypage.model.UiMyCertification
-import com.aoztg.greengrim.presentation.ui.mypage.mycertification.MyCertificationEvents
-import com.aoztg.greengrim.presentation.ui.mypage.mycertification.MyCertificationViewModel
-import com.aoztg.greengrim.presentation.ui.mypage.mychallenge.MyChallengeViewModel
-import com.aoztg.greengrim.presentation.ui.mypage.mynft.MyNftEvents
-import com.aoztg.greengrim.presentation.ui.nft.GrimNftSortType
-import com.aoztg.greengrim.presentation.ui.nft.MarketViewModel
+import com.aoztg.greengrim.presentation.ui.mypage.model.UiMyInfo
 import com.aoztg.greengrim.presentation.ui.nft.model.UiNftItem
 import com.aoztg.greengrim.presentation.ui.toHeaderText
 import com.aoztg.greengrim.presentation.ui.toLocalDate
 import com.aoztg.greengrim.presentation.ui.toText
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -40,6 +37,7 @@ import javax.inject.Inject
 data class MyProfileUiState(
     val page: Int = 0,
     val hasNext: Boolean = true,
+    val uiMyInfo: UiMyInfo = UiMyInfo(),
     val sortType: SortType = SortType.DESC,
     val curFilter: ProfileFilter = ProfileFilter.CHALLENGE,
     val uiChallengeRoom: List<UiChallengeRoom> = emptyList(),
@@ -51,10 +49,12 @@ data class MyProfileUiState(
     val nftList: List<UiNftItem> = emptyList(),
 )
 
-sealed class MyProfileEvent{
+sealed class MyProfileEvent {
     data class NavigateToChallengeDetail(val id: Long) : MyProfileEvent()
     data class NavigateToNftDetail(val id: Long) : MyProfileEvent()
     data class NavigateToCertificationDetail(val certificationId: Long) : MyProfileEvent()
+    object NavigateToEditProfile : MyProfileEvent()
+    object NavigateToBack : MyProfileEvent()
     object ShowChallengeFilterBottomSheet : MyProfileEvent()
     object ShowNftFilterBottomSheet : MyProfileEvent()
     data class ShowYearMonthPicker(val curYear: Int, val curMonth: Int) : MyProfileEvent()
@@ -66,10 +66,11 @@ sealed class MyProfileEvent{
 
 @HiltViewModel
 class MyProfileViewModel @Inject constructor(
-    private val challengeRepository : ChallengeRepository,
+    private val challengeRepository: ChallengeRepository,
     private val certificationRepository: CertificationRepository,
-    private val nftRepository: NftRepository
-): ViewModel() {
+    private val nftRepository: NftRepository,
+    private val memberRepository: MemberRepository
+) : ViewModel() {
 
     companion object {
         const val NEW = 0
@@ -77,12 +78,12 @@ class MyProfileViewModel @Inject constructor(
     }
 
     private val _uiState = MutableStateFlow(MyProfileUiState())
-    val uiState : StateFlow<MyProfileUiState> = _uiState.asStateFlow()
+    val uiState: StateFlow<MyProfileUiState> = _uiState.asStateFlow()
 
     private val _event = MutableSharedFlow<MyProfileEvent>()
     val event: SharedFlow<MyProfileEvent> = _event.asSharedFlow()
 
-    fun changeFilter(filter: ProfileFilter){
+    fun changeFilter(filter: ProfileFilter) {
         _uiState.update { state ->
             state.copy(
                 curFilter = filter,
@@ -92,7 +93,7 @@ class MyProfileViewModel @Inject constructor(
             )
         }
 
-        when(filter){
+        when (filter) {
             ProfileFilter.CHALLENGE -> {
                 getMyChallenge(NEXT_PAGE)
             }
@@ -108,7 +109,7 @@ class MyProfileViewModel @Inject constructor(
         }
     }
 
-    fun setChallengeSortType(type: SortType){
+    fun setChallengeSortType(type: SortType) {
         _uiState.value = uiState.value.copy(
             hasNext = true,
             sortType = type,
@@ -116,6 +117,36 @@ class MyProfileViewModel @Inject constructor(
         )
 
         getMyChallenge(NEW)
+    }
+
+    fun getMyInfo() {
+        viewModelScope.launch {
+            memberRepository.getMyInfo().let {
+                when (it) {
+                    is BaseState.Success -> {
+                        val newBody = it.body.toUiMyInfo()
+                        if(!newBody.compareInfo(uiState.value.uiMyInfo)){
+                            _uiState.update { state ->
+                                state.copy(
+                                    uiMyInfo = uiState.value.uiMyInfo.copy(
+                                        id = newBody.id,
+                                        nickName =  newBody.nickName,
+                                        profileImgUrl = newBody.profileImgUrl,
+                                        introduction = newBody.introduction,
+                                        myPoint = newBody.myPoint,
+                                        email = newBody.email,
+                                    )
+                                )
+                            }
+                        }
+                    }
+
+                    is BaseState.Error -> {
+                        _event.emit(MyProfileEvent.ShowSnackMessage(it.msg))
+                    }
+                }
+            }
+        }
     }
 
     fun getMyChallenge(option: Int) {
@@ -276,8 +307,7 @@ class MyProfileViewModel @Inject constructor(
         getNftList(NEW)
     }
 
-
-    fun getNftList(option : Int){
+    fun getNftList(option: Int) {
         if (uiState.value.hasNext) {
             viewModelScope.launch {
 
@@ -318,9 +348,21 @@ class MyProfileViewModel @Inject constructor(
         }
     }
 
+    fun navigateToBack(){
+        viewModelScope.launch {
+            _event.emit(MyProfileEvent.NavigateToBack)
+        }
+    }
+
+    fun navigateToEditProfile(){
+        viewModelScope.launch {
+            _event.emit(MyProfileEvent.NavigateToEditProfile)
+        }
+    }
+
 }
 
-enum class ProfileFilter(){
+enum class ProfileFilter() {
     CHALLENGE,
     CERTIFICATION,
     NFT

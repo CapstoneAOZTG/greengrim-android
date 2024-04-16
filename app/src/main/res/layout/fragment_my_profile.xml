@@ -40,6 +40,7 @@
                 android:layout_height="24dp"
                 android:layout_marginEnd="12dp"
                 android:background="@android:color/transparent"
+                android:onClick="@{() -> vm.navigateToBack()}"
                 android:scaleType="fitCenter"
                 android:src="@drawable/icon_back"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -65,8 +66,9 @@
                 android:background="@android:color/transparent"
                 android:minWidth="0dp"
                 android:minHeight="0dp"
+                android:onClick="@{() -> vm.navigateToEditProfile()}"
                 android:text="수정"
-                android:textColor="@color/gg_dark_grey"
+                android:textColor="@color/gg_grey4"
                 android:textSize="16dp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -93,6 +95,7 @@
                     android:layout_height="100dp"
                     android:layout_marginTop="30dp"
                     android:scaleType="centerCrop"
+                    app:imgUrl="@{vm.uiState.uiMyInfo.profileImgUrl}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -106,6 +109,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:paddingHorizontal="20dp"
+                    android:text="@{vm.uiState.uiMyInfo.nickName}"
                     android:textAlignment="center"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -118,6 +122,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
                     android:paddingHorizontal="20dp"
+                    android:text="@{vm.uiState.uiMyInfo.introduction}"
                     android:textAlignment="center"
                     android:textColor="@color/gg_grey2"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -376,7 +381,6 @@
                         tools:listitem="@layout/item_nft_list" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
-
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
