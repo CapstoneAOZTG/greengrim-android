@@ -45,8 +45,13 @@ class LoginViewModel @Inject constructor(private val introRepository: IntroRepos
 
 
     fun startLogin(
-        email: String
+        email: String,
+        socialType : String
     ) {
+        App.sharedPreferences.edit()
+            .putString(Constants.SOCIAL_TYPE, socialType)
+            .apply()
+
         viewModelScope.launch {
 
             introRepository.login(
