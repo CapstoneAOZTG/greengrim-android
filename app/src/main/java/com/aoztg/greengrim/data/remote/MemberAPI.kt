@@ -60,6 +60,9 @@ interface MemberAPI {
     @GET("/visitor/my")
     suspend fun getMyInfo(): Response<MyInfoResponse>
 
+    @GET("/visitor/profile")
+    suspend fun getMemberInfo(id: Long): Response<GetProfileResponse>
+
     @GET("/visitor/wallets")
     suspend fun getMyWalletInfo() : Response<WalletInfoResponse>
 

@@ -294,7 +294,13 @@
         android:id="@+id/profileFragment"
         android:name="com.aoztg.greengrim.presentation.ui.global.profile.ProfileFragment"
         android:label="ProfileFragment"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile" >
+
+        <argument
+            android:name="id"
+            app:argType="long"/>
+
+    </fragment>
 
     <fragment
         android:id="@+id/myProfileFragment"

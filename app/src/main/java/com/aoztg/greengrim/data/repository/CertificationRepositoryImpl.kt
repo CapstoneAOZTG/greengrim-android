@@ -38,12 +38,23 @@ class CertificationRepositoryImpl @Inject constructor(private val api: Certifica
     override suspend fun getMyCertificationDate(): BaseState<CertificationDatesResponse> =
         runRemote { api.getMyCertificationDate() }
 
+    override suspend fun getMemberCertificationDate(id: Long): BaseState<CertificationDatesResponse> =
+        runRemote { api.getMemberCertificationDate(id) }
+
     override suspend fun getMyCertificationList(
         date: String,
         page: Int,
         size: Int
     ): BaseState<MyCertificationListResponse> =
         runRemote { api.getMyCertificationList(date, page, size) }
+
+    override suspend fun getMemberCertificationList(
+        id: Long,
+        date: String,
+        page: Int,
+        size: Int
+    ): BaseState<MyCertificationListResponse> =
+        runRemote { api.getMemberCertificationList(id, date, page, size) }
 
     override suspend fun verifyCertification(data: VerificationsRequest): BaseState<Unit> =
         runRemote { api.verifyCertification(data) }

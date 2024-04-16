@@ -31,6 +31,8 @@ class MemberRepositoryImpl @Inject constructor(private val api: MemberAPI) : Mem
 
     override suspend fun getMyInfo(): BaseState<MyInfoResponse> = runRemote { api.getMyInfo() }
 
+    override suspend fun getMemberInfo(id: Long): BaseState<GetProfileResponse> = runRemote { api.getMemberInfo(id) }
+
     override suspend fun getMyWalletInfo(): BaseState<WalletInfoResponse> =
         runRemote { api.getMyWalletInfo() }
 

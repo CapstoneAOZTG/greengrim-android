@@ -28,6 +28,8 @@ interface MemberRepository {
 
     suspend fun getMyInfo(): BaseState<MyInfoResponse>
 
+    suspend fun getMemberInfo(id: Long): BaseState<GetProfileResponse>
+
     suspend fun getMyWalletInfo(): BaseState<WalletInfoResponse>
 
     suspend fun addWallet(
