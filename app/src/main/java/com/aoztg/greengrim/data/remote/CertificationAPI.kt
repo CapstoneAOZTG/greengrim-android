@@ -44,8 +44,21 @@ interface CertificationAPI {
     suspend fun getMyCertificationDate(
     ): Response<CertificationDatesResponse>
 
+    @GET("/visitor/certifications/month")
+    suspend fun getMemberCertificationDate(
+        @Query("memberId") memberId : Long
+    ): Response<CertificationDatesResponse>
+
     @GET("/visitor/certifications/date")
     suspend fun getMyCertificationList(
+        @Query("date") date: String,
+        @Query("page") page: Int,
+        @Query("size") size: Int
+    ): Response<MyCertificationListResponse>
+
+    @GET("/visitor/certifications/date")
+    suspend fun getMemberCertificationList(
+        @Query("memberId") memberId : Long,
         @Query("date") date: String,
         @Query("page") page: Int,
         @Query("size") size: Int

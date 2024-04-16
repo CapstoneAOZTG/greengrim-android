@@ -10,7 +10,6 @@ import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentCertificationListBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
 import com.aoztg.greengrim.presentation.ui.chat.adapter.CertificationListAdapter
-import com.aoztg.greengrim.presentation.ui.info.mycertification.MyCertificationViewModel
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 import com.aoztg.greengrim.presentation.ui.toCertificationDetail
 import com.aoztg.greengrim.presentation.customview.CustomCalendar
@@ -22,6 +21,11 @@ import java.time.YearMonth
 
 @AndroidEntryPoint
 class CertificationListFragment : BaseFragment<FragmentCertificationListBinding>(R.layout.fragment_certification_list) {
+
+    companion object {
+        const val NEXT_PAGE = 0
+        const val NEW_DATE = 1
+    }
 
     private val parentViewModel: MainViewModel by activityViewModels()
     private val viewModel: CertificationListViewModel by viewModels()
@@ -82,7 +86,7 @@ class CertificationListFragment : BaseFragment<FragmentCertificationListBinding>
 
         binding.scrollView.setOnScrollChangeListener { v, _, _, _, _ ->
             if (!v.canScrollVertically(1)) {
-                viewModel.getCertificationList(MyCertificationViewModel.NEXT_PAGE)
+                viewModel.getCertificationList(NEXT_PAGE)
             }
         }
 

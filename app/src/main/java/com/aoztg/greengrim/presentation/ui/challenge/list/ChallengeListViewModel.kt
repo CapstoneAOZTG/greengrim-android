@@ -4,8 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.repository.ChallengeRepository
-import com.aoztg.greengrim.presentation.ui.BaseUiState
-import com.aoztg.greengrim.presentation.ui.LoadingState
 import com.aoztg.greengrim.presentation.ui.challenge.mapper.toUiChallengeList
 import com.aoztg.greengrim.presentation.ui.challenge.model.UiChallengeRoom
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,7 +20,7 @@ import javax.inject.Inject
 
 data class ChallengeListUiState(
     val uiChallengeRoom: List<UiChallengeRoom> = emptyList(),
-    val sortType: ChallengeSortType = ChallengeSortType.DESC,
+    val sortType: SortType = SortType.DESC,
     val page: Int = 0,
     val hasNext: Boolean = true,
 )
@@ -113,7 +111,7 @@ class ChallengeListViewModel @Inject constructor(
         }
     }
 
-    fun setSortType(type: ChallengeSortType) {
+    fun setSortType(type: SortType) {
         _uiState.value = _uiState.value.copy(
             hasNext = true,
             sortType = type,
@@ -127,7 +125,7 @@ class ChallengeListViewModel @Inject constructor(
     }
 }
 
-enum class ChallengeSortType(val text: String, val value: String) {
+enum class SortType(val text: String, val value: String) {
     DESC("최신순", "DESC"),
     ASC("오래된 순", "ASC"),
     GREATEST("인원 많은 순", "GREATEST"),

@@ -9,7 +9,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/shape_lightblack2fill_nostroke_10radius"
+        android:background="@drawable/shape_lightblack2fill_nostroke_radius10"
         android:paddingHorizontal="20dp"
         android:paddingVertical="20dp">
 

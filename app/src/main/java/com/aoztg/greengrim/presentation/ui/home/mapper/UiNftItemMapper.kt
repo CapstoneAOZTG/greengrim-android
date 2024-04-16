@@ -4,11 +4,10 @@ import com.aoztg.greengrim.data.model.response.NftListItem
 import com.aoztg.greengrim.presentation.ui.nft.model.UiNftItem
 
 internal fun NftListItem.toUiNftItem(onItemClickListener: (Long) -> Unit) = UiNftItem(
-    id = nftAndMemberInfo.nftSimpleInfo.id,
-    image = nftAndMemberInfo.nftSimpleInfo.imgUrl,
-    title = nftAndMemberInfo.nftSimpleInfo.title,
-    profileImage = nftAndMemberInfo.memberSimpleInfo.profileImgUrl,
-    nickName = nftAndMemberInfo.memberSimpleInfo.nickName,
-    price = if (price == "NOT SALE") price else "$price KLAY",
+    id = nftSimpleInfo.id,
+    image = nftSimpleInfo.imgUrl,
+    title = nftSimpleInfo.title,
+    profileImage = memberSimpleInfo.profileImgUrl,
+    nickName = memberSimpleInfo.nickName,
     navigateToNftDetail = onItemClickListener
 )

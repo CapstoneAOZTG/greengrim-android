@@ -12,7 +12,6 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
-import retrofit2.http.QueryMap
 
 interface ChallengeAPI {
 
@@ -44,13 +43,6 @@ interface ChallengeAPI {
         @Query("sort") sort: String
     ): Response<ChallengeListResponse>
 
-    @GET("/visitor/challenges")
-    suspend fun getMyChallengeList(
-        @Query("page") page: Int,
-        @Query("size") size: Int,
-        @Query("sort") sort: String
-    ): Response<ChallengeListResponse>
-
     @POST("/visitor/challenges/exit")
     suspend fun exitChallenge(
         @Query("id") id: Long
@@ -68,9 +60,24 @@ interface ChallengeAPI {
 
     @POST("/visitor/challenges/searches")
     suspend fun searchChallenge(
-        @Query("category") category : String,
+        @Query("category") category: String,
         @Query("page") page: Int,
         @Query("size") size: Int,
         @Body params: SearchChallengeRequest
+    ): Response<ChallengeListResponse>
+
+    @GET("/visitor/challenges/members")
+    suspend fun getMyChallengeList(
+        @Query("page") page: Int,
+        @Query("size") size: Int,
+        @Query("sort") sort: String
+    ): Response<ChallengeListResponse>
+
+    @GET("/visitor/challenges/members")
+    suspend fun getMemberChallengeList(
+        @Query("memberId") memberId: Long,
+        @Query("page") page: Int,
+        @Query("size") size: Int,
+        @Query("sort") sort: String
     ): Response<ChallengeListResponse>
 }

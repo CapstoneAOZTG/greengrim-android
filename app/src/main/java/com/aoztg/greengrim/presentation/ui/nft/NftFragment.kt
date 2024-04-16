@@ -13,10 +13,8 @@ import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentNftBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
 import com.aoztg.greengrim.presentation.customview.GrimNftFilterBottomSheet
-import com.aoztg.greengrim.presentation.ui.challenge.list.ChallengeListViewModel
 import com.aoztg.greengrim.presentation.ui.home.adapter.HotNftAdapter
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
-import com.aoztg.greengrim.presentation.ui.nft.MarketViewModel.Companion.ORIGINAL
 import com.aoztg.greengrim.presentation.ui.nft.adapter.GrimItemAdapter
 import com.aoztg.greengrim.presentation.ui.toNftDetail
 import dagger.hilt.android.AndroidEntryPoint
@@ -45,7 +43,6 @@ class NftFragment : BaseFragment<FragmentNftBinding>(R.layout.fragment_nft) {
 
     override fun onResume() {
         super.onResume()
-        viewModel.getGrimList(ChallengeListViewModel.ORIGINAL)
     }
 
     private fun initRecycler() {
@@ -99,7 +96,6 @@ class NftFragment : BaseFragment<FragmentNftBinding>(R.layout.fragment_nft) {
                 val itemTotalCount = recyclerView.adapter?.itemCount?.minus(1)
 
                 if (lastVisibleItemPosition == itemTotalCount) {
-                    viewModel.getGrimList(ORIGINAL)
                 }
             }
         })

@@ -84,6 +84,8 @@
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingBottom="150dp"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -103,13 +105,6 @@
                     app:list="@{vm.categories}"
                     app:spanCount="3"
                     tools:listitem="@layout/item_challenge_category" />
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="200dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/rv_challenge_category" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

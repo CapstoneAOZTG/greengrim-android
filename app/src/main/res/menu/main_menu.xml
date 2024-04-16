@@ -22,7 +22,7 @@
         android:title="NFT"/>
 
     <item
-        android:id="@+id/info_fragment"
+        android:id="@+id/myPageFragment"
         android:icon="@drawable/selector_my"
         android:title="마이"/>
 

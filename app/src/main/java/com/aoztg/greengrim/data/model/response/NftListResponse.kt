@@ -7,13 +7,8 @@ data class NftListResponse(
 )
 
 data class NftListItem(
-    val nftAndMemberInfo: NftAndMemberInfo,
-    val price: String
-)
-
-data class NftAndMemberInfo(
     val nftSimpleInfo: NftSimpleInfo,
-    val memberSimpleInfo: MemberSimpleInfo,
+    val memberSimpleInfo: MemberSimpleInfo
 )
 
 data class NftSimpleInfo(

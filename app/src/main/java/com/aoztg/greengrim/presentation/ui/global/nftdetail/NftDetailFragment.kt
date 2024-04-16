@@ -45,7 +45,6 @@ class NftDetailFragment : BaseFragment<FragmentNftDetailBinding>(R.layout.fragme
                             visibility = View.VISIBLE
                             text = "판매하기"
                             setOnClickListener {
-                                viewModel.checkWallet(SELL)
                             }
                         }
                     }
@@ -55,7 +54,6 @@ class NftDetailFragment : BaseFragment<FragmentNftDetailBinding>(R.layout.fragme
                             visibility = View.VISIBLE
                             text = "구매하기"
                             setOnClickListener {
-                                viewModel.checkWallet(PURCHASE)
                             }
                         }
                     }

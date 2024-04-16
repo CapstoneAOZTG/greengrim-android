@@ -8,9 +8,8 @@ import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.model.request.CheckNickRequest
 import com.aoztg.greengrim.data.model.request.SignupRequest
 import com.aoztg.greengrim.data.repository.ImageRepository
-import com.aoztg.greengrim.data.repository.IntroRepository
+import com.aoztg.greengrim.data.repository.MemberRepository
 import com.aoztg.greengrim.presentation.ui.BaseUiState
-import com.aoztg.greengrim.presentation.ui.challenge.create.CreateChallengeDetailEvents
 import com.aoztg.greengrim.presentation.ui.intro.EmailData
 import com.aoztg.greengrim.presentation.util.Constants
 import com.aoztg.greengrim.presentation.util.Constants.X_ACCESS_TOKEN
@@ -48,7 +47,7 @@ sealed class SignupEvents {
 
 @HiltViewModel
 class SignupViewModel @Inject constructor(
-    private val introRepository: IntroRepository,
+    private val memberRepository: MemberRepository,
     private val imageRepository: ImageRepository
 ) :
     ViewModel() {
@@ -87,7 +86,7 @@ class SignupViewModel @Inject constructor(
 
     private fun checkNickDuplicate() {
         nickname.onEach { nick ->
-            introRepository.checkNick(CheckNickRequest(nick)).let {
+            memberRepository.checkNick(CheckNickRequest(nick)).let {
                 when (it) {
                     is BaseState.Success -> {
                         if (it.body.used) {
@@ -154,7 +153,7 @@ class SignupViewModel @Inject constructor(
     fun signUp(imgUrl: String) {
         viewModelScope.launch {
             // 통신로직
-            introRepository.signup(
+            memberRepository.signup(
                 SignupRequest(
                     email = EmailData.email,
                     nickName = nickname.value,

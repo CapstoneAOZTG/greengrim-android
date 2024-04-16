@@ -34,7 +34,16 @@ interface CertificationRepository {
 
     suspend fun getMyCertificationDate(): BaseState<CertificationDatesResponse>
 
+    suspend fun getMemberCertificationDate(id : Long): BaseState<CertificationDatesResponse>
+
     suspend fun getMyCertificationList(
+        date: String,
+        page: Int,
+        size: Int
+    ): BaseState<MyCertificationListResponse>
+
+    suspend fun getMemberCertificationList(
+        id: Long,
         date: String,
         page: Int,
         size: Int

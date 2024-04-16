@@ -18,6 +18,7 @@ import com.aoztg.greengrim.presentation.customview.CustomSnackBar
 import com.aoztg.greengrim.presentation.customview.FourPopupMenu
 import com.aoztg.greengrim.presentation.customview.LoadingDialog
 import com.aoztg.greengrim.presentation.customview.OnePopupMenu
+import com.aoztg.greengrim.presentation.customview.TwoButtonTitleDialog
 import com.aoztg.greengrim.presentation.customview.VerifySnackBar
 import com.aoztg.greengrim.presentation.customview.YearMonthPickerDialog
 import com.google.android.material.snackbar.Snackbar
@@ -36,6 +37,7 @@ abstract class BaseFragment<B : ViewDataBinding>(
     private var fourPopupMenu: FourPopupMenu? = null
     private lateinit var yearMonthPickerDialog: YearMonthPickerDialog
     private var loadingState = false
+    private var twoButtonTitleDialog : TwoButtonTitleDialog? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -119,6 +121,25 @@ abstract class BaseFragment<B : ViewDataBinding>(
     fun dismissYearMonthDialog() {
         if (yearMonthPickerDialog.isShowing) {
             yearMonthPickerDialog.dismiss()
+        }
+    }
+
+    fun showTwoButtonTitleDialog(
+        context: Context,
+        title : String,
+        oneBtnText : String,
+        twoBtnText: String,
+        confirmListener : () -> Unit
+    ){
+        twoButtonTitleDialog = TwoButtonTitleDialog(context, title, oneBtnText, twoBtnText, confirmListener)
+        twoButtonTitleDialog?.show()
+    }
+
+    fun dismissTwoButtonTitleDialog(){
+        twoButtonTitleDialog?.let{
+            if(it.isShowing){
+                it.dismiss()
+            }
         }
     }
 

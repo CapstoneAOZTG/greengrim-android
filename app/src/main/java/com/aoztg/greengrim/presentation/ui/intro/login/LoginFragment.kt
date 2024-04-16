@@ -13,7 +13,6 @@ import com.aoztg.greengrim.R
 import com.aoztg.greengrim.app.App.Companion.gso
 import com.aoztg.greengrim.databinding.FragmentLoginBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
-import com.aoztg.greengrim.presentation.ui.SocialLoginType
 import com.aoztg.greengrim.presentation.ui.intro.EmailData
 import com.aoztg.greengrim.presentation.ui.intro.IntroViewModel
 import com.aoztg.greengrim.presentation.util.Constants.GOOGLE
@@ -83,8 +82,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(R.layout.fragment_login
                 val account = task.getResult(ApiException::class.java)
 
                 EmailData.email = account?.email.toString()
-                SocialLoginType.type = GOOGLE
-                viewModel.startLogin(account?.email.toString())
+                viewModel.startLogin(account?.email.toString(), GOOGLE)
             }
         }
 
@@ -145,8 +143,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(R.layout.fragment_login
                 Log.d(TAG, "사용자 정보 요청 성공 : $user")
                 user.kakaoAccount?.email?.let {
                     EmailData.email = it
-                    SocialLoginType.type = KAKAO
-                    viewModel.startLogin(it)
+                    viewModel.startLogin(it, KAKAO)
                 }
             }
         }
@@ -178,8 +175,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(R.layout.fragment_login
             Log.d(TAG, result.profile.toString())
 
             EmailData.email = result.profile?.email.toString()
-            SocialLoginType.type = NAVER
-            viewModel.startLogin(result.profile?.email.toString())
+            viewModel.startLogin(result.profile?.email.toString(), NAVER)
         }
 
         override fun onFailure(httpStatus: Int, message: String) {

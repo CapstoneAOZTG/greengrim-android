@@ -4,10 +4,8 @@ import com.aoztg.greengrim.data.remote.AttendCheckAPI
 import com.aoztg.greengrim.data.remote.CertificationAPI
 import com.aoztg.greengrim.data.remote.ChallengeAPI
 import com.aoztg.greengrim.data.remote.ChatAPI
-import com.aoztg.greengrim.data.remote.FcmAPI
 import com.aoztg.greengrim.data.remote.ImageAPI
-import com.aoztg.greengrim.data.remote.InfoAPI
-import com.aoztg.greengrim.data.remote.IntroAPI
+import com.aoztg.greengrim.data.remote.MemberAPI
 import com.aoztg.greengrim.data.remote.NftAPI
 import dagger.Module
 import dagger.Provides
@@ -19,13 +17,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object ApiModule {
-
-    @Singleton
-    @Provides
-    fun provideIntroService(retrofit: Retrofit): IntroAPI {
-        return retrofit.create(IntroAPI::class.java)
-    }
-
     @Singleton
     @Provides
     fun provideImageService(retrofit: Retrofit): ImageAPI {
@@ -34,8 +25,8 @@ object ApiModule {
 
     @Singleton
     @Provides
-    fun provideInfoService(retrofit: Retrofit): InfoAPI {
-        return retrofit.create(InfoAPI::class.java)
+    fun provideInfoService(retrofit: Retrofit): MemberAPI {
+        return retrofit.create(MemberAPI::class.java)
     }
 
     @Singleton
@@ -60,12 +51,6 @@ object ApiModule {
     @Provides
     fun provideAttendCheckService(retrofit: Retrofit): AttendCheckAPI {
         return retrofit.create(AttendCheckAPI::class.java)
-    }
-
-    @Singleton
-    @Provides
-    fun provideFcmService(retrofit: Retrofit): FcmAPI {
-        return retrofit.create(FcmAPI::class.java)
     }
 
     @Singleton
