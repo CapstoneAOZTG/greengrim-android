@@ -32,6 +32,7 @@ class AddWalletDetailFragment: BaseFragment<FragmentAddWalletDetailBinding>(R.la
                     is AddWalletDetailEvent.ShowCustomSnack -> showCustomSnack(binding.tvWalletNameLabel, it.msg)
                     is AddWalletDetailEvent.NavigateToBack -> findNavController().navigateUp()
                     is AddWalletDetailEvent.NavigateToMyPage -> findNavController().toMyPage()
+                    is AddWalletDetailEvent.ShowToastMessage -> showCustomToast(it.msg)
                 }
             }
         }

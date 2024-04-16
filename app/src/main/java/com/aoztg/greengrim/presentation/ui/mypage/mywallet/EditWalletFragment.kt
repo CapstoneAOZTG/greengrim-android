@@ -35,6 +35,7 @@ class EditWalletFragment: BaseFragment<FragmentEditWalletBinding>(R.layout.fragm
                     is EditWalletEvent.NavigateToBack -> findNavController().navigateUp()
                     is EditWalletEvent.NavigateToMyPage -> findNavController().toMyPage()
                     is EditWalletEvent.ShowCustomSnack -> showCustomSnack(binding.tvWalletNameLabel, it.msg)
+                    is EditWalletEvent.ShowToastMessage -> showCustomToast(it.msg)
                 }
             }
         }

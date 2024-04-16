@@ -20,6 +20,7 @@ sealed class EditWalletEvent{
     object NavigateToBack : EditWalletEvent()
     data class ShowCustomSnack(val msg: String) : EditWalletEvent()
     object NavigateToMyPage : EditWalletEvent()
+    data class ShowToastMessage(val msg: String) : EditWalletEvent()
 }
 
 @HiltViewModel
@@ -70,6 +71,7 @@ class EditWalletViewModel @Inject constructor(
             repository.editWallet(WalletInfoRequest(walletName.value, walletAddress.value)).let{
                 when(it){
                     is BaseState.Success -> {
+                        _event.emit(EditWalletEvent.ShowToastMessage("지갑정보 수정 완료"))
                         _event.emit(EditWalletEvent.NavigateToMyPage)
                     }
 

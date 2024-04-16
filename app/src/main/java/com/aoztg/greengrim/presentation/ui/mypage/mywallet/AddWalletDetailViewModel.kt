@@ -19,6 +19,7 @@ import javax.inject.Inject
 sealed class AddWalletDetailEvent{
     object NavigateToBack : AddWalletDetailEvent()
     data class ShowCustomSnack(val msg: String) : AddWalletDetailEvent()
+    data class ShowToastMessage(val msg: String) : AddWalletDetailEvent()
     object NavigateToMyPage : AddWalletDetailEvent()
 }
 
@@ -46,7 +47,8 @@ class AddWalletDetailViewModel @Inject constructor(
            repository.addWallet(WalletInfoRequest(walletName.value, walletAddress.value)).let{
                when(it){
                    is BaseState.Success -> {
-                        _event.emit(AddWalletDetailEvent.NavigateToMyPage)
+                       _event.emit(AddWalletDetailEvent.ShowToastMessage("지갑 추가 완료"))
+                       _event.emit(AddWalletDetailEvent.NavigateToMyPage)
                    }
 
                    is BaseState.Error -> {

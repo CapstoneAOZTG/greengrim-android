@@ -47,7 +47,6 @@ class MyPageViewModel @Inject constructor(
     private val _events = MutableSharedFlow<MyPageEvent>()
     val events: SharedFlow<MyPageEvent> = _events.asSharedFlow()
 
-
     fun getMyInfo() {
         viewModelScope.launch {
             memberRepository.getMyInfo().let {
@@ -57,7 +56,14 @@ class MyPageViewModel @Inject constructor(
                         if(!newBody.compareInfo(uiState.value.uiMyInfo)){
                             _uiState.update { state ->
                                 state.copy(
-                                    uiMyInfo = it.body.toUiMyInfo()
+                                    uiMyInfo = uiState.value.uiMyInfo.copy(
+                                        id = newBody.id,
+                                        nickName =  newBody.nickName,
+                                        profileImgUrl = newBody.profileImgUrl,
+                                        introduction = newBody.introduction,
+                                        myPoint = newBody.myPoint,
+                                        email = newBody.email,
+                                    )
                                 )
                             }
                         }
