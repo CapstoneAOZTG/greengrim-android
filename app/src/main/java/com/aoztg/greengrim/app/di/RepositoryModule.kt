@@ -8,14 +8,10 @@ import com.aoztg.greengrim.data.repository.ChallengeRepository
 import com.aoztg.greengrim.data.repository.ChallengeRepositoryImpl
 import com.aoztg.greengrim.data.repository.ChatRepository
 import com.aoztg.greengrim.data.repository.ChatRepositoryImpl
-import com.aoztg.greengrim.data.repository.FcmRepository
-import com.aoztg.greengrim.data.repository.FcmRepositoryImpl
 import com.aoztg.greengrim.data.repository.ImageRepository
 import com.aoztg.greengrim.data.repository.ImageRepositoryImpl
-import com.aoztg.greengrim.data.repository.InfoRepository
-import com.aoztg.greengrim.data.repository.InfoRepositoryImpl
-import com.aoztg.greengrim.data.repository.IntroRepository
-import com.aoztg.greengrim.data.repository.IntroRepositoryImpl
+import com.aoztg.greengrim.data.repository.MemberRepository
+import com.aoztg.greengrim.data.repository.MemberRepositoryImpl
 import com.aoztg.greengrim.data.repository.NftRepository
 import com.aoztg.greengrim.data.repository.NftRepositoryImpl
 import dagger.Binds
@@ -31,21 +27,15 @@ abstract class RepositoryModule {
 
     @Singleton
     @Binds
-    abstract fun bindIntroRepository(
-        loginRepositoryImpl: IntroRepositoryImpl
-    ): IntroRepository
-
-    @Singleton
-    @Binds
     abstract fun bindImageRepository(
         imageRepositoryImpl: ImageRepositoryImpl
     ): ImageRepository
 
     @Singleton
     @Binds
-    abstract fun bindInfoRepository(
-        infoRepositoryImpl: InfoRepositoryImpl
-    ): InfoRepository
+    abstract fun bindMemberRepository(
+        memberRepositoryImpl: MemberRepositoryImpl
+    ): MemberRepository
 
     @Singleton
     @Binds
@@ -70,12 +60,6 @@ abstract class RepositoryModule {
     abstract fun bindAttendCheckRepository(
         attendCheckRepositoryImpl: AttendCheckRepositoryImpl
     ): AttendCheckRepository
-
-    @Singleton
-    @Binds
-    abstract fun bindFcmRepository(
-        fcmRepositoryImpl: FcmRepositoryImpl
-    ): FcmRepository
 
     @Singleton
     @Binds

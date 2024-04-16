@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.app.App
 import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.repository.ChatRepository
-import com.aoztg.greengrim.data.repository.FcmRepository
+import com.aoztg.greengrim.data.repository.MemberRepository
 import com.aoztg.greengrim.presentation.chatmanager.mapper.toUiUnReadChatData
 import com.aoztg.greengrim.presentation.chatmanager.mapper.toUnReadChatEntity
 import com.aoztg.greengrim.presentation.chatmanager.model.ChatMessage
@@ -33,7 +33,7 @@ sealed class ChatEvent {
 @HiltViewModel
 class ChatManager @Inject constructor(
     private val chatRepository: ChatRepository,
-    private val fcmRepository: FcmRepository
+    private val memberRepository: MemberRepository
 ) : ViewModel() {
 
     private val _events: MutableSharedFlow<ChatEvent> = MutableSharedFlow()
@@ -57,7 +57,8 @@ class ChatManager @Inject constructor(
     val unReadCnt: StateFlow<Int> = _unReadCnt.asStateFlow()
 
     private var memberId: Long = 0
-    private val chatSocket = ChatSocket(::receiveMessage, ::showSocketToastMessage, ::showSocketSnackMessage)
+    private val chatSocket =
+        ChatSocket(::receiveMessage, ::showSocketToastMessage, ::showSocketSnackMessage)
 
     init {
         setMemberId()
@@ -110,7 +111,7 @@ class ChatManager @Inject constructor(
                 is BaseState.Success -> {
                     if (response.body.isNotEmpty()) {
                         response.body.forEach {
-                            Log.d(TAG,it.toString())
+                            Log.d(TAG, it.toString())
                         }
                         unReadChatData = response.body.map {
                             it.toUiUnReadChatData()
@@ -242,26 +243,26 @@ class ChatManager @Inject constructor(
         }
     }
 
-    private fun showSocketToastMessage(msg: String){
+    private fun showSocketToastMessage(msg: String) {
         viewModelScope.launch {
             _events.emit(ChatEvent.ShowToastMessage(msg))
         }
     }
 
-    private fun showSocketSnackMessage(msg: String){
+    private fun showSocketSnackMessage(msg: String) {
         viewModelScope.launch {
             _events.emit(ChatEvent.ShowSnackMessage(msg))
         }
     }
 
-    fun disconnectChat(){
+    fun disconnectChat() {
         chatSocket.disconnectServer()
     }
 
-    fun subscribeFcm(){
+    fun subscribeFcm() {
         viewModelScope.launch {
-            fcmRepository.subscribeFcm().let{
-                when(it){
+            memberRepository.subscribeFcm().let {
+                when (it) {
                     is BaseState.Success -> {}
                     is BaseState.Error -> {
                         _events.emit(ChatEvent.ShowSnackMessage(it.msg))
@@ -271,10 +272,10 @@ class ChatManager @Inject constructor(
         }
     }
 
-    fun unsubscribeFcm(){
+    fun unsubscribeFcm() {
         viewModelScope.launch {
-            fcmRepository.unsubscribeFcm().let{
-                when(it){
+            memberRepository.unsubscribeFcm().let {
+                when (it) {
                     is BaseState.Success -> {}
                     is BaseState.Error -> {
                         _events.emit(ChatEvent.ShowSnackMessage(it.msg))

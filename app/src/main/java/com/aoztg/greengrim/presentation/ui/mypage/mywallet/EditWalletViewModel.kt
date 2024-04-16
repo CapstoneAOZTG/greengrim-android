@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.model.request.WalletInfoRequest
-import com.aoztg.greengrim.data.repository.InfoRepository
+import com.aoztg.greengrim.data.repository.MemberRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,7 +24,7 @@ sealed class EditWalletEvent{
 
 @HiltViewModel
 class EditWalletViewModel @Inject constructor(
-    private val repository : InfoRepository
+    private val repository : MemberRepository
 ) : ViewModel() {
 
     private val _event = MutableSharedFlow<EditWalletEvent>()

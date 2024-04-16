@@ -12,6 +12,8 @@ class TwoButtonTitleDialog(
     context: Context,
     private val title: String,
     private val description: String,
+    private val oneBtnText : String,
+    private val twoBtnText : String,
     private val confirmBtnClickListener: () -> Unit
 ) : Dialog(context) {
 
@@ -28,6 +30,8 @@ class TwoButtonTitleDialog(
         window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         tvTitle.text = title
         tvDescription.text = description
+        btnCancel.text = oneBtnText
+        btnConfirm.text = twoBtnText
         btnCancel.setOnClickListener {
             dismiss()
         }

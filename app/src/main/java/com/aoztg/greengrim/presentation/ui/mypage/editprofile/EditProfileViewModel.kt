@@ -6,8 +6,7 @@ import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.model.request.CheckNickRequest
 import com.aoztg.greengrim.data.model.request.PatchProfileRequest
 import com.aoztg.greengrim.data.repository.ImageRepository
-import com.aoztg.greengrim.data.repository.InfoRepository
-import com.aoztg.greengrim.data.repository.IntroRepository
+import com.aoztg.greengrim.data.repository.MemberRepository
 import com.aoztg.greengrim.presentation.ui.BaseUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -50,8 +49,7 @@ sealed class EditProfileEvents {
 
 @HiltViewModel
 class EditProfileViewModel @Inject constructor(
-    private val introRepository: IntroRepository,
-    private val infoRepository: InfoRepository,
+    private val memberRepository: MemberRepository,
     private val imageRepository: ImageRepository
 ) : ViewModel() {
 
@@ -97,7 +95,7 @@ class EditProfileViewModel @Inject constructor(
 
     private fun getProfileData() {
         viewModelScope.launch {
-            infoRepository.getProfile().let {
+            memberRepository.getProfile().let {
                 when (it) {
                     is BaseState.Success -> {
                         curNickname = it.body.nickName
@@ -124,7 +122,7 @@ class EditProfileViewModel @Inject constructor(
     private fun checkNickDuplicate() {
         nickname.onEach { nick ->
             if (curNickname != nick) {
-                introRepository.checkNick(CheckNickRequest(nick)).let {
+                memberRepository.checkNick(CheckNickRequest(nick)).let {
                     when (it) {
                         is BaseState.Success -> {
                             if (it.body.used) {
@@ -190,7 +188,7 @@ class EditProfileViewModel @Inject constructor(
     fun editProfile(imgUrl: String) {
         viewModelScope.launch {
 
-            infoRepository.patchProfile(
+            memberRepository.patchProfile(
                 PatchProfileRequest(
                     nickName = nickname.value,
                     introduction = introduce.value,

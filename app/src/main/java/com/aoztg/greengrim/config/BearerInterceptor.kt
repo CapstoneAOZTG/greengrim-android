@@ -6,7 +6,7 @@ import com.aoztg.greengrim.BuildConfig
 import com.aoztg.greengrim.app.App.Companion.context
 import com.aoztg.greengrim.app.App.Companion.sharedPreferences
 import com.aoztg.greengrim.data.model.ErrorResponse
-import com.aoztg.greengrim.data.remote.RefreshAPI
+import com.aoztg.greengrim.data.remote.MemberAPI
 import com.aoztg.greengrim.presentation.ui.intro.IntroActivity
 import com.aoztg.greengrim.presentation.util.Constants.MEMBER_ID
 import com.aoztg.greengrim.presentation.util.Constants.TAG
@@ -43,7 +43,7 @@ class BearerInterceptor : Interceptor {
                         .baseUrl(BuildConfig.BASE_DEV_URL)
                         .addConverterFactory(GsonConverterFactory.create())
                         .build()
-                        .create(RefreshAPI::class.java).refreshToken(refresh)
+                        .create(MemberAPI::class.java).refreshToken(refresh)
                     
                     if (result.isSuccessful) {
                         Log.d(TAG,"리프래시 성공")
