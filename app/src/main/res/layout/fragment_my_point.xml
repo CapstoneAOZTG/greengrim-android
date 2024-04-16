@@ -5,6 +5,10 @@
 
     <data>
 
+        <variable
+            name="vm"
+            type="com.aoztg.greengrim.presentation.ui.mypage.mypoint.MyPointViewModel" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -73,7 +77,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:text="유보라 님의 그린 포인트"
+                android:text="@{vm.uiState.name}"
                 android:textStyle="normal"
                 app:layout_constraintBottom_toBottomOf="@id/iv_badge"
                 app:layout_constraintEnd_toStartOf="@id/tv_point"
@@ -86,6 +90,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textStyle="normal"
+                android:text="@{vm.uiState.totalPoint}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -98,6 +103,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
+            app:list="@{vm.uiState.pointInfoList}"
             android:orientation="vertical"
             tools:listitem="@layout/item_point"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
