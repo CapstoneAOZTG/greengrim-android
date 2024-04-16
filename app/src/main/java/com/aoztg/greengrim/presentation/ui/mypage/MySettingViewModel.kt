@@ -2,6 +2,8 @@ package com.aoztg.greengrim.presentation.ui.mypage
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.aoztg.greengrim.data.model.BaseState
+import com.aoztg.greengrim.data.repository.MemberRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -16,10 +18,13 @@ sealed class MySettingEvent{
     object NavigateToBack : MySettingEvent()
     object Logout : MySettingEvent()
     object WithDraw : MySettingEvent()
+    data class ShowSnackMessage(val msg: String) : MySettingEvent()
 }
 
 @HiltViewModel
-class MySettingViewModel @Inject constructor(): ViewModel() {
+class MySettingViewModel @Inject constructor(
+    private val repository : MemberRepository
+): ViewModel() {
 
     private val _event = MutableSharedFlow<MySettingEvent>()
     val event : SharedFlow<MySettingEvent> = _event.asSharedFlow()
@@ -45,13 +50,24 @@ class MySettingViewModel @Inject constructor(): ViewModel() {
 
     fun logout(){
         viewModelScope.launch {
-            _event.emit(MySettingEvent.Logout)
+            repository.logout().let{
+                when(it){
+                    is BaseState.Success -> _event.emit(MySettingEvent.Logout)
+                    is BaseState.Error -> _event.emit(MySettingEvent.ShowSnackMessage(it.msg))
+                }
+            }
         }
     }
 
     fun withDraw(){
         viewModelScope.launch {
-            _event.emit(MySettingEvent.WithDraw)
+            repository.withdraw().let{
+                when(it){
+                    is BaseState.Success -> _event.emit(MySettingEvent.WithDraw)
+                    is BaseState.Error -> _event.emit(MySettingEvent.ShowSnackMessage(it.msg))
+                }
+            }
+
         }
     }
 

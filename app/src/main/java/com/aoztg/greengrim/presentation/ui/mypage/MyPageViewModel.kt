@@ -3,7 +3,7 @@ package com.aoztg.greengrim.presentation.ui.mypage
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.data.model.BaseState
-import com.aoztg.greengrim.data.repository.InfoRepository
+import com.aoztg.greengrim.data.repository.MemberRepository
 import com.aoztg.greengrim.presentation.ui.mypage.mapper.toUiMyInfo
 import com.aoztg.greengrim.presentation.ui.mypage.model.UiMyInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -38,7 +38,7 @@ sealed class MyPageEvent {
 
 @HiltViewModel
 class MyPageViewModel @Inject constructor(
-    private val infoRepository: InfoRepository
+    private val memberRepository: MemberRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(MyPageUiState())
@@ -50,7 +50,7 @@ class MyPageViewModel @Inject constructor(
 
     fun getMyInfo() {
         viewModelScope.launch {
-            infoRepository.getMyInfo().let {
+            memberRepository.getMyInfo().let {
                 when (it) {
                     is BaseState.Success -> {
                         val newBody = it.body.toUiMyInfo()
@@ -73,13 +73,13 @@ class MyPageViewModel @Inject constructor(
 
     fun getMyWalletInfo() {
         viewModelScope.launch {
-            infoRepository.getMyWalletInfo().let {
+            memberRepository.getMyWalletInfo().let {
                 when (it) {
                     is BaseState.Success -> {
 
                         val walletAddress = it.body.address ?: ""
                         val walletName = it.body.name ?: ""
-                        if(walletAddress != uiState.value.uiMyInfo.walletAddress || walletName != uiState.value.uiMyInfo.walletName){
+                        if(it.body.existed != uiState.value.uiMyInfo.hasWallet ||walletAddress != uiState.value.uiMyInfo.walletAddress || walletName != uiState.value.uiMyInfo.walletName){
                             _uiState.update { state ->
                                 state.copy(
                                     uiMyInfo = uiState.value.uiMyInfo.copy(

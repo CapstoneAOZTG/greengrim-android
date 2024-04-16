@@ -1,0 +1,81 @@
+package com.aoztg.greengrim.data.remote
+
+import com.aoztg.greengrim.data.model.request.CheckNickRequest
+import com.aoztg.greengrim.data.model.request.LoginRequest
+import com.aoztg.greengrim.data.model.request.PatchProfileRequest
+import com.aoztg.greengrim.data.model.request.SignupRequest
+import com.aoztg.greengrim.data.model.request.WalletInfoRequest
+import com.aoztg.greengrim.data.model.response.CheckNickResponse
+import com.aoztg.greengrim.data.model.response.GetProfileResponse
+import com.aoztg.greengrim.data.model.response.LoginResponse
+import com.aoztg.greengrim.data.model.response.MyInfoResponse
+import com.aoztg.greengrim.data.model.response.MyKeywordsResponse
+import com.aoztg.greengrim.data.model.response.SignupResponse
+import com.aoztg.greengrim.data.model.response.WalletInfoResponse
+import retrofit2.Response
+import retrofit2.http.Body
+import retrofit2.http.DELETE
+import retrofit2.http.GET
+import retrofit2.http.Header
+import retrofit2.http.PATCH
+import retrofit2.http.POST
+
+interface MemberAPI {
+
+    @PATCH("/visitor/refresh")
+    suspend fun refreshToken(
+        @Header("refreshToken") refreshToken: String
+    ): Response<LoginResponse>
+
+    @GET("/visitor/fcm/subscribe")
+    suspend fun subscribeFcm(): Response<Unit>
+
+    @GET("/visitor/fcm/unsubscribe")
+    suspend fun unsubscribeFcm(): Response<Unit>
+
+    @POST("/sign-up")
+    suspend fun signup(
+        @Body params: SignupRequest
+    ): Response<SignupResponse>
+
+    @POST("/login")
+    suspend fun login(
+        @Body params: LoginRequest
+    ): Response<LoginResponse>
+
+    @POST("/nick-name")
+    suspend fun checkNick(
+        @Body params: CheckNickRequest
+    ): Response<CheckNickResponse>
+
+    @GET("/visitor/profile")
+    suspend fun getProfile() : Response<GetProfileResponse>
+
+    @PATCH("/visitor/profile")
+    suspend fun patchProfile(
+        @Body params: PatchProfileRequest
+    ): Response<Unit>
+
+    @GET("/visitor/my")
+    suspend fun getMyInfo(): Response<MyInfoResponse>
+
+    @GET("/visitor/wallets")
+    suspend fun getMyWalletInfo() : Response<WalletInfoResponse>
+
+    @POST("/visitor/wallets")
+    suspend fun addWallet(
+        @Body params : WalletInfoRequest
+    ) : Response<Unit>
+
+    @POST("/member/wallets")
+    suspend fun editWallet(
+        @Body params : WalletInfoRequest
+    ) : Response<Unit>
+
+    @POST("/visitor/logout")
+    suspend fun logout(): Response<Unit>
+
+    @DELETE("/visitor/delete")
+    suspend fun withdraw() : Response<Unit>
+
+}
