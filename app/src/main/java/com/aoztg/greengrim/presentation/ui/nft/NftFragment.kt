@@ -12,6 +12,7 @@ import com.aoztg.greengrim.presentation.base.BaseFragment
 import com.aoztg.greengrim.presentation.customview.NftFilterBottomSheet
 import com.aoztg.greengrim.presentation.customview.NftSortType
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
+import com.aoztg.greengrim.presentation.ui.nft.adapter.NftCategoryAdapter
 import com.aoztg.greengrim.presentation.ui.nft.adapter.NftItemAdapter
 import com.aoztg.greengrim.presentation.ui.toNftDetail
 import dagger.hilt.android.AndroidEntryPoint
@@ -24,7 +25,7 @@ class NftFragment : BaseFragment<FragmentNftBinding>(R.layout.fragment_nft) {
         const val NEXT_PAGE = 1
     }
 
-    private val viewModel: MarketViewModel by viewModels()
+    private val viewModel: NftViewModel by viewModels()
     private val parentViewModel: MainViewModel by activityViewModels()
     private var isHotNftSet: Boolean = false
     private var sortType = NftSortType.DESC
@@ -35,6 +36,7 @@ class NftFragment : BaseFragment<FragmentNftBinding>(R.layout.fragment_nft) {
         parentViewModel.showBNV()
         binding.vm = viewModel
         binding.rvGreenNftList.adapter = NftItemAdapter()
+        binding.rvNftCategory.adapter = NftCategoryAdapter()
         initEventObserver()
         setScrollEventListener()
         viewModel.getNftList(NEW)

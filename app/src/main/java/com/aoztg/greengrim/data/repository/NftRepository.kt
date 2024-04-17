@@ -1,6 +1,7 @@
 package com.aoztg.greengrim.data.repository
 
 import com.aoztg.greengrim.data.model.BaseState
+import com.aoztg.greengrim.data.model.response.NftCategoryResponse
 import com.aoztg.greengrim.data.model.response.NftDetailResponse
 import com.aoztg.greengrim.data.model.response.NftListResponse
 import com.aoztg.greengrim.data.model.response.StockNftResponse
@@ -33,5 +34,7 @@ interface NftRepository {
         size: Int,
         sort: String
     ): BaseState<NftListResponse>
+
+    suspend fun getCategoryNft(): BaseState<NftCategoryResponse>
 
 }

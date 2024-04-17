@@ -1,6 +1,7 @@
 package com.aoztg.greengrim.data.repository
 
 import com.aoztg.greengrim.data.model.BaseState
+import com.aoztg.greengrim.data.model.response.NftCategoryResponse
 import com.aoztg.greengrim.data.model.response.NftDetailResponse
 import com.aoztg.greengrim.data.model.response.NftListResponse
 import com.aoztg.greengrim.data.model.response.StockNftResponse
@@ -40,5 +41,9 @@ class NftRepositoryImpl @Inject constructor(
         sort: String
     ): BaseState<NftListResponse> =
         runRemote { api.getMyNftList(page, size, sort) }
+
+    override suspend fun getCategoryNft(): BaseState<NftCategoryResponse> = runRemote {
+        api.getNftCategory()
+    }
 
 }

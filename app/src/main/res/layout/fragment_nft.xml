@@ -7,7 +7,7 @@
 
         <variable
             name="vm"
-            type="com.aoztg.greengrim.presentation.ui.nft.MarketViewModel" />
+            type="com.aoztg.greengrim.presentation.ui.nft.NftViewModel" />
 
     </data>
 
@@ -59,7 +59,6 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/tv_nft_header" />
 
-
                     <ImageButton
                         android:id="@+id/btn_see_more_nft"
                         android:layout_width="wrap_content"
@@ -83,6 +82,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/layout_toolbar"
+                    app:list="@{vm.uiState.nftCategory}"
                     tools:listitem="@layout/item_nft_category" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -138,7 +138,7 @@
                     android:layout_marginTop="10dp"
                     android:clipToPadding="false"
                     android:orientation="vertical"
-                    android:paddingHorizontal="10dp"
+                    android:paddingHorizontal="16dp"
                     android:paddingBottom="500dp"
                     app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                     app:layout_constraintEnd_toEndOf="parent"
