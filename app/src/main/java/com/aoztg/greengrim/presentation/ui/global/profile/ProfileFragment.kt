@@ -17,6 +17,7 @@ import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 import com.aoztg.greengrim.presentation.ui.mypage.adapter.MyCertificationAdapter
 import com.aoztg.greengrim.presentation.ui.mypage.myprofile.MyProfileTempDate
 import com.aoztg.greengrim.presentation.ui.mypage.myprofile.ProfileFilter
+import com.aoztg.greengrim.presentation.ui.nft.adapter.NftItemAdapter
 import com.aoztg.greengrim.presentation.ui.toCertificationDetail
 import com.aoztg.greengrim.presentation.ui.toChallengeDetail
 import com.aoztg.greengrim.presentation.ui.toNftDetail
@@ -52,6 +53,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(R.layout.fragment_p
         initEventObserve()
         binding.rvChallengeList.adapter = ChallengeRoomAdapter()
         binding.rvCertifications.adapter = MyCertificationAdapter()
+        binding.rvNftList.adapter = NftItemAdapter()
         viewModel.getMyInfo()
         viewModel.getMyChallenge(NEXT_PAGE)
     }

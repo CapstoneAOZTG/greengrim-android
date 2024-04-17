@@ -155,7 +155,6 @@ class MyProfileViewModel @Inject constructor(
 
         if (_uiState.value.hasNext) {
             viewModelScope.launch {
-
                 challengeRepository.getMyChallenge(
                     _uiState.value.page,
                     20,
@@ -235,7 +234,7 @@ class MyProfileViewModel @Inject constructor(
                 certificationRepository.getMyCertificationList(
                     _uiState.value.curDate.toString(),
                     _uiState.value.page,
-                    20
+                    10
                 ).let {
                     when (it) {
                         is BaseState.Success -> {

@@ -10,13 +10,12 @@ import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentMyProfileBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
 import com.aoztg.greengrim.presentation.customview.ChallengeFilterBottomSheet
-import com.aoztg.greengrim.presentation.customview.ChallengeSortType
 import com.aoztg.greengrim.presentation.customview.CustomCalendar
 import com.aoztg.greengrim.presentation.customview.NftFilterBottomSheet
-import com.aoztg.greengrim.presentation.customview.NftSortType
 import com.aoztg.greengrim.presentation.ui.challenge.adapter.ChallengeRoomAdapter
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 import com.aoztg.greengrim.presentation.ui.mypage.adapter.MyCertificationAdapter
+import com.aoztg.greengrim.presentation.ui.nft.adapter.NftItemAdapter
 import com.aoztg.greengrim.presentation.ui.toCertificationDetail
 import com.aoztg.greengrim.presentation.ui.toChallengeDetail
 import com.aoztg.greengrim.presentation.ui.toNftDetail
@@ -50,6 +49,7 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(R.layout.fragme
         initEventObserve()
         binding.rvChallengeList.adapter = ChallengeRoomAdapter()
         binding.rvCertifications.adapter = MyCertificationAdapter()
+        binding.rvNftList.adapter = NftItemAdapter()
         viewModel.getMyInfo()
         viewModel.getMyChallenge(NEXT_PAGE)
     }
