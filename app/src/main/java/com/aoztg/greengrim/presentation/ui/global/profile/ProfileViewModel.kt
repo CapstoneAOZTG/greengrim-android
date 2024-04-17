@@ -14,7 +14,7 @@ import com.aoztg.greengrim.presentation.ui.challenge.mapper.toUiChallengeList
 import com.aoztg.greengrim.presentation.ui.challenge.model.UiChallengeRoom
 import com.aoztg.greengrim.presentation.ui.global.mapper.toUiSimpleProfile
 import com.aoztg.greengrim.presentation.ui.global.model.UiSimpleProfileData
-import com.aoztg.greengrim.presentation.ui.home.mapper.toUiNftItem
+import com.aoztg.greengrim.presentation.ui.nft.mapper.toUiNftItem
 import com.aoztg.greengrim.presentation.ui.mypage.mapper.toUiMyCertificationList
 import com.aoztg.greengrim.presentation.ui.mypage.model.UiMyCertification
 import com.aoztg.greengrim.presentation.ui.mypage.myprofile.ProfileFilter

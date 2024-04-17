@@ -12,7 +12,7 @@ import com.aoztg.greengrim.presentation.customview.NftSortType
 import com.aoztg.greengrim.presentation.ui.challenge.list.ChallengeListViewModel
 import com.aoztg.greengrim.presentation.ui.challenge.mapper.toUiChallengeList
 import com.aoztg.greengrim.presentation.ui.challenge.model.UiChallengeRoom
-import com.aoztg.greengrim.presentation.ui.home.mapper.toUiNftItem
+import com.aoztg.greengrim.presentation.ui.nft.mapper.toUiNftItem
 import com.aoztg.greengrim.presentation.ui.mypage.mapper.toUiMyCertificationList
 import com.aoztg.greengrim.presentation.ui.mypage.mapper.toUiMyInfo
 import com.aoztg.greengrim.presentation.ui.mypage.model.UiMyCertification

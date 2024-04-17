@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.repository.NftRepository
 import com.aoztg.greengrim.presentation.customview.NftSortType
-import com.aoztg.greengrim.presentation.ui.nft.model.UiGrimItem
+import com.aoztg.greengrim.presentation.ui.nft.mapper.toUiNftItem
 import com.aoztg.greengrim.presentation.ui.nft.model.UiNftItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -14,12 +14,12 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 data class NftUiState(
-    val hotNftList: List<UiNftItem> = emptyList(),
-    val grimList: List<UiGrimItem> = emptyList(),
+    val nftList: List<UiNftItem> = emptyList(),
     val sortType: NftSortType = NftSortType.DESC,
     val page: Int = 0,
     val hasNext: Boolean = true,
@@ -40,8 +40,8 @@ class MarketViewModel @Inject constructor(
 ) : ViewModel() {
 
     companion object {
-        const val SORT = 0
-        const val ORIGINAL = 1
+        const val NEW = 0
+        const val NEXT_PAGE = 1
     }
 
     private val _uiState = MutableStateFlow(NftUiState())
@@ -50,13 +50,7 @@ class MarketViewModel @Inject constructor(
     private val _events = MutableSharedFlow<NftEvent>()
     val events: SharedFlow<NftEvent> = _events.asSharedFlow()
 
-    private fun navigateToNftDetail(id: Long) {
-        viewModelScope.launch {
-            _events.emit(NftEvent.NavigateToNftDetail(id))
-        }
-    }
-
-    fun getNftList(){
+    fun getNftList(option : Int){
         if(uiState.value.hasNext){
             viewModelScope.launch {
                 nftRepository.getExchangedNftList(
@@ -66,7 +60,16 @@ class MarketViewModel @Inject constructor(
                 ).let{
                     when(it){
                         is BaseState.Success -> {
-
+                            val newList = it.body.result.map{ data ->
+                                data.toUiNftItem(::navigateToNftDetail, ::clickLike)
+                            }
+                            _uiState.update { state ->
+                                state.copy(
+                                    nftList = if(option == NEXT_PAGE) uiState.value.nftList + newList else newList,
+                                    hasNext = uiState.value.hasNext,
+                                    page = uiState.value.page + 1
+                                )
+                            }
                         }
 
                         is BaseState.Error -> {
@@ -76,6 +79,16 @@ class MarketViewModel @Inject constructor(
                 }
             }
         }
+
+    }
+
+    private fun navigateToNftDetail(id: Long) {
+        viewModelScope.launch {
+            _events.emit(NftEvent.NavigateToNftDetail(id))
+        }
+    }
+
+    private fun clickLike(id : Long){
 
     }
 
@@ -97,6 +110,8 @@ class MarketViewModel @Inject constructor(
             sortType = type,
             page = 0
         )
+
+        getNftList(NEW)
     }
 
 }

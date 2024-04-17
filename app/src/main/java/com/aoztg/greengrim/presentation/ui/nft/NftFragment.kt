@@ -6,19 +6,23 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentNftBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
 import com.aoztg.greengrim.presentation.customview.NftFilterBottomSheet
 import com.aoztg.greengrim.presentation.customview.NftSortType
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
+import com.aoztg.greengrim.presentation.ui.nft.adapter.NftItemAdapter
 import com.aoztg.greengrim.presentation.ui.toNftDetail
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class NftFragment : BaseFragment<FragmentNftBinding>(R.layout.fragment_nft) {
+
+    companion object {
+        const val NEW = 0
+        const val NEXT_PAGE = 1
+    }
 
     private val viewModel: MarketViewModel by viewModels()
     private val parentViewModel: MainViewModel by activityViewModels()
@@ -30,6 +34,7 @@ class NftFragment : BaseFragment<FragmentNftBinding>(R.layout.fragment_nft) {
 
         parentViewModel.showBNV()
         binding.vm = viewModel
+        binding.rvGreenNftList.adapter = NftItemAdapter()
         initEventObserver()
         setScrollEventListener()
     }
@@ -51,19 +56,11 @@ class NftFragment : BaseFragment<FragmentNftBinding>(R.layout.fragment_nft) {
 
     private fun setScrollEventListener() {
 
-        binding.rvGreenNftList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-
-                val lastVisibleItemPosition =
-                    (recyclerView.layoutManager as GridLayoutManager).findLastCompletelyVisibleItemPosition()
-                val itemTotalCount = recyclerView.adapter?.itemCount?.minus(1)
-
-                if (lastVisibleItemPosition == itemTotalCount) {
-                }
+        binding.scrollView.setOnScrollChangeListener { v, _, _, _, _ ->
+            if (!v.canScrollVertically(1)) {
+                viewModel.getNftList(NEXT_PAGE)
             }
-        })
+        }
     }
 
     private fun showBottomSheet() {
