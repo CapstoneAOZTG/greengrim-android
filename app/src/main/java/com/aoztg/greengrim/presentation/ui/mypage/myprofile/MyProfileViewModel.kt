@@ -321,7 +321,7 @@ class MyProfileViewModel @Inject constructor(
                     when (it) {
                         is BaseState.Success -> {
                             val uiData =
-                                it.body.result.map { data -> data.toUiNftItem(::navigateToNftDetail) }
+                                it.body.result.map { data -> data.toUiNftItem(::navigateToNftDetail, ::clickLike) }
                             _uiState.update { state ->
                                 state.copy(
                                     nftList = if (option == ChallengeListViewModel.ORIGINAL) uiState.value.nftList + uiData else uiData,
@@ -336,6 +336,10 @@ class MyProfileViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    private fun clickLike(id: Long){
+
     }
 
     fun showNftFilterBottomSheet() {

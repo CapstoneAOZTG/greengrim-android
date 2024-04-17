@@ -38,21 +38,6 @@
             tools:src="@drawable/test" />
 
         <TextView
-            android:id="@+id/tv_price"
-            style="@style/TextGgSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            android:background="@drawable/shape_blackfill_nostroke_15radius"
-            android:paddingHorizontal="6dp"
-            android:paddingVertical="2dp"
-            android:text="@{item.price}"
-            app:layout_constraintBottom_toBottomOf="@id/guideline_item"
-            app:layout_constraintEnd_toEndOf="parent"
-            tools:text="159.00 KLAY" />
-
-        <TextView
             android:id="@+id/tv_title"
             style="@style/TextGgMedium"
             android:layout_width="0dp"

@@ -37,6 +37,7 @@ class NftFragment : BaseFragment<FragmentNftBinding>(R.layout.fragment_nft) {
         binding.rvGreenNftList.adapter = NftItemAdapter()
         initEventObserver()
         setScrollEventListener()
+        viewModel.getNftList(NEW)
     }
 
     private fun initEventObserver() {
