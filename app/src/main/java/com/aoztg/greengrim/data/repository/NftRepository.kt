@@ -1,29 +1,25 @@
 package com.aoztg.greengrim.data.repository
 
 import com.aoztg.greengrim.data.model.BaseState
-import com.aoztg.greengrim.data.model.request.CreateNftRequest
-import com.aoztg.greengrim.data.model.response.CreateNftResponse
-import com.aoztg.greengrim.data.model.response.HotNftResponse
 import com.aoztg.greengrim.data.model.response.NftDetailResponse
 import com.aoztg.greengrim.data.model.response.NftListResponse
+import com.aoztg.greengrim.data.model.response.StockNftResponse
 
 interface NftRepository {
 
-    suspend fun createNft(
-        body: CreateNftRequest
-    ): BaseState<CreateNftResponse>
+    suspend fun getStockNftList(
+        grade: String
+    ): BaseState<StockNftResponse>
 
-    suspend fun getNftDetail(
-        id: Long
-    ): BaseState<NftDetailResponse>
-
-    suspend fun getMoreNft(
+    suspend fun getExchangedNftList(
         page: Int,
         size: Int,
         sort: String
     ): BaseState<NftListResponse>
 
-    suspend fun getHotNfts(): BaseState<HotNftResponse>
+    suspend fun getNftDetail(
+        id: Long
+    ): BaseState<NftDetailResponse>
 
     suspend fun getMyNftList(
         page: Int,
