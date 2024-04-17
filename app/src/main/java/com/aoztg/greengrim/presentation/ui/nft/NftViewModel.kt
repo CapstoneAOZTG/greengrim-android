@@ -109,8 +109,8 @@ class NftViewModel @Inject constructor(
                             _uiState.update { state ->
                                 state.copy(
                                     nftList = if (option == NEXT_PAGE) uiState.value.nftList + newList else newList,
-                                    hasNext = uiState.value.hasNext,
-                                    page = uiState.value.page + 1
+                                    hasNext = it.body.hasNext,
+                                    page = it.body.page + 1
                                 )
                             }
                         }

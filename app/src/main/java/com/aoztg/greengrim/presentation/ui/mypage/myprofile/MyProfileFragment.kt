@@ -15,6 +15,7 @@ import com.aoztg.greengrim.presentation.customview.NftFilterBottomSheet
 import com.aoztg.greengrim.presentation.ui.challenge.adapter.ChallengeRoomAdapter
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 import com.aoztg.greengrim.presentation.ui.mypage.adapter.MyCertificationAdapter
+import com.aoztg.greengrim.presentation.ui.nft.NftFragment
 import com.aoztg.greengrim.presentation.ui.nft.adapter.NftItemAdapter
 import com.aoztg.greengrim.presentation.ui.toCertificationDetail
 import com.aoztg.greengrim.presentation.ui.toChallengeDetail
@@ -37,6 +38,8 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(R.layout.fragme
     private val viewModel : MyProfileViewModel by viewModels()
 
     private lateinit var customCalendar: CustomCalendar
+
+    private var bottomScrollState = true
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -66,21 +69,28 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(R.layout.fragme
 
     private fun setScrollEventListener() {
 
-        binding.scrollView.setOnScrollChangeListener { v, _, _, _, _ ->
-            if (!v.canScrollVertically(1)) {
-                when(viewModel.uiState.value.curFilter){
-                    ProfileFilter.CHALLENGE -> {
-                        viewModel.getMyChallenge(NEXT_PAGE)
-                    }
+        binding.scrollView.setOnScrollChangeListener { v, _, scrollY, _, _ ->
 
-                    ProfileFilter.CERTIFICATION -> {
-                        viewModel.getCertificationList(NEXT_PAGE)
-                    }
+            if (scrollY > binding.scrollView.getChildAt(0).measuredHeight - v.measuredHeight) {
 
-                    ProfileFilter.NFT -> {
-                        viewModel.getNftList(NEXT_PAGE)
+                if(bottomScrollState){
+                    bottomScrollState = false
+                    when(viewModel.uiState.value.curFilter){
+                        ProfileFilter.CHALLENGE -> {
+                            viewModel.getMyChallenge(NEXT_PAGE)
+                        }
+
+                        ProfileFilter.CERTIFICATION -> {
+                            viewModel.getCertificationList(NEXT_PAGE)
+                        }
+
+                        ProfileFilter.NFT -> {
+                            viewModel.getNftList(NEXT_PAGE)
+                        }
                     }
                 }
+            } else {
+                bottomScrollState = true
             }
         }
     }

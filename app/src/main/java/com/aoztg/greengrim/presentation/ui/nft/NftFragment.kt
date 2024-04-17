@@ -29,6 +29,7 @@ class NftFragment : BaseFragment<FragmentNftBinding>(R.layout.fragment_nft) {
     private val parentViewModel: MainViewModel by activityViewModels()
     private var isHotNftSet: Boolean = false
     private var sortType = NftSortType.DESC
+    private var bottomScrollState = true
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -39,7 +40,7 @@ class NftFragment : BaseFragment<FragmentNftBinding>(R.layout.fragment_nft) {
         binding.rvNftCategory.adapter = NftCategoryAdapter()
         initEventObserver()
         setScrollEventListener()
-        viewModel.getNftList(NEW)
+        viewModel.setSortType(NftSortType.DESC)
     }
 
     private fun initEventObserver() {
@@ -59,9 +60,15 @@ class NftFragment : BaseFragment<FragmentNftBinding>(R.layout.fragment_nft) {
 
     private fun setScrollEventListener() {
 
-        binding.scrollView.setOnScrollChangeListener { v, _, _, _, _ ->
-            if (!v.canScrollVertically(1)) {
-                viewModel.getNftList(NEXT_PAGE)
+        binding.scrollView.setOnScrollChangeListener { v, _, scrollY, _, _ ->
+            if (scrollY > binding.scrollView.getChildAt(0).measuredHeight - v.measuredHeight) {
+
+                if(bottomScrollState){
+                    bottomScrollState = false
+                    viewModel.getNftList(NEXT_PAGE)
+                }
+            } else {
+                bottomScrollState = true
             }
         }
     }

@@ -97,7 +97,7 @@ class MyProfileViewModel @Inject constructor(
 
         when (filter) {
             ProfileFilter.CHALLENGE -> {
-                getMyChallenge(NEXT_PAGE)
+                getMyChallenge(NEW)
             }
 
             ProfileFilter.CERTIFICATION -> {
