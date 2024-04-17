@@ -5,9 +5,6 @@
     <string name="hot_challenge">Hot Challenge 🔥</string>
     <string name="more_activity">More Activity 🌈</string>
     <string name="hot_nft">Hot NFT 🍀</string>
-    <string name="green_nft">Green NFT 🌱</string>
-    <string name="green_grim">Green Grim 🌱</string>
-    <string name="green_nft_list">Green NFT 🌱</string>
     <string name="privacy_policy">본 서비스는 고객님의 개인정보를 중요시하며, "정보통신망 이용촉진 및 정보보호"에 관한 법률을 준수하고 있습니다.\n\n
 본 서비스는 개인정보처리방침을 통하여 이용자가 제공하는 개인정보가 어떠한 용도와 방식으로 이용되고 있으며, 개인정보보호를 위해 어떠한 조치가 취해지고 있는지 알려드립니다.
 \n\n
@@ -185,4 +182,6 @@
 \n\n
 본 약관은 2024년 4월 5일부터 적용됩니다.
     </string>
+    <string name="nft_collection">NFT Collection 🌱</string>
+    <string name="green_nft">Green NFT 🌱</string>
 </resources>

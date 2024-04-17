@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.repository.ChallengeRepository
+import com.aoztg.greengrim.presentation.customview.ChallengeSortType
 import com.aoztg.greengrim.presentation.ui.challenge.mapper.toUiChallengeList
 import com.aoztg.greengrim.presentation.ui.challenge.model.UiChallengeRoom
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,7 +21,7 @@ import javax.inject.Inject
 
 data class ChallengeListUiState(
     val uiChallengeRoom: List<UiChallengeRoom> = emptyList(),
-    val sortType: SortType = SortType.DESC,
+    val challengeSortType: ChallengeSortType = ChallengeSortType.DESC,
     val page: Int = 0,
     val hasNext: Boolean = true,
 )
@@ -64,7 +65,7 @@ class ChallengeListViewModel @Inject constructor(
                     category,
                     _uiState.value.page,
                     20,
-                    _uiState.value.sortType.value
+                    _uiState.value.challengeSortType.value
                 ).let {
                     when (it) {
                         is BaseState.Success -> {
@@ -111,10 +112,10 @@ class ChallengeListViewModel @Inject constructor(
         }
     }
 
-    fun setSortType(type: SortType) {
+    fun setSortType(type: ChallengeSortType) {
         _uiState.value = _uiState.value.copy(
             hasNext = true,
-            sortType = type,
+            challengeSortType = type,
             page = 0
         )
         getChallengeList(SORT)
@@ -125,9 +126,3 @@ class ChallengeListViewModel @Inject constructor(
     }
 }
 
-enum class SortType(val text: String, val value: String) {
-    DESC("최신순", "DESC"),
-    ASC("오래된 순", "ASC"),
-    GREATEST("인원 많은 순", "GREATEST"),
-    LEAST("인원 적은 순", "LEAST")
-}

@@ -16,7 +16,7 @@
         android:layout_height="match_parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/layout_paint_toolbar"
+            android:id="@+id/layout_green_nft_toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingHorizontal="@dimen/padding_large"
@@ -26,25 +26,25 @@
             app:layout_scrollFlags="scroll|enterAlways">
 
             <TextView
-                android:id="@+id/tv_paint_header"
+                android:id="@+id/tv_green_nft_header"
                 style="@style/TextHeader"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/green_nft_list"
+                android:text="asdf"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/tv_paint_title"
+                android:id="@+id/tv_green_nft_description"
                 style="@style/TextGgSmallGrey1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="저탄소 활동으로 그린 NFT"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_paint_header" />
+                app:layout_constraintTop_toBottomOf="@id/tv_green_nft_header" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -59,7 +59,7 @@
             android:textAlignment="textEnd"
             app:drawableEndCompat="@drawable/icon_filter"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/layout_paint_toolbar" />
+            app:layout_constraintTop_toBottomOf="@id/layout_green_nft_toolbar" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_nft_list"

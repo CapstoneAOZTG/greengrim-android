@@ -7,8 +7,9 @@ import com.aoztg.greengrim.data.repository.CertificationRepository
 import com.aoztg.greengrim.data.repository.ChallengeRepository
 import com.aoztg.greengrim.data.repository.MemberRepository
 import com.aoztg.greengrim.data.repository.NftRepository
+import com.aoztg.greengrim.presentation.customview.ChallengeSortType
+import com.aoztg.greengrim.presentation.customview.NftSortType
 import com.aoztg.greengrim.presentation.ui.challenge.list.ChallengeListViewModel
-import com.aoztg.greengrim.presentation.ui.challenge.list.SortType
 import com.aoztg.greengrim.presentation.ui.challenge.mapper.toUiChallengeList
 import com.aoztg.greengrim.presentation.ui.challenge.model.UiChallengeRoom
 import com.aoztg.greengrim.presentation.ui.global.mapper.toUiSimpleProfile
@@ -39,7 +40,8 @@ data class ProfileUiState(
     val page: Int = 0,
     val hasNext: Boolean = true,
     val uiSimpleProfileInfo: UiSimpleProfileData = UiSimpleProfileData(),
-    val sortType: SortType = SortType.DESC,
+    val challengeSortType: ChallengeSortType = ChallengeSortType.DESC,
+    val nftSortType: NftSortType = NftSortType.DESC,
     val curFilter: ProfileFilter = ProfileFilter.CHALLENGE,
     val uiChallengeRoom: List<UiChallengeRoom> = emptyList(),
     val curMonthString: String = YearMonth.now().toText(),
@@ -94,7 +96,7 @@ class ProfileViewModel @Inject constructor(
         _uiState.update { state ->
             state.copy(
                 curFilter = filter,
-                sortType = SortType.DESC,
+                challengeSortType = ChallengeSortType.DESC,
                 page = 0,
                 hasNext = true
             )
@@ -116,10 +118,10 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
-    fun setChallengeSortType(type: SortType) {
+    fun setChallengeSortType(type: ChallengeSortType) {
         _uiState.value = uiState.value.copy(
             hasNext = true,
-            sortType = type,
+            challengeSortType = type,
             page = 0
         )
 
@@ -158,7 +160,7 @@ class ProfileViewModel @Inject constructor(
                     memberId,
                     _uiState.value.page,
                     20,
-                    _uiState.value.sortType.value
+                    _uiState.value.challengeSortType.value
                 ).let {
                     when (it) {
                         is BaseState.Success -> {
@@ -300,10 +302,10 @@ class ProfileViewModel @Inject constructor(
 
     // 여기부터 Nft 로직
 
-    fun setNftSortType(type: SortType) {
+    fun setNftSortType(type: NftSortType) {
         _uiState.value = _uiState.value.copy(
             hasNext = true,
-            sortType = type,
+            nftSortType = type,
             page = 0
         )
         getNftList(NEW)
@@ -317,7 +319,7 @@ class ProfileViewModel @Inject constructor(
                     memberId,
                     uiState.value.page,
                     20,
-                    uiState.value.sortType.value
+                    uiState.value.nftSortType.value
                 ).let {
                     when (it) {
                         is BaseState.Success -> {

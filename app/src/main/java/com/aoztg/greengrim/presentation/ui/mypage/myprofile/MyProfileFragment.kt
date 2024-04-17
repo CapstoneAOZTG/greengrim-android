@@ -10,9 +10,11 @@ import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentMyProfileBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
 import com.aoztg.greengrim.presentation.customview.ChallengeFilterBottomSheet
+import com.aoztg.greengrim.presentation.customview.ChallengeSortType
 import com.aoztg.greengrim.presentation.customview.CustomCalendar
+import com.aoztg.greengrim.presentation.customview.NftFilterBottomSheet
+import com.aoztg.greengrim.presentation.customview.NftSortType
 import com.aoztg.greengrim.presentation.ui.challenge.adapter.ChallengeRoomAdapter
-import com.aoztg.greengrim.presentation.ui.challenge.list.SortType
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 import com.aoztg.greengrim.presentation.ui.mypage.adapter.MyCertificationAdapter
 import com.aoztg.greengrim.presentation.ui.toCertificationDetail
@@ -34,7 +36,6 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(R.layout.fragme
 
     private val parentViewModel : MainViewModel by activityViewModels()
     private val viewModel : MyProfileViewModel by viewModels()
-    private var sortType = SortType.DESC
 
     private lateinit var customCalendar: CustomCalendar
 
@@ -136,15 +137,13 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(R.layout.fragme
     }
 
     private fun showChallengeFilterBottomSheet() {
-        ChallengeFilterBottomSheet(requireContext(), sortType) { type ->
-            sortType = type
+        ChallengeFilterBottomSheet(requireContext(), viewModel.uiState.value.challengeSortType) { type ->
             viewModel.setChallengeSortType(type)
         }.show()
     }
 
     private fun showNftFilterBottomSheet() {
-        ChallengeFilterBottomSheet(requireContext(), sortType) { type ->
-            sortType = type
+        NftFilterBottomSheet(requireContext(), viewModel.uiState.value.nftSortType) { type ->
             viewModel.setNftSortType(type)
         }.show()
     }

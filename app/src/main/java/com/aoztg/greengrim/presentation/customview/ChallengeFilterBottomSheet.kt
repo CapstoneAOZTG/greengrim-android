@@ -6,47 +6,46 @@ import androidx.core.content.ContextCompat
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.app.App
 import com.aoztg.greengrim.databinding.BottomsheetChallengeFilterBinding
-import com.aoztg.greengrim.presentation.ui.challenge.list.SortType
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
 class ChallengeFilterBottomSheet(
     context: Context,
-    private val curPosition: SortType,
-    private val onClickListener: (SortType) -> Unit
-): BottomSheetDialog(context) {
+    private val curPosition: ChallengeSortType,
+    private val onClickListener: (ChallengeSortType) -> Unit
+) : BottomSheetDialog(context) {
 
     private var binding: BottomsheetChallengeFilterBinding
 
-    init{
+    init {
         binding = BottomsheetChallengeFilterBinding.inflate(LayoutInflater.from(context))
         setContentView(binding.root)
         setBottomSheetListener()
     }
 
-    private fun setBottomSheetListener(){
+    private fun setBottomSheetListener() {
         when (curPosition) {
-            SortType.DESC -> binding.btnDesc.setTextColor(
+            ChallengeSortType.DESC -> binding.btnDesc.setTextColor(
                 ContextCompat.getColor(
                     App.context(),
                     R.color.white
                 )
             )
 
-            SortType.ASC -> binding.btnAsc.setTextColor(
+            ChallengeSortType.ASC -> binding.btnAsc.setTextColor(
                 ContextCompat.getColor(
                     App.context(),
                     R.color.white
                 )
             )
 
-            SortType.GREATEST -> binding.btnGreatest.setTextColor(
+            ChallengeSortType.GREATEST -> binding.btnGreatest.setTextColor(
                 ContextCompat.getColor(
                     App.context(),
                     R.color.white
                 )
             )
 
-            SortType.LEAST -> binding.btnLeast.setTextColor(
+            ChallengeSortType.LEAST -> binding.btnLeast.setTextColor(
                 ContextCompat.getColor(
                     App.context(),
                     R.color.white
@@ -54,21 +53,28 @@ class ChallengeFilterBottomSheet(
             )
         }
         binding.btnDesc.setOnClickListener {
-            onClickListener(SortType.DESC)
+            onClickListener(ChallengeSortType.DESC)
             dismiss()
         }
         binding.btnAsc.setOnClickListener {
-            onClickListener(SortType.ASC)
+            onClickListener(ChallengeSortType.ASC)
             dismiss()
         }
         binding.btnGreatest.setOnClickListener {
-            onClickListener(SortType.GREATEST)
+            onClickListener(ChallengeSortType.GREATEST)
             dismiss()
         }
         binding.btnLeast.setOnClickListener {
-            onClickListener(SortType.LEAST)
+            onClickListener(ChallengeSortType.LEAST)
             dismiss()
         }
     }
 
+}
+
+enum class ChallengeSortType(val text: String, val value: String) {
+    DESC("최신순", "DESC"),
+    ASC("오래된 순", "ASC"),
+    GREATEST("인원 많은 순", "GREATEST"),
+    LEAST("인원 적은 순", "LEAST")
 }

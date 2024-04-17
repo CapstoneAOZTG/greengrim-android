@@ -13,6 +13,7 @@ import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentChallengeListBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
 import com.aoztg.greengrim.presentation.customview.ChallengeFilterBottomSheet
+import com.aoztg.greengrim.presentation.customview.ChallengeSortType
 import com.aoztg.greengrim.presentation.ui.challenge.adapter.ChallengeRoomAdapter
 import com.aoztg.greengrim.presentation.ui.challenge.list.ChallengeListViewModel.Companion.ORIGINAL
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
@@ -29,7 +30,7 @@ class ChallengeListFragment :
     private val args: ChallengeListFragmentArgs by navArgs()
     private val categoryText by lazy { args.categoryText }
     private val categoryValue by lazy { args.categoryValue }
-    private var sortType = SortType.DESC
+    private var challengeSortType = ChallengeSortType.DESC
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -85,8 +86,8 @@ class ChallengeListFragment :
     }
 
     private fun showBottomSheet() {
-        ChallengeFilterBottomSheet(requireContext(), sortType) { type ->
-            sortType = type
+        ChallengeFilterBottomSheet(requireContext(), challengeSortType) { type ->
+            challengeSortType = type
             viewModel.setSortType(type)
             binding.tvFilter.text = type.text
         }.show()

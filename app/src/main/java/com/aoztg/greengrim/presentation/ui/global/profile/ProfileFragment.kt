@@ -11,8 +11,8 @@ import com.aoztg.greengrim.databinding.FragmentProfileBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
 import com.aoztg.greengrim.presentation.customview.ChallengeFilterBottomSheet
 import com.aoztg.greengrim.presentation.customview.CustomCalendar
+import com.aoztg.greengrim.presentation.customview.NftFilterBottomSheet
 import com.aoztg.greengrim.presentation.ui.challenge.adapter.ChallengeRoomAdapter
-import com.aoztg.greengrim.presentation.ui.challenge.list.SortType
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 import com.aoztg.greengrim.presentation.ui.mypage.adapter.MyCertificationAdapter
 import com.aoztg.greengrim.presentation.ui.mypage.myprofile.MyProfileTempDate
@@ -33,10 +33,9 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(R.layout.fragment_p
 
     private val parentViewModel: MainViewModel by activityViewModels()
     private val viewModel: ProfileViewModel by viewModels()
-    private var sortType = SortType.DESC
     private val popupLocation = IntArray(2)
 
-    private val args : ProfileFragmentArgs by navArgs()
+    private val args: ProfileFragmentArgs by navArgs()
     private val memberId by lazy { args.id }
 
     private lateinit var customCalendar: CustomCalendar
@@ -121,7 +120,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(R.layout.fragment_p
                         )
                     }
 
-                    is ProfileEvent.ShowAccusationPopUp -> showAccusationDialog()
+                    is ProfileEvent.ShowAccusationPopUp -> showPopup()
                     is ProfileEvent.InitCalendar -> {
                         // 캘린더 초기화 작업
                     }
@@ -146,15 +145,16 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(R.layout.fragment_p
     }
 
     private fun showChallengeFilterBottomSheet() {
-        ChallengeFilterBottomSheet(requireContext(), sortType) { type ->
-            sortType = type
+        ChallengeFilterBottomSheet(
+            requireContext(),
+            viewModel.uiState.value.challengeSortType
+        ) { type ->
             viewModel.setChallengeSortType(type)
         }.show()
     }
 
     private fun showNftFilterBottomSheet() {
-        ChallengeFilterBottomSheet(requireContext(), sortType) { type ->
-            sortType = type
+        NftFilterBottomSheet(requireContext(), viewModel.uiState.value.nftSortType) { type ->
             viewModel.setNftSortType(type)
         }.show()
     }
