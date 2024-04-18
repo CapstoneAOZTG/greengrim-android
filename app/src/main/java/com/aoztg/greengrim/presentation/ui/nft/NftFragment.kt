@@ -83,7 +83,11 @@ class NftFragment : BaseFragment<FragmentNftBinding>(R.layout.fragment_nft) {
     }
 
     private fun NavController.toNftCollectionList() {
-        val action = NftFragmentDirections.actionNftFragmentToNftCollectionFragment()
+        val action = NftFragmentDirections.actionNftFragmentToNftCollectionFragment(
+            viewModel.uiState.value.nftCategory[0].count,
+            viewModel.uiState.value.nftCategory[1].count,
+            viewModel.uiState.value.nftCategory[2].count
+        )
         navigate(action)
     }
 

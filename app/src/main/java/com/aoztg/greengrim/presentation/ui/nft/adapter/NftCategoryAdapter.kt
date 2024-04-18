@@ -31,5 +31,6 @@ class NftCategoryViewHolder(private val binding:  ItemNftCategoryBinding) :
 
     fun bind(item: UiNftCategory) {
         binding.item = item
+        binding.tvCount.text = "(${item.count})"
     }
 }

@@ -21,6 +21,7 @@ import javax.inject.Inject
 data class NftCollectionUiState(
     val nftCollectionList: List<UiNftCollectionItem> = emptyList(),
     val curFilter: NftCollectionFilter = NftCollectionFilter.BASIC,
+    val curCount: String = "",
     val page: Int = 0,
     val hasNext: Boolean = true,
 )
@@ -50,6 +51,16 @@ class NftCollectionViewModel @Inject constructor(
     private val _events = MutableSharedFlow<NftCollectionEvent>()
     val events: SharedFlow<NftCollectionEvent> = _events.asSharedFlow()
 
+    private var basicCount = 0
+    private var standardCount = 0
+    private var premiumCount = 0
+
+    fun setCount(basic: Int, standard: Int, premium: Int) {
+        basicCount = basic
+        standardCount = standard
+        premiumCount = premium
+    }
+
     fun changeFilter(filter: NftCollectionFilter) {
         _uiState.update { state ->
             state.copy(
@@ -64,7 +75,7 @@ class NftCollectionViewModel @Inject constructor(
 
     fun getNftCollectionList(option: Int) {
 
-        if(uiState.value.hasNext){
+        if (uiState.value.hasNext) {
             viewModelScope.launch {
                 nftRepository.getNftCollection(
                     uiState.value.curFilter.text,
@@ -73,13 +84,19 @@ class NftCollectionViewModel @Inject constructor(
                 ).let {
                     when (it) {
                         is BaseState.Success -> {
-                            val newList = it.body.result.map { data -> data.toUiNftCollectionItem() }
+                            val newList =
+                                it.body.result.map { data -> data.toUiNftCollectionItem() }
                             _uiState.update { state ->
                                 state.copy(
                                     nftCollectionList = if (option == NEXT_PAGE) uiState.value.nftCollectionList + newList
                                     else newList,
                                     hasNext = it.body.hasNext,
-                                    page = it.body.page + 1
+                                    page = it.body.page + 1,
+                                    curCount = when (uiState.value.curFilter) {
+                                        NftCollectionFilter.BASIC -> "$basicCount 개 남음"
+                                        NftCollectionFilter.STANDARD -> "$standardCount 개 남음"
+                                        NftCollectionFilter.PREMIUM -> "$premiumCount 개 남음"
+                                    }
                                 )
                             }
                         }

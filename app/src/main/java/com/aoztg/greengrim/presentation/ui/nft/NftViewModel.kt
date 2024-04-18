@@ -60,7 +60,7 @@ class NftViewModel @Inject constructor(
 
     private fun getNftCategory() {
         viewModelScope.launch {
-            nftRepository.getCategoryNft().let {
+            nftRepository.getNftCollectionCount().let {
                 when (it) {
                     is BaseState.Success -> {
                         _uiState.update { state ->
@@ -69,17 +69,17 @@ class NftViewModel @Inject constructor(
                                     UiNftCategory(
                                         img = R.drawable.icon_nft_basic,
                                         categoryName = "BASIC",
-                                        count = "(${it.body.basic})"
+                                        count = it.body.basic
                                     ),
                                     UiNftCategory(
                                         img = R.drawable.icon_nft_standard,
                                         categoryName = "STANDARD",
-                                        count = "(${it.body.standard})"
+                                        count = it.body.standard
                                     ),
                                     UiNftCategory(
                                         img = R.drawable.icon_nft_premium,
                                         categoryName = "PREMIUM",
-                                        count = "(${it.body.premium})"
+                                        count = it.body.premium
                                     )
                                 )
                             )

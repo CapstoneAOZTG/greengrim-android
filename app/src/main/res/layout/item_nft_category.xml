@@ -50,7 +50,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:paddingBottom="12dp"
-            android:text="@{item.count}"
             android:textAlignment="center"
             android:textColor="@color/gg_grey4"
             app:layout_constraintEnd_toEndOf="parent"

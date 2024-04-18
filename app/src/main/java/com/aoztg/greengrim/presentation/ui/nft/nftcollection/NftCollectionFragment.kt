@@ -31,15 +31,16 @@ class NftCollectionFragment :
     private var sortType = NftSortType.DESC
 
     private val args: NftCollectionFragmentArgs by navArgs()
-    val basicCount by lazy { args.basicCount }
-    val standardCount by lazy { args.standardCount }
-    val premiumCount by lazy { args.premiumCount }
+    private val basicCount by lazy { args.basicCount }
+    private val standardCount by lazy { args.standardCount }
+    private val premiumCount by lazy { args.premiumCount }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         parentViewModel.hideBNV()
         binding.vm = viewModel
+        viewModel.setCount(basicCount, standardCount, premiumCount)
         binding.rvNftCollectionList.adapter = NftCollectionAdapter()
         initEventObserver()
         setScrollEventListener()
