@@ -160,82 +160,128 @@
                     app:layout_constraintTop_toBottomOf="@id/divdier" />
 
                 <TextView
-                    android:id="@+id/tv_contract_address_label"
+                    android:id="@+id/tv_background_label"
                     style="@style/TextGgSmallGrey5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:text="컨트랙트 주소"
+                    android:text="BACKGROUND"
+                    android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_detail_label" />
 
                 <TextView
-                    android:id="@+id/tv_contract_address"
+                    android:id="@+id/tv_background"
                     style="@style/TextGgSmall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{vm.uiState.nftDetail.contractAddress}"
-                    app:layout_constraintBottom_toBottomOf="@id/tv_contract_address_label"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_background_label"
                     app:layout_constraintEnd_toEndOf="parent"
-                    tools:text="asdfsadf..asdf" />
+                    tools:text="black" />
 
                 <TextView
-                    android:id="@+id/tv_token_id_label"
+                    android:id="@+id/tv_hair_label"
                     style="@style/TextGgSmallGrey5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:text="토큰 ID"
+                    android:layout_marginTop="8dp"
+                    android:text="HAIR"
+                    android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_contract_address_label" />
+                    app:layout_constraintTop_toBottomOf="@id/tv_background_label" />
 
                 <TextView
-                    android:id="@+id/tv_token_id"
+                    android:id="@+id/tv_hair"
                     style="@style/TextGgSmall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{vm.uiState.nftDetail.tokenId}"
-                    app:layout_constraintBottom_toBottomOf="@id/tv_token_id_label"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_hair_label"
                     app:layout_constraintEnd_toEndOf="parent"
-                    tools:text="12" />
+                    tools:text="mandra" />
 
                 <TextView
-                    android:id="@+id/tv_price_label"
+                    android:id="@+id/tv_face_label"
                     style="@style/TextGgSmallGrey5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:text="가격"
+                    android:layout_marginTop="8dp"
+                    android:text="FACE"
+                    android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_token_id_label" />
+                    app:layout_constraintTop_toBottomOf="@id/tv_hair_label" />
 
                 <TextView
-                    android:id="@+id/tv_price"
+                    android:id="@+id/tv_face"
                     style="@style/TextGgSmall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{vm.uiState.nftDetail.price}"
-                    app:layout_constraintBottom_toBottomOf="@id/tv_price_label"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_face_label"
                     app:layout_constraintEnd_toEndOf="parent"
-                    tools:text="NOT SALE" />
+                    tools:text="basic" />
+
+                <TextView
+                    android:id="@+id/tv_gesture_label"
+                    style="@style/TextGgSmallGrey5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="GESTURE"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_face_label" />
+
+                <TextView
+                    android:id="@+id/tv_gesture"
+                    style="@style/TextGgSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_gesture_label"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    tools:text="peace" />
+
+                <TextView
+                    android:id="@+id/tv_accessory_label"
+                    style="@style/TextGgSmallGrey5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="ACCESSORY"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_gesture_label" />
+
+                <TextView
+                    android:id="@+id/tv_accessory"
+                    style="@style/TextGgSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_accessory_label"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    tools:text="headphone" />
+
+                <TextView
+                    android:id="@+id/tv_shoes_label"
+                    style="@style/TextGgSmallGrey5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="SHOES"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_accessory_label" />
+
+                <TextView
+                    android:id="@+id/tv_shoes"
+                    style="@style/TextGgSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_shoes_label"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    tools:text="blue" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.core.widget.NestedScrollView>
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_next"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:layout_marginBottom="40dp"
-            android:background="@drawable/selector_next_btn"
-            android:textColor="@color/selector_next_btn_text"
-            android:textSize="16dp"
-            android:textStyle="bold"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            tools:text="판매하기" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
