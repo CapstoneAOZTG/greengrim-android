@@ -55,8 +55,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
+                android:enabled="@{vm.isDataReady()}"
                 android:minWidth="0dp"
                 android:minHeight="0dp"
+                android:onClick="@{() -> vm.editNft()}"
                 android:text="완료"
                 android:textColor="@color/selector_complete_text"
                 android:textSize="16dp"
@@ -106,6 +108,7 @@
                     android:layout_height="0dp"
                     android:layout_marginTop="16dp"
                     android:scaleType="centerCrop"
+                    app:imgUrl="@{vm.imgUrl}"
                     app:layout_constraintDimensionRatio="8:7"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -129,7 +132,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/tv_title_label" />
+                    app:layout_constraintTop_toTopOf="@id/tv_title_label"
+                    app:textLength="@{vm.title}"
+                    app:textLimit="@{30}" />
 
                 <EditText
                     android:id="@+id/et_title"
@@ -143,6 +148,7 @@
                     android:maxLines="1"
                     android:paddingHorizontal="15dp"
                     android:paddingVertical="8dp"
+                    android:text="@={vm.title}"
                     android:textColor="@color/white"
                     android:textColorHint="@color/gg_grey5"
                     android:textSize="13dp"
@@ -166,7 +172,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/tv_description_label" />
+                    app:layout_constraintTop_toTopOf="@id/tv_description_label"
+                    app:textLength="@{vm.description}"
+                    app:textLimit="@{300}" />
 
                 <EditText
                     android:id="@+id/et_description"
@@ -181,6 +189,7 @@
                     android:maxLines="1"
                     android:paddingHorizontal="15dp"
                     android:paddingVertical="8dp"
+                    android:text="@={vm.description}"
                     android:textColor="@color/white"
                     android:textColorHint="@color/gg_grey5"
                     android:textSize="13dp"

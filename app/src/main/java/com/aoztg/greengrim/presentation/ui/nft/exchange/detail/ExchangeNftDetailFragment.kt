@@ -3,6 +3,7 @@ package com.aoztg.greengrim.presentation.ui.nft.exchange.detail
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.aoztg.greengrim.R
@@ -49,5 +50,10 @@ class ExchangeNftDetailFragment : BaseFragment<FragmentExchangeNftDetailBinding>
         ){
             viewModel.exchangeNft()
         }.show()
+    }
+
+    private fun NavController.toEditExchangedNft(imgUrl: String, nftId : Long){
+        val action = ExchangeNftDetailFragmentDirections.actionExchangeNftDetailFragmentToEditExchangedNftFragment(imgUrl, nftId)
+        navigate(action)
     }
 }
