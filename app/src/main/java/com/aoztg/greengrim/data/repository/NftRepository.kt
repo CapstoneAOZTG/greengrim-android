@@ -1,6 +1,7 @@
 package com.aoztg.greengrim.data.repository
 
 import com.aoztg.greengrim.data.model.BaseState
+import com.aoztg.greengrim.data.model.request.EditNftRequest
 import com.aoztg.greengrim.data.model.response.NftCollectionCountResponse
 import com.aoztg.greengrim.data.model.response.NftCollectionResponse
 import com.aoztg.greengrim.data.model.response.NftDetailResponse
@@ -53,5 +54,13 @@ interface NftRepository {
         grade: String,
         nftList: List<Long>
     ): BaseState<NftSimpleResponse>
+
+    suspend fun exchangeNft(
+        id : Long
+    ): BaseState<Unit>
+
+    suspend fun editExchangedNft(
+        body : EditNftRequest
+    ): BaseState<NftDetailResponse>
 
 }

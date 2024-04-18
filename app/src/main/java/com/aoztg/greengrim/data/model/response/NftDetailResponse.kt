@@ -5,7 +5,8 @@ data class NftDetailResponse(
     val nftInfo: NftDetailInfo,
     val tokenId: String,
     val traitsInfo: NftTraitsInfo,
-    val mine: Boolean
+    val mine: Boolean,
+    val liked: Boolean
 )
 
 data class NftDetailInfo(
