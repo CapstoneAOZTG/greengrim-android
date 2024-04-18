@@ -7,9 +7,11 @@ import android.app.PendingIntent
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.graphics.Color
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.app.App
+import com.aoztg.greengrim.presentation.ui.nft.exchange.detail.ExchangeState
 import com.aoztg.greengrim.presentation.ui.splash.SplashActivity
 import com.aoztg.greengrim.presentation.util.PushUtils
 import com.google.firebase.messaging.FirebaseMessaging
@@ -34,6 +36,8 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         PushUtils.acquireWakeLock(App.context())
         //수신한 메시지를 처리
 
+        Log.d("fcm",message.data["type"].toString())
+
         when (message.data["type"]) {
 
             "TALK" -> {
@@ -47,9 +51,14 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 sendPointKeywordNotification("포인트 획득!", msg.toString())
             }
 
-            "KEYWORD" -> {
-                val msg = message.data["roomId"]
-                sendPointKeywordNotification("키워드 획득!", msg.toString())
+            "EXCHANGE_SUC" -> {
+                Log.d("fcm","exchange success")
+                ExchangeState.exchangeSuccess()
+            }
+
+            "EXCHANGE_FAIL" -> {
+                Log.d("fcm","exchange failure")
+                ExchangeState.exchangeFailure()
             }
         }
     }

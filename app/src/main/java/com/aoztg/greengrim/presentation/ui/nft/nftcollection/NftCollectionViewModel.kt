@@ -108,7 +108,6 @@ class NftCollectionViewModel @Inject constructor(
         }
     }
 
-
     fun navigateToBack() {
         viewModelScope.launch {
             _events.emit(NftCollectionEvent.NavigateToBack)

@@ -10,7 +10,9 @@ import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentEditExchangedNftBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
 import com.aoztg.greengrim.presentation.ui.toNftDetail
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class EditExchangedNftFragment :
     BaseFragment<FragmentEditExchangedNftBinding>(R.layout.fragment_edit_exchanged_nft) {
 
@@ -33,7 +35,7 @@ class EditExchangedNftFragment :
             viewModel.events.collect {
                 when (it) {
                     is EditExchangedNftEvent.NavigateToBack -> findNavController().navigateUp()
-                    is EditExchangedNftEvent.NavigateToNftDetail -> findNavController().edittoNftDetail(
+                    is EditExchangedNftEvent.NavigateToNftDetail -> findNavController().editToNftDetail(
                         it.id
                     )
 
@@ -48,7 +50,7 @@ class EditExchangedNftFragment :
         }
     }
 
-    private fun NavController.edittoNftDetail(id : Long){
+    private fun NavController.editToNftDetail(id : Long){
         val action = EditExchangedNftFragmentDirections.actionEditExchangedNftFragmentToNftDetailFragment(id)
         navigate(action)
     }

@@ -13,12 +13,13 @@ import com.aoztg.greengrim.presentation.customview.ExchangeNftDialog
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ExchangeNftDetailFragment : BaseFragment<FragmentExchangeNftDetailBinding>(R.layout.fragment_exchange_nft_detail) {
+class ExchangeNftDetailFragment :
+    BaseFragment<FragmentExchangeNftDetailBinding>(R.layout.fragment_exchange_nft_detail) {
 
-    private val args : ExchangeNftDetailFragmentArgs by navArgs()
+    private val args: ExchangeNftDetailFragmentArgs by navArgs()
     private val grade by lazy { args.grade }
 
-    private val viewModel : ExchangeNftDetailViewModel by viewModels()
+    private val viewModel: ExchangeNftDetailViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -26,15 +27,20 @@ class ExchangeNftDetailFragment : BaseFragment<FragmentExchangeNftDetailBinding>
         binding.vm = viewModel
         viewModel.setGrade(grade)
         initEventObserve()
+        initExchangeStateObserve()
     }
 
-    private fun initEventObserve(){
+    private fun initEventObserve() {
         repeatOnStarted {
-            viewModel.event.collect{
-                when(it){
+            viewModel.event.collect {
+                when (it) {
                     is ExchangeNftDetailEvent.ShowLoading -> showLoading(requireContext())
                     is ExchangeNftDetailEvent.DismissLoading -> dismissLoading()
-                    is ExchangeNftDetailEvent.ShowCustomSnack -> showCustomSnack(binding.tvDescription, it.msg)
+                    is ExchangeNftDetailEvent.ShowCustomSnack -> showCustomSnack(
+                        binding.tvDescription,
+                        it.msg
+                    )
+
                     is ExchangeNftDetailEvent.ShowToastMessage -> showCustomToast(it.msg)
                     is ExchangeNftDetailEvent.ShowExchangeDialog -> showExchangeNftDialog(it.point)
                     is ExchangeNftDetailEvent.NavigateToBack -> findNavController().navigateUp()
@@ -43,17 +49,39 @@ class ExchangeNftDetailFragment : BaseFragment<FragmentExchangeNftDetailBinding>
         }
     }
 
-    private fun showExchangeNftDialog(point : Int){
+    private fun initExchangeStateObserve() {
+        repeatOnStarted {
+            ExchangeState.exchangeState.collect {
+                if (it) {
+                    dismissLoading()
+                    showCustomToast("NFT 교환에 성공했습니다!")
+                    findNavController().toEditExchangedNft(
+                        viewModel.uiState.value.uiNftSimpleInfo.img,
+                        viewModel.uiState.value.uiNftSimpleInfo.nftId
+                    )
+                } else {
+                    dismissLoading()
+                    showCustomToast("NFT 교환에 실패했습니다!")
+                }
+            }
+        }
+    }
+
+    private fun showExchangeNftDialog(point: Int) {
         ExchangeNftDialog(
             requireContext(),
             point
-        ){
+        ) {
             viewModel.exchangeNft()
         }.show()
     }
 
-    private fun NavController.toEditExchangedNft(imgUrl: String, nftId : Long){
-        val action = ExchangeNftDetailFragmentDirections.actionExchangeNftDetailFragmentToEditExchangedNftFragment(imgUrl, nftId)
+    private fun NavController.toEditExchangedNft(imgUrl: String, nftId: Long) {
+        val action =
+            ExchangeNftDetailFragmentDirections.actionExchangeNftDetailFragmentToEditExchangedNftFragment(
+                imgUrl,
+                nftId
+            )
         navigate(action)
     }
 }
