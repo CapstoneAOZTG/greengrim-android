@@ -9,7 +9,6 @@ import androidx.navigation.fragment.navArgs
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentNftDetailBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
-import com.aoztg.greengrim.presentation.ui.global.model.NftState
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -21,35 +20,25 @@ class NftDetailFragment : BaseFragment<FragmentNftDetailBinding>(R.layout.fragme
     private val args: NftDetailFragmentArgs by navArgs()
     private val nftId by lazy { args.nftId }
 
-    companion object {
-        const val PURCHASE = 0
-        const val SELL = 1
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.vm = viewModel
         parentViewModel.hideBNV()
+        binding.vm = viewModel
         viewModel.setNftId(nftId)
-        initStateObserver()
+        initEventObserve()
     }
 
-    private fun initStateObserver() {
-        repeatOnStarted {
-            viewModel.uiState.collect {
-            }
-        }
-    }
-
-    private fun initEventObserver() {
+    private fun initEventObserve() {
         repeatOnStarted {
             viewModel.events.collect {
                 when (it) {
-                    is NftDetailEvents.ShowSnackMessage -> showCustomSnack(binding.ivGrim, it.msg)
                     is NftDetailEvents.NavigateToBack -> findNavController().navigateUp()
+                    is NftDetailEvents.ShowSnackMessage -> showCustomSnack(binding.ivNft, it.msg)
                 }
             }
         }
     }
+
+
 }

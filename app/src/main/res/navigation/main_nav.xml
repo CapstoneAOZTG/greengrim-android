@@ -281,6 +281,11 @@
         <argument
             android:name="nftId"
             app:argType="long" />
+        <action
+            android:id="@+id/action_editExchangedNftFragment_to_nft_detail_fragment"
+            app:destination="@id/nft_detail_fragment"
+            app:popUpTo="@id/nft_fragment"
+            app:popUpToInclusive="false" />
 
     </fragment>
 

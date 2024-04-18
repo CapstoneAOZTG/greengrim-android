@@ -18,6 +18,9 @@ import javax.inject.Inject
 
 sealed class EditExchangedNftEvent {
     object NavigateToBack : EditExchangedNftEvent()
+    data class NavigateToNftDetail(val id: Long) : EditExchangedNftEvent()
+    data class ShowCustomSnack(val msg: String) : EditExchangedNftEvent()
+    data class ShowToastMessage(val msg: String) : EditExchangedNftEvent()
 }
 
 @HiltViewModel
@@ -54,18 +57,19 @@ class EditExchangedNftViewModel @Inject constructor(
                 )
             ).let {
                 when (it) {
-                    is BaseState.Success -> {
+                    is BaseState.Success -> _events.emit(
+                        EditExchangedNftEvent.NavigateToNftDetail(
+                            it.body.nftInfo.id
+                        )
+                    )
 
-                    }
-
-                    is BaseState.Error -> {
-
-                    }
+                    is BaseState.Error -> _events.emit(EditExchangedNftEvent.ShowCustomSnack(it.msg))
                 }
             }
 
         }
     }
+
     fun navigateToBack() {
         viewModelScope.launch {
             _events.emit(EditExchangedNftEvent.NavigateToBack)
