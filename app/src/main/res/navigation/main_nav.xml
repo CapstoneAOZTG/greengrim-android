@@ -11,9 +11,6 @@
         android:label="Home"
         tools:layout="@layout/fragment_home">
         <action
-            android:id="@+id/action_home_fragment_to_nft_list_fragment"
-            app:destination="@id/nft_list_fragment" />
-        <action
             android:id="@+id/action_home_fragment_to_hotChallengeListFragment"
             app:destination="@id/hotChallengeListFragment" />
     </fragment>
@@ -169,11 +166,11 @@
         android:label="Nft"
         tools:layout="@layout/fragment_nft">
         <action
-            android:id="@+id/action_nft_fragment_to_nft_list_fragment"
-            app:destination="@id/nft_list_fragment" />
-        <action
             android:id="@+id/action_nft_fragment_to_create_nft_fragment"
             app:destination="@id/create_nft_fragment" />
+        <action
+            android:id="@+id/action_nft_fragment_to_nftCollectionFragment"
+            app:destination="@id/nftCollectionFragment" />
     </fragment>
 
     <fragment
@@ -248,10 +245,10 @@
     </fragment>
 
     <fragment
-        android:id="@+id/nft_list_fragment"
-        android:name="com.aoztg.greengrim.presentation.ui.nft.nftlist.NftListFragment"
+        android:id="@+id/nftCollectionFragment"
+        android:name="com.aoztg.greengrim.presentation.ui.nft.nftcollection.NftCollectionFragment"
         android:label="NftList"
-        tools:layout="@layout/fragment_nft_list">
+        tools:layout="@layout/fragment_nft_collection">
         <action
             android:id="@+id/action_nft_list_fragment_to_create_nft_fragment"
             app:destination="@id/create_nft_fragment" />
