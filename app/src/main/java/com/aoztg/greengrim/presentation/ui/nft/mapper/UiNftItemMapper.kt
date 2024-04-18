@@ -13,6 +13,6 @@ internal fun NftListItem.toUiNftItem(
     profileImage = memberSimpleInfo.profileImgUrl,
     nickName = memberSimpleInfo.nickName,
     navigateToNftDetail = onItemClickListener,
-    isLiked = false,
+    isLiked = like,
     clickLike = clickLike
 )

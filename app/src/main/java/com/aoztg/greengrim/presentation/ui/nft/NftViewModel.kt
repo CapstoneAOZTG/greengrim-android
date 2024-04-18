@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.data.model.BaseState
+import com.aoztg.greengrim.data.model.request.NftLikeRequest
 import com.aoztg.greengrim.data.repository.NftRepository
 import com.aoztg.greengrim.presentation.customview.NftSortType
 import com.aoztg.greengrim.presentation.ui.nft.mapper.toUiNftItem
@@ -86,9 +87,7 @@ class NftViewModel @Inject constructor(
                         }
                     }
 
-                    is BaseState.Error -> {
-
-                    }
+                    is BaseState.Error -> _events.emit(NftEvent.ShowSnackMessage(it.msg))
                 }
             }
         }
@@ -116,9 +115,7 @@ class NftViewModel @Inject constructor(
                             }
                         }
 
-                        is BaseState.Error -> {
-
-                        }
+                        is BaseState.Error -> _events.emit(NftEvent.ShowSnackMessage(it.msg))
                     }
                 }
             }
@@ -133,6 +130,33 @@ class NftViewModel @Inject constructor(
     }
 
     private fun clickLike(id: Long) {
+        viewModelScope.launch {
+            nftRepository.nftLike(
+                NftLikeRequest(
+                    id
+                )
+            ).let {
+                when (it) {
+                    is BaseState.Success -> {
+                        _uiState.update { state ->
+                            state.copy(
+                                nftList = uiState.value.nftList.map { data ->
+                                    if (data.id == id) {
+                                        data.copy(
+                                            isLiked = !data.isLiked
+                                        )
+                                    } else {
+                                        data
+                                    }
+                                }
+                            )
+                        }
+                    }
+
+                    is BaseState.Error -> _events.emit(NftEvent.ShowSnackMessage(it.msg))
+                }
+            }
+        }
 
     }
 
@@ -142,7 +166,7 @@ class NftViewModel @Inject constructor(
         }
     }
 
-    fun navigateToExchangeNft(){
+    fun navigateToExchangeNft() {
         viewModelScope.launch {
             _events.emit(NftEvent.NavigateToExchangeNft)
         }

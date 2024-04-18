@@ -8,7 +8,8 @@ data class NftListResponse(
 
 data class NftListItem(
     val nftSimpleInfo: NftSimpleInfo,
-    val memberSimpleInfo: MemberSimpleInfo
+    val memberSimpleInfo: MemberSimpleInfo,
+    val like: Boolean
 )
 
 data class NftSimpleInfo(
