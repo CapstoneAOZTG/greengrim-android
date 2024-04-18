@@ -1,6 +1,8 @@
 package com.aoztg.greengrim.data.remote
 
 import com.aoztg.greengrim.data.model.response.NftCategoryResponse
+import com.aoztg.greengrim.data.model.response.NftCollectionCountResponse
+import com.aoztg.greengrim.data.model.response.NftCollectionResponse
 import com.aoztg.greengrim.data.model.response.NftDetailResponse
 import com.aoztg.greengrim.data.model.response.NftListResponse
 import com.aoztg.greengrim.data.model.response.StockNftResponse
@@ -45,5 +47,15 @@ interface NftAPI {
 
     @GET("/visitor/nfts/stock/amount")
     suspend fun getNftCategory(): Response<NftCategoryResponse>
+
+    @GET("/visitor/nfts/collection")
+    suspend fun getNftCollection(
+        @Query("grade") grade: String,
+        @Query("page") page : Int,
+        @Query("size") size : Int,
+    ) : Response<NftCollectionResponse>
+
+    @GET("/visitor/nfts/stock/amount")
+    suspend fun getNftCollectionCount(): Response<NftCollectionCountResponse>
 
 }

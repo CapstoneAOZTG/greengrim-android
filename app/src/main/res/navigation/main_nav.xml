@@ -224,6 +224,19 @@
         android:name="com.aoztg.greengrim.presentation.ui.nft.nftcollection.NftCollectionFragment"
         android:label="NftList"
         tools:layout="@layout/fragment_nft_collection">
+
+        <argument
+            android:name="basicCount"
+            app:argType="integer"/>
+
+        <argument
+            android:name="standardCount"
+            app:argType="integer"/>
+
+        <argument
+            android:name="premiumCount"
+            app:argType="integer"/>
+
         <action
             android:id="@+id/action_nftCollectionFragment_to_exchangeNftFragment"
             app:destination="@id/exchangeNftFragment" />
