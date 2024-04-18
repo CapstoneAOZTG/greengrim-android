@@ -156,7 +156,7 @@
             android:id="@+id/btn_nft_transaction"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="150dp"
+            android:layout_marginBottom="100dp"
             android:onClick="@{() -> vm.navigateToExchangeNft()}"
             android:src="@drawable/icon_nft_transaction"
             app:layout_constraintBottom_toBottomOf="parent"

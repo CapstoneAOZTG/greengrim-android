@@ -5,6 +5,7 @@ import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.aoztg.greengrim.R
@@ -20,9 +21,19 @@ import dagger.hilt.android.AndroidEntryPoint
 class NftCollectionFragment :
     BaseFragment<FragmentNftCollectionBinding>(R.layout.fragment_nft_collection) {
 
+    companion object {
+        const val NEW = 0
+        const val NEXT_PAGE = 1
+    }
+
     private val viewModel: NftCollectionViewModel by viewModels()
     private val parentViewModel: MainViewModel by activityViewModels()
     private var sortType = NftSortType.DESC
+
+    private val args: NftCollectionFragmentArgs by navArgs()
+    val basicCount by lazy { args.basicCount }
+    val standardCount by lazy { args.standardCount }
+    val premiumCount by lazy { args.premiumCount }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -32,21 +43,22 @@ class NftCollectionFragment :
         binding.rvNftCollectionList.adapter = NftCollectionAdapter()
         initEventObserver()
         setScrollEventListener()
+        viewModel.getNftCollectionList(NEW)
     }
 
     private fun initEventObserver() {
         repeatOnStarted {
             viewModel.events.collect {
                 when (it) {
-                    is NftListEvents.NavigateToNftDetail -> findNavController().toNftDetail(it.id)
-                    is NftListEvents.ShowLoading -> showLoading(requireContext())
-                    is NftListEvents.DismissLoading -> dismissLoading()
-                    is NftListEvents.ShowSnackMessage -> showCustomSnack(
+                    is NftCollectionEvent.NavigateToNftDetail -> findNavController().toNftDetail(it.id)
+                    is NftCollectionEvent.ShowLoading -> showLoading(requireContext())
+                    is NftCollectionEvent.DismissLoading -> dismissLoading()
+                    is NftCollectionEvent.ShowSnackMessage -> showCustomSnack(
                         binding.layoutFilter,
                         it.msg
                     )
 
-                    is NftListEvents.NavigateToBack -> findNavController().navigateUp()
+                    is NftCollectionEvent.NavigateToBack -> findNavController().navigateUp()
                 }
             }
         }
@@ -64,7 +76,7 @@ class NftCollectionFragment :
                 val itemTotalCount = recyclerView.adapter?.itemCount?.minus(1)
 
                 if (lastVisibleItemPosition == itemTotalCount) {
-                    viewModel.getNftCollectionList(viewModel.uiState.value.curFilter.text)
+                    viewModel.getNftCollectionList(NEXT_PAGE)
                 }
             }
         })
