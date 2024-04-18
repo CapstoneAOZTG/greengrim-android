@@ -74,7 +74,9 @@
             app:argType="string" />
         <action
             android:id="@+id/action_create_challenge_detail_fragment_to_chat_list_fragment"
-            app:destination="@id/chat_list_fragment" />
+            app:destination="@id/chat_list_fragment"
+            app:popUpTo="@id/challenge_category_fragment"
+            app:popUpToInclusive="false" />
     </fragment>
 
     <fragment
@@ -227,15 +229,15 @@
 
         <argument
             android:name="basicCount"
-            app:argType="integer"/>
+            app:argType="integer" />
 
         <argument
             android:name="standardCount"
-            app:argType="integer"/>
+            app:argType="integer" />
 
         <argument
             android:name="premiumCount"
-            app:argType="integer"/>
+            app:argType="integer" />
 
         <action
             android:id="@+id/action_nftCollectionFragment_to_exchangeNftFragment"
@@ -257,18 +259,30 @@
         tools:layout="@layout/fragment_exchange_nft_detail">
         <argument
             android:name="grade"
-            app:argType="string"/>
+            app:argType="string" />
 
         <action
             android:id="@+id/action_exchangeNftDetailFragment_to_editExchangedNftFragment"
-            app:destination="@id/editExchangedNftFragment" />
+            app:destination="@id/editExchangedNftFragment"
+            app:popUpTo="@id/exchangeNftFragment"
+            app:popUpToInclusive="false" />
     </fragment>
 
     <fragment
         android:id="@+id/editExchangedNftFragment"
         android:name="com.aoztg.greengrim.presentation.ui.nft.exchange.edit.EditExchangedNftFragment"
         android:label="EditCreatedNftFragment"
-        tools:layout="@layout/fragment_edit_exchanged_nft" />
+        tools:layout="@layout/fragment_edit_exchanged_nft">
+
+        <argument
+            android:name="imgUrl"
+            app:argType="string" />
+
+        <argument
+            android:name="nftId"
+            app:argType="long" />
+
+    </fragment>
 
     <fragment
         android:id="@+id/profileFragment"
