@@ -5,6 +5,12 @@
 
     <data>
 
+        <import type="com.aoztg.greengrim.presentation.ui.nft.nftcollection.NftCollectionFilter" />
+
+        <import type="androidx.core.content.ContextCompat" />
+
+        <import type="com.aoztg.greengrim.R" />
+
         <variable
             name="vm"
             type="com.aoztg.greengrim.presentation.ui.nft.nftcollection.NftCollectionViewModel" />
@@ -68,9 +74,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
-                android:onClick="@{() -> vm.changeFilter(ProfileFilter.CHALLENGE)}"
+                android:onClick="@{() -> vm.changeFilter(NftCollectionFilter.BASIC)}"
                 android:text="BASIC"
-                android:textColor="@{vm.uiState.curFilter == ProfileFilter.CHALLENGE ? context.getColor(R.color.white) : context.getColor(R.color.gg_grey4)}"
+                android:textColor="@{vm.uiState.curFilter == NftCollectionFilter.BASIC) ? context.getColor(R.color.white) : context.getColor(R.color.gg_grey4)}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/btn_standard"
                 app:layout_constraintStart_toStartOf="parent"
@@ -81,9 +87,9 @@
                 style="@style/TextGgMedium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="@{() -> vm.changeFilter(ProfileFilter.CERTIFICATION)}"
+                android:onClick="@{() -> vm.changeFilter(NftCollectionFilter.STANDARD)}"
                 android:text="STANDARD"
-                android:textColor="@{vm.uiState.curFilter == ProfileFilter.CERTIFICATION ? context.getColor(R.color.white) : context.getColor(R.color.gg_grey4)}"
+                android:textColor="@{vm.uiState.curFilter == NftCollectionFilter.STANDARD ? context.getColor(R.color.white) : context.getColor(R.color.gg_grey4)}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/btn_premium"
                 app:layout_constraintStart_toEndOf="@id/btn_basic"
@@ -95,9 +101,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:onClick="@{() -> vm.changeFilter(ProfileFilter.NFT)}"
+                android:onClick="@{() -> vm.changeFilter(NftCollectionFilter.PREMIUM)}"
                 android:text="PREMIUM"
-                android:textColor="@{vm.uiState.curFilter == ProfileFilter.NFT ? context.getColor(R.color.white) : context.getColor(R.color.gg_grey4)}"
+                android:textColor="@{vm.uiState.curFilter == NftCollectionFilter.PREMIUM ? context.getColor(R.color.white) : context.getColor(R.color.gg_grey4)}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/btn_standard"
@@ -106,12 +112,11 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
-            android:id="@+id/tv_filter"
+            android:id="@+id/tv_remain_count"
             style="@style/TextGgSmallGrey1"
             android:layout_width="wrap_content"
             android:layout_height="20dp"
             android:layout_marginTop="12dp"
-            android:onClick="@{() -> vm.showBottomSheet()}"
             android:textAlignment="textEnd"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/layout_filter"
@@ -128,8 +133,8 @@
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_filter"
-            app:list="@{vm.uiState.nftList}"
+            app:layout_constraintTop_toBottomOf="@id/tv_remain_count"
+            app:list="@{vm.uiState.nftCollectionList}"
             app:spanCount="2"
             tools:listitem="@layout/item_nft_collection_list" />
 

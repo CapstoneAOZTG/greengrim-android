@@ -1,4 +1,4 @@
-package com.aoztg.greengrim.presentation.ui.nft.nftlist
+package com.aoztg.greengrim.presentation.ui.nft.nftcollection
 
 import android.os.Bundle
 import android.view.View
@@ -8,19 +8,19 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.aoztg.greengrim.R
-import com.aoztg.greengrim.databinding.FragmentNftListBinding
+import com.aoztg.greengrim.databinding.FragmentNftCollectionBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
-import com.aoztg.greengrim.presentation.customview.NftFilterBottomSheet
 import com.aoztg.greengrim.presentation.customview.NftSortType
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
-import com.aoztg.greengrim.presentation.ui.nft.adapter.NftItemAdapter
+import com.aoztg.greengrim.presentation.ui.nft.adapter.NftCollectionAdapter
 import com.aoztg.greengrim.presentation.ui.toNftDetail
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class NftListFragment : BaseFragment<FragmentNftListBinding>(R.layout.fragment_nft_list) {
+class NftCollectionFragment :
+    BaseFragment<FragmentNftCollectionBinding>(R.layout.fragment_nft_collection) {
 
-    private val viewModel: NftListViewModel by viewModels()
+    private val viewModel: NftCollectionViewModel by viewModels()
     private val parentViewModel: MainViewModel by activityViewModels()
     private var sortType = NftSortType.DESC
 
@@ -29,13 +29,9 @@ class NftListFragment : BaseFragment<FragmentNftListBinding>(R.layout.fragment_n
 
         parentViewModel.hideBNV()
         binding.vm = viewModel
-        binding.rvNftList.adapter = NftItemAdapter()
+        binding.rvNftCollectionList.adapter = NftCollectionAdapter()
         initEventObserver()
         setScrollEventListener()
-    }
-
-    override fun onResume() {
-        super.onResume()
     }
 
     private fun initEventObserver() {
@@ -43,12 +39,10 @@ class NftListFragment : BaseFragment<FragmentNftListBinding>(R.layout.fragment_n
             viewModel.events.collect {
                 when (it) {
                     is NftListEvents.NavigateToNftDetail -> findNavController().toNftDetail(it.id)
-                    is NftListEvents.ShowBottomSheet -> showBottomSheet()
-                    is NftListEvents.ScrollToTop -> binding.rvNftList.smoothScrollToPosition(0)
                     is NftListEvents.ShowLoading -> showLoading(requireContext())
                     is NftListEvents.DismissLoading -> dismissLoading()
                     is NftListEvents.ShowSnackMessage -> showCustomSnack(
-                        binding.rvNftList,
+                        binding.layoutFilter,
                         it.msg
                     )
 
@@ -60,7 +54,7 @@ class NftListFragment : BaseFragment<FragmentNftListBinding>(R.layout.fragment_n
 
     private fun setScrollEventListener() {
 
-        binding.rvNftList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        binding.rvNftCollectionList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
 
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
@@ -70,15 +64,9 @@ class NftListFragment : BaseFragment<FragmentNftListBinding>(R.layout.fragment_n
                 val itemTotalCount = recyclerView.adapter?.itemCount?.minus(1)
 
                 if (lastVisibleItemPosition == itemTotalCount) {
+                    viewModel.getNftCollectionList(viewModel.uiState.value.curFilter.text)
                 }
             }
         })
-    }
-
-    private fun showBottomSheet() {
-        NftFilterBottomSheet(requireContext(), sortType) { type ->
-            sortType = type
-            binding.tvFilter.text = type.text
-        }.show()
     }
 }
