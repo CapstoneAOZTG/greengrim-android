@@ -4,11 +4,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.repository.NftRepository
+import com.aoztg.greengrim.presentation.ui.nft.mapper.toUiNftSimpleInfo
 import com.aoztg.greengrim.presentation.ui.nft.model.UiNftSimpleInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -16,8 +18,12 @@ import javax.inject.Inject
 
 data class ExchangeNftDetailUiState(
     val uiNftSimpleInfo : UiNftSimpleInfo = UiNftSimpleInfo(),
-    val nftList : List<Int> = emptyList()
+    val nftList : List<Long> = emptyList()
 )
+
+sealed class ExchangeNftDetailEvent{
+
+}
 
 
 @HiltViewModel
@@ -40,7 +46,12 @@ class ExchangeNftDetailViewModel @Inject constructor(
             nftRepository.getNftForExchange(grade).let{
                 when(it){
                     is BaseState.Success -> {
-
+                        _uiState.update { state ->
+                            state.copy(
+                                uiNftSimpleInfo = it.body.toUiNftSimpleInfo(),
+                                nftList = uiState.value.nftList + it.body.nftId
+                            )
+                        }
                     }
 
                     is BaseState.Error -> {
@@ -56,7 +67,12 @@ class ExchangeNftDetailViewModel @Inject constructor(
             nftRepository.getNftForExchangeRefresh(grade,uiState.value.nftList).let{
                 when(it){
                     is BaseState.Success -> {
-
+                        _uiState.update { state ->
+                            state.copy(
+                                uiNftSimpleInfo = it.body.toUiNftSimpleInfo(),
+                                nftList = uiState.value.nftList + it.body.nftId
+                            )
+                        }
                     }
 
                     is BaseState.Error -> {

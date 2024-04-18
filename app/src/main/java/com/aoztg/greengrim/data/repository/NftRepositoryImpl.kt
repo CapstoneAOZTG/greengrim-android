@@ -63,7 +63,7 @@ class NftRepositoryImpl @Inject constructor(
 
     override suspend fun getNftForExchangeRefresh(
         grade: String,
-        nftList: List<Int>
+        nftList: List<Long>
     ): BaseState<NftSimpleResponse> = runRemote {
         api.getNftForExchangeRefresh(grade, nftList)
     }

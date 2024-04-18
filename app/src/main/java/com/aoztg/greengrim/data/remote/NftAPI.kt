@@ -62,7 +62,7 @@ interface NftAPI {
     @GET("/visitor/nfts/stock/refresh")
     suspend fun getNftForExchangeRefresh(
         @Query("grade") grade : String,
-        @Query("nftList") nftList : List<Int>
+        @Query("nftList") nftList : List<Long>
     ): Response<NftSimpleResponse>
 
 }

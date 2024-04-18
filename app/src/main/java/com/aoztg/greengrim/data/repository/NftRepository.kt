@@ -51,7 +51,7 @@ interface NftRepository {
 
     suspend fun getNftForExchangeRefresh(
         grade: String,
-        nftList: List<Int>
+        nftList: List<Long>
     ): BaseState<NftSimpleResponse>
 
 }

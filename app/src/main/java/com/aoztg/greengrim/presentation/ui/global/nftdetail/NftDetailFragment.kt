@@ -33,33 +33,11 @@ class NftDetailFragment : BaseFragment<FragmentNftDetailBinding>(R.layout.fragme
         parentViewModel.hideBNV()
         viewModel.setNftId(nftId)
         initStateObserver()
-        initEventObserver()
     }
 
     private fun initStateObserver() {
         repeatOnStarted {
             viewModel.uiState.collect {
-                when (it.nftDetail.btnState) {
-                    NftState.CAN_SELL -> {
-                        with(binding.btnNext) {
-                            visibility = View.VISIBLE
-                            text = "판매하기"
-                            setOnClickListener {
-                            }
-                        }
-                    }
-
-                    NftState.CAN_BUY -> {
-                        with(binding.btnNext) {
-                            visibility = View.VISIBLE
-                            text = "구매하기"
-                            setOnClickListener {
-                            }
-                        }
-                    }
-
-                    else -> {}
-                }
             }
         }
     }

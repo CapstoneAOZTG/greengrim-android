@@ -7,7 +7,9 @@ import androidx.navigation.fragment.navArgs
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentExchangeNftDetailBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class ExchangeNftDetailFragment : BaseFragment<FragmentExchangeNftDetailBinding>(R.layout.fragment_exchange_nft_detail) {
 
     private val args : ExchangeNftDetailFragmentArgs by navArgs()
