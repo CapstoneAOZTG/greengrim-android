@@ -34,5 +34,8 @@ class NftItemViewHolder(private val binding: ItemNftListBinding) :
         binding.root.setOnClickListener {
             item.navigateToNftDetail(item.id)
         }
+        binding.btnHeart.setOnClickListener {
+            item.clickLike(item.id)
+        }
     }
 }

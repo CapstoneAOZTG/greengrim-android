@@ -19,11 +19,6 @@ internal fun NavController.toCertificationDetail(certificationId: Long) {
     navigate(action)
 }
 
-internal fun NavController.toCheckPassword(){
-    val action = MainNavDirections.actionGlobalToCheckPasswordFragment()
-    navigate(action)
-}
-
 internal fun NavController.toNftDetail(nftId: Long){
     val action = MainNavDirections.actionGlobalToNftDetailFragment(nftId)
     navigate(action)

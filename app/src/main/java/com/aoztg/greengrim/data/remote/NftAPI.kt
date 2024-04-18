@@ -1,38 +1,38 @@
 package com.aoztg.greengrim.data.remote
 
-import com.aoztg.greengrim.data.model.request.CreateNftRequest
-import com.aoztg.greengrim.data.model.response.CreateNftResponse
-import com.aoztg.greengrim.data.model.response.HotNftResponse
+import com.aoztg.greengrim.data.model.request.EditNftRequest
+import com.aoztg.greengrim.data.model.request.NftLikeRequest
+import com.aoztg.greengrim.data.model.response.NftCollectionCountResponse
+import com.aoztg.greengrim.data.model.response.NftCollectionResponse
 import com.aoztg.greengrim.data.model.response.NftDetailResponse
 import com.aoztg.greengrim.data.model.response.NftListResponse
+import com.aoztg.greengrim.data.model.response.NftSimpleResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface NftAPI {
 
-    @POST("/member/nfts")
-    suspend fun createNft(
-        @Body params: CreateNftRequest
-    ): Response<CreateNftResponse>
+    @GET("/visitor/nfts/stock")
+    suspend fun getStockNftList(
+        @Query("grade") grade : String
+    ): Response<NftSimpleResponse>
+
+    @GET("/visitor/nfts")
+    suspend fun getExchangedNftList(
+        @Query("page") page : Int,
+        @Query("size") size : Int,
+        @Query("sort") sort : String
+    ): Response<NftListResponse>
 
     @GET("/nfts/{id}")
     suspend fun getNftDetail(
-        @Path("id") id: Long
+        @Path("id") id : Long
     ): Response<NftDetailResponse>
-
-    @GET("/hot-nfts")
-    suspend fun getMoreNft(
-        @Query("page") page: Int,
-        @Query("size") size: Int,
-        @Query("sort") sort: String
-    ): Response<NftListResponse>
-
-    @GET("/home/nfts")
-    suspend fun getHotNfts(): Response<HotNftResponse>
 
     @GET("/visitor/nfts/profile")
     suspend fun getMyNftList(
@@ -48,5 +48,41 @@ interface NftAPI {
         @Query("size") size: Int,
         @Query("sort") sort: String
     ): Response<NftListResponse>
+
+    @GET("/visitor/nfts/stock/amount")
+    suspend fun getNftCollectionCount(): Response<NftCollectionCountResponse>
+
+    @GET("/visitor/nfts/collection")
+    suspend fun getNftCollection(
+        @Query("grade") grade: String,
+        @Query("page") page : Int,
+        @Query("size") size : Int,
+    ) : Response<NftCollectionResponse>
+
+    @GET("/visitor/nfts/stock")
+    suspend fun getNftForExchange(
+        @Query("grade") grade : String
+    ) : Response<NftSimpleResponse>
+
+    @GET("/visitor/nfts/stock/refresh")
+    suspend fun getNftForExchangeRefresh(
+        @Query("grade") grade : String,
+        @Query("nftList") nftList : List<Long>
+    ): Response<NftSimpleResponse>
+
+    @POST("/visitor/nfts/{id}")
+    suspend fun exchangeNft(
+        @Path("id") id : Long
+    ): Response<Unit>
+
+    @PATCH("/visitor/nfts")
+    suspend fun editExchangedNft(
+        @Body params : EditNftRequest
+    ): Response<NftDetailResponse>
+
+    @POST("/visitor/nfts/like")
+    suspend fun nftLike(
+        @Body params : NftLikeRequest
+    ) : Response<Unit>
 
 }

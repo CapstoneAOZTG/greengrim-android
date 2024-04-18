@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.aoztg.greengrim.presentation.ui.nft.exchange.detail.ExchangeNftDetailViewModel" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingHorizontal="20dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="@dimen/padding_middle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_scrollFlags="scroll|enterAlways">
+
+            <ImageButton
+                android:id="@+id/btn_back"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:background="@android:color/transparent"
+                android:onClick="@{() -> vm.navigateToBack()}"
+                android:scaleType="fitCenter"
+                android:src="@drawable/icon_back"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_header"
+                style="@style/TextHeader"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="NFT 교환하기"
+                android:textAlignment="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:paddingBottom="200dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/layout_toolbar">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tv_description"
+                    style="@style/TextGgMedium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="이 NFT로 교환할까요?"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/btn_reroll"
+                    android:layout_width="26dp"
+                    android:layout_height="26dp"
+                    android:onClick="@{() -> vm.getRefreshNft()}"
+                    android:src="@drawable/icon_refresh"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_description"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/tv_description" />
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/iv_nft"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="16dp"
+                    android:scaleType="centerCrop"
+                    app:imgUrl="@{vm.uiState.uiNftSimpleInfo.img}"
+                    app:layout_constraintDimensionRatio="8:7"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/btn_reroll"
+                    app:shapeAppearanceOverlay="@style/All28RadiusImageView"
+                    tools:src="@drawable/test" />
+
+                <TextView
+                    android:id="@+id/tv_title"
+                    style="@style/TextHeader"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@{vm.uiState.uiNftSimpleInfo.title}"
+                    android:textStyle="normal"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/iv_nft"
+                    tools:text="GreenGrim#101" />
+
+                <com.google.android.material.divider.MaterialDivider
+                    android:id="@+id/divdier"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:orientation="horizontal"
+                    app:dividerColor="@color/gg_grey1"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_title" />
+
+                <TextView
+                    android:id="@+id/tv_detail_label"
+                    style="@style/TextGgMedium"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="상세 정보"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/divdier" />
+
+                <TextView
+                    android:id="@+id/tv_background_label"
+                    style="@style/TextGgSmallGrey5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="BACKGROUND"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_detail_label" />
+
+                <TextView
+                    android:id="@+id/tv_background"
+                    style="@style/TextGgSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{vm.uiState.uiNftSimpleInfo.background}"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_background_label"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    tools:text="black" />
+
+                <TextView
+                    android:id="@+id/tv_hair_label"
+                    style="@style/TextGgSmallGrey5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="HAIR"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_background_label" />
+
+                <TextView
+                    android:id="@+id/tv_hair"
+                    style="@style/TextGgSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{vm.uiState.uiNftSimpleInfo.hair}"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_hair_label"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    tools:text="mandra" />
+
+                <TextView
+                    android:id="@+id/tv_face_label"
+                    style="@style/TextGgSmallGrey5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="FACE"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_hair_label" />
+
+                <TextView
+                    android:id="@+id/tv_face"
+                    style="@style/TextGgSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{vm.uiState.uiNftSimpleInfo.face}"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_face_label"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    tools:text="basic" />
+
+                <TextView
+                    android:id="@+id/tv_gesture_label"
+                    style="@style/TextGgSmallGrey5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="GESTURE"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_face_label" />
+
+                <TextView
+                    android:id="@+id/tv_gesture"
+                    style="@style/TextGgSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{vm.uiState.uiNftSimpleInfo.gesture}"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_gesture_label"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    tools:text="peace" />
+
+                <TextView
+                    android:id="@+id/tv_accessory_label"
+                    style="@style/TextGgSmallGrey5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="ACCESSORY"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_gesture_label" />
+
+                <TextView
+                    android:id="@+id/tv_accessory"
+                    style="@style/TextGgSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{vm.uiState.uiNftSimpleInfo.accessory}"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_accessory_label"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    tools:text="headphone" />
+
+                <TextView
+                    android:id="@+id/tv_shoes_label"
+                    style="@style/TextGgSmallGrey5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="SHOES"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_accessory_label" />
+
+                <TextView
+                    android:id="@+id/tv_shoes"
+                    style="@style/TextGgSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{vm.uiState.uiNftSimpleInfo.shoes}"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_shoes_label"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    tools:text="blue" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_next"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/shape_greenfill_nostroke_radius10"
+            android:onClick="@{() -> vm.showExchangeDialog()}"
+            android:text="다음으로"
+            android:textColor="@color/black"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

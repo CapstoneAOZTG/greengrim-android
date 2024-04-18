@@ -6,79 +6,54 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.PagerSnapHelper
-import androidx.recyclerview.widget.RecyclerView
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentNftBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
-import com.aoztg.greengrim.presentation.customview.GrimNftFilterBottomSheet
-import com.aoztg.greengrim.presentation.ui.home.adapter.HotNftAdapter
+import com.aoztg.greengrim.presentation.customview.NftFilterBottomSheet
+import com.aoztg.greengrim.presentation.customview.NftSortType
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
-import com.aoztg.greengrim.presentation.ui.nft.adapter.GrimItemAdapter
+import com.aoztg.greengrim.presentation.ui.nft.adapter.NftCategoryAdapter
+import com.aoztg.greengrim.presentation.ui.nft.adapter.NftItemAdapter
 import com.aoztg.greengrim.presentation.ui.toNftDetail
 import dagger.hilt.android.AndroidEntryPoint
-import me.relex.circleindicator.CircleIndicator2
 
 @AndroidEntryPoint
 class NftFragment : BaseFragment<FragmentNftBinding>(R.layout.fragment_nft) {
 
-    private val viewModel: MarketViewModel by viewModels()
-    private val parentViewModel: MainViewModel by activityViewModels()
-    private var sortType = GrimNftSortType.DESC
+    companion object {
+        const val NEW = 0
+        const val NEXT_PAGE = 1
+    }
 
+    private val viewModel: NftViewModel by viewModels()
+    private val parentViewModel: MainViewModel by activityViewModels()
     private var isHotNftSet: Boolean = false
+    private var sortType = NftSortType.DESC
+    private var bottomScrollState = true
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         parentViewModel.showBNV()
         binding.vm = viewModel
-        binding.rvPaintList.adapter = GrimItemAdapter()
-        initRecycler()
+        binding.rvGreenNftList.adapter = NftItemAdapter()
+        binding.rvNftCategory.adapter = NftCategoryAdapter()
         initEventObserver()
         setScrollEventListener()
-        viewModel.getHotNft()
-    }
-
-    override fun onResume() {
-        super.onResume()
-    }
-
-    private fun initRecycler() {
-        repeatOnStarted {
-            viewModel.uiState.collect {
-                if (it.hotNftList.isNotEmpty() && !isHotNftSet) {
-                    binding.rvRecentNft.adapter = HotNftAdapter(it.hotNftList)
-                    recyclerToViewPager(binding.rvRecentNft, binding.indicatorRecentNft)
-                    isHotNftSet = true
-                }
-            }
-        }
-    }
-
-    private fun recyclerToViewPager(
-        recycler: RecyclerView,
-        indicator: CircleIndicator2
-    ) {
-
-        val pagerSnapHelper = PagerSnapHelper()
-        pagerSnapHelper.attachToRecyclerView(recycler)
-
-        indicator.attachToRecyclerView(recycler, pagerSnapHelper)
+        viewModel.setSortType(NftSortType.DESC)
     }
 
     private fun initEventObserver() {
         repeatOnStarted {
             viewModel.events.collect {
                 when (it) {
-                    is MarketEvents.NavigateToNftDetail -> findNavController().toNftDetail(it.id)
-                    is MarketEvents.NavigateToNftList -> findNavController().toNftList()
-                    is MarketEvents.ShowBottomSheet -> showBottomSheet()
-                    is MarketEvents.ScrollToTop -> binding.rvPaintList.smoothScrollToPosition(0)
-                    is MarketEvents.ShowLoading -> showLoading(requireContext())
-                    is MarketEvents.DismissLoading -> dismissLoading()
-                    is MarketEvents.ShowSnackMessage -> showCustomSnack(binding.rvRecentNft, it.msg)
+                    is NftEvent.NavigateToNftDetail -> findNavController().toNftDetail(it.id)
+                    is NftEvent.NavigateToNftCollectionList -> findNavController().toNftCollectionList()
+                    is NftEvent.ShowBottomSheet -> showBottomSheet()
+                    is NftEvent.ShowLoading -> showLoading(requireContext())
+                    is NftEvent.DismissLoading -> dismissLoading()
+                    is NftEvent.ShowSnackMessage -> showCustomSnack(binding.tvNftTitle, it.msg)
+                    is NftEvent.NavigateToExchangeNft -> findNavController().toExchangeNft()
                 }
             }
         }
@@ -86,32 +61,38 @@ class NftFragment : BaseFragment<FragmentNftBinding>(R.layout.fragment_nft) {
 
     private fun setScrollEventListener() {
 
-        binding.rvPaintList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        binding.scrollView.setOnScrollChangeListener { v, _, scrollY, _, _ ->
+            if (scrollY > binding.scrollView.getChildAt(0).measuredHeight - v.measuredHeight) {
 
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-
-                val lastVisibleItemPosition =
-                    (recyclerView.layoutManager as GridLayoutManager).findLastCompletelyVisibleItemPosition()
-                val itemTotalCount = recyclerView.adapter?.itemCount?.minus(1)
-
-                if (lastVisibleItemPosition == itemTotalCount) {
+                if(bottomScrollState){
+                    bottomScrollState = false
+                    viewModel.getNftList(NEXT_PAGE)
                 }
+            } else {
+                bottomScrollState = true
             }
-        })
+        }
     }
 
     private fun showBottomSheet() {
-        GrimNftFilterBottomSheet(requireContext(), sortType) { type ->
+        NftFilterBottomSheet(requireContext(), sortType) { type ->
             sortType = type
             viewModel.setSortType(type)
             binding.tvFilter.text = type.text
         }.show()
     }
 
+    private fun NavController.toNftCollectionList() {
+        val action = NftFragmentDirections.actionNftFragmentToNftCollectionFragment(
+            viewModel.uiState.value.nftCategory[0].count,
+            viewModel.uiState.value.nftCategory[1].count,
+            viewModel.uiState.value.nftCategory[2].count
+        )
+        navigate(action)
+    }
 
-    private fun NavController.toNftList() {
-        val action = NftFragmentDirections.actionNftFragmentToNftListFragment()
+    private fun NavController.toExchangeNft(){
+        val action = NftFragmentDirections.actionNftFragmentToExchangeNftFragment()
         navigate(action)
     }
 

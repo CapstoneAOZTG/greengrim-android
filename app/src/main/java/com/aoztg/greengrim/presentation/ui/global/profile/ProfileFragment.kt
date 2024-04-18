@@ -11,12 +11,14 @@ import com.aoztg.greengrim.databinding.FragmentProfileBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
 import com.aoztg.greengrim.presentation.customview.ChallengeFilterBottomSheet
 import com.aoztg.greengrim.presentation.customview.CustomCalendar
+import com.aoztg.greengrim.presentation.customview.NftFilterBottomSheet
 import com.aoztg.greengrim.presentation.ui.challenge.adapter.ChallengeRoomAdapter
-import com.aoztg.greengrim.presentation.ui.challenge.list.SortType
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 import com.aoztg.greengrim.presentation.ui.mypage.adapter.MyCertificationAdapter
+import com.aoztg.greengrim.presentation.ui.mypage.myprofile.MyProfileFragment
 import com.aoztg.greengrim.presentation.ui.mypage.myprofile.MyProfileTempDate
 import com.aoztg.greengrim.presentation.ui.mypage.myprofile.ProfileFilter
+import com.aoztg.greengrim.presentation.ui.nft.adapter.NftItemAdapter
 import com.aoztg.greengrim.presentation.ui.toCertificationDetail
 import com.aoztg.greengrim.presentation.ui.toChallengeDetail
 import com.aoztg.greengrim.presentation.ui.toNftDetail
@@ -33,10 +35,11 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(R.layout.fragment_p
 
     private val parentViewModel: MainViewModel by activityViewModels()
     private val viewModel: ProfileViewModel by viewModels()
-    private var sortType = SortType.DESC
     private val popupLocation = IntArray(2)
 
-    private val args : ProfileFragmentArgs by navArgs()
+    private var bottomScrollState = true
+
+    private val args: ProfileFragmentArgs by navArgs()
     private val memberId by lazy { args.id }
 
     private lateinit var customCalendar: CustomCalendar
@@ -53,6 +56,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(R.layout.fragment_p
         initEventObserve()
         binding.rvChallengeList.adapter = ChallengeRoomAdapter()
         binding.rvCertifications.adapter = MyCertificationAdapter()
+        binding.rvNftList.adapter = NftItemAdapter()
         viewModel.getMyInfo()
         viewModel.getMyChallenge(NEXT_PAGE)
     }
@@ -69,21 +73,28 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(R.layout.fragment_p
 
     private fun setScrollEventListener() {
 
-        binding.scrollView.setOnScrollChangeListener { v, _, _, _, _ ->
-            if (!v.canScrollVertically(1)) {
-                when (viewModel.uiState.value.curFilter) {
-                    ProfileFilter.CHALLENGE -> {
-                        viewModel.getMyChallenge(NEXT_PAGE)
-                    }
+        binding.scrollView.setOnScrollChangeListener { v, _, scrollY, _, _ ->
 
-                    ProfileFilter.CERTIFICATION -> {
-                        viewModel.getCertificationList(NEXT_PAGE)
-                    }
+            if (scrollY > binding.scrollView.getChildAt(0).measuredHeight - v.measuredHeight) {
 
-                    ProfileFilter.NFT -> {
-                        viewModel.getNftList(NEXT_PAGE)
+                if(bottomScrollState){
+                    bottomScrollState = false
+                    when(viewModel.uiState.value.curFilter){
+                        ProfileFilter.CHALLENGE -> {
+                            viewModel.getMyChallenge(MyProfileFragment.NEXT_PAGE)
+                        }
+
+                        ProfileFilter.CERTIFICATION -> {
+                            viewModel.getCertificationList(MyProfileFragment.NEXT_PAGE)
+                        }
+
+                        ProfileFilter.NFT -> {
+                            viewModel.getNftList(MyProfileFragment.NEXT_PAGE)
+                        }
                     }
                 }
+            } else {
+                bottomScrollState = true
             }
         }
     }
@@ -121,7 +132,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(R.layout.fragment_p
                         )
                     }
 
-                    is ProfileEvent.ShowAccusationPopUp -> showAccusationDialog()
+                    is ProfileEvent.ShowAccusationPopUp -> showPopup()
                     is ProfileEvent.InitCalendar -> {
                         // 캘린더 초기화 작업
                     }
@@ -146,15 +157,16 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(R.layout.fragment_p
     }
 
     private fun showChallengeFilterBottomSheet() {
-        ChallengeFilterBottomSheet(requireContext(), sortType) { type ->
-            sortType = type
+        ChallengeFilterBottomSheet(
+            requireContext(),
+            viewModel.uiState.value.challengeSortType
+        ) { type ->
             viewModel.setChallengeSortType(type)
         }.show()
     }
 
     private fun showNftFilterBottomSheet() {
-        ChallengeFilterBottomSheet(requireContext(), sortType) { type ->
-            sortType = type
+        NftFilterBottomSheet(requireContext(), viewModel.uiState.value.nftSortType) { type ->
             viewModel.setNftSortType(type)
         }.show()
     }

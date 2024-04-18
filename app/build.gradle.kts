@@ -30,8 +30,8 @@ android {
         applicationId = "com.aoztg.greengrim"
         minSdk = 27
         targetSdk = 34
-        versionCode = 19
-        versionName = "1.0.6"
+        versionCode = 20
+        versionName = "1.0.7"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField("String", "NAVER_CLIENT_ID", getProperty("naverClientId"))
@@ -41,6 +41,7 @@ android {
         buildConfigField("String", "BASE_DEV_URL", getProperty("baseDevUrl"))
         buildConfigField("String", "BASE_PROD_URL", getProperty("baseProdUrl"))
         buildConfigField("String", "SOCKET_URL", getProperty("socketUrl"))
+        buildConfigField("String", "MASTER_JWT", getProperty("masterJwt"))
         manifestPlaceholders["KAKAO_API_KEY"] = getProperty("kakaoAppKey")
     }
 

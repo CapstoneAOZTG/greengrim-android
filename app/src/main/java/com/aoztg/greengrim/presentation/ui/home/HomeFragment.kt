@@ -89,7 +89,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
                     }
 
                     is HomeEvents.NavigateToNftDetail -> findNavController().toNftDetail(it.id)
-                    is HomeEvents.NavigateToNftList -> findNavController().toNftList()
+                    is HomeEvents.NavigateToNftList -> {}
                     is HomeEvents.NavigateToHotChallengeList -> findNavController().toHotChallengeList()
                 }
             }
@@ -113,11 +113,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         pagerSnapHelper.attachToRecyclerView(recycler)
 
         indicator.attachToRecyclerView(recycler, pagerSnapHelper)
-    }
-
-    private fun NavController.toNftList() {
-        val action = HomeFragmentDirections.actionHomeFragmentToNftListFragment()
-        navigate(action)
     }
 
     private fun NavController.toHotChallengeList() {

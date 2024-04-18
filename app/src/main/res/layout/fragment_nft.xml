@@ -7,7 +7,7 @@
 
         <variable
             name="vm"
-            type="com.aoztg.greengrim.presentation.ui.nft.MarketViewModel" />
+            type="com.aoztg.greengrim.presentation.ui.nft.NftViewModel" />
 
     </data>
 
@@ -15,119 +15,108 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/layout_toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingHorizontal="@dimen/padding_large"
-            android:paddingBottom="20dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_scrollFlags="scroll|enterAlways">
-
-            <TextView
-                android:id="@+id/tv_nft_header"
-                style="@style/TextHeader"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@string/green_nft"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/tv_nft_title"
-                style="@style/TextGgSmallGrey1"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="저탄소 활동으로 그린 NFT"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_nft_header" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-
         <androidx.core.widget.NestedScrollView
+            android:id="@+id/scroll_view"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:paddingBottom="150dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/layout_toolbar">
+            app:layout_constraintTop_toTopOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <ImageButton
-                    android:id="@+id/btn_see_more"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="20dp"
-                    android:background="@android:color/transparent"
-                    android:onClick="@{() -> vm.navigateToNftList()}"
-                    android:src="@drawable/icon_see_more"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_recent_nft"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="20dp"
-                    android:layout_marginTop="20dp"
-                    android:orientation="horizontal"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/btn_see_more" />
-
-                <me.relex.circleindicator.CircleIndicator2
-                    android:id="@+id/indicator_recent_nft"
-                    android:layout_width="wrap_content"
-                    android:layout_height="20dp"
-                    android:layout_marginTop="20dp"
-                    app:ci_animator="@anim/alpha"
-                    app:ci_drawable="@drawable/shape_indicator_select"
-                    app:ci_drawable_unselected="@drawable/shape_indicator_unselect"
-                    app:ci_height="8dp"
-                    app:ci_width="8dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/rv_recent_nft" />
-
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/layout_paint_toolbar"
+                    android:id="@+id/layout_toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingHorizontal="@dimen/padding_large"
+                    android:paddingBottom="20dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/indicator_recent_nft"
+                    app:layout_constraintTop_toTopOf="parent"
                     app:layout_scrollFlags="scroll|enterAlways">
 
                     <TextView
-                        android:id="@+id/tv_paint_header"
+                        android:id="@+id/tv_nft_header"
                         style="@style/TextHeader"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="@string/green_grim"
+                        android:text="@string/nft_collection"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/tv_paint_title"
+                        android:id="@+id/tv_nft_title"
                         style="@style/TextGgSmallGrey1"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="저탄소 활동으로 그린 그림"
+                        android:text="저탄소 활동으로 그린 NFT"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tv_paint_header" />
+                        app:layout_constraintTop_toBottomOf="@id/tv_nft_header" />
+
+                    <ImageButton
+                        android:id="@+id/btn_see_more_nft"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:background="@android:color/transparent"
+                        android:onClick="@{() -> vm.navigateToNftCollectionList()}"
+                        android:src="@drawable/icon_see_more"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_nft_header" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_nft_category"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20dp"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/layout_toolbar"
+                    app:list="@{vm.uiState.nftCategory}"
+                    tools:listitem="@layout/item_nft_category" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layout_green_nft_toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="@dimen/padding_large"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/rv_nft_category"
+                    app:layout_scrollFlags="scroll|enterAlways">
+
+                    <TextView
+                        android:id="@+id/tv_green_nft_header"
+                        style="@style/TextHeader"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/green_nft"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tv_green_nft_description"
+                        style="@style/TextGgSmallGrey1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="유저들이 저탄소 활동으로 얻은 NFT"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_green_nft_header" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -142,41 +131,37 @@
                     android:textAlignment="textEnd"
                     app:drawableEndCompat="@drawable/icon_filter"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/layout_paint_toolbar" />
+                    app:layout_constraintTop_toBottomOf="@id/layout_green_nft_toolbar" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_paint_list"
+                    android:id="@+id/rv_green_nft_list"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:clipToPadding="false"
                     android:orientation="vertical"
-                    android:paddingHorizontal="10dp"
-                    android:paddingBottom="500dp"
+                    android:paddingHorizontal="16dp"
                     app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_filter"
-                    app:list="@{vm.uiState.grimList}"
+                    app:list="@{vm.uiState.nftList}"
                     app:spanCount="2"
-                    tools:listitem="@layout/item_paint_list" />
+                    tools:listitem="@layout/item_nft_list" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.core.widget.NestedScrollView>
 
-        <ImageButton
-            android:id="@+id/btn_create_nft_or_paint"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_gravity="bottom|end"
-            android:layout_marginEnd="20dp"
-            android:layout_marginBottom="88dp"
-            android:background="@android:color/transparent"
-            android:scaleType="fitCenter"
-            android:src="@drawable/icon_plus"
+        <ImageView
+            android:id="@+id/btn_nft_transaction"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="100dp"
+            android:onClick="@{() -> vm.navigateToExchangeNft()}"
+            android:src="@drawable/icon_nft_transaction"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

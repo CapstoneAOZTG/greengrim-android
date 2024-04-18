@@ -7,7 +7,6 @@ import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.repository.ChallengeRepository
 import com.aoztg.greengrim.data.repository.NftRepository
 import com.aoztg.greengrim.presentation.ui.home.mapper.toUiHotChallenge
-import com.aoztg.greengrim.presentation.ui.home.mapper.toUiNftItem
 import com.aoztg.greengrim.presentation.ui.home.model.UiHotChallenge
 import com.aoztg.greengrim.presentation.ui.home.model.UiMoreActivity
 import com.aoztg.greengrim.presentation.ui.nft.model.UiNftItem
@@ -37,8 +36,8 @@ sealed class HomeEvents {
     object ShowLoading : HomeEvents()
     object DismissLoading : HomeEvents()
     data class NavigateToNftDetail(val id: Long) : HomeEvents()
-    object NavigateToNftList: HomeEvents()
-    object NavigateToHotChallengeList: HomeEvents()
+    object NavigateToNftList : HomeEvents()
+    object NavigateToHotChallengeList : HomeEvents()
 }
 
 @HiltViewModel
@@ -109,19 +108,19 @@ class HomeViewModel @Inject constructor(
 
     private suspend fun getHotNft() {
         viewModelScope.launch {
-            nftRepository.getHotNfts().let {
-                when (it) {
-                    is BaseState.Success -> {
-                        _uiState.update { state ->
-                            state.copy(
-                                uiHotNftList = it.body.homeNftInfos.map { data -> data.toUiNftItem(::navigateToNftDetail) }
-                            )
-                        }
-                    }
-
-                    is BaseState.Error -> _events.emit(HomeEvents.ShowSnackMessage(it.msg))
-                }
-            }
+//            nftRepository.getHotNfts().let {
+//                when (it) {
+//                    is BaseState.Success -> {
+//                        _uiState.update { state ->
+//                            state.copy(
+//                                uiHotNftList = it.body.homeNftInfos.map { data -> data.toUiNftItem(::navigateToNftDetail) }
+//                            )
+//                        }
+//                    }
+//
+//                    is BaseState.Error -> _events.emit(HomeEvents.ShowSnackMessage(it.msg))
+//                }
+//            }
         }
     }
 
@@ -149,13 +148,13 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun navigateToNftList(){
+    fun navigateToNftList() {
         viewModelScope.launch {
             _events.emit(HomeEvents.NavigateToNftList)
         }
     }
 
-    fun navigateToHotChallengeList(){
+    fun navigateToHotChallengeList() {
         viewModelScope.launch {
             _events.emit(HomeEvents.NavigateToHotChallengeList)
         }
