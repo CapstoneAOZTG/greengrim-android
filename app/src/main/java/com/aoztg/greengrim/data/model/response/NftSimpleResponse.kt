@@ -1,6 +1,6 @@
 package com.aoztg.greengrim.data.model.response
 
-data class StockNftResponse(
+data class NftSimpleResponse(
     val tokenId : Long,
     val traitsInfo : NftTraitsInfo
 )

@@ -5,7 +5,7 @@ import com.aoztg.greengrim.data.model.response.NftCollectionCountResponse
 import com.aoztg.greengrim.data.model.response.NftCollectionResponse
 import com.aoztg.greengrim.data.model.response.NftDetailResponse
 import com.aoztg.greengrim.data.model.response.NftListResponse
-import com.aoztg.greengrim.data.model.response.StockNftResponse
+import com.aoztg.greengrim.data.model.response.NftSimpleResponse
 import com.aoztg.greengrim.data.model.runRemote
 import com.aoztg.greengrim.data.remote.NftAPI
 import javax.inject.Inject
@@ -14,7 +14,7 @@ class NftRepositoryImpl @Inject constructor(
     private val api: NftAPI
 ) : NftRepository {
 
-    override suspend fun getStockNftList(grade: String): BaseState<StockNftResponse> =
+    override suspend fun getStockNftList(grade: String): BaseState<NftSimpleResponse> =
         runRemote { api.getStockNftList(grade) }
 
     override suspend fun getExchangedNftList(
@@ -43,9 +43,10 @@ class NftRepositoryImpl @Inject constructor(
     ): BaseState<NftListResponse> =
         runRemote { api.getMyNftList(page, size, sort) }
 
-    override suspend fun getNftCollectionCount(): BaseState<NftCollectionCountResponse> = runRemote {
-        api.getNftCollectionCount()
-    }
+    override suspend fun getNftCollectionCount(): BaseState<NftCollectionCountResponse> =
+        runRemote {
+            api.getNftCollectionCount()
+        }
 
     override suspend fun getNftCollection(
         grade: String,
@@ -53,5 +54,17 @@ class NftRepositoryImpl @Inject constructor(
         size: Int
     ): BaseState<NftCollectionResponse> = runRemote {
         api.getNftCollection(grade, page, size)
+    }
+
+    override suspend fun getNftForExchange(grade: String): BaseState<NftSimpleResponse> =
+        runRemote {
+            api.getNftForExchange(grade)
+        }
+
+    override suspend fun getNftForExchangeRefresh(
+        grade: String,
+        nftList: List<Int>
+    ): BaseState<NftSimpleResponse> = runRemote {
+        api.getNftForExchangeRefresh(grade, nftList)
     }
 }

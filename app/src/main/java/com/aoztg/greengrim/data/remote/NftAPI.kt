@@ -4,7 +4,7 @@ import com.aoztg.greengrim.data.model.response.NftCollectionCountResponse
 import com.aoztg.greengrim.data.model.response.NftCollectionResponse
 import com.aoztg.greengrim.data.model.response.NftDetailResponse
 import com.aoztg.greengrim.data.model.response.NftListResponse
-import com.aoztg.greengrim.data.model.response.StockNftResponse
+import com.aoztg.greengrim.data.model.response.NftSimpleResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -15,7 +15,7 @@ interface NftAPI {
     @GET("/visitor/nfts/stock")
     suspend fun getStockNftList(
         @Query("grade") grade : String
-    ): Response<StockNftResponse>
+    ): Response<NftSimpleResponse>
 
     @GET("/visitor/nfts")
     suspend fun getExchangedNftList(
@@ -54,5 +54,15 @@ interface NftAPI {
         @Query("size") size : Int,
     ) : Response<NftCollectionResponse>
 
+    @GET("/visitor/nfts/stock")
+    suspend fun getNftForExchange(
+        @Query("grade") grade : String
+    ) : Response<NftSimpleResponse>
+
+    @GET("/visitor/nfts/stock/refresh")
+    suspend fun getNftForExchangeRefresh(
+        @Query("grade") grade : String,
+        @Query("nftList") nftList : List<Int>
+    ): Response<NftSimpleResponse>
 
 }
