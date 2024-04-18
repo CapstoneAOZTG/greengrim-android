@@ -2,6 +2,7 @@ package com.aoztg.greengrim.data.repository
 
 import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.model.request.EditNftRequest
+import com.aoztg.greengrim.data.model.request.NftLikeRequest
 import com.aoztg.greengrim.data.model.response.NftCollectionCountResponse
 import com.aoztg.greengrim.data.model.response.NftCollectionResponse
 import com.aoztg.greengrim.data.model.response.NftDetailResponse
@@ -73,7 +74,12 @@ class NftRepositoryImpl @Inject constructor(
         api.exchangeNft(id)
     }
 
-    override suspend fun editExchangedNft(body: EditNftRequest): BaseState<NftDetailResponse> = runRemote {
-        api.editExchangedNft(body)
+    override suspend fun editExchangedNft(body: EditNftRequest): BaseState<NftDetailResponse> =
+        runRemote {
+            api.editExchangedNft(body)
+        }
+
+    override suspend fun nftLike(body: NftLikeRequest): BaseState<Unit> = runRemote {
+        api.nftLike(body)
     }
 }

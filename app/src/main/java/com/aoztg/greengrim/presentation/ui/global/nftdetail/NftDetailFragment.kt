@@ -35,6 +35,7 @@ class NftDetailFragment : BaseFragment<FragmentNftDetailBinding>(R.layout.fragme
                 when (it) {
                     is NftDetailEvents.NavigateToBack -> findNavController().navigateUp()
                     is NftDetailEvents.ShowSnackMessage -> showCustomSnack(binding.ivNft, it.msg)
+                    is NftDetailEvents.ShowToastMessage -> showCustomToast(it.msg)
                 }
             }
         }

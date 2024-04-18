@@ -1,6 +1,7 @@
 package com.aoztg.greengrim.data.remote
 
 import com.aoztg.greengrim.data.model.request.EditNftRequest
+import com.aoztg.greengrim.data.model.request.NftLikeRequest
 import com.aoztg.greengrim.data.model.response.NftCollectionCountResponse
 import com.aoztg.greengrim.data.model.response.NftCollectionResponse
 import com.aoztg.greengrim.data.model.response.NftDetailResponse
@@ -78,5 +79,10 @@ interface NftAPI {
     suspend fun editExchangedNft(
         @Body params : EditNftRequest
     ): Response<NftDetailResponse>
+
+    @POST("/visitor/nfts/like")
+    suspend fun nftLike(
+        @Body params : NftLikeRequest
+    ) : Response<Unit>
 
 }
