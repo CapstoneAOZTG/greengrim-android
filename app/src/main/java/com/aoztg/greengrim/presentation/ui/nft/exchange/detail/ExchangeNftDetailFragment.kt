@@ -3,10 +3,12 @@ package com.aoztg.greengrim.presentation.ui.nft.exchange.detail
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentExchangeNftDetailBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
+import com.aoztg.greengrim.presentation.customview.ExchangeNftDialog
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -22,5 +24,30 @@ class ExchangeNftDetailFragment : BaseFragment<FragmentExchangeNftDetailBinding>
 
         binding.vm = viewModel
         viewModel.setGrade(grade)
+        initEventObserve()
+    }
+
+    private fun initEventObserve(){
+        repeatOnStarted {
+            viewModel.event.collect{
+                when(it){
+                    is ExchangeNftDetailEvent.ShowLoading -> showLoading(requireContext())
+                    is ExchangeNftDetailEvent.DismissLoading -> dismissLoading()
+                    is ExchangeNftDetailEvent.ShowCustomSnack -> showCustomSnack(binding.tvDescription, it.msg)
+                    is ExchangeNftDetailEvent.ShowToastMessage -> showCustomToast(it.msg)
+                    is ExchangeNftDetailEvent.ShowExchangeDialog -> showExchangeNftDialog(it.point)
+                    is ExchangeNftDetailEvent.NavigateToBack -> findNavController().navigateUp()
+                }
+            }
+        }
+    }
+
+    private fun showExchangeNftDialog(point : Int){
+        ExchangeNftDialog(
+            requireContext(),
+            point
+        ){
+            viewModel.exchangeNft()
+        }.show()
     }
 }

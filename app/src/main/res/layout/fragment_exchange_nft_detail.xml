@@ -31,6 +31,7 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:background="@android:color/transparent"
+                android:onClick="@{() -> vm.navigateToBack()}"
                 android:scaleType="fitCenter"
                 android:src="@drawable/icon_back"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -261,6 +262,21 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.core.widget.NestedScrollView>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_next"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/shape_greenfill_nostroke_radius10"
+            android:onClick="@{() -> vm.showExchangeDialog()}"
+            android:text="다음으로"
+            android:textColor="@color/black"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
