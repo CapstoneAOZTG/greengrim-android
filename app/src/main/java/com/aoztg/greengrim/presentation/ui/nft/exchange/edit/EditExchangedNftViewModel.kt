@@ -1,4 +1,4 @@
-package com.aoztg.greengrim.presentation.ui.nft.create.createnft
+package com.aoztg.greengrim.presentation.ui.nft.exchange.edit
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -13,22 +13,21 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-
-sealed class CreateNftEvents{
-    data class CreateNft(
+sealed class EditExchangedNftEvent {
+    data class ExchangeNft(
         val title: String,
         val description: String
-    ): CreateNftEvents()
+    ): EditExchangedNftEvent ()
 
-    object NavigateToBack: CreateNftEvents()
+    object NavigateToBack: EditExchangedNftEvent ()
 }
 
 @HiltViewModel
-class CreateNftViewModel @Inject constructor(
-): ViewModel() {
+class EditExchangedNftViewModel @Inject constructor(): ViewModel() {
 
-    private val _events = MutableSharedFlow<CreateNftEvents>()
-    val events: SharedFlow<CreateNftEvents> = _events.asSharedFlow()
+
+    private val _events = MutableSharedFlow<EditExchangedNftEvent >()
+    val events: SharedFlow<EditExchangedNftEvent > = _events.asSharedFlow()
 
     val title = MutableStateFlow("")
     val description = MutableStateFlow("")
@@ -48,7 +47,7 @@ class CreateNftViewModel @Inject constructor(
 
     fun createNft(){
         viewModelScope.launch {
-            _events.emit(CreateNftEvents.CreateNft(
+            _events.emit(EditExchangedNftEvent.ExchangeNft(
                 title = title.value,
                 description = description.value
             ))
@@ -57,8 +56,7 @@ class CreateNftViewModel @Inject constructor(
 
     fun navigateToBack(){
         viewModelScope.launch {
-            _events.emit(CreateNftEvents.NavigateToBack)
+            _events.emit(EditExchangedNftEvent .NavigateToBack)
         }
     }
-
 }

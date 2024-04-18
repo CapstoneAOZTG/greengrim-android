@@ -7,7 +7,7 @@
 
         <variable
             name="vm"
-            type="com.aoztg.greengrim.presentation.ui.nft.create.createnft.CreateNftViewModel" />
+            type="com.aoztg.greengrim.presentation.ui.nft.exchange.ExchangeNftViewModel" />
 
     </data>
 
@@ -32,7 +32,6 @@
                 android:layout_height="24dp"
                 android:layout_marginEnd="12dp"
                 android:background="@android:color/transparent"
-                android:onClick="@{() -> vm.navigateToBack()}"
                 android:scaleType="fitCenter"
                 android:src="@drawable/icon_back"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -56,10 +55,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
-                android:enabled="@{vm.isDataReady()}"
                 android:minWidth="0dp"
                 android:minHeight="0dp"
-                android:onClick="@{()-> vm.createNft()}"
                 android:text="완료"
                 android:textColor="@color/selector_complete_text"
                 android:textSize="16dp"
@@ -86,9 +83,7 @@
                     android:layout_width="120dp"
                     android:layout_height="120dp"
                     android:layout_marginTop="20dp"
-                    android:onClick="@{() -> vm.navigateToBack()}"
                     android:scaleType="centerCrop"
-                    app:imgUrl="@{vm.imgUrl}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -117,8 +112,6 @@
                 <TextView
                     android:id="@+id/tv_title_count"
                     style="@style/TextFormLabel"
-                    textLength="@{vm.title}"
-                    textLimit="@{30}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -136,7 +129,6 @@
                     android:maxLines="1"
                     android:paddingHorizontal="15dp"
                     android:paddingVertical="8dp"
-                    android:text="@={vm.title}"
                     android:textColor="@color/white"
                     android:textColorHint="@color/gg_grey5"
                     android:textSize="13dp"
@@ -158,8 +150,6 @@
                 <TextView
                     android:id="@+id/tv_description_count"
                     style="@style/TextFormLabel"
-                    textLength="@{vm.description}"
-                    textLimit="@{300}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -178,7 +168,6 @@
                     android:maxLines="1"
                     android:paddingHorizontal="15dp"
                     android:paddingVertical="8dp"
-                    android:text="@={vm.description}"
                     android:textColor="@color/white"
                     android:textColorHint="@color/gg_grey5"
                     android:textSize="13dp"

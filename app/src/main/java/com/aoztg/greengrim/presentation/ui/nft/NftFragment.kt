@@ -48,11 +48,12 @@ class NftFragment : BaseFragment<FragmentNftBinding>(R.layout.fragment_nft) {
             viewModel.events.collect {
                 when (it) {
                     is NftEvent.NavigateToNftDetail -> findNavController().toNftDetail(it.id)
-                    is NftEvent.NavigateToNftList -> findNavController().toNftList()
+                    is NftEvent.NavigateToNftCollectionList -> findNavController().toNftCollectionList()
                     is NftEvent.ShowBottomSheet -> showBottomSheet()
                     is NftEvent.ShowLoading -> showLoading(requireContext())
                     is NftEvent.DismissLoading -> dismissLoading()
                     is NftEvent.ShowSnackMessage -> showCustomSnack(binding.tvNftTitle, it.msg)
+                    is NftEvent.NavigateToExchangeNft -> findNavController().toExchangeNft()
                 }
             }
         }
@@ -81,8 +82,13 @@ class NftFragment : BaseFragment<FragmentNftBinding>(R.layout.fragment_nft) {
         }.show()
     }
 
-    private fun NavController.toNftList() {
-        val action = NftFragmentDirections.actionNftFragmentToNftListFragment()
+    private fun NavController.toNftCollectionList() {
+        val action = NftFragmentDirections.actionNftFragmentToNftCollectionFragment()
+        navigate(action)
+    }
+
+    private fun NavController.toExchangeNft(){
+        val action = NftFragmentDirections.actionNftFragmentToExchangeNftFragment()
         navigate(action)
     }
 

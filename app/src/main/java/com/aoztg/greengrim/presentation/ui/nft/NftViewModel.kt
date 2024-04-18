@@ -34,7 +34,8 @@ sealed class NftEvent {
     data class ShowSnackMessage(val msg: String) : NftEvent()
     object ShowLoading : NftEvent()
     object DismissLoading : NftEvent()
-    object NavigateToNftList : NftEvent()
+    object NavigateToNftCollectionList : NftEvent()
+    object NavigateToExchangeNft : NftEvent()
 }
 
 @HiltViewModel
@@ -135,9 +136,15 @@ class NftViewModel @Inject constructor(
 
     }
 
-    fun navigateToNftList() {
+    fun navigateToNftCollectionList() {
         viewModelScope.launch {
-            _events.emit(NftEvent.NavigateToNftList)
+            _events.emit(NftEvent.NavigateToNftCollectionList)
+        }
+    }
+
+    fun navigateToExchangeNft(){
+        viewModelScope.launch {
+            _events.emit(NftEvent.NavigateToExchangeNft)
         }
     }
 
