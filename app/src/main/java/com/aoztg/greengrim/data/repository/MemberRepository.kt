@@ -7,7 +7,9 @@ import com.aoztg.greengrim.data.model.request.PatchProfileRequest
 import com.aoztg.greengrim.data.model.request.SignupRequest
 import com.aoztg.greengrim.data.model.request.WalletInfoRequest
 import com.aoztg.greengrim.data.model.response.CheckNickResponse
+import com.aoztg.greengrim.data.model.response.EventResponse
 import com.aoztg.greengrim.data.model.response.GetProfileResponse
+import com.aoztg.greengrim.data.model.response.HomeMyInfoResponse
 import com.aoztg.greengrim.data.model.response.LoginResponse
 import com.aoztg.greengrim.data.model.response.MyInfoResponse
 import com.aoztg.greengrim.data.model.response.MyPointResponse
@@ -60,5 +62,9 @@ interface MemberRepository {
         page : Int,
         size : Int
     ): BaseState<MyPointResponse>
+
+    suspend fun getEvent(): BaseState<EventResponse>
+
+    suspend fun getHomeMyInfo(): BaseState<HomeMyInfoResponse>
 
 }

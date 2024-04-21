@@ -6,7 +6,9 @@ import com.aoztg.greengrim.data.model.request.PatchProfileRequest
 import com.aoztg.greengrim.data.model.request.SignupRequest
 import com.aoztg.greengrim.data.model.request.WalletInfoRequest
 import com.aoztg.greengrim.data.model.response.CheckNickResponse
+import com.aoztg.greengrim.data.model.response.EventResponse
 import com.aoztg.greengrim.data.model.response.GetProfileResponse
+import com.aoztg.greengrim.data.model.response.HomeMyInfoResponse
 import com.aoztg.greengrim.data.model.response.LoginResponse
 import com.aoztg.greengrim.data.model.response.MyInfoResponse
 import com.aoztg.greengrim.data.model.response.MyPointResponse
@@ -87,5 +89,11 @@ interface MemberAPI {
         @Query("page") page : Int,
         @Query("size") size : Int
     ): Response<MyPointResponse>
+
+    @GET("/events")
+    suspend fun getEvent(): Response<EventResponse>
+
+    @GET("/visitor/home")
+    suspend fun getHomeMyInfo(): Response<HomeMyInfoResponse>
 
 }

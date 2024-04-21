@@ -7,7 +7,7 @@
 
         <variable
             name="item"
-            type="com.aoztg.greengrim.presentation.ui.nft.model.UiNftItem" />
+            type="com.aoztg.greengrim.presentation.ui.home.model.UiHotNftItem" />
 
     </data>
 
@@ -49,6 +49,7 @@
             android:drawablePadding="4dp"
             android:paddingHorizontal="12dp"
             android:paddingVertical="4dp"
+            android:text="@{item.likeCount}"
             app:layout_constraintBottom_toBottomOf="@id/guideline_item"
             app:layout_constraintEnd_toEndOf="parent"
             tools:text="1,103" />

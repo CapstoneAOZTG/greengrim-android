@@ -7,7 +7,9 @@ import com.aoztg.greengrim.data.model.request.PatchProfileRequest
 import com.aoztg.greengrim.data.model.request.SignupRequest
 import com.aoztg.greengrim.data.model.request.WalletInfoRequest
 import com.aoztg.greengrim.data.model.response.CheckNickResponse
+import com.aoztg.greengrim.data.model.response.EventResponse
 import com.aoztg.greengrim.data.model.response.GetProfileResponse
+import com.aoztg.greengrim.data.model.response.HomeMyInfoResponse
 import com.aoztg.greengrim.data.model.response.LoginResponse
 import com.aoztg.greengrim.data.model.response.MyInfoResponse
 import com.aoztg.greengrim.data.model.response.MyPointResponse
@@ -57,5 +59,9 @@ class MemberRepositoryImpl @Inject constructor(private val api: MemberAPI) : Mem
 
     override suspend fun getMyPointInfo(page: Int, size: Int): BaseState<MyPointResponse> =
         runRemote { api.getMyPoint(page, size) }
+
+    override suspend fun getEvent(): BaseState<EventResponse> = runRemote { api.getEvent() }
+
+    override suspend fun getHomeMyInfo(): BaseState<HomeMyInfoResponse> = runRemote { api.getHomeMyInfo() }
 
 }

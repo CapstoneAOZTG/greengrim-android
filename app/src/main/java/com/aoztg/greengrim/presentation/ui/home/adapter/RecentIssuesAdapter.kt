@@ -4,9 +4,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.aoztg.greengrim.databinding.ItemHomeRecentIssuesBinding
-import com.aoztg.greengrim.presentation.ui.home.model.UiMoreActivity
+import com.aoztg.greengrim.presentation.ui.home.model.UiRecentIssues
 
-class RecentIssuesAdapter(val data: List<UiMoreActivity>) :
+class RecentIssuesAdapter(val data: List<UiRecentIssues>) :
     RecyclerView.Adapter<RecentIssueViewHolder>() {
 
     override fun onBindViewHolder(holder: RecentIssueViewHolder, position: Int) {
@@ -25,11 +25,10 @@ class RecentIssuesAdapter(val data: List<UiMoreActivity>) :
 class RecentIssueViewHolder(private val binding: ItemHomeRecentIssuesBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(item: UiMoreActivity) {
+    fun bind(item: UiRecentIssues) {
         binding.item = item
-        binding.ivIcon.setImageResource(item.imgResource)
         binding.root.setOnClickListener {
-            item.itemClickListener()
+            item.itemClickListener(item.link)
         }
     }
 }
