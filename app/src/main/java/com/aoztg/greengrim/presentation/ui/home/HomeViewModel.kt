@@ -8,6 +8,8 @@ import com.aoztg.greengrim.data.repository.MemberRepository
 import com.aoztg.greengrim.data.repository.NftRepository
 import com.aoztg.greengrim.presentation.ui.formatNumberWithCommas
 import com.aoztg.greengrim.presentation.ui.home.mapper.toUiHotChallenge
+import com.aoztg.greengrim.presentation.ui.home.mapper.toUiHotNftItem
+import com.aoztg.greengrim.presentation.ui.home.mapper.toUiRecentIssue
 import com.aoztg.greengrim.presentation.ui.home.model.UiHotChallenge
 import com.aoztg.greengrim.presentation.ui.home.model.UiHotNftItem
 import com.aoztg.greengrim.presentation.ui.home.model.UiRecentIssues
@@ -31,7 +33,8 @@ data class HomeUiState(
     val carbonReduction: String = "",
     val greenPoint: String = "",
     val eventName: String = "",
-    val eventImg: String = ""
+    val eventImg: String = "",
+    val eventUrl: String = ""
 )
 
 sealed class HomeEvents {
@@ -80,7 +83,7 @@ class HomeViewModel @Inject constructor(
                             state.copy(
                                 nickName = it.body.nickName,
                                 carbonReduction = it.body.carbonReduction,
-                                greenPoint = it.body.point.formatNumberWithCommas() + " GP"
+                                greenPoint = it.body.point
                             )
                         }
                     }
@@ -99,7 +102,8 @@ class HomeViewModel @Inject constructor(
                         _uiState.update { state ->
                             state.copy(
                                 eventImg = it.body.imgUrl,
-                                eventName = it.body.title
+                                eventName = it.body.title,
+                                eventUrl = it.body.url
                             )
                         }
                     }
@@ -135,29 +139,41 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun getRecentIssues() {
-        _uiState.update { state ->
-            state.copy(
-                uiRecentIssuesList = listOf(
-                    UiRecentIssues(
-                        "",
-                        "투표로 환경을 바꾼다? 기후 유권자",
-                        "link",
-                        ::navigateToWebView
-                    ),
-                    UiRecentIssues(
-                        "",
-                        "투표로 환경을 바꾼다? 기후 유권자",
-                        "link",
-                        ::navigateToWebView
-                    )
-                )
-            )
+        viewModelScope.launch {
+            memberRepository.getRecentIssue().let{
+                when(it){
+                    is BaseState.Success -> {
+                        _uiState.update { state ->
+                            state.copy(
+                                uiRecentIssuesList = it.body.issueInfos.map{ data -> data.toUiRecentIssue(::navigateToWebView)}
+                            )
+                        }
+                    }
+
+                    is BaseState.Error -> {
+
+                    }
+                }
+            }
         }
+
     }
 
     private fun getHotNft() {
         viewModelScope.launch {
-            // API 추가 예정
+            nftRepository.getHotNft().let {
+                when (it) {
+                    is BaseState.Success -> {
+                        _uiState.update { state ->
+                            state.copy(
+                                uiHotNftList = it.body.result.map { data -> data.toUiHotNftItem(::navigateToNftDetail) }
+                            )
+                        }
+                    }
+
+                    is BaseState.Error -> _events.emit(HomeEvents.ShowSnackMessage(it.msg))
+                }
+            }
         }
     }
 

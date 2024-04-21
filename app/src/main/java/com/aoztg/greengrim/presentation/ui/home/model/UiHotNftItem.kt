@@ -6,6 +6,6 @@ data class UiHotNftItem(
     val title: String,
     val profileImage: String,
     val nickName: String,
-    val likeCount: Int,
+    val likeCount: String,
     val navigateToNftDetail: (Long) -> Unit,
 )

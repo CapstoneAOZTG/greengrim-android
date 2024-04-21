@@ -28,7 +28,7 @@ class RecentIssueViewHolder(private val binding: ItemHomeRecentIssuesBinding) :
     fun bind(item: UiRecentIssues) {
         binding.item = item
         binding.root.setOnClickListener {
-            item.itemClickListener(item.link)
+            item.itemClickListener(item.url)
         }
     }
 }

@@ -32,16 +32,24 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
     private val viewModel: HomeViewModel by viewModels()
 
     private var isHotChallengeSet: Boolean = false
-    private var isMoreActivitySet: Boolean = false
+    private var isRecentIssueSet: Boolean = false
     private var isHotNftSet: Boolean = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         parentViewModel.showBNV()
         binding.vm = viewModel
+        setBtnClickListener()
         initRecycler()
         initEventObserver()
         initParentObserver()
+    }
+
+
+    private fun setBtnClickListener(){
+        binding.layoutWelcomeNft.setOnClickListener{
+            findNavController().toWebView(viewModel.uiState.value.eventUrl)
+        }
     }
 
     private fun initRecycler() {
@@ -53,10 +61,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
                     isHotChallengeSet = true
                 }
 
-                if (it.uiRecentIssuesList.isNotEmpty() && !isMoreActivitySet) {
+                if (it.uiRecentIssuesList.isNotEmpty() && !isRecentIssueSet) {
                     binding.rvRecentIssues.adapter = RecentIssuesAdapter(it.uiRecentIssuesList)
-                    recyclerToViewPager(binding.rvRecentIssues, binding.indicatorMoreActivity)
-                    isMoreActivitySet = true
+                    recyclerToViewPager(binding.rvRecentIssues, binding.indicatorRecentIssue)
+                    isRecentIssueSet = true
                 }
 
                 if (it.uiHotNftList.isNotEmpty() && !isHotNftSet) {
@@ -117,6 +125,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         super.onDestroyView()
         isHotChallengeSet = false
         isHotNftSet = false
-        isMoreActivitySet = false
+        isRecentIssueSet = false
     }
 }

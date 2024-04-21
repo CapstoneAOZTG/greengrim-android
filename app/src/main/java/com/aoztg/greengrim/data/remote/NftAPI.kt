@@ -2,6 +2,7 @@ package com.aoztg.greengrim.data.remote
 
 import com.aoztg.greengrim.data.model.request.EditNftRequest
 import com.aoztg.greengrim.data.model.request.NftLikeRequest
+import com.aoztg.greengrim.data.model.response.HotNftResponse
 import com.aoztg.greengrim.data.model.response.NftCollectionCountResponse
 import com.aoztg.greengrim.data.model.response.NftCollectionResponse
 import com.aoztg.greengrim.data.model.response.NftDetailResponse
@@ -84,5 +85,8 @@ interface NftAPI {
     suspend fun nftLike(
         @Body params : NftLikeRequest
     ) : Response<Unit>
+
+    @GET("/home/hot-nfts")
+    suspend fun getHotNft():Response<HotNftResponse>
 
 }

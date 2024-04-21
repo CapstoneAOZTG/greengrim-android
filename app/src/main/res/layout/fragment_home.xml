@@ -333,7 +333,7 @@
                     app:layout_constraintTop_toBottomOf="@id/indicator_hot_nft" />
 
                 <TextView
-                    android:id="@+id/tv_detail_more_activity"
+                    android:id="@+id/tv_detail_recent_issue"
                     style="@style/TextGgSmallGrey1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -351,10 +351,10 @@
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_detail_more_activity" />
+                    app:layout_constraintTop_toBottomOf="@id/tv_detail_recent_issue" />
 
                 <me.relex.circleindicator.CircleIndicator2
-                    android:id="@+id/indicator_more_activity"
+                    android:id="@+id/indicator_recent_issue"
                     android:layout_width="wrap_content"
                     android:layout_height="20dp"
                     android:layout_marginTop="20dp"

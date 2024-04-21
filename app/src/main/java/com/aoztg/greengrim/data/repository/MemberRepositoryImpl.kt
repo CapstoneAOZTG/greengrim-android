@@ -13,6 +13,7 @@ import com.aoztg.greengrim.data.model.response.HomeMyInfoResponse
 import com.aoztg.greengrim.data.model.response.LoginResponse
 import com.aoztg.greengrim.data.model.response.MyInfoResponse
 import com.aoztg.greengrim.data.model.response.MyPointResponse
+import com.aoztg.greengrim.data.model.response.RecentIssueResponse
 import com.aoztg.greengrim.data.model.response.SignupResponse
 import com.aoztg.greengrim.data.model.response.WalletInfoResponse
 import com.aoztg.greengrim.data.model.runRemote
@@ -33,7 +34,8 @@ class MemberRepositoryImpl @Inject constructor(private val api: MemberAPI) : Mem
 
     override suspend fun getMyInfo(): BaseState<MyInfoResponse> = runRemote { api.getMyInfo() }
 
-    override suspend fun getMemberInfo(id: Long): BaseState<GetProfileResponse> = runRemote { api.getMemberInfo(id) }
+    override suspend fun getMemberInfo(id: Long): BaseState<GetProfileResponse> =
+        runRemote { api.getMemberInfo(id) }
 
     override suspend fun getMyWalletInfo(): BaseState<WalletInfoResponse> =
         runRemote { api.getMyWalletInfo() }
@@ -62,6 +64,10 @@ class MemberRepositoryImpl @Inject constructor(private val api: MemberAPI) : Mem
 
     override suspend fun getEvent(): BaseState<EventResponse> = runRemote { api.getEvent() }
 
-    override suspend fun getHomeMyInfo(): BaseState<HomeMyInfoResponse> = runRemote { api.getHomeMyInfo() }
+    override suspend fun getHomeMyInfo(): BaseState<HomeMyInfoResponse> =
+        runRemote { api.getHomeMyInfo() }
+
+    override suspend fun getRecentIssue(): BaseState<RecentIssueResponse> =
+        runRemote { api.getHomeIssues() }
 
 }

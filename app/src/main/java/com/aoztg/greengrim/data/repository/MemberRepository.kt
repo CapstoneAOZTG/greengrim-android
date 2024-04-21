@@ -13,6 +13,7 @@ import com.aoztg.greengrim.data.model.response.HomeMyInfoResponse
 import com.aoztg.greengrim.data.model.response.LoginResponse
 import com.aoztg.greengrim.data.model.response.MyInfoResponse
 import com.aoztg.greengrim.data.model.response.MyPointResponse
+import com.aoztg.greengrim.data.model.response.RecentIssueResponse
 import com.aoztg.greengrim.data.model.response.SignupResponse
 import com.aoztg.greengrim.data.model.response.WalletInfoResponse
 
@@ -59,12 +60,14 @@ interface MemberRepository {
     suspend fun withdraw(): BaseState<Unit>
 
     suspend fun getMyPointInfo(
-        page : Int,
-        size : Int
+        page: Int,
+        size: Int
     ): BaseState<MyPointResponse>
 
     suspend fun getEvent(): BaseState<EventResponse>
 
     suspend fun getHomeMyInfo(): BaseState<HomeMyInfoResponse>
+
+    suspend fun getRecentIssue(): BaseState<RecentIssueResponse>
 
 }
