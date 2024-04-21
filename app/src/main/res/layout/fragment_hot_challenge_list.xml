@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="com.aoztg.greengrim.presentation.ui.home.HotChallengeSortType" />
+
         <variable
             name="vm"
             type="com.aoztg.greengrim.presentation.ui.home.HotChallengeListViewModel" />
@@ -16,68 +18,96 @@
         android:layout_height="match_parent"
         android:paddingHorizontal="20dp">
 
-        <TextView
-            android:id="@+id/tv_label_hot_challenge"
-            style="@style/TextHeader"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="@string/hot_challenge"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/tv_detail_hot_challenge"
-            style="@style/TextGgSmallGrey1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:text="지금 핫한 챌린지"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_label_hot_challenge" />
-
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/layout_filter"
-            android:layout_width="0dp"
+            android:id="@+id/layout_toolbar"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:paddingHorizontal="20dp"
-            android:paddingVertical="12dp"
+            android:paddingVertical="@dimen/padding_middle"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_detail_hot_challenge">
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_scrollFlags="scroll|enterAlways">
 
-            <TextView
-                android:id="@+id/tv_filter_most_headcount"
-                style="@style/TextGgMedium"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="참여자"
-                app:layout_constraintEnd_toStartOf="@id/tv_filter_most_certification"
+            <ImageButton
+                android:id="@+id/btn_back"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:background="@android:color/transparent"
+                android:scaleType="fitCenter"
+                android:src="@drawable/icon_back"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/tv_filter_most_certification"
-                style="@style/TextGgMedium"
-                android:layout_width="wrap_content"
+                style="@style/TextHeader"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="활발한 인증"
-                app:layout_constraintEnd_toStartOf="@id/tv_filter_most_recent"
-                app:layout_constraintStart_toEndOf="@id/tv_filter_most_headcount"
+                android:text="Hot Challenge"
+                android:textAlignment="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/btn_more"
+                app:layout_constraintStart_toEndOf="@id/btn_back"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/tv_filter_most_recent"
-                style="@style/TextGgMedium"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="최근 신설"
+            <ImageButton
+                android:id="@+id/btn_more"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="end"
+                android:background="@android:color/transparent"
+                android:scaleType="fitCenter"
+                android:src="@drawable/icon_more"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/tv_filter_most_certification"
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/cg_filter"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/layout_toolbar">
+
+            <TextView
+                android:id="@+id/chip_certification"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@{vm.uiState.curFilter == HotChallengeSortType.MOST_CERTIFICATION ? @drawable/shape_blueblackfill_skyblue2stroke_radius20 : @drawable/shape_lightblack2fill_nostroke_radius20}"
+                android:onClick="@{() -> vm.changeFilter(HotChallengeSortType.MOST_CERTIFICATION)}"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="6dp"
+                android:text="✨ 인증"
+                android:textColor="@{vm.uiState.curFilter == HotChallengeSortType.MOST_CERTIFICATION ? @color/gg_skyblue2 : @color/gg_grey2}"
+                app:chipCornerRadius="20dp"
+                app:chipStrokeColor="@color/gg_light_black2" />
+
+            <TextView
+                android:id="@+id/chip_person"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@{vm.uiState.curFilter == HotChallengeSortType.MOST_HEADCOUNT ? @drawable/shape_blueblackfill_skyblue2stroke_radius20 : @drawable/shape_lightblack2fill_nostroke_radius20}"
+                android:onClick="@{() -> vm.changeFilter(HotChallengeSortType.MOST_HEADCOUNT)}"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="6dp"
+                android:text="🔥 참여자"
+                android:textColor="@{vm.uiState.curFilter == HotChallengeSortType.MOST_HEADCOUNT ? @color/gg_skyblue2 : @color/gg_grey2}" />
+
+            <TextView
+                android:id="@+id/chip_new"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@{vm.uiState.curFilter == HotChallengeSortType.MOST_RECENT ? @drawable/shape_blueblackfill_skyblue2stroke_radius20 : @drawable/shape_lightblack2fill_nostroke_radius20}"
+                android:onClick="@{() -> vm.changeFilter(HotChallengeSortType.MOST_RECENT)}"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="6dp"
+                android:text="🐣 신규"
+                android:textColor="@{vm.uiState.curFilter == HotChallengeSortType.MOST_RECENT ? @color/gg_skyblue2 : @color/gg_grey2}" />
+
+        </com.google.android.material.chip.ChipGroup>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_challenge_list"
@@ -90,7 +120,7 @@
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/layout_filter"
+            app:layout_constraintTop_toBottomOf="@id/cg_filter"
             app:list="@{vm.uiState.uiChallengeRoom}"
             app:spanCount="2"
             tools:listitem="@layout/item_challenge_list" />

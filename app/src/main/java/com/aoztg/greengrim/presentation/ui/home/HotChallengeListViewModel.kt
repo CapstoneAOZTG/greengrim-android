@@ -4,9 +4,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.repository.ChallengeRepository
+import com.aoztg.greengrim.presentation.customview.ChallengeSortType
 import com.aoztg.greengrim.presentation.ui.challenge.list.ChallengeListEvents
 import com.aoztg.greengrim.presentation.ui.challenge.mapper.toUiChallengeList
 import com.aoztg.greengrim.presentation.ui.challenge.model.UiChallengeRoom
+import com.aoztg.greengrim.presentation.ui.global.profile.ProfileViewModel
+import com.aoztg.greengrim.presentation.ui.mypage.myprofile.ProfileFilter
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -21,7 +24,7 @@ import javax.inject.Inject
 
 data class HotChallengeListUiState(
     val uiChallengeRoom: List<UiChallengeRoom> = emptyList(),
-    val sortType: HotChallengeSortType = HotChallengeSortType.MOST_RECENT,
+    val curFilter: HotChallengeSortType = HotChallengeSortType.MOST_CERTIFICATION,
     val page: Int = 0,
     val hasNext: Boolean = true
 )
@@ -38,9 +41,9 @@ class HotChallengeListViewModel @Inject constructor(
     private val challengeRepository: ChallengeRepository
 ) : ViewModel() {
 
-    companion object{
-        const val SORT = 0
-        const val ORIGINAL = 1
+    companion object {
+        const val NEW = 0
+        const val NEXT_PAGE = 1
     }
 
     private val _uiState = MutableStateFlow(HotChallengeListUiState())
@@ -49,22 +52,34 @@ class HotChallengeListViewModel @Inject constructor(
     private val _event = MutableSharedFlow<HotChallengeListEvents>()
     val event: SharedFlow<HotChallengeListEvents> = _event.asSharedFlow()
 
-    fun getHotChallengeList(option : Int){
-        if(uiState.value.hasNext){
+    fun changeFilter(filter: HotChallengeSortType) {
+        _uiState.update { state ->
+            state.copy(
+                curFilter = filter,
+                page = 0,
+                hasNext = true
+            )
+        }
+
+        getHotChallengeList(NEW)
+    }
+
+    fun getHotChallengeList(option: Int) {
+        if (uiState.value.hasNext) {
             viewModelScope.launch {
                 _event.emit(HotChallengeListEvents.ShowLoading)
 
                 challengeRepository.getMoreHotChallenges(
-                    uiState.value.sortType.value,
+                    uiState.value.curFilter.value,
                     uiState.value.page,
                     20
-                ).let{
-                    when(it){
+                ).let {
+                    when (it) {
                         is BaseState.Success -> {
                             val uiData = it.body.toUiChallengeList(::navigateToChallengeDetail)
                             _uiState.update { state ->
                                 state.copy(
-                                    uiChallengeRoom = if(option == ORIGINAL) uiState.value.uiChallengeRoom + uiData.result else uiData.result,
+                                    uiChallengeRoom = if (option == NEXT_PAGE) uiState.value.uiChallengeRoom + uiData.result else uiData.result,
                                     hasNext = uiData.hasNext,
                                     page = uiData.page + 1
                                 )
@@ -88,7 +103,7 @@ class HotChallengeListViewModel @Inject constructor(
 
 }
 
-enum class HotChallengeSortType(val value: String){
+enum class HotChallengeSortType(val value: String) {
     MOST_RECENT("MOST_RECENT"),
     MOST_HEADCOUNT("MOST_HEADCOUNT"),
     MOST_CERTIFICATION("MOST_CERTIFICATION")

@@ -30,4 +30,6 @@
     <color name="gg_yellow">#FFE500</color>
     <color name="gg_purple">#BE5DE0</color>
     <color name="gg_skyblue">#3384E2</color>
+    <color name="gg_skyblue2">#367FD4</color>
+    <color name="gg_blueblack">#3C4C5F</color>
 </resources>
