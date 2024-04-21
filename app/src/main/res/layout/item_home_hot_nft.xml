@@ -12,8 +12,8 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="230dp"
-        android:layout_height="170dp"
+        android:layout_width="160dp"
+        android:layout_height="200dp"
         android:layout_marginEnd="20dp"
         android:background="@drawable/shape_lightblack2fill_nostroke_radius10">
 
@@ -36,6 +36,22 @@
             app:layout_constraintTop_toTopOf="parent"
             app:shapeAppearanceOverlay="@style/Top8RadiusImageView"
             tools:src="@drawable/test" />
+
+        <TextView
+            android:id="@+id/tv_like_count"
+            style="@style/TextGgTiny"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/shape_black2transparencyfill_nostroke_radius15"
+            android:drawableStart="@drawable/icon_3d_heart"
+            android:drawablePadding="4dp"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="4dp"
+            app:layout_constraintBottom_toBottomOf="@id/guideline_item"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="1,103" />
 
         <TextView
             android:id="@+id/tv_title"

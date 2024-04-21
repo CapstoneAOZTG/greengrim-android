@@ -16,7 +16,7 @@ import com.aoztg.greengrim.presentation.chatmanager.ChatManager
 import com.aoztg.greengrim.presentation.ui.catchgame.CatchGameActivity
 import com.aoztg.greengrim.presentation.ui.home.adapter.HotChallengeAdapter
 import com.aoztg.greengrim.presentation.ui.home.adapter.HotNftAdapter
-import com.aoztg.greengrim.presentation.ui.home.adapter.MoreActivityAdapter
+import com.aoztg.greengrim.presentation.ui.home.adapter.RecentIssuesAdapter
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 import com.aoztg.greengrim.presentation.ui.toAttendCheck
 import com.aoztg.greengrim.presentation.ui.toChallengeDetail
@@ -56,8 +56,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
                 }
 
                 if (it.uiMoreActivityList.isNotEmpty() && !isMoreActivitySet) {
-                    binding.rvMoreActivity.adapter = MoreActivityAdapter(it.uiMoreActivityList)
-                    recyclerToViewPager(binding.rvMoreActivity, binding.indicatorMoreActivity)
+                    binding.rvRecentIssues.adapter = RecentIssuesAdapter(it.uiMoreActivityList)
+                    recyclerToViewPager(binding.rvRecentIssues, binding.indicatorMoreActivity)
                     isMoreActivitySet = true
                 }
 
@@ -126,5 +126,4 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         isHotNftSet = false
         isMoreActivitySet = false
     }
-
 }

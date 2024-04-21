@@ -56,7 +56,7 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             _events.emit(HomeEvents.ShowLoading)
             getHotChallenges()
-            getMoreActivity()
+            getRecentIssues()
             getHotNft()
             _events.emit(HomeEvents.DismissLoading)
         }
@@ -83,7 +83,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private suspend fun getMoreActivity() {
+    private suspend fun getRecentIssues() {
         _uiState.update { state ->
             state.copy(
                 uiMoreActivityList = listOf(
