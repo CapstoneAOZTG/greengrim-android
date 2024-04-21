@@ -2,13 +2,17 @@ package com.aoztg.greengrim.presentation.ui.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.aoztg.greengrim.R
 import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.repository.ChallengeRepository
+import com.aoztg.greengrim.data.repository.MemberRepository
 import com.aoztg.greengrim.data.repository.NftRepository
+import com.aoztg.greengrim.presentation.ui.formatNumberWithCommas
 import com.aoztg.greengrim.presentation.ui.home.mapper.toUiHotChallenge
+import com.aoztg.greengrim.presentation.ui.home.mapper.toUiHotNftItem
+import com.aoztg.greengrim.presentation.ui.home.mapper.toUiRecentIssue
 import com.aoztg.greengrim.presentation.ui.home.model.UiHotChallenge
-import com.aoztg.greengrim.presentation.ui.home.model.UiMoreActivity
+import com.aoztg.greengrim.presentation.ui.home.model.UiHotNftItem
+import com.aoztg.greengrim.presentation.ui.home.model.UiRecentIssues
 import com.aoztg.greengrim.presentation.ui.nft.model.UiNftItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -23,16 +27,21 @@ import javax.inject.Inject
 
 data class HomeUiState(
     val uiHotChallengeList: List<UiHotChallenge> = emptyList(),
-    val uiMoreActivityList: List<UiMoreActivity> = emptyList(),
-    val uiHotNftList: List<UiNftItem> = emptyList(),
+    val uiRecentIssuesList: List<UiRecentIssues> = emptyList(),
+    val uiHotNftList: List<UiHotNftItem> = emptyList(),
+    val nickName: String = "",
+    val carbonReduction: String = "",
+    val greenPoint: String = "",
+    val eventName: String = "",
+    val eventImg: String = "",
+    val eventUrl: String = ""
 )
 
 sealed class HomeEvents {
     data class NavigateToChallengeDetail(val id: Long) : HomeEvents()
     data class ShowToastMessage(val msg: String) : HomeEvents()
     data class ShowSnackMessage(val msg: String) : HomeEvents()
-    object NavigateToAttendCheck : HomeEvents()
-    object GoToGameActivity : HomeEvents()
+    data class NavigateToWebView(val link: String) : HomeEvents()
     object ShowLoading : HomeEvents()
     object DismissLoading : HomeEvents()
     data class NavigateToNftDetail(val id: Long) : HomeEvents()
@@ -42,6 +51,7 @@ sealed class HomeEvents {
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
+    private val memberRepository: MemberRepository,
     private val challengeRepository: ChallengeRepository,
     private val nftRepository: NftRepository
 ) : ViewModel() {
@@ -55,90 +65,127 @@ class HomeViewModel @Inject constructor(
     fun getHomeData() {
         viewModelScope.launch {
             _events.emit(HomeEvents.ShowLoading)
+            getHomeMyInfo()
+            getHomeEvent()
             getHotChallenges()
-            getMoreActivity()
+            getRecentIssues()
             getHotNft()
             _events.emit(HomeEvents.DismissLoading)
         }
     }
 
-    private suspend fun getHotChallenges() {
-        challengeRepository.getHotChallenges().let {
-            when (it) {
-                is BaseState.Success -> {
-                    val uiModel = it.body.challengeInfos.map { data ->
-                        data.toUiHotChallenge(::navigateToChallengeDetail)
+    private fun getHomeMyInfo() {
+        viewModelScope.launch {
+            memberRepository.getHomeMyInfo().let {
+                when (it) {
+                    is BaseState.Success -> {
+                        _uiState.update { state ->
+                            state.copy(
+                                nickName = it.body.nickName,
+                                carbonReduction = it.body.carbonReduction,
+                                greenPoint = it.body.point
+                            )
+                        }
                     }
-                    _uiState.update { state ->
-                        state.copy(
-                            uiHotChallengeList = uiModel
-                        )
-                    }
-                }
 
-                is BaseState.Error -> {
-                    _events.emit(HomeEvents.ShowSnackMessage(it.msg))
+                    is BaseState.Error -> _events.emit(HomeEvents.ShowSnackMessage(it.msg))
                 }
             }
         }
     }
 
-    private suspend fun getMoreActivity() {
-        _uiState.update { state ->
-            state.copy(
-                uiMoreActivityList = listOf(
-                    UiMoreActivity(
-                        R.drawable.icon_home_game,
-                        "쓰레기 잡기",
-                        "지금 플레이하면",
-                        "+ 10 G",
-                        ::goToGameActivity
-                    ),
-                    UiMoreActivity(
-                        R.drawable.icon_home_attend_check,
-                        "출석 체크",
-                        "지금 상호 인증하면",
-                        "+ 10 G",
-                        ::navigateToAttendCheck
-                    )
-                )
-            )
+    private fun getHomeEvent() {
+        viewModelScope.launch {
+            memberRepository.getEvent().let {
+                when (it) {
+                    is BaseState.Success -> {
+                        _uiState.update { state ->
+                            state.copy(
+                                eventImg = it.body.imgUrl,
+                                eventName = it.body.title,
+                                eventUrl = it.body.url
+                            )
+                        }
+                    }
+
+                    is BaseState.Error -> _events.emit(HomeEvents.ShowSnackMessage(it.msg))
+                }
+            }
         }
     }
 
-    private suspend fun getHotNft() {
+    private fun getHotChallenges() {
         viewModelScope.launch {
-//            nftRepository.getHotNfts().let {
-//                when (it) {
-//                    is BaseState.Success -> {
-//                        _uiState.update { state ->
-//                            state.copy(
-//                                uiHotNftList = it.body.homeNftInfos.map { data -> data.toUiNftItem(::navigateToNftDetail) }
-//                            )
-//                        }
-//                    }
-//
-//                    is BaseState.Error -> _events.emit(HomeEvents.ShowSnackMessage(it.msg))
-//                }
-//            }
+            challengeRepository.getHotChallenges().let {
+                when (it) {
+                    is BaseState.Success -> {
+                        val uiModel = it.body.challengeInfos.map { data ->
+                            data.toUiHotChallenge(::navigateToChallengeDetail)
+                        }
+                        _uiState.update { state ->
+                            state.copy(
+                                uiHotChallengeList = uiModel
+                            )
+                        }
+                    }
+
+                    is BaseState.Error -> {
+                        _events.emit(HomeEvents.ShowSnackMessage(it.msg))
+                    }
+                }
+            }
+        }
+
+    }
+
+    private fun getRecentIssues() {
+        viewModelScope.launch {
+            memberRepository.getRecentIssue().let{
+                when(it){
+                    is BaseState.Success -> {
+                        _uiState.update { state ->
+                            state.copy(
+                                uiRecentIssuesList = it.body.issueInfos.map{ data -> data.toUiRecentIssue(::navigateToWebView)}
+                            )
+                        }
+                    }
+
+                    is BaseState.Error -> {
+
+                    }
+                }
+            }
+        }
+
+    }
+
+    private fun getHotNft() {
+        viewModelScope.launch {
+            nftRepository.getHotNft().let {
+                when (it) {
+                    is BaseState.Success -> {
+                        _uiState.update { state ->
+                            state.copy(
+                                uiHotNftList = it.body.result.map { data -> data.toUiHotNftItem(::navigateToNftDetail) }
+                            )
+                        }
+                    }
+
+                    is BaseState.Error -> _events.emit(HomeEvents.ShowSnackMessage(it.msg))
+                }
+            }
+        }
+    }
+
+    private fun navigateToWebView(link: String) {
+        viewModelScope.launch {
+            _events.emit(HomeEvents.NavigateToWebView(link))
         }
     }
 
     private fun navigateToChallengeDetail(id: Long) {
         viewModelScope.launch {
             _events.emit(HomeEvents.NavigateToChallengeDetail(id))
-        }
-    }
-
-    private fun navigateToAttendCheck() {
-        viewModelScope.launch {
-            _events.emit(HomeEvents.NavigateToAttendCheck)
-        }
-    }
-
-    private fun goToGameActivity() {
-        viewModelScope.launch {
-            _events.emit(HomeEvents.GoToGameActivity)
         }
     }
 

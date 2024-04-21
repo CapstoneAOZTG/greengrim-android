@@ -3,6 +3,7 @@ package com.aoztg.greengrim.data.repository
 import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.model.request.EditNftRequest
 import com.aoztg.greengrim.data.model.request.NftLikeRequest
+import com.aoztg.greengrim.data.model.response.HotNftResponse
 import com.aoztg.greengrim.data.model.response.NftCollectionCountResponse
 import com.aoztg.greengrim.data.model.response.NftCollectionResponse
 import com.aoztg.greengrim.data.model.response.NftDetailResponse
@@ -66,5 +67,7 @@ interface NftRepository {
     suspend fun nftLike(
         body: NftLikeRequest
     ): BaseState<Unit>
+
+    suspend fun getHotNft(): BaseState<HotNftResponse>
 
 }

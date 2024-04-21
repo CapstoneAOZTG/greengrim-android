@@ -1,6 +1,5 @@
 package com.aoztg.greengrim.presentation.ui.home
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.activityViewModels
@@ -13,14 +12,13 @@ import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentHomeBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
 import com.aoztg.greengrim.presentation.chatmanager.ChatManager
-import com.aoztg.greengrim.presentation.ui.catchgame.CatchGameActivity
 import com.aoztg.greengrim.presentation.ui.home.adapter.HotChallengeAdapter
 import com.aoztg.greengrim.presentation.ui.home.adapter.HotNftAdapter
-import com.aoztg.greengrim.presentation.ui.home.adapter.MoreActivityAdapter
+import com.aoztg.greengrim.presentation.ui.home.adapter.RecentIssuesAdapter
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
-import com.aoztg.greengrim.presentation.ui.toAttendCheck
 import com.aoztg.greengrim.presentation.ui.toChallengeDetail
 import com.aoztg.greengrim.presentation.ui.toNftDetail
+import com.aoztg.greengrim.presentation.ui.toWebView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import me.relex.circleindicator.CircleIndicator2
@@ -34,16 +32,24 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
     private val viewModel: HomeViewModel by viewModels()
 
     private var isHotChallengeSet: Boolean = false
-    private var isMoreActivitySet: Boolean = false
+    private var isRecentIssueSet: Boolean = false
     private var isHotNftSet: Boolean = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         parentViewModel.showBNV()
         binding.vm = viewModel
+        setBtnClickListener()
         initRecycler()
         initEventObserver()
         initParentObserver()
+    }
+
+
+    private fun setBtnClickListener(){
+        binding.layoutWelcomeNft.setOnClickListener{
+            findNavController().toWebView(viewModel.uiState.value.eventUrl)
+        }
     }
 
     private fun initRecycler() {
@@ -55,10 +61,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
                     isHotChallengeSet = true
                 }
 
-                if (it.uiMoreActivityList.isNotEmpty() && !isMoreActivitySet) {
-                    binding.rvMoreActivity.adapter = MoreActivityAdapter(it.uiMoreActivityList)
-                    recyclerToViewPager(binding.rvMoreActivity, binding.indicatorMoreActivity)
-                    isMoreActivitySet = true
+                if (it.uiRecentIssuesList.isNotEmpty() && !isRecentIssueSet) {
+                    binding.rvRecentIssues.adapter = RecentIssuesAdapter(it.uiRecentIssuesList)
+                    recyclerToViewPager(binding.rvRecentIssues, binding.indicatorRecentIssue)
+                    isRecentIssueSet = true
                 }
 
                 if (it.uiHotNftList.isNotEmpty() && !isHotNftSet) {
@@ -82,12 +88,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
                     is HomeEvents.ShowLoading -> showLoading(requireContext())
                     is HomeEvents.DismissLoading -> dismissLoading()
                     is HomeEvents.ShowSnackMessage -> showCustomSnack(binding.root, it.msg)
-                    is HomeEvents.NavigateToAttendCheck -> findNavController().toAttendCheck()
-                    is HomeEvents.GoToGameActivity -> {
-                        val intent = Intent(requireContext(), CatchGameActivity::class.java)
-                        startActivity(intent)
-                    }
-
+                    is HomeEvents.NavigateToWebView -> findNavController().toWebView(it.link)
                     is HomeEvents.NavigateToNftDetail -> findNavController().toNftDetail(it.id)
                     is HomeEvents.NavigateToNftList -> {}
                     is HomeEvents.NavigateToHotChallengeList -> findNavController().toHotChallengeList()
@@ -124,7 +125,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         super.onDestroyView()
         isHotChallengeSet = false
         isHotNftSet = false
-        isMoreActivitySet = false
+        isRecentIssueSet = false
     }
-
 }

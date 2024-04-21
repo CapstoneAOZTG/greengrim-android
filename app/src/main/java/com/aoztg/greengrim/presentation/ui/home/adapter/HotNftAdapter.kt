@@ -4,9 +4,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.aoztg.greengrim.databinding.ItemHomeHotNftBinding
+import com.aoztg.greengrim.presentation.ui.home.model.UiHotNftItem
 import com.aoztg.greengrim.presentation.ui.nft.model.UiNftItem
 
-class HotNftAdapter(val data: List<UiNftItem>) : RecyclerView.Adapter<HotNftViewHolder>() {
+class HotNftAdapter(val data: List<UiHotNftItem>) : RecyclerView.Adapter<HotNftViewHolder>() {
 
     override fun onBindViewHolder(holder: HotNftViewHolder, position: Int) {
         holder.bind(data[position])
@@ -24,7 +25,7 @@ class HotNftAdapter(val data: List<UiNftItem>) : RecyclerView.Adapter<HotNftView
 class HotNftViewHolder(private val binding: ItemHomeHotNftBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(item: UiNftItem) {
+    fun bind(item: UiHotNftItem) {
         binding.item = item
         binding.root.setOnClickListener {
             item.navigateToNftDetail(item.id)
