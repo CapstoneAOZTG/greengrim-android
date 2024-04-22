@@ -37,7 +37,6 @@ class ChatSocket(
         stompClient.disconnect()
     }
 
-
     @SuppressLint("CheckResult")
     fun subscribeChat(chatId: Long) {
         try{

@@ -100,7 +100,6 @@ class ChatManager @Inject constructor(
                 }
                 _firstConnect.value = true
             }
-            unsubscribeFcm()
             getUnReadChat()
         }
     }
@@ -257,32 +256,5 @@ class ChatManager @Inject constructor(
 
     fun disconnectChat() {
         chatSocket.disconnectServer()
-    }
-
-    fun subscribeFcm() {
-        viewModelScope.launch {
-            memberRepository.subscribeFcm().let {
-                when (it) {
-                    is BaseState.Success -> {}
-                    is BaseState.Error -> {
-                        _events.emit(ChatEvent.ShowSnackMessage(it.msg))
-                    }
-                }
-            }
-        }
-    }
-
-    fun unsubscribeFcm() {
-        viewModelScope.launch {
-            memberRepository.unsubscribeFcm().let {
-                when (it) {
-                    is BaseState.Success -> {}
-                    is BaseState.Error -> {
-                        _events.emit(ChatEvent.ShowSnackMessage(it.msg))
-                    }
-                }
-            }
-
-        }
     }
 }
