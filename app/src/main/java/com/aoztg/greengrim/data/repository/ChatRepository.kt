@@ -2,9 +2,10 @@ package com.aoztg.greengrim.data.repository
 
 import com.aoztg.greengrim.data.local.UnReadChatEntity
 import com.aoztg.greengrim.data.model.BaseState
+import com.aoztg.greengrim.data.model.request.ChatListDataRequest
 import com.aoztg.greengrim.data.model.response.ChatInfoResponse
+import com.aoztg.greengrim.data.model.response.ChatListDataResponse
 import com.aoztg.greengrim.data.model.response.ChatMessageResponse
-import com.aoztg.greengrim.data.model.response.ChatRoomsResponse
 import com.aoztg.greengrim.data.model.response.EnterChatResponse
 
 interface ChatRepository {
@@ -13,7 +14,9 @@ interface ChatRepository {
         challengeId: Long
     ): BaseState<EnterChatResponse>
 
-    suspend fun getChatRooms(): BaseState<List<ChatRoomsResponse>>
+    suspend fun getChatListData(
+        body : List<ChatListDataRequest>
+    ): BaseState<List<ChatListDataResponse>>
 
     suspend fun getUnReadChatData(): BaseState<List<UnReadChatEntity>>
 

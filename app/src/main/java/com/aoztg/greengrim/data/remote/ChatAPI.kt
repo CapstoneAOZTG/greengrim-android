@@ -1,10 +1,12 @@
 package com.aoztg.greengrim.data.remote
 
+import com.aoztg.greengrim.data.model.request.ChatListDataRequest
 import com.aoztg.greengrim.data.model.response.ChatInfoResponse
+import com.aoztg.greengrim.data.model.response.ChatListDataResponse
 import com.aoztg.greengrim.data.model.response.ChatMessageResponse
-import com.aoztg.greengrim.data.model.response.ChatRoomsResponse
 import com.aoztg.greengrim.data.model.response.EnterChatResponse
 import retrofit2.Response
+import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
@@ -17,8 +19,10 @@ interface ChatAPI {
         @Query("id") challengeId: Long
     ): Response<EnterChatResponse>
 
-    @GET("/visitor/challenges/chatrooms")
-    suspend fun getChatList(): Response<List<ChatRoomsResponse>>
+    @POST("/visitor/challenges/chatrooms")
+    suspend fun getChatListData(
+        @Body params: List<ChatListDataRequest>
+    ): Response<List<ChatListDataResponse>>
 
     @POST("/visitor/chatrooms/exit")
     suspend fun exitChatRoom(
@@ -34,7 +38,7 @@ interface ChatAPI {
 
     @GET("/visitor/challenges/{id}")
     suspend fun getChatInfo(
-        @Path("id") id : Long
+        @Path("id") id: Long
     ): Response<ChatInfoResponse>
 
 }

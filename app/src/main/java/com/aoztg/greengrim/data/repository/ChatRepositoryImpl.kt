@@ -3,9 +3,10 @@ package com.aoztg.greengrim.data.repository
 import com.aoztg.greengrim.data.local.ChatDao
 import com.aoztg.greengrim.data.local.UnReadChatEntity
 import com.aoztg.greengrim.data.model.BaseState
+import com.aoztg.greengrim.data.model.request.ChatListDataRequest
 import com.aoztg.greengrim.data.model.response.ChatInfoResponse
+import com.aoztg.greengrim.data.model.response.ChatListDataResponse
 import com.aoztg.greengrim.data.model.response.ChatMessageResponse
-import com.aoztg.greengrim.data.model.response.ChatRoomsResponse
 import com.aoztg.greengrim.data.model.response.EnterChatResponse
 import com.aoztg.greengrim.data.model.runRemote
 import com.aoztg.greengrim.data.remote.ChatAPI
@@ -22,8 +23,8 @@ class ChatRepositoryImpl @Inject constructor(
     override suspend fun enterChat(challengeId: Long): BaseState<EnterChatResponse> =
         runRemote { api.enterChat(challengeId) }
 
-    override suspend fun getChatRooms(): BaseState<List<ChatRoomsResponse>> =
-        runRemote { api.getChatList() }
+    override suspend fun getChatListData(body: List<ChatListDataRequest>): BaseState<List<ChatListDataResponse>> =
+        runRemote { api.getChatListData(body) }
 
     override suspend fun exitChatRoom(id: Long): BaseState<Unit> =
         runRemote { api.exitChatRoom(id) }
