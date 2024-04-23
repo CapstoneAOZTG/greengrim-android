@@ -87,6 +87,7 @@
                 android:background="@drawable/shape_nofill_whitestroke_radius15"
                 android:paddingHorizontal="20dp"
                 android:paddingVertical="6dp"
+                android:text="@{vm.uiState.chatInfo.category}"
                 tools:text="줍킹" />
 
             <TextView
@@ -97,6 +98,7 @@
                 android:background="@drawable/shape_nofill_whitestroke_radius15"
                 android:paddingHorizontal="20dp"
                 android:paddingVertical="6dp"
+                android:text="@{vm.uiState.chatInfo.ticketCount}"
                 tools:text="티켓 5/30" />
 
             <TextView
@@ -107,6 +109,7 @@
                 android:background="@drawable/shape_nofill_whitestroke_radius15"
                 android:paddingHorizontal="20dp"
                 android:paddingVertical="6dp"
+                android:text="@{vm.uiState.chatInfo.certificationCount}"
                 tools:text="인증 14/15 회" />
 
         </com.google.android.material.chip.ChipGroup>

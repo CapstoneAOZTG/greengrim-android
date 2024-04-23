@@ -1,23 +1,22 @@
 package com.aoztg.greengrim.presentation.ui.chat.chatroom
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.app.App
-import com.aoztg.greengrim.data.local.UnReadChatEntity
 import com.aoztg.greengrim.data.model.BaseState
+import com.aoztg.greengrim.data.model.response.ChatInfoResponse
 import com.aoztg.greengrim.data.repository.ChallengeRepository
 import com.aoztg.greengrim.data.repository.ChatRepository
 import com.aoztg.greengrim.presentation.chatmanager.model.ChatMessage
+import com.aoztg.greengrim.presentation.ui.chat.mapper.toUiChatInfo
 import com.aoztg.greengrim.presentation.ui.chat.mapper.toUiChatMessage
+import com.aoztg.greengrim.presentation.ui.chat.model.UiChatInfo
 import com.aoztg.greengrim.presentation.ui.chat.model.UiChatMessage
-import com.aoztg.greengrim.presentation.ui.getCurrentTimeString
 import com.aoztg.greengrim.presentation.util.Constants
 import com.aoztg.greengrim.presentation.util.Constants.DATE
 import com.aoztg.greengrim.presentation.util.Constants.MY_CHAT
 import com.aoztg.greengrim.presentation.util.Constants.NOTHING
 import com.aoztg.greengrim.presentation.util.Constants.OTHER_CHAT
-import com.aoztg.greengrim.presentation.util.Constants.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -36,7 +35,8 @@ data class ChatRoomUiState(
     val editTextState: Boolean = false,
     val chatMessages: List<UiChatMessage> = emptyList(),
     val page: Int = 0,
-    val hasNext: Boolean = true
+    val hasNext: Boolean = true,
+    val chatInfo: UiChatInfo = UiChatInfo()
 )
 
 sealed class ChatRoomEvents {
@@ -93,16 +93,19 @@ class ChatRoomViewModel @Inject constructor(
         }
     }
 
-    private fun getChatInfo(){
+    fun getChatInfo() {
         viewModelScope.launch {
-            chatRepository.getChatInfo(chatRoomId).let{
-                when(it){
+            chatRepository.getChatInfo(chatRoomId).let {
+                when (it) {
                     is BaseState.Success -> {
-
+                        _uiState.update { state ->
+                            state.copy(
+                                chatInfo = it.body.toUiChatInfo()
+                            )
+                        }
                     }
 
-                    is BaseState.Error -> {}
-
+                    is BaseState.Error -> _events.emit(ChatRoomEvents.ShowSnackMessage(it.msg))
                 }
             }
         }
@@ -129,13 +132,15 @@ class ChatRoomViewModel @Inject constructor(
     fun getChatMessageData() {
         if (uiState.value.hasNext) {
             viewModelScope.launch {
-                when (val response = chatRepository.getChatMessage(chatRoomId, uiState.value.page, 20)) {
+                when (val response =
+                    chatRepository.getChatMessage(chatRoomId, uiState.value.page, 20)) {
                     is BaseState.Success -> {
                         val list = response.body.result.map {
-                            it.toUiChatMessage(::navigateToCertificationDetail,
-                                if(memberId == it.senderId) MY_CHAT
+                            it.toUiChatMessage(
+                                ::navigateToCertificationDetail,
+                                if (memberId == it.senderId) MY_CHAT
                                 else OTHER_CHAT
-                                )
+                            )
                         }
                         _uiState.update { state ->
                             state.copy(
@@ -231,11 +236,12 @@ class ChatRoomViewModel @Inject constructor(
         viewModelScope.launch {
             _events.emit(ChatRoomEvents.ShowLoading)
 
-            challengeRepository.exitChallenge(challengeId).let{
-                when(it){
+            challengeRepository.exitChallenge(challengeId).let {
+                when (it) {
                     is BaseState.Success -> {
                         _events.emit(ChatRoomEvents.ExitChat)
                     }
+
                     is BaseState.Error -> {
                         _events.emit(ChatRoomEvents.DismissLoading)
                         _events.emit(ChatRoomEvents.ShowSnackMessage(it.msg))

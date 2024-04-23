@@ -42,6 +42,7 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
         binding.rvChat.itemAnimator = null
         setScrollEventListener()
         viewModel.setIds(chatId, challengeId)
+        viewModel.getChatInfo()
         setDataChangeListener()
         initEventsObserver()
         initChatMessageObserver()
