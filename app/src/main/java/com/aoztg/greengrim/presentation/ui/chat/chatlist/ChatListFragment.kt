@@ -22,13 +22,15 @@ class ChatListFragment : BaseFragment<FragmentChatListBinding>(R.layout.fragment
     private val parentViewModel: MainViewModel by activityViewModels()
     private val chatManager: ChatManager by activityViewModels()
     private val viewModel: ChatListViewModel by viewModels()
+    private val adapter = ChatListAdapter()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         parentViewModel.showBNV()
         binding.chatMg = chatManager
         binding.vm = viewModel
-        binding.rvChatList.adapter = ChatListAdapter()
+        adapter.setChatRoomInterface(this)
+        binding.rvChatList.adapter = adapter
         initEventsObserve()
     }
 
