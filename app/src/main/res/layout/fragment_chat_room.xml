@@ -109,7 +109,7 @@
                 android:background="@drawable/shape_nofill_whitestroke_radius15"
                 android:paddingHorizontal="20dp"
                 android:paddingVertical="6dp"
-                android:text="@{vm.uiState.chatInfo.certificationCount}"
+                android:text="@{vm.uiState.chatInfo.goalCount}"
                 tools:text="인증 14/15 회" />
 
         </com.google.android.material.chip.ChipGroup>
@@ -123,7 +123,7 @@
             android:orientation="vertical"
             android:paddingBottom="10dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintBottom_toTopOf="@id/layout_edit_text"
+            app:layout_constraintBottom_toTopOf="@id/layout_chat_box"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/layout_chatroom_announce"
@@ -131,7 +131,7 @@
             app:reverseLayout="true" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/layout_edit_text"
+            android:id="@+id/layout_chat_box"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="@color/gg_chat_background"
@@ -142,6 +142,7 @@
             app:layout_constraintStart_toStartOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_edit_text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/shape_darkgreyfill_nostroke_radius15"
@@ -170,6 +171,7 @@
                     android:id="@+id/btn_create_certification"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:onClick="@{() -> vm.navigateToCreateCertification()}"
                     android:layout_marginStart="12dp"
                     android:src="@drawable/icon_create_certification_on"
                     app:layout_constraintBottom_toBottomOf="parent"

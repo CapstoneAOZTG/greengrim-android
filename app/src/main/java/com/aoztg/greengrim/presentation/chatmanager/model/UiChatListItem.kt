@@ -1,4 +1,4 @@
-package com.aoztg.greengrim.presentation.ui.chat.model
+package com.aoztg.greengrim.presentation.chatmanager.model
 
 data class UiChatListItem(
     val chatId: Long,
@@ -8,6 +8,4 @@ data class UiChatListItem(
     val chatCount: Int = 0,
     val recentChat: String = "",
     val recentTime: String = "",
-    val creationDday: String,
-    val onClickListener: (String, Long, Long) -> Unit
 )

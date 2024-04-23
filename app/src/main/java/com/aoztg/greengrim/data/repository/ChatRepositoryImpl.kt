@@ -1,5 +1,6 @@
 package com.aoztg.greengrim.data.repository
 
+import android.util.Log
 import com.aoztg.greengrim.data.local.ChatDao
 import com.aoztg.greengrim.data.local.UnReadChatEntity
 import com.aoztg.greengrim.data.model.BaseState
@@ -10,6 +11,7 @@ import com.aoztg.greengrim.data.model.response.ChatMessageResponse
 import com.aoztg.greengrim.data.model.response.EnterChatResponse
 import com.aoztg.greengrim.data.model.runRemote
 import com.aoztg.greengrim.data.remote.ChatAPI
+import com.aoztg.greengrim.presentation.util.Constants.TAG
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -37,6 +39,7 @@ class ChatRepositoryImpl @Inject constructor(
 
             BaseState.Success(response)
         } catch (e: Exception) {
+            Log.d(TAG,e.message.toString())
             BaseState.Error("데이터 저장 실패", "FAIL")
         }
     }
@@ -49,6 +52,7 @@ class ChatRepositoryImpl @Inject constructor(
 
             BaseState.Success(response)
         } catch (e: Exception) {
+            Log.d(TAG,e.message.toString())
             BaseState.Error("데이터 삭제 실패", "FAIL")
         }
     }
@@ -61,6 +65,7 @@ class ChatRepositoryImpl @Inject constructor(
 
             BaseState.Success(response)
         } catch (e: Exception) {
+            Log.d(TAG,e.message.toString())
             BaseState.Error("데이터 불러오기 실패", "FAIL")
         }
     }

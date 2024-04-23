@@ -6,6 +6,10 @@
     <data>
 
         <variable
+            name="chatMg"
+            type="com.aoztg.greengrim.presentation.chatmanager.ChatManager" />
+
+        <variable
             name="vm"
             type="com.aoztg.greengrim.presentation.ui.chat.chatlist.ChatListViewModel" />
 
@@ -85,7 +89,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/layout_toolbar"
-            app:list="@{vm.uiState.uiChatListItem}"
+            app:list="@{chatMg.chatListData}"
             tools:listitem="@layout/item_chat_list" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
