@@ -159,7 +159,11 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
     private fun NavController.toCreateCertification() {
         val action = ChatRoomFragmentDirections.actionChatRoomFragmentToCreateCertificationFragment(
             challengeId,
-            chatId
+            chatId,
+            viewModel.uiState.value.chatInfo.certificationCount,
+            chatName,
+            viewModel.uiState.value.chatInfo.category,
+            viewModel.uiState.value.chatInfo.ticketCount,
         )
         this.navigate(action)
     }

@@ -1,21 +1,15 @@
 package com.aoztg.greengrim.data.repository
 
 import com.aoztg.greengrim.data.model.BaseState
-import com.aoztg.greengrim.data.model.response.CertificationDatesResponse
-import com.aoztg.greengrim.data.model.response.CertificationDefaultDataResponse
-import com.aoztg.greengrim.data.model.response.CertificationDetailResponse
-import com.aoztg.greengrim.data.model.response.CertificationListResponse
 import com.aoztg.greengrim.data.model.request.CreateCertificationRequest
 import com.aoztg.greengrim.data.model.request.VerificationsRequest
+import com.aoztg.greengrim.data.model.response.CertificationDatesResponse
+import com.aoztg.greengrim.data.model.response.CertificationDetailResponse
+import com.aoztg.greengrim.data.model.response.CertificationListResponse
 import com.aoztg.greengrim.data.model.response.CreateCertificationResponse
 import com.aoztg.greengrim.data.model.response.MyCertificationListResponse
-import retrofit2.Response
 
 interface CertificationRepository {
-
-    suspend fun getCertificationDefaultData(
-        id: Long
-    ): BaseState<CertificationDefaultDataResponse>
 
     suspend fun getCertificationDetail(
         id: Long

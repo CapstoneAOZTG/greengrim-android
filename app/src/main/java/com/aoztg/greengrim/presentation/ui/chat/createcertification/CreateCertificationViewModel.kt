@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.model.request.CreateCertificationRequest
-import com.aoztg.greengrim.data.model.response.CertificationDefaultDataResponse
 import com.aoztg.greengrim.data.repository.CertificationRepository
 import com.aoztg.greengrim.data.repository.ImageRepository
 import com.aoztg.greengrim.presentation.ui.BaseUiState
@@ -26,7 +25,10 @@ import javax.inject.Inject
 
 data class CreateCertificationUiState(
     val nextBtnState: BaseUiState = BaseUiState.Empty,
-    val certificationDefaultData: CertificationDefaultDataResponse = CertificationDefaultDataResponse()
+    val challengeName: String = "",
+    val certificationCount: Int = 0,
+    val category: String = "",
+    val ticketCount: String = ""
 )
 
 sealed class CreateCertificationEvents {
@@ -68,26 +70,22 @@ class CreateCertificationViewModel @Inject constructor(
         false
     )
 
-    fun getCertificationDefaultData() {
-        viewModelScope.launch {
 
-            certificationRepository.getCertificationDefaultData(challengeId)
-                .let {
-                    when (it) {
-                        is BaseState.Success -> {
-                            _uiState.update { state ->
-                                state.copy(
-                                    certificationDefaultData = it.body
-                                )
-                            }
-                        }
-
-                        is BaseState.Error -> {
-                            _events.emit(CreateCertificationEvents.ShowSnackMessage(it.msg))
-                        }
-                    }
-                }
-
+    fun setInfo(
+        _challengeId: Long,
+        challengeName: String,
+        certificationCount: Int,
+        category: String,
+        ticketCount: String
+    ) {
+        challengeId = _challengeId
+        _uiState.update { state ->
+            state.copy(
+                challengeName = challengeName,
+                certificationCount = certificationCount,
+                category = category,
+                ticketCount = ticketCount
+            )
         }
     }
 
@@ -124,7 +122,7 @@ class CreateCertificationViewModel @Inject constructor(
                     challengeId = challengeId,
                     imgUrl = imgUrl,
                     description = description.value,
-                    round = _uiState.value.certificationDefaultData.round
+                    round = _uiState.value.certificationCount
                 )
             ).let {
                 _events.emit(CreateCertificationEvents.DismissLoading)
@@ -134,7 +132,7 @@ class CreateCertificationViewModel @Inject constructor(
                     is BaseState.Success -> {
                         _events.emit(
                             CreateCertificationEvents.SendCertificationMessage(
-                                message = "[${_uiState.value.certificationDefaultData.round}회차] ${it.body.date}\n${description.value}",
+                                message = "[${_uiState.value.certificationCount}회차] ${it.body.date}\n${description.value}",
                                 certId = it.body.certId,
                                 certImg = it.body.certImg
                             )
@@ -156,10 +154,6 @@ class CreateCertificationViewModel @Inject constructor(
     ) {
         isImageSet.value = true
         imgFile = file
-    }
-
-    fun setIds(challengeIdData: Long) {
-        challengeId = challengeIdData
     }
 
     fun navigateBack() {

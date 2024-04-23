@@ -4,7 +4,6 @@ import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.model.request.CreateCertificationRequest
 import com.aoztg.greengrim.data.model.request.VerificationsRequest
 import com.aoztg.greengrim.data.model.response.CertificationDatesResponse
-import com.aoztg.greengrim.data.model.response.CertificationDefaultDataResponse
 import com.aoztg.greengrim.data.model.response.CertificationDetailResponse
 import com.aoztg.greengrim.data.model.response.CertificationListResponse
 import com.aoztg.greengrim.data.model.response.CreateCertificationResponse
@@ -15,10 +14,6 @@ import javax.inject.Inject
 
 class CertificationRepositoryImpl @Inject constructor(private val api: CertificationAPI) :
     CertificationRepository {
-
-
-    override suspend fun getCertificationDefaultData(id: Long): BaseState<CertificationDefaultDataResponse> =
-        runRemote { api.getCertificationDefaultData(id) }
 
     override suspend fun getCertificationDate(
         challengeId: Long

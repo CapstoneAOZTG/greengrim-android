@@ -149,7 +149,19 @@
             app:argType="long" />
         <argument
             android:name="chatId"
-            app:argType="long" />
+            app:argType="long"/>
+        <argument
+            android:name="certificationCount"
+            app:argType="integer"/>
+        <argument
+            android:name="challengeName"
+            app:argType="string"/>
+        <argument
+            android:name="categoryName"
+            app:argType="string"/>
+        <argument
+            android:name="ticketCount"
+            app:argType="string"/>
     </fragment>
 
     <fragment
