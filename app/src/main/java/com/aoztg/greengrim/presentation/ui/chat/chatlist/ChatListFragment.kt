@@ -1,6 +1,7 @@
 package com.aoztg.greengrim.presentation.ui.chat.chatlist
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -12,6 +13,7 @@ import com.aoztg.greengrim.presentation.base.BaseFragment
 import com.aoztg.greengrim.presentation.chatmanager.ChatManager
 import com.aoztg.greengrim.presentation.ui.chat.adapter.ChatListAdapter
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
+import com.aoztg.greengrim.presentation.util.Constants.TAG
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -26,8 +28,8 @@ class ChatListFragment : BaseFragment<FragmentChatListBinding>(R.layout.fragment
         parentViewModel.showBNV()
         binding.vm = viewModel
         binding.rvChatList.adapter = ChatListAdapter()
-        initEventsObserver()
-        initUnReadChatObserver()
+        initEventsObserve()
+        initNewMessageObserve()
     }
 
     override fun onResume() {
@@ -35,31 +37,47 @@ class ChatListFragment : BaseFragment<FragmentChatListBinding>(R.layout.fragment
         viewModel.getChatList()
     }
 
-    private fun initEventsObserver() {
+    private fun initEventsObserve() {
         repeatOnStarted {
             viewModel.events.collect {
                 when (it) {
-                    is ChatListEvents.NavigateToChatRoom -> findNavController().toChatRoom(it.chatName, it.chatId, it.challengeId)
-                    is ChatListEvents.CallUnReadChatData -> viewModel.setUnReadChatData(chatManager.unReadChatData)
+                    is ChatListEvents.NavigateToChatRoom -> findNavController().toChatRoom(
+                        it.chatName,
+                        it.chatId,
+                        it.challengeId
+                    )
+
+                    is ChatListEvents.CallUnReadChatData -> {
+                    }
+
                     is ChatListEvents.ShowLoading -> showLoading(requireContext())
                     is ChatListEvents.DismissLoading -> dismissLoading()
                     is ChatListEvents.ShowToastMessage -> showCustomToast(it.msg)
-                    is ChatListEvents.ShowSnackMessage -> showCustomSnack(binding.rvChatList,it.msg)
+                    is ChatListEvents.ShowSnackMessage -> showCustomSnack(
+                        binding.rvChatList,
+                        it.msg
+                    )
                 }
             }
         }
     }
 
-    private fun initUnReadChatObserver(){
+    private fun initNewMessageObserve(){
         repeatOnStarted {
-            chatManager.updateUnReadChat.collect{
-                viewModel.setUnReadChatData(it)
+            chatManager.newChat.collect{
+                Log.d(TAG,it.toString())
+                viewModel.updateRecentChatData(it)
             }
         }
+
     }
 
     private fun NavController.toChatRoom(chatName: String, chatId: Long, challengeId: Long) {
-        val action = ChatListFragmentDirections.actionChatListFragmentToChatRoomFragment(chatId, challengeId, chatName)
+        val action = ChatListFragmentDirections.actionChatListFragmentToChatRoomFragment(
+            chatId,
+            challengeId,
+            chatName
+        )
         this.navigate(action)
     }
 }

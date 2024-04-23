@@ -178,26 +178,6 @@ class ChatRoomViewModel @Inject constructor(
         }
     }
 
-    fun storeRecentReadTime(){
-        viewModelScope.launch {
-            chatRepository.addUnReadChatData(
-                UnReadChatEntity(
-                    chatId = chatRoomId,
-                    recentReadTime = getCurrentTimeString()
-                )
-            ).let{
-                when(it){
-                    is BaseState.Success -> {
-
-                    }
-                    is BaseState.Error -> {
-
-                    }
-                }
-            }
-        }
-    }
-
     fun navigateBack() {
         viewModelScope.launch {
             _events.emit(ChatRoomEvents.NavigateBack)

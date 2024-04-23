@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.repository.ChatRepository
+import com.aoztg.greengrim.presentation.chatmanager.model.ChatMessage
 import com.aoztg.greengrim.presentation.chatmanager.model.UiUnReadChatData
 import com.aoztg.greengrim.presentation.ui.chat.mapper.toUiChatListItem
 import com.aoztg.greengrim.presentation.ui.chat.model.UiChatListItem
@@ -73,32 +74,21 @@ class ChatListViewModel @Inject constructor(
         }
     }
 
-    fun setUnReadChatData(list: List<UiUnReadChatData>) {
-
-        // todo 좀더 효율적인 알고리즘으로 refactoring..
-
+    fun updateRecentChatData(chatMessage: ChatMessage){
         _uiState.update { state ->
             state.copy(
-                uiChatListItem = uiState.value.uiChatListItem.map { listData ->
-                    var newData = listData
-                    list.forEach { unReadData ->
-                        if (listData.chatId == unReadData.chatId) {
-                            newData = listData.copy(
-                                recentChat = unReadData.recentChat,
-                                recentTime = unReadData.recentChatTime,
-                                chatCount = unReadData.unReadCount
-                            )
-                            return@forEach
-                        }
+                uiChatListItem = uiState.value.uiChatListItem.map{ data ->
+                    if(data.chatId == chatMessage.roomId){
+                        data.copy(
+                            recentChat = chatMessage.message,
+                            recentTime = chatMessage.sentTime,
+                            chatCount = data.chatCount + 1
+                        )
+                    }else {
+                        data
                     }
-                    newData
                 }
             )
-        }
-
-        viewModelScope.launch {
-            delay(200)
-            _events.emit(ChatListEvents.DismissLoading)
         }
     }
 
