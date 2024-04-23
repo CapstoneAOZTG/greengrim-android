@@ -1,6 +1,7 @@
 package com.aoztg.greengrim.presentation.ui.chat.chatroom
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -17,6 +18,7 @@ import com.aoztg.greengrim.presentation.chatmanager.ChatManager
 import com.aoztg.greengrim.presentation.ui.chat.adapter.ChatMessageAdapter
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 import com.aoztg.greengrim.presentation.ui.toCertificationDetail
+import com.aoztg.greengrim.presentation.util.Constants.TAG
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -35,6 +37,7 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        chatManager.inChat(chatId)
         binding.vm = viewModel
         binding.tvHeader.text = chatName
         parentViewModel.hideBNV()
@@ -111,6 +114,7 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
         repeatOnStarted {
             chatManager.newChat.collect {
                 if (it.roomId == chatId) {
+                    Log.d(TAG,it.message)
                     viewModel.newChatMessage(it)
                 }
             }
@@ -170,6 +174,7 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
 
     override fun onStop() {
         super.onStop()
+        chatManager.outChat()
         chatManager.storeRecentReadTime(chatId)
     }
 

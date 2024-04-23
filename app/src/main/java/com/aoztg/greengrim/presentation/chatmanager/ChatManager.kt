@@ -53,6 +53,9 @@ class ChatManager @Inject constructor(
 
     val unReadCnt = MutableStateFlow(0)
 
+    var isInChatting = false
+    var curChatId = 0L
+
     private var memberId: Long = 0
     private val chatSocket =
         ChatSocket(::receiveMessage, ::showSocketToastMessage, ::showSocketSnackMessage)
@@ -82,7 +85,7 @@ class ChatManager @Inject constructor(
                         _events.emit(ChatEvent.ShowSnackMessage("데이터 불러오기 실패"))
                     }
                 }
-                _firstConnect.value = true
+
             }
         }
     }
@@ -105,10 +108,13 @@ class ChatManager @Inject constructor(
                             data.toUiChatListItem()
                         }
 
-                        chatSocket.connectServer()
-                        chatListData.value.forEach { data ->
-                            chatSocket.subscribeChat(data.chatId)
+                        if (!firstConnect.value) {
+                            chatSocket.connectServer()
+                            chatListData.value.forEach { data ->
+                                chatSocket.subscribeChat(data.chatId)
+                            }
                         }
+                        _firstConnect.value = true
 
                         var count = 0
 
@@ -151,26 +157,71 @@ class ChatManager @Inject constructor(
 
     private fun receiveMessage(payload: String) {
         val chatMessage = Gson().fromJson(payload, ChatMessage::class.java)
-        updateRecentChatData(chatMessage)
+        if (isInChatting && chatMessage.roomId == curChatId) {
+            updateRecentChatData(chatMessage, true)
+        } else {
+            updateRecentChatData(chatMessage, false)
+        }
+
+        // 최신 채팅 위로 올리는 로직
+        val newList = chatListData.value.toMutableList()
+        var temp = UiChatListItem()
+        newList.forEach {
+            if(it.chatId == chatMessage.roomId){
+                temp = it
+            }
+        }
+        newList.remove(temp)
+        newList.add(0,temp)
+
+        _chatListData.value = newList
+
         viewModelScope.launch {
             _newChat.emit(chatMessage)
         }
     }
 
-    private fun updateRecentChatData(chatMessage: ChatMessage) {
+    private fun updateRecentChatData(chatMessage: ChatMessage, onlyRecentMessage: Boolean) {
         _chatListData.update {
             chatListData.value.map { data ->
                 if (data.chatId == chatMessage.roomId) {
                     data.copy(
                         recentChat = chatMessage.message,
                         recentTime = chatMessage.sentTime,
-                        chatCount = data.chatCount + 1
+                        chatCount = if (onlyRecentMessage) data.chatCount else data.chatCount + 1
+                    )
+                } else {
+                    data
+                }
+            }
+
+        }
+
+        if (!onlyRecentMessage) {
+            unReadCnt.value = unReadCnt.value + 1
+        }
+    }
+
+    fun inChat(id: Long) {
+        isInChatting = true
+        curChatId = id
+
+        _chatListData.update {
+            it.map { data ->
+                if (data.chatId == id) {
+                    unReadCnt.value = unReadCnt.value - data.chatCount
+                    data.copy(
+                        chatCount = 0
                     )
                 } else {
                     data
                 }
             }
         }
+    }
+
+    fun outChat() {
+        isInChatting = false
     }
 
     fun storeRecentReadTime(chatRoomId: Long) {
@@ -183,7 +234,7 @@ class ChatManager @Inject constructor(
             ).let {
                 when (it) {
                     is BaseState.Success -> {
-                        getMyChatIds()
+
                     }
 
                     is BaseState.Error -> {

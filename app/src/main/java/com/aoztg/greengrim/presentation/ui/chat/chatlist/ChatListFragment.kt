@@ -31,6 +31,7 @@ class ChatListFragment : BaseFragment<FragmentChatListBinding>(R.layout.fragment
         binding.vm = viewModel
         adapter.setChatRoomInterface(this)
         binding.rvChatList.adapter = adapter
+        binding.rvChatList.itemAnimator = null
         initEventsObserve()
     }
 
