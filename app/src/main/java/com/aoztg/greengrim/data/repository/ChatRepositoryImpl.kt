@@ -3,6 +3,7 @@ package com.aoztg.greengrim.data.repository
 import com.aoztg.greengrim.data.local.ChatDao
 import com.aoztg.greengrim.data.local.UnReadChatEntity
 import com.aoztg.greengrim.data.model.BaseState
+import com.aoztg.greengrim.data.model.response.ChatInfoResponse
 import com.aoztg.greengrim.data.model.response.ChatMessageResponse
 import com.aoztg.greengrim.data.model.response.ChatRoomsResponse
 import com.aoztg.greengrim.data.model.response.EnterChatResponse
@@ -69,5 +70,8 @@ class ChatRepositoryImpl @Inject constructor(
         size: Int
     ): BaseState<ChatMessageResponse> =
         runRemote { api.getChatMessage(roomId, page, size) }
+
+    override suspend fun getChatInfo(id: Long): BaseState<ChatInfoResponse> =
+        runRemote { api.getChatInfo(id) }
 
 }

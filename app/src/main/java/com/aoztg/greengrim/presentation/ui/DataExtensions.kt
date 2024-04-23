@@ -8,9 +8,12 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
+import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
+import java.util.Date
+import java.util.Locale
 
 
 internal fun Uri.toMultiPart(context: Context): MultipartBody.Part {
@@ -67,4 +70,10 @@ internal fun YearMonth.toText() = year.toString() + "년 " + monthValue + "월"
 
 internal fun Int.formatNumberWithCommas(): String {
     return String.format("%,d", this)
+}
+
+internal fun getCurrentTimeString(): String {
+    val currentTimeMillis = System.currentTimeMillis()
+    val dateFormat = SimpleDateFormat("yyyyMMddHHmmssSSS", Locale.getDefault())
+    return dateFormat.format(Date(currentTimeMillis))
 }

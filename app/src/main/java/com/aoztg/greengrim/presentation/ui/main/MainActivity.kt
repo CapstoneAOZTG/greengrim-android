@@ -13,6 +13,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -35,6 +36,7 @@ import com.aoztg.greengrim.presentation.util.Constants
 import com.aoztg.greengrim.presentation.util.Constants.CAMERA_PERMISSION
 import com.aoztg.greengrim.presentation.util.Constants.NOTIFICATION_PERMISSION
 import com.aoztg.greengrim.presentation.util.Constants.STORAGE_PERMISSION
+import com.aoztg.greengrim.presentation.util.Constants.TAG
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -91,11 +93,13 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
     override fun onStart() {
         super.onStart()
+        Log.d(TAG,"onStart")
         chatManager.getMyChatIds()
     }
 
     override fun onStop() {
         super.onStop()
+        Log.d(TAG,"onStop")
         chatManager.disconnectChat()
     }
 

@@ -35,7 +35,6 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        readChat()
         binding.vm = viewModel
         binding.tvHeader.text = chatName
         parentViewModel.hideBNV()
@@ -160,14 +159,15 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
         this.navigate(action)
     }
 
-    private fun readChat() {
-        chatManager.readChat(chatId)
+    override fun onStop() {
+        super.onStop()
+        viewModel.storeRecentReadTime()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         dismissFourPopup()
-        readChat()
     }
+
 }
 

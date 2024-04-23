@@ -34,6 +34,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     override fun onMessageReceived(message: RemoteMessage) {
         PushUtils.acquireWakeLock(App.context())
+
         //수신한 메시지를 처리
 
         Log.d("fcm",message.data["type"].toString())

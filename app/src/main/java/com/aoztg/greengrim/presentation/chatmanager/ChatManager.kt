@@ -1,18 +1,13 @@
 package com.aoztg.greengrim.presentation.chatmanager
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.app.App
 import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.repository.ChatRepository
 import com.aoztg.greengrim.data.repository.MemberRepository
-import com.aoztg.greengrim.presentation.chatmanager.mapper.toUiUnReadChatData
-import com.aoztg.greengrim.presentation.chatmanager.mapper.toUnReadChatEntity
 import com.aoztg.greengrim.presentation.chatmanager.model.ChatMessage
-import com.aoztg.greengrim.presentation.chatmanager.model.UiUnReadChatData
 import com.aoztg.greengrim.presentation.util.Constants
-import com.aoztg.greengrim.presentation.util.Constants.TAG
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -48,14 +43,6 @@ class ChatManager @Inject constructor(
     private val _initialConnectChatIds = MutableStateFlow<List<Long>>(emptyList())
     val initialConnectChatIds: StateFlow<List<Long>> = _initialConnectChatIds.asStateFlow()
 
-    var unReadChatData = listOf<UiUnReadChatData>()
-
-    private val _updateUnReadChat = MutableSharedFlow<List<UiUnReadChatData>>()
-    val updateUnReadChat: SharedFlow<List<UiUnReadChatData>> = _updateUnReadChat.asSharedFlow()
-
-    private val _unReadCnt = MutableStateFlow(0)
-    val unReadCnt: StateFlow<Int> = _unReadCnt.asStateFlow()
-
     private var memberId: Long = 0
     private val chatSocket =
         ChatSocket(::receiveMessage, ::showSocketToastMessage, ::showSocketSnackMessage)
@@ -86,12 +73,6 @@ class ChatManager @Inject constructor(
                         initialConnectChatIds.value.forEach { chatId ->
                             chatSocket.subscribeChat(chatId)
                         }
-
-                        unReadChatData = initialConnectChatIds.value.map { chatId ->
-                            UiUnReadChatData(
-                                chatId = chatId
-                            )
-                        }
                     }
 
                     is BaseState.Error -> {
@@ -100,44 +81,12 @@ class ChatManager @Inject constructor(
                 }
                 _firstConnect.value = true
             }
-            getUnReadChat()
-        }
-    }
-
-    private fun getUnReadChat() {
-        viewModelScope.launch {
-            when (val response = chatRepository.getUnReadChatData()) {
-                is BaseState.Success -> {
-                    if (response.body.isNotEmpty()) {
-                        response.body.forEach {
-                            Log.d(TAG, it.toString())
-                        }
-                        unReadChatData = response.body.map {
-                            it.toUiUnReadChatData()
-                        }
-                        _unReadCnt.value =
-                            response.body.map { it.unReadCount }
-                                .reduce { total, num -> total + num }
-                    }
-                }
-
-                is BaseState.Error -> {
-                    _events.emit(ChatEvent.ShowSnackMessage(response.msg))
-                }
-            }
         }
     }
 
     fun subscribeNewChat(chatId: Long) {
-        initialConnectChatIds.value.forEach {
-            if (chatId == it) {
-                unReadChatData = unReadChatData + UiUnReadChatData(chatId = chatId)
-                return
-            }
-        }
         chatSocket.subscribeChat(chatId)
         _initialConnectChatIds.value = initialConnectChatIds.value + chatId
-        unReadChatData = unReadChatData + UiUnReadChatData(chatId = chatId)
     }
 
     fun sendMessage(chatId: Long, message: String) {
@@ -163,82 +112,11 @@ class ChatManager @Inject constructor(
         viewModelScope.launch {
             _newChat.emit(chatMessage)
         }
-        updateUnReadChatData(chatMessage)
-    }
-
-    private fun updateUnReadChatData(chatMessage: ChatMessage) {
-        // todo 메세지 수신시, recentChatData 업데이트
-        if (chatMessage.type == "TALK" || chatMessage.type == "CERT") {
-            if (chatMessage.senderId == memberId) {
-                unReadChatData = unReadChatData.map {
-                    if (it.chatId == chatMessage.roomId) {
-                        it.copy(
-                            recentChat = chatMessage.message,
-                            recentChatTime = chatMessage.sentTime,
-                            recentChatDate = chatMessage.sentDate,
-                            unReadCount = it.unReadCount
-                        )
-                    } else {
-                        it
-                    }
-                }
-            } else {
-                unReadChatData = unReadChatData.map {
-                    if (it.chatId == chatMessage.roomId) {
-                        it.copy(
-                            recentChat = chatMessage.message,
-                            recentChatTime = chatMessage.sentTime,
-                            recentChatDate = chatMessage.sentDate,
-                            unReadCount = it.unReadCount + 1
-                        )
-                    } else {
-                        it
-                    }
-                }
-
-                _unReadCnt.value = unReadCnt.value + 1
-            }
-
-            viewModelScope.launch {
-                _updateUnReadChat.emit(unReadChatData)
-            }
-            storeUnReadChat()
-        }
-    }
-
-    fun readChat(chatId: Long) {
-        unReadChatData = unReadChatData.map {
-            if (it.chatId == chatId) {
-                _unReadCnt.value = unReadCnt.value - it.unReadCount
-                it.copy(
-                    unReadCount = 0
-                )
-            } else {
-                it
-            }
-        }
-        storeUnReadChat()
-    }
-
-    private fun storeUnReadChat() {
-        viewModelScope.launch {
-            unReadChatData.forEach {
-                when (val response = chatRepository.addUnReadChatData(it.toUnReadChatEntity())) {
-                    is BaseState.Success -> {}
-                    is BaseState.Error -> {
-                        _events.emit(ChatEvent.ShowSnackMessage(response.msg))
-                    }
-                }
-            }
-        }
     }
 
     fun exitChat(chatId: Long) {
         viewModelScope.launch {
             chatRepository.deleteUnReadChatData(chatId)
-            unReadChatData = unReadChatData.filter {
-                it.chatId != chatId
-            }
         }
     }
 

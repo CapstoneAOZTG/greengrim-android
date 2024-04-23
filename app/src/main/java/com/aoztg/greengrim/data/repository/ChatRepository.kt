@@ -2,6 +2,7 @@ package com.aoztg.greengrim.data.repository
 
 import com.aoztg.greengrim.data.local.UnReadChatEntity
 import com.aoztg.greengrim.data.model.BaseState
+import com.aoztg.greengrim.data.model.response.ChatInfoResponse
 import com.aoztg.greengrim.data.model.response.ChatMessageResponse
 import com.aoztg.greengrim.data.model.response.ChatRoomsResponse
 import com.aoztg.greengrim.data.model.response.EnterChatResponse
@@ -27,4 +28,8 @@ interface ChatRepository {
         page: Int,
         size: Int
     ): BaseState<ChatMessageResponse>
+
+    suspend fun getChatInfo(
+        id : Long
+    ): BaseState<ChatInfoResponse>
 }

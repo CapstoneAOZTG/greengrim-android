@@ -1,19 +1,23 @@
 package com.aoztg.greengrim.presentation.ui.chat.chatroom
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.app.App
+import com.aoztg.greengrim.data.local.UnReadChatEntity
 import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.repository.ChallengeRepository
 import com.aoztg.greengrim.data.repository.ChatRepository
 import com.aoztg.greengrim.presentation.chatmanager.model.ChatMessage
 import com.aoztg.greengrim.presentation.ui.chat.mapper.toUiChatMessage
 import com.aoztg.greengrim.presentation.ui.chat.model.UiChatMessage
+import com.aoztg.greengrim.presentation.ui.getCurrentTimeString
 import com.aoztg.greengrim.presentation.util.Constants
 import com.aoztg.greengrim.presentation.util.Constants.DATE
 import com.aoztg.greengrim.presentation.util.Constants.MY_CHAT
 import com.aoztg.greengrim.presentation.util.Constants.NOTHING
 import com.aoztg.greengrim.presentation.util.Constants.OTHER_CHAT
+import com.aoztg.greengrim.presentation.util.Constants.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -89,6 +93,21 @@ class ChatRoomViewModel @Inject constructor(
         }
     }
 
+    private fun getChatInfo(){
+        viewModelScope.launch {
+            chatRepository.getChatInfo(chatRoomId).let{
+                when(it){
+                    is BaseState.Success -> {
+
+                    }
+
+                    is BaseState.Error -> {}
+
+                }
+            }
+        }
+    }
+
     private fun observeChatMessage() {
         chatMessage.onEach {
             if (it.isNotBlank()) {
@@ -156,6 +175,26 @@ class ChatRoomViewModel @Inject constructor(
                 )
             }
             scrollBottom()
+        }
+    }
+
+    fun storeRecentReadTime(){
+        viewModelScope.launch {
+            chatRepository.addUnReadChatData(
+                UnReadChatEntity(
+                    chatId = chatRoomId,
+                    recentReadTime = getCurrentTimeString()
+                )
+            ).let{
+                when(it){
+                    is BaseState.Success -> {
+
+                    }
+                    is BaseState.Error -> {
+
+                    }
+                }
+            }
         }
     }
 
