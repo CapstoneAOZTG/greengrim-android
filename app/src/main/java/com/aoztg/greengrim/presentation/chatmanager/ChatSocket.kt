@@ -43,7 +43,6 @@ class ChatSocket(
             stompClient.topic("/sub/chat/room/$chatId").subscribe { topicMessage ->
                 acceptChat(topicMessage.payload)
             }
-
         } catch(e: Exception){
             showSnackMessage(e.message.toString())
         }
