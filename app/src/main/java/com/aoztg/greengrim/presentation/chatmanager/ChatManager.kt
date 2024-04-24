@@ -271,5 +271,6 @@ class ChatManager @Inject constructor(
 
     fun disconnectChat() {
         chatSocket.disconnectServer()
+        _firstConnect.value = false
     }
 }
