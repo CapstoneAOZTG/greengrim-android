@@ -137,9 +137,8 @@ class ChatRoomViewModel @Inject constructor(
                     is BaseState.Success -> {
                         val list = response.body.result.map {
                             it.toUiChatMessage(
+                                memberId,
                                 ::navigateToCertificationDetail,
-                                if (memberId == it.senderId) MY_CHAT
-                                else OTHER_CHAT
                             )
                         }
                         _uiState.update { state ->

@@ -11,9 +11,12 @@ import com.aoztg.greengrim.presentation.util.Constants.OTHER_CHAT
 import com.aoztg.greengrim.presentation.util.Constants.TAG
 
 
-internal fun ChatMessage.toUiChatMessage(memberId: Long, onCertClickListener: (Long) -> Unit) :UiChatMessage{
+internal fun ChatMessage.toUiChatMessage(
+    memberId: Long,
+    onCertClickListener: (Long) -> Unit
+): UiChatMessage {
 
-    fun empty(empty: Long){}
+    fun empty(empty: Long) {}
     return UiChatMessage(
         type = when (type) {
             "TALK", "CERT" -> {
@@ -22,8 +25,7 @@ internal fun ChatMessage.toUiChatMessage(memberId: Long, onCertClickListener: (L
             }
 
             "ENTER", "EXIT" -> {
-                if (memberId == senderId) NOTHING
-                else ENTER_AND_EXIT
+                ENTER_AND_EXIT
             }
 
             else -> NOTHING
@@ -35,7 +37,7 @@ internal fun ChatMessage.toUiChatMessage(memberId: Long, onCertClickListener: (L
         profileImg = profileImg,
         certId = certId,
         certImg = certImg,
-        onCertClickListener = if(certId == -1L) {
+        onCertClickListener = if (certId == -1L) {
             ::empty
         } else {
             onCertClickListener
@@ -44,10 +46,21 @@ internal fun ChatMessage.toUiChatMessage(memberId: Long, onCertClickListener: (L
 }
 
 internal fun ChatMessageItem.toUiChatMessage(
-    onCertClickListener: (Long) -> Unit,
-    type: Int
+    memberId: Long,
+    onCertClickListener: (Long) -> Unit
 ) = UiChatMessage(
-    type = type,
+    type = when (type) {
+        "TALK", "CERT" -> {
+            if (memberId == senderId) Constants.MY_CHAT
+            else OTHER_CHAT
+        }
+
+        "ENTER", "EXIT" -> {
+            ENTER_AND_EXIT
+        }
+
+        else -> NOTHING
+    },
     message = message,
     nickName = nickName,
     sentDate = sentDate,

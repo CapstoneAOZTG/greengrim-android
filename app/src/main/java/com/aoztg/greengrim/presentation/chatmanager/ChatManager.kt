@@ -135,7 +135,12 @@ class ChatManager @Inject constructor(
     fun subscribeNewChat(chatId: Long, challengeId: Long, title: String, titleImg: String) {
         chatSocket.subscribeChat(chatId)
         _chatListData.value =
-            chatListData.value + UiChatListItem(chatId, challengeId, title, titleImg)
+            chatListData.value + UiChatListItem(
+                chatId = chatId,
+                challengeId = challengeId,
+                title = title,
+                titleImg = titleImg
+            )
         storeRecentReadTime(chatId)
     }
 
@@ -196,7 +201,6 @@ class ChatManager @Inject constructor(
                     data
                 }
             }
-
         }
 
         if (!onlyRecentMessage) {

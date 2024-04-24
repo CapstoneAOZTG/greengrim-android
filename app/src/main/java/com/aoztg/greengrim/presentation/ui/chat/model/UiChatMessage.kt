@@ -11,3 +11,5 @@ data class UiChatMessage(
     val certImg: String = "",
     val onCertClickListener: (Long) -> Unit
 )
+
+
