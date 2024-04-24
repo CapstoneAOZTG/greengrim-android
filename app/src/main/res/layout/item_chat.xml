@@ -78,7 +78,7 @@
                     android:textSize="14dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/iv_image"
-                    tools:text="우아아아" />
+                    tools:text="우아" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -96,9 +96,7 @@
                 app:layout_constraintStart_toEndOf="@id/layout_message"
                 tools:text="오후 10:41분" />
 
-
         </androidx.constraintlayout.widget.ConstraintLayout>
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

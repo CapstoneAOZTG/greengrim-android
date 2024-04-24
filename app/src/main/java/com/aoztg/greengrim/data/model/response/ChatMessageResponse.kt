@@ -9,7 +9,7 @@ data class ChatMessageResponse(
 data class ChatMessageItem(
     val certId: Long,
     val certImg: String,
-    val createdAt: Long,
+    val createdAt: String,
     val message: String,
     val nickName: String,
     val profileImg: String,

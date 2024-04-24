@@ -50,6 +50,7 @@ internal fun ChatMessageItem.toUiChatMessage(
     memberId: Long,
     onCertClickListener: (Long) -> Unit
 ) = UiChatMessage(
+    senderId = senderId,
     type = when (type) {
         "TALK", "CERT" -> {
             if (memberId == senderId) Constants.MY_CHAT
@@ -73,5 +74,6 @@ internal fun ChatMessageItem.toUiChatMessage(
     profileImg = profileImg,
     certId = certId,
     certImg = certImg,
+    createdAt = createdAt,
     onCertClickListener = onCertClickListener
 )

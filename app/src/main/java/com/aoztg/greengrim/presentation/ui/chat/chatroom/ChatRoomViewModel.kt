@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.app.App
 import com.aoztg.greengrim.data.model.BaseState
-import com.aoztg.greengrim.data.model.response.ChatInfoResponse
 import com.aoztg.greengrim.data.repository.ChallengeRepository
 import com.aoztg.greengrim.data.repository.ChatRepository
 import com.aoztg.greengrim.presentation.chatmanager.model.ChatMessage
@@ -14,9 +13,7 @@ import com.aoztg.greengrim.presentation.ui.chat.model.UiChatInfo
 import com.aoztg.greengrim.presentation.ui.chat.model.UiChatMessage
 import com.aoztg.greengrim.presentation.util.Constants
 import com.aoztg.greengrim.presentation.util.Constants.DATE
-import com.aoztg.greengrim.presentation.util.Constants.MY_CHAT
 import com.aoztg.greengrim.presentation.util.Constants.NOTHING
-import com.aoztg.greengrim.presentation.util.Constants.OTHER_CHAT
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -141,10 +138,31 @@ class ChatRoomViewModel @Inject constructor(
                                 ::navigateToCertificationDetail,
                             )
                         }
+
+                        // DATE 집어넣는 로직
+                        val newList = mutableListOf<UiChatMessage>()
+
+                        var temp = UiChatMessage() {}
+                        list.forEach {
+                            if (temp.createdAt.isNotBlank()
+                                && temp.createdAt.slice(6..7) != it.createdAt.slice(6..7)
+                            ) {
+                                newList.add(
+                                    UiChatMessage(
+                                        type = DATE,
+                                        message = it.sentDate,
+                                        onCertClickListener = ::navigateToCertificationDetail
+                                    )
+                                )
+                            }
+                            newList.add(it)
+                            temp = it
+                        }
+
                         _uiState.update { state ->
                             state.copy(
                                 hasNext = response.body.hasNext,
-                                chatMessages = uiState.value.chatMessages + list,
+                                chatMessages = uiState.value.chatMessages + newList,
                                 page = uiState.value.page + 1
                             )
                         }
@@ -156,7 +174,6 @@ class ChatRoomViewModel @Inject constructor(
                 }
             }
         }
-
     }
 
     fun newChatMessage(
