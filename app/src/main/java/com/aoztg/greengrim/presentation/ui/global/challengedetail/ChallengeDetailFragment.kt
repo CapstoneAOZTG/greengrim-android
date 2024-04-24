@@ -46,7 +46,7 @@ class ChallengeDetailFragment :
                     is ChallengeDetailEvents.NavigateBack -> findNavController().navigateUp()
                     is ChallengeDetailEvents.PopUpMenu -> showPopup()
                     is ChallengeDetailEvents.NavigateChatRoom -> {
-                        chatManager.subscribeNewChat(it.chatId)
+                        chatManager.subscribeNewChat(it.chatId, it.challengeId, it.title, it.titleImg)
                         findNavController().toChatRoom(it.chatId, it.challengeId)
                     }
                     is ChallengeDetailEvents.ShowToastMessage -> showCustomToast(it.msg)

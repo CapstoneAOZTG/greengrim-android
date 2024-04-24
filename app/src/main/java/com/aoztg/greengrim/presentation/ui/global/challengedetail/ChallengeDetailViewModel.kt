@@ -26,7 +26,7 @@ data class ChallengeDetailUiState(
 sealed class ChallengeDetailEvents {
     object NavigateBack : ChallengeDetailEvents()
     object PopUpMenu : ChallengeDetailEvents()
-    data class NavigateChatRoom(val chatId: Long, val challengeId: Long) : ChallengeDetailEvents()
+    data class NavigateChatRoom(val chatId: Long, val challengeId: Long, val title : String, val titleImg: String) : ChallengeDetailEvents()
     data class ShowToastMessage(val msg: String) : ChallengeDetailEvents()
     data class ShowSnackMessage(val msg: String) : ChallengeDetailEvents()
     object ShowLoading : ChallengeDetailEvents()
@@ -98,7 +98,9 @@ class ChallengeDetailViewModel @Inject constructor(
                         _events.emit(
                             ChallengeDetailEvents.NavigateChatRoom(
                                 it.body.chatroomId,
-                                it.body.challengeId
+                                it.body.challengeId,
+                                it.body.title,
+                                it.body.imgUrl
                             )
                         )
                     }

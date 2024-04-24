@@ -57,7 +57,12 @@ class CreateChallengeDetailFragment :
                 when (it) {
                     is CreateChallengeDetailEvents.NavigateToBack -> findNavController().navigateUp()
                     is CreateChallengeDetailEvents.NavigateToChatList -> {
-                        chatManager.subscribeNewChat(it.chatId)
+                        chatManager.subscribeNewChat(
+                            it.chatId,
+                            it.challengeId,
+                            it.title,
+                            it.titleImg
+                        )
                         findNavController().toChatList()
                     }
 

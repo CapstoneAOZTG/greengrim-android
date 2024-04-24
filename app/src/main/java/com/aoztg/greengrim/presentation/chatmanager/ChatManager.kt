@@ -132,8 +132,10 @@ class ChatManager @Inject constructor(
         }
     }
 
-    fun subscribeNewChat(chatId: Long) {
+    fun subscribeNewChat(chatId: Long, challengeId: Long, title: String, titleImg: String) {
         chatSocket.subscribeChat(chatId)
+        _chatListData.value =
+            chatListData.value + UiChatListItem(chatId, challengeId, title, titleImg)
         storeRecentReadTime(chatId)
     }
 
@@ -167,12 +169,12 @@ class ChatManager @Inject constructor(
         val newList = chatListData.value.toMutableList()
         var temp = UiChatListItem()
         newList.forEach {
-            if(it.chatId == chatMessage.roomId){
+            if (it.chatId == chatMessage.roomId) {
                 temp = it
             }
         }
         newList.remove(temp)
-        newList.add(0,temp)
+        newList.add(0, temp)
 
         _chatListData.value = newList
 
