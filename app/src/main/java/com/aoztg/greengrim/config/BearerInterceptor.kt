@@ -5,17 +5,20 @@ import android.util.Log
 import com.aoztg.greengrim.BuildConfig
 import com.aoztg.greengrim.app.App.Companion.context
 import com.aoztg.greengrim.app.App.Companion.sharedPreferences
-import com.aoztg.greengrim.data.model.ErrorResponse
+import com.aoztg.greengrim.data.model.BaseState
+import com.aoztg.greengrim.data.model.response.LoginResponse
+import com.aoztg.greengrim.data.model.runRemote
 import com.aoztg.greengrim.data.remote.MemberAPI
 import com.aoztg.greengrim.presentation.ui.intro.IntroActivity
 import com.aoztg.greengrim.presentation.util.Constants.MEMBER_ID
 import com.aoztg.greengrim.presentation.util.Constants.TAG
 import com.aoztg.greengrim.presentation.util.Constants.X_ACCESS_TOKEN
 import com.aoztg.greengrim.presentation.util.Constants.X_REFRESH_TOKEN
-import com.google.gson.Gson
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
+import okhttp3.OkHttpClient
 import okhttp3.Response
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.IOException
@@ -37,33 +40,25 @@ class BearerInterceptor : Interceptor {
 
                 // 로컬에 refreshToken이 있다면
                 sharedPreferences.getString(X_REFRESH_TOKEN, null)?.let { refresh ->
-                    Log.d(TAG, refresh)
-                    // refresh API 호출
-                    val result = Retrofit.Builder()
-                        .baseUrl(BuildConfig.BASE_DEV_URL)
-                        .addConverterFactory(GsonConverterFactory.create())
-                        .build()
-                        .create(MemberAPI::class.java).refreshToken(refresh)
-                    
-                    if (result.isSuccessful) {
-                        Log.d(TAG,"리프래시 성공")
-                        result.body()?.let { body ->
-                            Log.d(TAG,body.accessToken)
+
+                    when (val result = getNewAccessToken(refresh)) {
+                        is BaseState.Success -> {
                             // refresh 성공시 로컬에 저장
                             sharedPreferences.edit()
-                                .putString(X_ACCESS_TOKEN, body.accessToken)
-                                .putString(X_REFRESH_TOKEN, body.refreshToken)
-                                .putLong(MEMBER_ID, body.memberId)
+                                .putString(X_ACCESS_TOKEN, result.body.accessToken)
+                                .putString(X_REFRESH_TOKEN, result.body.refreshToken)
+                                .putLong(MEMBER_ID, result.body.memberId)
                                 .apply()
 
                             isRefreshed = true
-                            accessToken = body.accessToken
+                            accessToken = result.body.accessToken
                         }
-                    }else{
-                        val error =
-                            Gson().fromJson(result.errorBody()?.string(), ErrorResponse::class.java)
-                        Log.d(TAG,error.message)
+
+                        is BaseState.Error -> {
+                            Log.d(TAG, result.msg)
+                        }
                     }
+
                 }
             }
 
@@ -92,5 +87,23 @@ class BearerInterceptor : Interceptor {
 
         // 해당 특정 에러코드가 그대로 내려간다면, LoginActivity로 다시 보내기
         return response
+    }
+
+    private suspend fun getNewAccessToken(refreshToken: String): BaseState<LoginResponse> {
+        val loggingInterceptor = HttpLoggingInterceptor()
+        loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
+        val okHttpClient = OkHttpClient.Builder().addInterceptor(loggingInterceptor).build()
+
+        val retrofit = Retrofit.Builder()
+            .baseUrl(BuildConfig.BASE_DEV_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(okHttpClient)
+            .build()
+        val api = retrofit.create(MemberAPI::class.java)
+        return runRemote {
+            api.refreshToken(
+                refreshToken
+            )
+        }
     }
 }
