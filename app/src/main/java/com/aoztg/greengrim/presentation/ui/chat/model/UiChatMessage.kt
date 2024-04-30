@@ -7,6 +7,7 @@ data class UiChatMessage(
     val nickName: String = "",
     val sentDate: String = "",
     var sentTime: String = "",
+    var profileVisibility: Boolean = true,
     val profileImg: String = "",
     val certId: Long = -1,
     val certImg: String = "",

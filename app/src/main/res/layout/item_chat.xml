@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="item"
             type="com.aoztg.greengrim.presentation.ui.chat.model.UiChatMessage" />
@@ -15,12 +17,23 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_profile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.12" />
+
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/iv_profile"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="12dp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="6dp"
             android:scaleType="centerCrop"
+            android:visibility="@{item.profileVisibility ? View.VISIBLE : View.INVISIBLE}"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toEndOf="@id/guide_profile"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:profileImgUrl="@{item.profileImg}"
@@ -33,17 +46,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
+            android:layout_marginTop="10dp"
             android:text="@{item.nickName}"
-            app:layout_constraintStart_toEndOf="@id/iv_profile"
-            app:layout_constraintTop_toTopOf="@id/iv_profile"
+            android:visibility="@{item.profileVisibility ? View.VISIBLE : View.GONE}"
+            app:layout_constraintStart_toStartOf="@id/guide_profile"
+            app:layout_constraintTop_toTopOf="parent"
             tools:text="킹노아" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="10dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@id/tv_nick"
+            app:layout_constraintStart_toStartOf="@id/guide_profile"
             app:layout_constraintTop_toBottomOf="@id/tv_nick">
 
             <androidx.constraintlayout.widget.ConstraintLayout

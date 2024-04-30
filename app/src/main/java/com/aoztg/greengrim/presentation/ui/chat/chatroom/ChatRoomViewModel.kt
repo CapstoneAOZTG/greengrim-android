@@ -8,7 +8,7 @@ import com.aoztg.greengrim.data.repository.ChallengeRepository
 import com.aoztg.greengrim.data.repository.ChatRepository
 import com.aoztg.greengrim.presentation.chatmanager.model.ChatMessage
 import com.aoztg.greengrim.presentation.ui.chat.mapper.toUiChatInfo
-import com.aoztg.greengrim.presentation.ui.chat.mapper.toUiChatMessage
+import com.aoztg.greengrim.presentation.ui.chat.mapper.toUiChatMessageList
 import com.aoztg.greengrim.presentation.ui.chat.model.UiChatInfo
 import com.aoztg.greengrim.presentation.ui.chat.model.UiChatMessage
 import com.aoztg.greengrim.presentation.util.Constants
@@ -95,11 +95,15 @@ class ChatRoomViewModel @Inject constructor(
             chatRepository.getChatInfo(chatRoomId).let {
                 when (it) {
                     is BaseState.Success -> {
-                        _uiState.update { state ->
-                            state.copy(
-                                chatInfo = it.body.toUiChatInfo()
-                            )
+                        val newData = it.body.toUiChatInfo()
+                        if (uiState.value.chatInfo != newData) {
+                            _uiState.update { state ->
+                                state.copy(
+                                    chatInfo = newData
+                                )
+                            }
                         }
+
                     }
 
                     is BaseState.Error -> _events.emit(ChatRoomEvents.ShowSnackMessage(it.msg))
@@ -126,46 +130,25 @@ class ChatRoomViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
+
     fun getChatMessageData() {
         if (uiState.value.hasNext) {
             viewModelScope.launch {
                 when (val response =
                     chatRepository.getChatMessage(chatRoomId, uiState.value.page, 20)) {
                     is BaseState.Success -> {
-                        val list = response.body.result.map {
-                            it.toUiChatMessage(
-                                memberId,
-                                ::navigateToCertificationDetail,
-                            )
-                        }
-
-                        // DATE 집어넣는 로직
-                        val newList = mutableListOf<UiChatMessage>()
-
-                        var temp = UiChatMessage() {}
-                        list.forEach {
-                            if (temp.createdAt.isNotBlank()
-                                && temp.createdAt.slice(6..7) != it.createdAt.slice(6..7)
-                            ) {
-                                newList.add(
-                                    UiChatMessage(
-                                        type = DATE,
-                                        message = it.sentDate,
-                                        onCertClickListener = ::navigateToCertificationDetail
-                                    )
-                                )
-                            }
-                            newList.add(it)
-                            temp = it
-                        }
 
                         _uiState.update { state ->
                             state.copy(
                                 hasNext = response.body.hasNext,
-                                chatMessages = uiState.value.chatMessages + newList,
+                                chatMessages = uiState.value.chatMessages + response.body.result.toUiChatMessageList(
+                                    memberId,
+                                    ::navigateToCertificationDetail
+                                ),
                                 page = uiState.value.page + 1
                             )
                         }
+
                     }
 
                     is BaseState.Error -> {
@@ -180,7 +163,7 @@ class ChatRoomViewModel @Inject constructor(
         message: ChatMessage
     ) {
         val newMessages = uiState.value.chatMessages.toMutableList()
-        val newMessage = message.toUiChatMessage(memberId, ::navigateToCertificationDetail)
+        val newMessage = message.toUiChatMessageList(memberId, ::navigateToCertificationDetail)
 
         if (newMessages.size > 0 && newMessages.first().sentDate.isNotBlank()) {
             if (newMessages.first().sentDate != newMessage.sentDate) {
