@@ -13,12 +13,14 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/gg_chat_background">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/black"
             android:paddingHorizontal="@dimen/padding_large"
             android:paddingVertical="@dimen/padding_middle"
             app:layout_constraintEnd_toEndOf="parent"
@@ -66,67 +68,51 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <com.google.android.material.chip.ChipGroup
             android:id="@+id/layout_chatroom_announce"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@color/gg_dark_grey"
+            android:background="@color/black"
+            android:paddingHorizontal="30dp"
+            android:paddingVertical="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/layout_toolbar">
 
             <TextView
-                android:id="@+id/tv_remain_certification_label"
-                style="@style/TextGgSmall"
+                android:id="@+id/tv_category"
+                style="@style/TextGgSmallBold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="10dp"
-                android:layout_marginStart="30dp"
-                android:text="이번주 남은 인증"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:background="@drawable/shape_nofill_whitestroke_radius15"
+                android:paddingHorizontal="20dp"
+                android:paddingVertical="6dp"
+                android:text="@{vm.uiState.chatInfo.category}"
+                tools:text="줍킹" />
 
             <TextView
-                android:id="@+id/tv_remain_certification"
-                style="@style/TextGgSmallBlackBold"
+                android:id="@+id/tv_ticket_count"
+                style="@style/TextGgSmallBold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:background="@drawable/shape_grey2fill_nostroke_radius20"
-                android:paddingHorizontal="8dp"
-                app:layout_constraintBottom_toBottomOf="@id/tv_remain_certification_label"
-                app:layout_constraintStart_toEndOf="@id/tv_remain_certification_label"
-                app:layout_constraintTop_toTopOf="@id/tv_remain_certification_label"
-                tools:text="2회" />
+                android:background="@drawable/shape_nofill_whitestroke_radius15"
+                android:paddingHorizontal="20dp"
+                android:paddingVertical="6dp"
+                android:text="@{vm.uiState.chatInfo.ticketCount}"
+                tools:text="티켓 5/30" />
 
             <TextView
-                android:id="@+id/tv_today_certification_label"
-                style="@style/TextGgSmall"
+                android:id="@+id/tv_certification_count"
+                style="@style/TextGgSmallBold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="10dp"
-                android:layout_marginStart="60dp"
-                android:text="오늘 인증"
-                app:layout_constraintBottom_toBottomOf="@id/tv_remain_certification_label"
-                app:layout_constraintStart_toEndOf="@id/tv_remain_certification"
-                app:layout_constraintTop_toTopOf="@id/tv_remain_certification_label"
-                app:layout_goneMarginStart="30dp" />
+                android:background="@drawable/shape_nofill_whitestroke_radius15"
+                android:paddingHorizontal="20dp"
+                android:paddingVertical="6dp"
+                android:text="@{vm.uiState.chatInfo.goalCount}"
+                tools:text="인증 14/15 회" />
 
-            <TextView
-                android:id="@+id/tv_today_certification"
-                style="@style/TextGgSmallBlackBold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:background="@drawable/shape_grey2fill_nostroke_radius20"
-                android:paddingHorizontal="8dp"
-                app:layout_constraintBottom_toBottomOf="@id/tv_remain_certification_label"
-                app:layout_constraintStart_toEndOf="@id/tv_today_certification_label"
-                app:layout_constraintTop_toTopOf="@id/tv_remain_certification_label"
-                tools:text="인증 완료" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.chip.ChipGroup>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_chat"
@@ -136,70 +122,75 @@
             android:clipToPadding="false"
             android:orientation="vertical"
             android:paddingBottom="10dp"
-            app:reverseLayout="true"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintBottom_toTopOf="@id/layout_edit_text"
+            app:layout_constraintBottom_toTopOf="@id/layout_chat_box"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/layout_chatroom_announce"
-            app:list="@{vm.uiState.chatMessages}" />
+            app:list="@{vm.uiState.chatMessages}"
+            app:reverseLayout="true" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/layout_edit_text"
+            android:id="@+id/layout_chat_box"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@color/gg_dark_grey"
+            android:background="@color/gg_chat_background"
             android:paddingHorizontal="12dp"
             android:paddingVertical="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
-            <ImageButton
-                android:id="@+id/btn_goto_gallery"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_gravity="bottom|end"
-                android:layout_marginEnd="20dp"
-                android:background="@android:color/transparent"
-                android:onClick="@{() -> vm.navigateToCreateCertification()}"
-                android:scaleType="fitCenter"
-                android:src="@drawable/icon_plus"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <EditText
-                android:id="@+id/et_chat"
-                style="@style/TextGgSmall"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_edit_text"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:background="@drawable/shape_nofill_grey2stroke_radius10"
-                android:hint="메세지 입력..."
-                android:paddingHorizontal="12dp"
-                android:text="@={vm.chatMessage}"
-                android:textColorHint="@color/gg_grey4"
-                app:layout_constraintBottom_toBottomOf="@id/btn_goto_gallery"
-                app:layout_constraintEnd_toStartOf="@id/btn_send"
-                app:layout_constraintStart_toEndOf="@id/btn_goto_gallery"
-                app:layout_constraintTop_toTopOf="@id/btn_goto_gallery" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btn_send"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/selector_chat_send_btn"
-                android:enabled="@{vm.uiState.editTextState}"
-                android:minWidth="0dp"
-                android:minHeight="0dp"
-                android:onClick="@{() -> vm.sendMessage()}"
-                android:padding="6dp"
-                android:text="전송"
-                android:textColor="@color/selector_chat_send_text"
-                app:layout_constraintBottom_toBottomOf="@id/btn_goto_gallery"
+                android:background="@drawable/shape_darkgreyfill_nostroke_radius15"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/btn_goto_gallery" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <EditText
+                    android:id="@+id/et_chat"
+                    style="@style/TextGgSmall"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:backgroundTint="@android:color/transparent"
+                    android:hint="메세지를 입력하세요"
+                    android:text="@={vm.chatMessage}"
+                    android:textColorHint="@color/gg_grey4"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/btn_send_message"
+                    app:layout_constraintStart_toEndOf="@id/btn_create_certification"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/btn_create_certification"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="@{() -> vm.navigateToCreateCertification()}"
+                    android:layout_marginStart="12dp"
+                    android:src="@drawable/icon_create_certification_on"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/btn_send_message"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="6dp"
+                    android:enabled="@{vm.uiState.editTextState}"
+                    android:onClick="@{() -> vm.sendMessage()}"
+                    android:src="@drawable/icon_message_send"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -40,7 +40,7 @@ sealed class ProgressState {
 
 sealed class CreateChallengeDetailEvents {
     object NavigateToBack : CreateChallengeDetailEvents()
-    data class NavigateToChatList(val chatId: Long) : CreateChallengeDetailEvents()
+    data class NavigateToChatList(val chatId: Long, val challengeId: Long, val title: String, val titleImg: String) : CreateChallengeDetailEvents()
     data class ShowToastMessage(val msg: String) : CreateChallengeDetailEvents()
     data class ShowSnackMessage(val msg: String) : CreateChallengeDetailEvents()
     object ShowLoading : CreateChallengeDetailEvents()
@@ -239,7 +239,12 @@ class CreateChallengeDetailViewModel @Inject constructor(
                 when (it) {
                     is BaseState.Success -> {
                         _events.emit(CreateChallengeDetailEvents.ShowToastMessage("챌린지가 생성되었습니다!"))
-                        _events.emit(CreateChallengeDetailEvents.NavigateToChatList(it.body.chatroomId))
+                        _events.emit(CreateChallengeDetailEvents.NavigateToChatList(
+                            it.body.chatroomId,
+                            it.body.challengeId,
+                            it.body.title,
+                            it.body.imgUrl
+                        ))
                     }
 
                     is BaseState.Error -> {

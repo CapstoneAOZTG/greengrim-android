@@ -13,6 +13,7 @@ import com.aoztg.greengrim.R
 import com.aoztg.greengrim.app.App
 import com.aoztg.greengrim.presentation.ui.nft.exchange.detail.ExchangeState
 import com.aoztg.greengrim.presentation.ui.splash.SplashActivity
+import com.aoztg.greengrim.presentation.util.Constants
 import com.aoztg.greengrim.presentation.util.PushUtils
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.FirebaseMessagingService
@@ -34,16 +35,20 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     override fun onMessageReceived(message: RemoteMessage) {
         PushUtils.acquireWakeLock(App.context())
+
         //수신한 메시지를 처리
 
-        Log.d("fcm",message.data["type"].toString())
 
         when (message.data["type"]) {
 
             "TALK" -> {
                 val nickName = message.data["nickName"]
                 val talk = message.data["message"]
-                sendChatNotification(nickName, talk)
+                val senderId = message.data["senderId"]?.toLong()
+                val memberId: Long = App.sharedPreferences.getLong(Constants.MEMBER_ID, -1L)
+                if(senderId != memberId){
+                    sendChatNotification(nickName, talk)
+                }
             }
 
             "POINT" -> {

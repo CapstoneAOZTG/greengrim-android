@@ -19,6 +19,7 @@ class ChatMessageAdapter :
     ListAdapter<UiChatMessage, RecyclerView.ViewHolder>(DefaultDiffUtil<UiChatMessage>()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+
         return when(viewType){
             MY_CHAT -> {
                 MyChatViewHolder(

@@ -6,9 +6,15 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.aoztg.greengrim.databinding.ItemChatListBinding
-import com.aoztg.greengrim.presentation.ui.chat.model.UiChatListItem
+import com.aoztg.greengrim.presentation.chatmanager.model.UiChatListItem
 
 class ChatListAdapter : ListAdapter<UiChatListItem, ChatListViewHolder>(diffCallback) {
+
+    private var listener: ChatRoomInterface? = null
+
+    fun setChatRoomInterface(_listener: ChatRoomInterface) {
+        listener = _listener
+    }
 
     companion object {
         val diffCallback = object : DiffUtil.ItemCallback<UiChatListItem>() {
@@ -39,17 +45,17 @@ class ChatListAdapter : ListAdapter<UiChatListItem, ChatListViewHolder>(diffCall
     }
 
     override fun onBindViewHolder(holder: ChatListViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        holder.bind(getItem(position), listener)
     }
 }
 
 class ChatListViewHolder(private val binding: ItemChatListBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(item: UiChatListItem) {
+    fun bind(item: UiChatListItem, listener: ChatRoomInterface?) {
         binding.item = item
         binding.root.setOnClickListener {
-            item.onClickListener(item.title, item.chatId, item.challengeId)
+            listener?.navigateToChatRoom(item.title, item.chatId, item.challengeId)
         }
     }
 

@@ -4,10 +4,14 @@ import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.ProcessLifecycleOwner
 import com.aoztg.greengrim.BuildConfig
 import com.aoztg.greengrim.R
-import com.aoztg.greengrim.service.MyFirebaseMessagingService
 import com.aoztg.greengrim.presentation.util.Constants.TAG
+import com.aoztg.greengrim.service.MyFirebaseMessagingService
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.FirebaseApp
 import com.kakao.sdk.common.KakaoSdk
@@ -21,34 +25,56 @@ import kotlinx.coroutines.launch
 
 
 @HiltAndroidApp
-class App : Application() {
+class App : Application(), LifecycleEventObserver {
 
+    var isForeground = false
+
+    private val lifecycle by lazy { ProcessLifecycleOwner.get().lifecycle }
 
     //  앱의 context 를 instance 변수에 저장
-    init{
-        instance =this
+    init {
+        instance = this
     }
-    companion object{
-        lateinit var instance : App
+
+    companion object {
+        lateinit var instance: App
         lateinit var sharedPreferences: SharedPreferences
-        lateinit var gso : GoogleSignInOptions
+        lateinit var gso: GoogleSignInOptions
         var fcmToken = ""
 
         // 앱의 context 를 불러오는 함수
-        fun context() : Context {
+        fun context(): Context {
             return instance.applicationContext
         }
     }
 
     override fun onCreate() {
         super.onCreate()
+
         sharedPreferences =
             applicationContext.getSharedPreferences("APP", MODE_PRIVATE)
         initSocialLogin()
         getFCMToken()
+        lifecycle.addObserver(this)
     }
 
-    private fun initSocialLogin(){
+    override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
+        when (event) {
+            Lifecycle.Event.ON_STOP -> {
+                isForeground = false
+                Log.d(TAG, "앱이 백그라운드로 전환")
+            }
+
+            Lifecycle.Event.ON_START -> {
+                isForeground = true
+                Log.d(TAG, "앱이 포그라운드로 전환")
+            }
+
+            else -> {}
+        }
+    }
+
+    private fun initSocialLogin() {
         Log.d(TAG, "keyhash : ${Utility.getKeyHash(this)}")
 
         gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -58,7 +84,8 @@ class App : Application() {
             .build()
 
         KakaoSdk.init(this, BuildConfig.KAKAO_API_KEY)
-        NaverIdLoginSDK.initialize(this,
+        NaverIdLoginSDK.initialize(
+            this,
             BuildConfig.NAVER_CLIENT_ID,
             BuildConfig.NAVER_CLIENT_SECRET,
             BuildConfig.NAVER_CLIENT_NAME

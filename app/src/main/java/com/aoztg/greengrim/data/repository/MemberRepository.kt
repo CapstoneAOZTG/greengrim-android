@@ -70,4 +70,8 @@ interface MemberRepository {
 
     suspend fun getRecentIssue(): BaseState<RecentIssueResponse>
 
+    suspend fun refreshToken(
+        refreshToken: String
+    ): BaseState<LoginResponse>
+
 }

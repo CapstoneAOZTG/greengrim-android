@@ -24,14 +24,17 @@ class CreateCertificationFragment :
     private val args: CreateCertificationFragmentArgs by navArgs()
     private val challengeId by lazy { args.challengeId }
     private val chatId by lazy { args.chatId }
+    private val challengeName by lazy { args.challengeName }
+    private val certificationCount by lazy { args.certificationCount }
+    private val category by lazy { args.categoryName }
+    private val ticketCount by lazy { args.ticketCount }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.setIds(challengeId)
+        viewModel.setInfo(challengeId, challengeName, certificationCount, category, ticketCount)
         binding.pvm = parentViewModel
         binding.vm = viewModel
-        viewModel.getCertificationDefaultData()
         initImgObserver()
         initEventObserver()
     }
@@ -44,7 +47,7 @@ class CreateCertificationFragment :
         }
 
         repeatOnStarted {
-            parentViewModel.imageFile.collect{
+            parentViewModel.imageFile.collect {
                 viewModel.setImageFile(it)
             }
         }
@@ -62,7 +65,12 @@ class CreateCertificationFragment :
                         certId = it.certId,
                         certImg = it.certImg
                     )
-                    is CreateCertificationEvents.ShowSnackMessage -> showCustomSnack(binding.tvTitle,it.msg)
+
+                    is CreateCertificationEvents.ShowSnackMessage -> showCustomSnack(
+                        binding.tvTitle,
+                        it.msg
+                    )
+
                     is CreateCertificationEvents.ShowLoading -> showLoading(requireContext())
                     is CreateCertificationEvents.DismissLoading -> dismissLoading()
                 }

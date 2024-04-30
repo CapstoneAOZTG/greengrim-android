@@ -96,7 +96,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
     override fun onStop() {
         super.onStop()
-        chatManager.subscribeFcm()
         chatManager.disconnectChat()
     }
 
@@ -113,8 +112,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     }
 
     private fun setBottomNavigation() {
-
-
         with(binding) {
             bnv.apply {
                 itemIconTintList = null
@@ -125,7 +122,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                     true
                 }
             }
-
         }
     }
 

@@ -7,13 +7,13 @@ import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.repository.ChallengeRepository
 import com.aoztg.greengrim.data.repository.ChatRepository
 import com.aoztg.greengrim.presentation.chatmanager.model.ChatMessage
-import com.aoztg.greengrim.presentation.ui.chat.mapper.toUiChatMessage
+import com.aoztg.greengrim.presentation.ui.chat.mapper.toUiChatInfo
+import com.aoztg.greengrim.presentation.ui.chat.mapper.toUiChatMessageList
+import com.aoztg.greengrim.presentation.ui.chat.model.UiChatInfo
 import com.aoztg.greengrim.presentation.ui.chat.model.UiChatMessage
 import com.aoztg.greengrim.presentation.util.Constants
 import com.aoztg.greengrim.presentation.util.Constants.DATE
-import com.aoztg.greengrim.presentation.util.Constants.MY_CHAT
 import com.aoztg.greengrim.presentation.util.Constants.NOTHING
-import com.aoztg.greengrim.presentation.util.Constants.OTHER_CHAT
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -32,7 +32,8 @@ data class ChatRoomUiState(
     val editTextState: Boolean = false,
     val chatMessages: List<UiChatMessage> = emptyList(),
     val page: Int = 0,
-    val hasNext: Boolean = true
+    val hasNext: Boolean = true,
+    val chatInfo: UiChatInfo = UiChatInfo()
 )
 
 sealed class ChatRoomEvents {
@@ -89,6 +90,28 @@ class ChatRoomViewModel @Inject constructor(
         }
     }
 
+    fun getChatInfo() {
+        viewModelScope.launch {
+            chatRepository.getChatInfo(chatRoomId).let {
+                when (it) {
+                    is BaseState.Success -> {
+                        val newData = it.body.toUiChatInfo()
+                        if (uiState.value.chatInfo != newData) {
+                            _uiState.update { state ->
+                                state.copy(
+                                    chatInfo = newData
+                                )
+                            }
+                        }
+
+                    }
+
+                    is BaseState.Error -> _events.emit(ChatRoomEvents.ShowSnackMessage(it.msg))
+                }
+            }
+        }
+    }
+
     private fun observeChatMessage() {
         chatMessage.onEach {
             if (it.isNotBlank()) {
@@ -107,24 +130,25 @@ class ChatRoomViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
+
     fun getChatMessageData() {
         if (uiState.value.hasNext) {
             viewModelScope.launch {
-                when (val response = chatRepository.getChatMessage(chatRoomId, uiState.value.page, 20)) {
+                when (val response =
+                    chatRepository.getChatMessage(chatRoomId, uiState.value.page, 20)) {
                     is BaseState.Success -> {
-                        val list = response.body.result.map {
-                            it.toUiChatMessage(::navigateToCertificationDetail,
-                                if(memberId == it.senderId) MY_CHAT
-                                else OTHER_CHAT
-                                )
-                        }
+
                         _uiState.update { state ->
                             state.copy(
                                 hasNext = response.body.hasNext,
-                                chatMessages = uiState.value.chatMessages + list,
+                                chatMessages = uiState.value.chatMessages + response.body.result.toUiChatMessageList(
+                                    memberId,
+                                    ::navigateToCertificationDetail
+                                ),
                                 page = uiState.value.page + 1
                             )
                         }
+
                     }
 
                     is BaseState.Error -> {
@@ -133,14 +157,13 @@ class ChatRoomViewModel @Inject constructor(
                 }
             }
         }
-
     }
 
     fun newChatMessage(
         message: ChatMessage
     ) {
         val newMessages = uiState.value.chatMessages.toMutableList()
-        val newMessage = message.toUiChatMessage(memberId, ::navigateToCertificationDetail)
+        val newMessage = message.toUiChatMessageList(memberId, ::navigateToCertificationDetail)
 
         if (newMessages.size > 0 && newMessages.first().sentDate.isNotBlank()) {
             if (newMessages.first().sentDate != newMessage.sentDate) {
@@ -212,11 +235,12 @@ class ChatRoomViewModel @Inject constructor(
         viewModelScope.launch {
             _events.emit(ChatRoomEvents.ShowLoading)
 
-            challengeRepository.exitChallenge(challengeId).let{
-                when(it){
+            challengeRepository.exitChallenge(challengeId).let {
+                when (it) {
                     is BaseState.Success -> {
                         _events.emit(ChatRoomEvents.ExitChat)
                     }
+
                     is BaseState.Error -> {
                         _events.emit(ChatRoomEvents.DismissLoading)
                         _events.emit(ChatRoomEvents.ShowSnackMessage(it.msg))

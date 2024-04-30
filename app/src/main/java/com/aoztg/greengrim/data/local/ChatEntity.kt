@@ -8,8 +8,5 @@ import androidx.room.PrimaryKey
 data class UnReadChatEntity(
     @PrimaryKey
     val chatId: Long = 0,
-    val unReadCount: Int = 0,
-    val recentChat: String = "",
-    val recentChatTime: String = "",
-    val recentChatDate: String = ""
+    val recentReadTime: String = ""
 )

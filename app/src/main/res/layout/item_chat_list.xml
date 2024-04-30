@@ -7,7 +7,7 @@
 
         <variable
             name="item"
-            type="com.aoztg.greengrim.presentation.ui.chat.model.UiChatListItem" />
+            type="com.aoztg.greengrim.presentation.chatmanager.model.UiChatListItem" />
 
     </data>
 
@@ -44,13 +44,27 @@
         <TextView
             android:id="@+id/tv_recent_chat"
             style="@style/TextGgSmallGrey1"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:maxLines="1"
             android:text="@{item.recentChat}"
             app:layout_constraintBottom_toBottomOf="@id/iv_title_img"
+            app:layout_constraintEnd_toStartOf="@id/tv_message_cnt"
             app:layout_constraintStart_toStartOf="@id/tv_title"
             app:layout_constraintTop_toBottomOf="@id/tv_title"
             tools:text="지구를 지켜 지수" />
+
+        <TextView
+            android:id="@+id/tv_recent_date"
+            style="@style/TextGgTiny"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:text="@{item.recentTime}"
+            app:layout_constraintBottom_toBottomOf="@id/tv_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="오전 5:31" />
 
         <TextView
             android:id="@+id/tv_message_cnt"
@@ -61,22 +75,10 @@
             android:paddingHorizontal="5dp"
             android:textColor="@color/white"
             android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="@id/tv_title"
+            app:layout_constraintBottom_toBottomOf="@id/tv_recent_chat"
             app:layout_constraintEnd_toEndOf="parent"
             app:unReadChatCount="@{item.chatCount}"
             tools:text="5" />
-
-
-        <TextView
-            android:id="@+id/tv_recent_date"
-            style="@style/TextGgTiny"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="20dp"
-            android:text="@{item.recentTime}"
-            app:layout_constraintBottom_toBottomOf="@id/tv_recent_chat"
-            app:layout_constraintEnd_toEndOf="parent"
-            tools:text="오전 5:31" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

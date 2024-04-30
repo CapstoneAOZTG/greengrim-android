@@ -37,14 +37,12 @@ class ChatSocket(
         stompClient.disconnect()
     }
 
-
     @SuppressLint("CheckResult")
     fun subscribeChat(chatId: Long) {
         try{
             stompClient.topic("/sub/chat/room/$chatId").subscribe { topicMessage ->
                 acceptChat(topicMessage.payload)
             }
-
         } catch(e: Exception){
             showSnackMessage(e.message.toString())
         }

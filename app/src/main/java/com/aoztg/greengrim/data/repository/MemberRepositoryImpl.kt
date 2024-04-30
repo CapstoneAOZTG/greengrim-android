@@ -70,4 +70,7 @@ class MemberRepositoryImpl @Inject constructor(private val api: MemberAPI) : Mem
     override suspend fun getRecentIssue(): BaseState<RecentIssueResponse> =
         runRemote { api.getHomeIssues() }
 
+    override suspend fun refreshToken(refreshToken: String): BaseState<LoginResponse> =
+        runRemote { api.refreshToken(refreshToken) }
+
 }

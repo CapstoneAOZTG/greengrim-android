@@ -44,14 +44,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(R.layout.fragment_login
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initStateObserver()
-
-        binding.btnTestLogin.setOnClickListener {
-            App.sharedPreferences.edit()
-                .putString(Constants.X_ACCESS_TOKEN, BuildConfig.MASTER_JWT)
-                .apply()
-            parentViewModel.goToMain()
-        }
-
+        setBtnListener()
     }
 
     private fun initStateObserver() {
@@ -72,6 +65,29 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(R.layout.fragment_login
 
                     else -> {}
                 }
+            }
+        }
+    }
+
+    private fun setBtnListener(){
+        with(binding){
+            btnTestLogin.setOnClickListener {
+                App.sharedPreferences.edit()
+                    .putString(Constants.X_ACCESS_TOKEN, BuildConfig.MASTER_JWT)
+                    .apply()
+                parentViewModel.goToMain()
+            }
+
+            btnGoogleLogin.setOnClickListener {
+                googleLogin()
+            }
+
+            btnKakaoLogin.setOnClickListener {
+                kakaoLogin()
+            }
+
+            btnNaverLogin.setOnClickListener {
+                naverLogin()
             }
         }
     }

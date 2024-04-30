@@ -6,6 +6,7 @@
     <color name="gg_black2_transparency">#BF121212</color>
     <color name="gg_black2">#121212</color>
     <color name="gg_black3">#232323</color>
+    <color name="gg_chat_background">#1B1B1B</color>
 
     <color name="gg_light_black">#1C1C1E</color>
     <color name="gg_light_black2">#2C2C2E</color>

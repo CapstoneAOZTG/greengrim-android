@@ -1,13 +1,17 @@
 package com.aoztg.greengrim.data.repository
 
+import android.util.Log
 import com.aoztg.greengrim.data.local.ChatDao
 import com.aoztg.greengrim.data.local.UnReadChatEntity
 import com.aoztg.greengrim.data.model.BaseState
+import com.aoztg.greengrim.data.model.request.ChatListDataRequest
+import com.aoztg.greengrim.data.model.response.ChatInfoResponse
+import com.aoztg.greengrim.data.model.response.ChatListDataResponse
 import com.aoztg.greengrim.data.model.response.ChatMessageResponse
-import com.aoztg.greengrim.data.model.response.ChatRoomsResponse
 import com.aoztg.greengrim.data.model.response.EnterChatResponse
 import com.aoztg.greengrim.data.model.runRemote
 import com.aoztg.greengrim.data.remote.ChatAPI
+import com.aoztg.greengrim.presentation.util.Constants.TAG
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -21,8 +25,8 @@ class ChatRepositoryImpl @Inject constructor(
     override suspend fun enterChat(challengeId: Long): BaseState<EnterChatResponse> =
         runRemote { api.enterChat(challengeId) }
 
-    override suspend fun getChatRooms(): BaseState<List<ChatRoomsResponse>> =
-        runRemote { api.getChatList() }
+    override suspend fun getChatListData(body: List<ChatListDataRequest>): BaseState<List<ChatListDataResponse>> =
+        runRemote { api.getChatListData(body) }
 
     override suspend fun exitChatRoom(id: Long): BaseState<Unit> =
         runRemote { api.exitChatRoom(id) }
@@ -35,6 +39,7 @@ class ChatRepositoryImpl @Inject constructor(
 
             BaseState.Success(response)
         } catch (e: Exception) {
+            Log.d(TAG,e.message.toString())
             BaseState.Error("데이터 저장 실패", "FAIL")
         }
     }
@@ -47,6 +52,7 @@ class ChatRepositoryImpl @Inject constructor(
 
             BaseState.Success(response)
         } catch (e: Exception) {
+            Log.d(TAG,e.message.toString())
             BaseState.Error("데이터 삭제 실패", "FAIL")
         }
     }
@@ -59,6 +65,7 @@ class ChatRepositoryImpl @Inject constructor(
 
             BaseState.Success(response)
         } catch (e: Exception) {
+            Log.d(TAG,e.message.toString())
             BaseState.Error("데이터 불러오기 실패", "FAIL")
         }
     }
@@ -69,5 +76,8 @@ class ChatRepositoryImpl @Inject constructor(
         size: Int
     ): BaseState<ChatMessageResponse> =
         runRemote { api.getChatMessage(roomId, page, size) }
+
+    override suspend fun getChatInfo(id: Long): BaseState<ChatInfoResponse> =
+        runRemote { api.getChatInfo(id) }
 
 }

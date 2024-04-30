@@ -4,13 +4,15 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.app.App
+import com.aoztg.greengrim.data.local.UnReadChatEntity
 import com.aoztg.greengrim.data.model.BaseState
+import com.aoztg.greengrim.data.model.request.ChatListDataRequest
 import com.aoztg.greengrim.data.repository.ChatRepository
 import com.aoztg.greengrim.data.repository.MemberRepository
-import com.aoztg.greengrim.presentation.chatmanager.mapper.toUiUnReadChatData
-import com.aoztg.greengrim.presentation.chatmanager.mapper.toUnReadChatEntity
+import com.aoztg.greengrim.presentation.chatmanager.mapper.toUiChatListItem
 import com.aoztg.greengrim.presentation.chatmanager.model.ChatMessage
-import com.aoztg.greengrim.presentation.chatmanager.model.UiUnReadChatData
+import com.aoztg.greengrim.presentation.chatmanager.model.UiChatListItem
+import com.aoztg.greengrim.presentation.ui.getCurrentTimeString
 import com.aoztg.greengrim.presentation.util.Constants
 import com.aoztg.greengrim.presentation.util.Constants.TAG
 import com.google.gson.Gson
@@ -21,6 +23,7 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -45,16 +48,13 @@ class ChatManager @Inject constructor(
     private val _firstConnect = MutableStateFlow(false)
     val firstConnect: StateFlow<Boolean> = _firstConnect.asStateFlow()
 
-    private val _initialConnectChatIds = MutableStateFlow<List<Long>>(emptyList())
-    val initialConnectChatIds: StateFlow<List<Long>> = _initialConnectChatIds.asStateFlow()
+    private val _chatListData = MutableStateFlow<List<UiChatListItem>>(emptyList())
+    val chatListData: StateFlow<List<UiChatListItem>> = _chatListData.asStateFlow()
 
-    var unReadChatData = listOf<UiUnReadChatData>()
+    val unReadCnt = MutableStateFlow(0)
 
-    private val _updateUnReadChat = MutableSharedFlow<List<UiUnReadChatData>>()
-    val updateUnReadChat: SharedFlow<List<UiUnReadChatData>> = _updateUnReadChat.asSharedFlow()
-
-    private val _unReadCnt = MutableStateFlow(0)
-    val unReadCnt: StateFlow<Int> = _unReadCnt.asStateFlow()
+    var isInChatting = false
+    var curChatId = 0L
 
     private var memberId: Long = 0
     private val chatSocket =
@@ -75,70 +75,73 @@ class ChatManager @Inject constructor(
 
     fun getMyChatIds() {
         viewModelScope.launch {
-            chatRepository.getChatRooms().let {
+            chatRepository.getUnReadChatData().let {
                 when (it) {
                     is BaseState.Success -> {
-                        _initialConnectChatIds.value = it.body.map { data ->
-                            data.chatroomId
-                        }
-
-                        chatSocket.connectServer()
-                        initialConnectChatIds.value.forEach { chatId ->
-                            chatSocket.subscribeChat(chatId)
-                        }
-
-                        unReadChatData = initialConnectChatIds.value.map { chatId ->
-                            UiUnReadChatData(
-                                chatId = chatId
-                            )
-                        }
+                        getMyChatListData(it.body)
                     }
 
                     is BaseState.Error -> {
-                        _events.emit(ChatEvent.ShowSnackMessage(it.msg))
+                        _events.emit(ChatEvent.ShowSnackMessage("데이터 불러오기 실패"))
                     }
                 }
-                _firstConnect.value = true
+
             }
-            unsubscribeFcm()
-            getUnReadChat()
         }
     }
 
-    private fun getUnReadChat() {
+    private fun getMyChatListData(list: List<UnReadChatEntity>) {
+        // 채팅리스트 데이터 API 연결
         viewModelScope.launch {
-            when (val response = chatRepository.getUnReadChatData()) {
-                is BaseState.Success -> {
-                    if (response.body.isNotEmpty()) {
-                        response.body.forEach {
-                            Log.d(TAG, it.toString())
-                        }
-                        unReadChatData = response.body.map {
-                            it.toUiUnReadChatData()
-                        }
-                        _unReadCnt.value =
-                            response.body.map { it.unReadCount }
-                                .reduce { total, num -> total + num }
-                    }
-                }
 
-                is BaseState.Error -> {
-                    _events.emit(ChatEvent.ShowSnackMessage(response.msg))
+            val body = list.map {
+                ChatListDataRequest(
+                    it.chatId, it.recentReadTime
+                )
+            }
+
+            chatRepository.getChatListData(body).let {
+                when (it) {
+                    is BaseState.Success -> {
+
+                        _chatListData.value = it.body.map { data ->
+                            data.toUiChatListItem()
+                        }
+
+                        if (!firstConnect.value) {
+                            chatSocket.connectServer()
+                            chatListData.value.forEach { data ->
+                                chatSocket.subscribeChat(data.chatId)
+                            }
+                        }
+                        _firstConnect.value = true
+
+                        var count = 0
+
+                        it.body.forEach { data ->
+                            count += data.chatroomInfo.newMessageCount
+                        }
+                        unReadCnt.value = count
+                    }
+
+                    is BaseState.Error -> {
+                        _events.emit(ChatEvent.ShowSnackMessage("데이터 불러오기 실패"))
+                    }
                 }
             }
         }
     }
 
-    fun subscribeNewChat(chatId: Long) {
-        initialConnectChatIds.value.forEach {
-            if (chatId == it) {
-                unReadChatData = unReadChatData + UiUnReadChatData(chatId = chatId)
-                return
-            }
-        }
+    fun subscribeNewChat(chatId: Long, challengeId: Long, title: String, titleImg: String) {
         chatSocket.subscribeChat(chatId)
-        _initialConnectChatIds.value = initialConnectChatIds.value + chatId
-        unReadChatData = unReadChatData + UiUnReadChatData(chatId = chatId)
+        _chatListData.value =
+            chatListData.value + UiChatListItem(
+                chatId = chatId,
+                challengeId = challengeId,
+                title = title,
+                titleImg = titleImg
+            )
+        storeRecentReadTime(chatId)
     }
 
     fun sendMessage(chatId: Long, message: String) {
@@ -161,73 +164,87 @@ class ChatManager @Inject constructor(
 
     private fun receiveMessage(payload: String) {
         val chatMessage = Gson().fromJson(payload, ChatMessage::class.java)
+        if (isInChatting && chatMessage.roomId == curChatId) {
+            updateRecentChatData(chatMessage, true)
+        } else {
+            updateRecentChatData(chatMessage, false)
+        }
+
+        // 최신 채팅 위로 올리는 로직
+        val newList = chatListData.value.toMutableList()
+        var temp = UiChatListItem()
+        newList.forEach {
+            if (it.chatId == chatMessage.roomId) {
+                temp = it
+            }
+        }
+        newList.remove(temp)
+        newList.add(0, temp)
+
+        _chatListData.value = newList
+
         viewModelScope.launch {
             _newChat.emit(chatMessage)
         }
-        updateUnReadChatData(chatMessage)
     }
 
-    private fun updateUnReadChatData(chatMessage: ChatMessage) {
-        // todo 메세지 수신시, recentChatData 업데이트
-        if (chatMessage.type == "TALK" || chatMessage.type == "CERT") {
-            if (chatMessage.senderId == memberId) {
-                unReadChatData = unReadChatData.map {
-                    if (it.chatId == chatMessage.roomId) {
-                        it.copy(
-                            recentChat = chatMessage.message,
-                            recentChatTime = chatMessage.sentTime,
-                            recentChatDate = chatMessage.sentDate,
-                            unReadCount = it.unReadCount
-                        )
-                    } else {
-                        it
-                    }
+    private fun updateRecentChatData(chatMessage: ChatMessage, onlyRecentMessage: Boolean) {
+        _chatListData.update {
+            chatListData.value.map { data ->
+                if (data.chatId == chatMessage.roomId) {
+                    data.copy(
+                        recentChat = chatMessage.message,
+                        recentTime = chatMessage.sentTime,
+                        chatCount = if (onlyRecentMessage) data.chatCount else data.chatCount + 1
+                    )
+                } else {
+                    data
                 }
-            } else {
-                unReadChatData = unReadChatData.map {
-                    if (it.chatId == chatMessage.roomId) {
-                        it.copy(
-                            recentChat = chatMessage.message,
-                            recentChatTime = chatMessage.sentTime,
-                            recentChatDate = chatMessage.sentDate,
-                            unReadCount = it.unReadCount + 1
-                        )
-                    } else {
-                        it
-                    }
-                }
-
-                _unReadCnt.value = unReadCnt.value + 1
             }
+        }
 
-            viewModelScope.launch {
-                _updateUnReadChat.emit(unReadChatData)
-            }
-            storeUnReadChat()
+        if (!onlyRecentMessage) {
+            unReadCnt.value = unReadCnt.value + 1
         }
     }
 
-    fun readChat(chatId: Long) {
-        unReadChatData = unReadChatData.map {
-            if (it.chatId == chatId) {
-                _unReadCnt.value = unReadCnt.value - it.unReadCount
-                it.copy(
-                    unReadCount = 0
-                )
-            } else {
-                it
+    fun inChat(id: Long) {
+        isInChatting = true
+        curChatId = id
+
+        _chatListData.update {
+            it.map { data ->
+                if (data.chatId == id) {
+                    unReadCnt.value = unReadCnt.value - data.chatCount
+                    data.copy(
+                        chatCount = 0
+                    )
+                } else {
+                    data
+                }
             }
         }
-        storeUnReadChat()
     }
 
-    private fun storeUnReadChat() {
+    fun outChat() {
+        isInChatting = false
+    }
+
+    fun storeRecentReadTime(chatRoomId: Long) {
         viewModelScope.launch {
-            unReadChatData.forEach {
-                when (val response = chatRepository.addUnReadChatData(it.toUnReadChatEntity())) {
-                    is BaseState.Success -> {}
+            chatRepository.addUnReadChatData(
+                UnReadChatEntity(
+                    chatId = chatRoomId,
+                    recentReadTime = getCurrentTimeString()
+                )
+            ).let {
+                when (it) {
+                    is BaseState.Success -> {
+
+                    }
+
                     is BaseState.Error -> {
-                        _events.emit(ChatEvent.ShowSnackMessage(response.msg))
+                        Log.d(TAG, "fail")
                     }
                 }
             }
@@ -237,9 +254,6 @@ class ChatManager @Inject constructor(
     fun exitChat(chatId: Long) {
         viewModelScope.launch {
             chatRepository.deleteUnReadChatData(chatId)
-            unReadChatData = unReadChatData.filter {
-                it.chatId != chatId
-            }
         }
     }
 
@@ -257,32 +271,6 @@ class ChatManager @Inject constructor(
 
     fun disconnectChat() {
         chatSocket.disconnectServer()
-    }
-
-    fun subscribeFcm() {
-        viewModelScope.launch {
-            memberRepository.subscribeFcm().let {
-                when (it) {
-                    is BaseState.Success -> {}
-                    is BaseState.Error -> {
-                        _events.emit(ChatEvent.ShowSnackMessage(it.msg))
-                    }
-                }
-            }
-        }
-    }
-
-    fun unsubscribeFcm() {
-        viewModelScope.launch {
-            memberRepository.unsubscribeFcm().let {
-                when (it) {
-                    is BaseState.Success -> {}
-                    is BaseState.Error -> {
-                        _events.emit(ChatEvent.ShowSnackMessage(it.msg))
-                    }
-                }
-            }
-
-        }
+        _firstConnect.value = false
     }
 }
