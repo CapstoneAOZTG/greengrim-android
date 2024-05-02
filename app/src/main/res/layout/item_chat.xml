@@ -31,7 +31,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginEnd="6dp"
             android:scaleType="centerCrop"
-            android:visibility="@{item.profileVisibility ? View.VISIBLE : View.INVISIBLE}"
+            android:visibility="@{item.profileImg.empty ? View.INVISIBLE : View.VISIBLE}"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="@id/guide_profile"
             app:layout_constraintStart_toStartOf="parent"
@@ -48,7 +48,7 @@
             android:layout_marginStart="12dp"
             android:layout_marginTop="10dp"
             android:text="@{item.nickName}"
-            android:visibility="@{item.profileVisibility ? View.VISIBLE : View.GONE}"
+            android:visibility="@{item.profileImg.empty ? View.GONE : View.VISIBLE}"
             app:layout_constraintStart_toStartOf="@id/guide_profile"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="킹노아" />

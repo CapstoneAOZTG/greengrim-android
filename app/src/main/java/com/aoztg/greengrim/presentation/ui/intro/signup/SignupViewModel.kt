@@ -49,8 +49,7 @@ sealed class SignupEvents {
 class SignupViewModel @Inject constructor(
     private val memberRepository: MemberRepository,
     private val imageRepository: ImageRepository
-) :
-    ViewModel() {
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow(SignupUiState())
     val uiState: StateFlow<SignupUiState> = _uiState.asStateFlow()

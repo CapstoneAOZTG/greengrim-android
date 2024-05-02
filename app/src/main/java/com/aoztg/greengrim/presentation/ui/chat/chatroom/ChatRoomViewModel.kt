@@ -8,7 +8,8 @@ import com.aoztg.greengrim.data.repository.ChallengeRepository
 import com.aoztg.greengrim.data.repository.ChatRepository
 import com.aoztg.greengrim.presentation.chatmanager.model.ChatMessage
 import com.aoztg.greengrim.presentation.ui.chat.mapper.toUiChatInfo
-import com.aoztg.greengrim.presentation.ui.chat.mapper.toUiChatMessageList
+import com.aoztg.greengrim.presentation.ui.chat.mapper.toUiChatMessage
+import com.aoztg.greengrim.presentation.ui.chat.mapper.toUiChatMessageItem
 import com.aoztg.greengrim.presentation.ui.chat.model.UiChatInfo
 import com.aoztg.greengrim.presentation.ui.chat.model.UiChatMessage
 import com.aoztg.greengrim.presentation.util.Constants
@@ -141,10 +142,12 @@ class ChatRoomViewModel @Inject constructor(
                         _uiState.update { state ->
                             state.copy(
                                 hasNext = response.body.hasNext,
-                                chatMessages = uiState.value.chatMessages + response.body.result.toUiChatMessageList(
-                                    memberId,
-                                    ::navigateToCertificationDetail
-                                ),
+                                chatMessages = uiState.value.chatMessages + response.body.result.map {
+                                    it.toUiChatMessageItem(
+                                        memberId,
+                                        ::navigateToCertificationDetail
+                                    )
+                                },
                                 page = uiState.value.page + 1
                             )
                         }
@@ -163,9 +166,10 @@ class ChatRoomViewModel @Inject constructor(
         message: ChatMessage
     ) {
         val newMessages = uiState.value.chatMessages.toMutableList()
-        val newMessage = message.toUiChatMessageList(memberId, ::navigateToCertificationDetail)
+        val newMessage = message.toUiChatMessage(memberId, ::navigateToCertificationDetail)
 
         if (newMessages.size > 0 && newMessages.first().sentDate.isNotBlank()) {
+
             if (newMessages.first().sentDate != newMessage.sentDate) {
                 newMessages.add(0, UiChatMessage(type = DATE, message = newMessage.sentDate) {})
             }

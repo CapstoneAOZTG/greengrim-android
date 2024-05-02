@@ -11,4 +11,5 @@ data class ChatMessage(
     val profileImg: String = "",
     val certId: Long = -1,
     val certImg: String = "",
+    val createdAt: String = ""
 )
