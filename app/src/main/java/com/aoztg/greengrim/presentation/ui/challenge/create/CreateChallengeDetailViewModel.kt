@@ -8,6 +8,7 @@ import com.aoztg.greengrim.data.repository.ChallengeRepository
 import com.aoztg.greengrim.data.repository.ImageRepository
 import com.aoztg.greengrim.presentation.ui.BaseUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -40,7 +41,13 @@ sealed class ProgressState {
 
 sealed class CreateChallengeDetailEvents {
     object NavigateToBack : CreateChallengeDetailEvents()
-    data class NavigateToChatList(val chatId: Long, val challengeId: Long, val title: String, val titleImg: String) : CreateChallengeDetailEvents()
+    data class NavigateToChatList(
+        val chatId: Long,
+        val challengeId: Long,
+        val title: String,
+        val titleImg: String
+    ) : CreateChallengeDetailEvents()
+
     data class ShowToastMessage(val msg: String) : CreateChallengeDetailEvents()
     data class ShowSnackMessage(val msg: String) : CreateChallengeDetailEvents()
     object ShowLoading : CreateChallengeDetailEvents()
@@ -65,21 +72,24 @@ class CreateChallengeDetailViewModel @Inject constructor(
     val certificateProgress = MutableStateFlow(0)
     val ticketProgress = MutableStateFlow(0)
     val minCertificateProgress = MutableStateFlow(0)
-    val isImageSet = MutableStateFlow(false)
+    private val imageSet = MutableStateFlow(false)
     private var imgFile: MultipartBody.Part? = null
 
     private var goalCount = 0
     private var ticketTotalCount = 0
     private var weekMinCount = 0
 
+    private var imageStoreJob: Job? = null
+    private var imageUrl = ""
+
     val isDataReady = combine(
         title,
         description,
-        isImageSet,
+        imageSet,
         category
-    ) { title, description, imgSet, category ->
+    ) { title, description, imageSet, category ->
         title.length >= 2 && description.length >= 2
-                && imgSet && category.isNotBlank()
+                && imageSet && category.isNotBlank()
     }.stateIn(
         viewModelScope,
         SharingStarted.WhileSubscribed(),
@@ -89,8 +99,20 @@ class CreateChallengeDetailViewModel @Inject constructor(
     fun setImageFile(
         file: MultipartBody.Part
     ) {
-        isImageSet.value = true
-        imgFile = file
+        imageSet.value = true
+        imageStoreJob = viewModelScope.launch {
+
+            imageRepository.imageToUrl(file).let {
+                when (it) {
+                    is BaseState.Success -> imageUrl = it.body.imgUrl
+                    is BaseState.Error -> _events.emit(
+                        CreateChallengeDetailEvents.ShowSnackMessage(
+                            it.msg
+                        )
+                    )
+                }
+            }
+        }
     }
 
     init {
@@ -196,39 +218,19 @@ class CreateChallengeDetailViewModel @Inject constructor(
         }
     }
 
-    fun imageToUrl() {
+    fun createChallenge() {
         viewModelScope.launch {
+
             _events.emit(CreateChallengeDetailEvents.ShowLoading)
 
-            imgFile?.let { img ->
-                imageRepository.imageToUrl(img).let {
-                    when (it) {
-                        is BaseState.Success -> {
-                            createChallenge(it.body.imgUrl)
-                        }
-
-                        is BaseState.Error -> {
-                            _events.emit(CreateChallengeDetailEvents.ShowSnackMessage(it.msg))
-                            _events.emit(CreateChallengeDetailEvents.DismissLoading)
-                        }
-                    }
-                }
-            } ?: run {
-                _events.emit(CreateChallengeDetailEvents.ShowSnackMessage("이미지 로딩 실패"))
-                _events.emit(CreateChallengeDetailEvents.DismissLoading)
-            }
-        }
-    }
-
-    private fun createChallenge(imgUrl: String) {
-        viewModelScope.launch {
+            imageStoreJob?.join()
 
             challengeRepository.createChallenge(
                 CreateChallengeRequest(
                     category = category.value,
                     title = title.value,
                     description = description.value,
-                    imgUrl = imgUrl,
+                    imgUrl = imageUrl,
                     goalCount = goalCount,
                     ticketTotalCount = ticketTotalCount,
                     weekMinCount = weekMinCount,
@@ -239,12 +241,14 @@ class CreateChallengeDetailViewModel @Inject constructor(
                 when (it) {
                     is BaseState.Success -> {
                         _events.emit(CreateChallengeDetailEvents.ShowToastMessage("챌린지가 생성되었습니다!"))
-                        _events.emit(CreateChallengeDetailEvents.NavigateToChatList(
-                            it.body.chatroomId,
-                            it.body.challengeId,
-                            it.body.title,
-                            it.body.imgUrl
-                        ))
+                        _events.emit(
+                            CreateChallengeDetailEvents.NavigateToChatList(
+                                it.body.chatroomId,
+                                it.body.challengeId,
+                                it.body.title,
+                                it.body.imgUrl
+                            )
+                        )
                     }
 
                     is BaseState.Error -> {

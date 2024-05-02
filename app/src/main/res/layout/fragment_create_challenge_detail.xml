@@ -63,7 +63,7 @@
                 android:enabled="@{vm.isDataReady()}"
                 android:minWidth="0dp"
                 android:minHeight="0dp"
-                android:onClick="@{() -> vm.imageToUrl()}"
+                android:onClick="@{() -> vm.createChallenge()}"
                 android:text="완료"
                 android:textColor="@color/selector_complete_text"
                 android:textSize="16sp"
