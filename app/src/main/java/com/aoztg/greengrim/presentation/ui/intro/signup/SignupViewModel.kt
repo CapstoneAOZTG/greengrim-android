@@ -15,6 +15,7 @@ import com.aoztg.greengrim.presentation.util.Constants
 import com.aoztg.greengrim.presentation.util.Constants.X_ACCESS_TOKEN
 import com.aoztg.greengrim.presentation.util.Constants.X_REFRESH_TOKEN
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -49,8 +50,7 @@ sealed class SignupEvents {
 class SignupViewModel @Inject constructor(
     private val memberRepository: MemberRepository,
     private val imageRepository: ImageRepository
-) :
-    ViewModel() {
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow(SignupUiState())
     val uiState: StateFlow<SignupUiState> = _uiState.asStateFlow()
@@ -61,8 +61,9 @@ class SignupViewModel @Inject constructor(
     val nickname = MutableStateFlow("")
     val introduce = MutableStateFlow("")
     private val isNicknameValid = MutableStateFlow(false)
-    val isImageSet = MutableStateFlow(false)
-    private var imgFile: MultipartBody.Part? = null
+    private var imgUrl = ""
+
+    private var imageStoreJob: Job? = null
 
     private val isDataReady = combine(nickname, isNicknameValid) { nick, nickValid ->
         nick.isNotBlank() && nickValid
@@ -75,8 +76,18 @@ class SignupViewModel @Inject constructor(
     fun setImageFile(
         file: MultipartBody.Part
     ) {
-        isImageSet.value = true
-        imgFile = file
+        imageStoreJob = viewModelScope.launch {
+
+            imageRepository.imageToUrl(file).let {
+                when (it) {
+                    is BaseState.Success -> imgUrl = it.body.imgUrl
+
+                    is BaseState.Error -> {
+                        _events.emit(SignupEvents.ShowSnackMessage(it.msg))
+                    }
+                }
+            }
+        }
     }
 
     init {
@@ -127,32 +138,12 @@ class SignupViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    fun imageToUrl() {
-        viewModelScope.launch {
-            _events.emit(SignupEvents.ShowLoading)
-
-            imgFile?.let { img ->
-                imageRepository.imageToUrl(img).let {
-                    when (it) {
-                        is BaseState.Success -> {
-                            signUp(it.body.imgUrl)
-                        }
-
-                        is BaseState.Error -> {
-                            _events.emit(SignupEvents.ShowSnackMessage(it.msg))
-                            _events.emit(SignupEvents.DismissLoading)
-                        }
-                    }
-                }
-            } ?: run {
-                signUp("")
-            }
-        }
-    }
-
-    fun signUp(imgUrl: String) {
+    fun signUp() {
         viewModelScope.launch {
             // 통신로직
+            _events.emit(SignupEvents.ShowLoading)
+            imageStoreJob?.join()
+
             memberRepository.signup(
                 SignupRequest(
                     email = EmailData.email,
@@ -164,6 +155,7 @@ class SignupViewModel @Inject constructor(
             ).let {
                 when (it) {
                     is BaseState.Success -> {
+                        _events.emit(SignupEvents.DismissLoading)
                         sharedPreferences.edit()
                             .putString(X_ACCESS_TOKEN, it.body.accessToken)
                             .putString(X_REFRESH_TOKEN, it.body.refreshToken)
@@ -177,6 +169,7 @@ class SignupViewModel @Inject constructor(
                     }
 
                     is BaseState.Error -> {
+                        _events.emit(SignupEvents.DismissLoading)
                         _uiState.update { state ->
                             state.copy(signupState = BaseUiState.Error(it.msg))
                         }
