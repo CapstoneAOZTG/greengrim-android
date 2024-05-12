@@ -23,9 +23,11 @@ import com.aoztg.greengrim.presentation.ui.toCertificationDetail
 import com.aoztg.greengrim.presentation.ui.toChallengeDetail
 import com.aoztg.greengrim.presentation.ui.toNftDetail
 import com.kizitonwose.calendar.core.yearMonth
+import dagger.hilt.android.AndroidEntryPoint
 import java.time.LocalDate
 import java.time.YearMonth
 
+@AndroidEntryPoint
 class ProfileFragment : BaseFragment<FragmentProfileBinding>(R.layout.fragment_profile) {
 
     companion object {
@@ -57,8 +59,8 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(R.layout.fragment_p
         binding.rvChallengeList.adapter = ChallengeRoomAdapter()
         binding.rvCertifications.adapter = MyCertificationAdapter()
         binding.rvNftList.adapter = NftItemAdapter()
-        viewModel.getMyInfo()
-        viewModel.getMyChallenge(NEXT_PAGE)
+        viewModel.getMemberInfo()
+        viewModel.getMemberChallenge(NEXT_PAGE)
     }
 
     private fun setBtnClickListener() {
@@ -77,11 +79,11 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(R.layout.fragment_p
 
             if (scrollY > binding.scrollView.getChildAt(0).measuredHeight - v.measuredHeight) {
 
-                if(bottomScrollState){
+                if (bottomScrollState) {
                     bottomScrollState = false
-                    when(viewModel.uiState.value.curFilter){
+                    when (viewModel.uiState.value.curFilter) {
                         ProfileFilter.CHALLENGE -> {
-                            viewModel.getMyChallenge(MyProfileFragment.NEXT_PAGE)
+                            viewModel.getMemberChallenge(MyProfileFragment.NEXT_PAGE)
                         }
 
                         ProfileFilter.CERTIFICATION -> {

@@ -29,6 +29,11 @@ internal fun NavController.toWebView(url: String){
     navigate(action)
 }
 
+internal fun NavController.toProfile(id: Long){
+    val action = MainNavDirections.actionGlobalToProfileFragment(id)
+    navigate(action)
+}
+
 internal fun NavController.toChallengeCategory(){
     val action = MainNavDirections.actionGlobalToChallengeCategoryFragment()
     navigate(action)

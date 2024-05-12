@@ -20,7 +20,7 @@ class ChatMessageAdapter :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 
-        return when(viewType){
+        return when (viewType) {
             MY_CHAT -> {
                 MyChatViewHolder(
                     ItemChatMyBinding.inflate(
@@ -30,6 +30,7 @@ class ChatMessageAdapter :
                     )
                 )
             }
+
             OTHER_CHAT -> {
                 OtherChatViewHolder(
                     ItemChatBinding.inflate(
@@ -39,6 +40,7 @@ class ChatMessageAdapter :
                     )
                 )
             }
+
             DATE -> {
                 ChatDateViewHolder(
                     ItemChatDateBinding.inflate(
@@ -48,6 +50,7 @@ class ChatMessageAdapter :
                     )
                 )
             }
+
             ENTER_AND_EXIT -> {
                 EnterExitChatViewHolder(
                     ItemChatEnterExitBinding.inflate(
@@ -64,7 +67,7 @@ class ChatMessageAdapter :
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        when(getItem(position).type){
+        when (getItem(position).type) {
             MY_CHAT -> (holder as MyChatViewHolder).bind(getItem(position))
             OTHER_CHAT -> (holder as OtherChatViewHolder).bind(getItem(position))
             DATE -> (holder as ChatDateViewHolder).bind(getItem(position))
@@ -77,33 +80,40 @@ class ChatMessageAdapter :
     }
 }
 
-class OtherChatViewHolder(private val binding: ItemChatBinding) : RecyclerView.ViewHolder(binding.root) {
+class OtherChatViewHolder(private val binding: ItemChatBinding) :
+    RecyclerView.ViewHolder(binding.root) {
+    fun bind(item: UiChatMessage) {
+        binding.item = item
+        binding.ivImage.setOnClickListener {
+            item.onCertClickListener(item.certId)
+        }
+        binding.ivProfile.setOnClickListener {
+            item.onProfileClickListener(item.senderId)
+        }
+    }
+
+}
+
+class MyChatViewHolder(private val binding: ItemChatMyBinding) :
+    RecyclerView.ViewHolder(binding.root) {
     fun bind(item: UiChatMessage) {
         binding.item = item
         binding.ivImage.setOnClickListener {
             item.onCertClickListener(item.certId)
         }
     }
-
 }
 
-class MyChatViewHolder(private val binding: ItemChatMyBinding) : RecyclerView.ViewHolder(binding.root) {
-    fun bind(item: UiChatMessage){
-        binding.item = item
-        binding.ivImage.setOnClickListener {
-            item.onCertClickListener(item.certId)
-        }
-    }
-}
-
-class EnterExitChatViewHolder(private val binding: ItemChatEnterExitBinding) : RecyclerView.ViewHolder(binding.root) {
-    fun bind(item: UiChatMessage){
+class EnterExitChatViewHolder(private val binding: ItemChatEnterExitBinding) :
+    RecyclerView.ViewHolder(binding.root) {
+    fun bind(item: UiChatMessage) {
         binding.item = item
     }
 }
 
-class ChatDateViewHolder(private val binding: ItemChatDateBinding) : RecyclerView.ViewHolder(binding.root) {
-    fun bind(item: UiChatMessage){
+class ChatDateViewHolder(private val binding: ItemChatDateBinding) :
+    RecyclerView.ViewHolder(binding.root) {
+    fun bind(item: UiChatMessage) {
         binding.item = item
     }
 }

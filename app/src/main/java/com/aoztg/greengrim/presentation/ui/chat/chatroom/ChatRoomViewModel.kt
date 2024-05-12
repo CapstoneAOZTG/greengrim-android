@@ -44,6 +44,7 @@ sealed class ChatRoomEvents {
     object NavigateToCreateCertification : ChatRoomEvents()
     data class NavigateToCertificationList(val id: Long) : ChatRoomEvents()
     data class NavigateToCertificationDetail(val id: Long) : ChatRoomEvents()
+    data class NavigateToProfile(val id: Long) : ChatRoomEvents()
     data class SendMessage(val chatId: Long, val message: String) : ChatRoomEvents()
     object ScrollBottom : ChatRoomEvents()
     data class ShowToastMessage(val msg: String) : ChatRoomEvents()
@@ -145,7 +146,8 @@ class ChatRoomViewModel @Inject constructor(
                                 chatMessages = uiState.value.chatMessages + response.body.result.map {
                                     it.toUiChatMessageItem(
                                         memberId,
-                                        ::navigateToCertificationDetail
+                                        ::navigateToCertificationDetail,
+                                        ::navigateToProfile
                                     )
                                 },
                                 page = uiState.value.page + 1
@@ -166,12 +168,13 @@ class ChatRoomViewModel @Inject constructor(
         message: ChatMessage
     ) {
         val newMessages = uiState.value.chatMessages.toMutableList()
-        val newMessage = message.toUiChatMessage(memberId, ::navigateToCertificationDetail)
+        val newMessage =
+            message.toUiChatMessage(memberId, ::navigateToCertificationDetail, ::navigateToProfile)
 
         if (newMessages.size > 0 && newMessages.first().sentDate.isNotBlank()) {
 
             if (newMessages.first().sentDate != newMessage.sentDate) {
-                newMessages.add(0, UiChatMessage(type = DATE, message = newMessage.sentDate) {})
+                newMessages.add(0, UiChatMessage(type = DATE, message = newMessage.sentDate))
             }
         }
 
@@ -201,6 +204,12 @@ class ChatRoomViewModel @Inject constructor(
     private fun navigateToCertificationDetail(certId: Long) {
         viewModelScope.launch {
             _events.emit(ChatRoomEvents.NavigateToCertificationDetail(certId))
+        }
+    }
+
+    private fun navigateToProfile(id: Long) {
+        viewModelScope.launch {
+            _events.emit(ChatRoomEvents.NavigateToProfile(id))
         }
     }
 

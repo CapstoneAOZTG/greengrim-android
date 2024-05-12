@@ -18,6 +18,7 @@ import com.aoztg.greengrim.presentation.chatmanager.ChatManager
 import com.aoztg.greengrim.presentation.ui.chat.adapter.ChatMessageAdapter
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 import com.aoztg.greengrim.presentation.ui.toCertificationDetail
+import com.aoztg.greengrim.presentation.ui.toProfile
 import com.aoztg.greengrim.presentation.util.Constants.TAG
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -84,6 +85,8 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
                         it.id
                     )
 
+                    is ChatRoomEvents.NavigateToProfile -> findNavController().toProfile(it.id)
+
                     is ChatRoomEvents.SendMessage -> chatManager.sendMessage(
                         it.chatId,
                         it.message,
@@ -114,7 +117,7 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
         repeatOnStarted {
             chatManager.newChat.collect {
                 if (it.roomId == chatId) {
-                    Log.d(TAG,it.message)
+                    Log.d(TAG, it.message)
                     viewModel.newChatMessage(it)
                 }
             }

@@ -218,6 +218,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/tv_challenge_filter"
+                        app:list="@{vm.uiState.uiChallengeRoom}"
                         app:spanCount="2"
                         tools:listitem="@layout/item_challenge_list" />
 
@@ -354,7 +355,7 @@
                         android:layout_marginEnd="20dp"
                         android:drawablePadding="4dp"
                         android:onClick="@{() -> vm.showNftFilterBottomSheet()}"
-                        android:text="@{vm.uiState.challengeSortType.text}"
+                        android:text="@{vm.uiState.nftSortType.text}"
                         android:textAlignment="textEnd"
                         app:drawableEndCompat="@drawable/icon_filter"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -373,6 +374,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/tv_nft_filter"
+                        app:list="@{vm.uiState.nftList}"
                         app:spanCount="2"
                         tools:listitem="@layout/item_nft_list" />
 
