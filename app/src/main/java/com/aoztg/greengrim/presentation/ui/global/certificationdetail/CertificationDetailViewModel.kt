@@ -3,8 +3,12 @@ package com.aoztg.greengrim.presentation.ui.global.certificationdetail
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.data.model.BaseState
+import com.aoztg.greengrim.data.model.request.AccusationRequest
 import com.aoztg.greengrim.data.model.request.VerificationsRequest
 import com.aoztg.greengrim.data.repository.CertificationRepository
+import com.aoztg.greengrim.data.repository.MemberRepository
+import com.aoztg.greengrim.presentation.customview.AccusationContentType
+import com.aoztg.greengrim.presentation.customview.AccusationType
 import com.aoztg.greengrim.presentation.ui.global.mapper.toUiCertificationDetail
 import com.aoztg.greengrim.presentation.ui.global.model.UiCertificationDetail
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -27,14 +31,16 @@ sealed class CertificationDetailEvents {
     data class ShowToastMessage(val msg: String) : CertificationDetailEvents()
     object NavigateToBack : CertificationDetailEvents()
     object ShowVerifySnackBar : CertificationDetailEvents()
-    data class ShowSnackMessage(val msg: String): CertificationDetailEvents()
-    object ShowLoading: CertificationDetailEvents()
-    object DismissLoading: CertificationDetailEvents()
+    data class ShowSnackMessage(val msg: String) : CertificationDetailEvents()
+    object ShowLoading : CertificationDetailEvents()
+    object DismissLoading : CertificationDetailEvents()
+    object ShowPopUp : CertificationDetailEvents()
 }
 
 @HiltViewModel
 class CertificationDetailViewModel @Inject constructor(
-    private val certificationRepository: CertificationRepository
+    private val certificationRepository: CertificationRepository,
+    private val memberRepository: MemberRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(CertificationDetailUiState())
@@ -66,6 +72,12 @@ class CertificationDetailViewModel @Inject constructor(
             }
             delay(500)
             _events.emit(CertificationDetailEvents.DismissLoading)
+        }
+    }
+
+    fun showPopUp(){
+        viewModelScope.launch {
+            _events.emit(CertificationDetailEvents.ShowPopUp)
         }
     }
 
@@ -105,6 +117,58 @@ class CertificationDetailViewModel @Inject constructor(
     fun navigateToBack() {
         viewModelScope.launch {
             _events.emit(CertificationDetailEvents.NavigateToBack)
+        }
+    }
+
+    fun editCertification() {
+        // todo certification 수정으로 이동
+    }
+
+    fun deleteCertification() {
+        viewModelScope.launch {
+            certificationRepository.deleteCertification(certificationId).let {
+                when (it) {
+                    is BaseState.Success -> _events.emit(
+                        CertificationDetailEvents.ShowToastMessage(
+                            "인증 삭제 성공"
+                        )
+                    )
+
+                    is BaseState.Error -> _events.emit(CertificationDetailEvents.ShowSnackMessage(it.msg))
+                }
+            }
+        }
+    }
+
+    fun blockCertification() {
+        viewModelScope.launch {
+            certificationRepository.hideCertification(certificationId).let {
+                when (it) {
+                    is BaseState.Success -> {
+                        _events.emit(CertificationDetailEvents.ShowToastMessage("인증 차단 성공"))
+                    }
+
+                    is BaseState.Error -> _events.emit(CertificationDetailEvents.ShowSnackMessage(it.msg))
+                }
+            }
+        }
+    }
+
+    fun accusationCertification(type: AccusationContentType, content: String) {
+        viewModelScope.launch {
+            memberRepository.accusation(
+                AccusationType.CERTIFICATION.text, AccusationRequest(
+                    certificationId, type.text, content
+                )
+            ).let {
+                when (it) {
+                    is BaseState.Success -> {
+                        _events.emit(CertificationDetailEvents.ShowToastMessage("Nft 신고 성공"))
+                    }
+
+                    is BaseState.Error -> _events.emit(CertificationDetailEvents.ShowSnackMessage(it.msg))
+                }
+            }
         }
     }
 }

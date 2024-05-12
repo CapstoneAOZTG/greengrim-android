@@ -18,6 +18,7 @@ internal fun CertificationDetailResponse.toUiCertificationDetail(): UiCertificat
         certificationTitle = certificationInfo.title,
         date = certificationInfo.createdAt,
         certificationDescription = certificationInfo.description,
-        isVerified = isVerified
+        isVerified = isVerified,
+        mine = mine
     )
 }

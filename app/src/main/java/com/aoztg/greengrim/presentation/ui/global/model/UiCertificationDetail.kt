@@ -12,5 +12,6 @@ data class UiCertificationDetail(
     val certificationTitle: String = "",
     val date: String = "",
     val certificationDescription: String = "",
-    val isVerified: String = ""
+    val isVerified: String = "",
+    val mine: Boolean = false
 )

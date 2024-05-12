@@ -3,8 +3,13 @@ package com.aoztg.greengrim.presentation.ui.global.nftdetail
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.data.model.BaseState
+import com.aoztg.greengrim.data.model.request.AccusationRequest
 import com.aoztg.greengrim.data.model.request.NftLikeRequest
+import com.aoztg.greengrim.data.repository.MemberRepository
 import com.aoztg.greengrim.data.repository.NftRepository
+import com.aoztg.greengrim.presentation.customview.AccusationContentType
+import com.aoztg.greengrim.presentation.customview.AccusationType
+import com.aoztg.greengrim.presentation.ui.global.challengedetail.ChallengeDetailEvents
 import com.aoztg.greengrim.presentation.ui.nft.mapper.toUiNftDetail
 import com.aoztg.greengrim.presentation.ui.nft.model.UiNftDetailInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -26,11 +31,13 @@ sealed class NftDetailEvents {
     data class ShowSnackMessage(val msg: String) : NftDetailEvents()
     object NavigateToBack : NftDetailEvents()
     data class ShowToastMessage(val msg: String) : NftDetailEvents()
+    object ShowPopUp : NftDetailEvents()
 }
 
 @HiltViewModel
 class NftDetailViewModel @Inject constructor(
-    private val nftRepository: NftRepository
+    private val nftRepository: NftRepository,
+    private val memberRepository: MemberRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(NftDetailUiState())
@@ -40,7 +47,6 @@ class NftDetailViewModel @Inject constructor(
     val events: SharedFlow<NftDetailEvents> = _events.asSharedFlow()
 
     private var nftId = -1L
-
 
     fun setNftId(id: Long) {
         nftId = id
@@ -110,6 +116,60 @@ class NftDetailViewModel @Inject constructor(
     fun navigateToBack() {
         viewModelScope.launch {
             _events.emit(NftDetailEvents.NavigateToBack)
+        }
+    }
+
+    fun showPopUp() {
+        viewModelScope.launch {
+            _events.emit(NftDetailEvents.ShowPopUp)
+        }
+    }
+
+    fun editNft() {
+        // todo nft 수정으로 이동
+    }
+
+    fun deleteNft() {
+        viewModelScope.launch {
+            nftRepository.deleteNft(nftId).let {
+                when (it) {
+                    is BaseState.Success -> _events.emit(NftDetailEvents.ShowToastMessage("Nft 삭제 성공"))
+
+                    is BaseState.Error -> _events.emit(NftDetailEvents.ShowSnackMessage(it.msg))
+                }
+            }
+        }
+    }
+
+    fun blockNft() {
+        viewModelScope.launch {
+            nftRepository.hideNft(nftId).let {
+                when (it) {
+                    is BaseState.Success -> {
+                        _events.emit(NftDetailEvents.ShowToastMessage("Nft 차단 성공"))
+                    }
+
+                    is BaseState.Error -> _events.emit(NftDetailEvents.ShowSnackMessage(it.msg))
+                }
+            }
+        }
+    }
+
+    fun accusationNft(type: AccusationContentType, content: String) {
+        viewModelScope.launch {
+            memberRepository.accusation(
+                AccusationType.NFT.text, AccusationRequest(
+                    nftId, type.text, content
+                )
+            ).let {
+                when (it) {
+                    is BaseState.Success -> {
+                        _events.emit(NftDetailEvents.ShowToastMessage("Nft 신고 성공"))
+                    }
+
+                    is BaseState.Error -> _events.emit(NftDetailEvents.ShowSnackMessage(it.msg))
+                }
+            }
         }
     }
 }

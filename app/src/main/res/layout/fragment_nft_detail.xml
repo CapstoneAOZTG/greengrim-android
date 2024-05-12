@@ -66,6 +66,7 @@
                 android:layout_height="36dp"
                 android:layout_gravity="end"
                 android:background="@android:color/transparent"
+                android:onClick="@{() -> vm.showPopUp()}"
                 android:padding="4dp"
                 android:scaleType="fitCenter"
                 android:src="@drawable/icon_more"

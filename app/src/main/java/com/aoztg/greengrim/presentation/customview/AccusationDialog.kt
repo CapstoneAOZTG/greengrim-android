@@ -33,6 +33,7 @@ class AccusationDialog(
 
         btnAccusation.setOnClickListener {
             accusationClickListener(reason, content)
+            dismiss()
         }
 
         btnCancel.setOnClickListener {
