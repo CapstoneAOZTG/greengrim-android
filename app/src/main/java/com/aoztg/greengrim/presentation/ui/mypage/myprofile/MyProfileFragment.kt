@@ -18,6 +18,7 @@ import com.aoztg.greengrim.presentation.ui.mypage.adapter.MyCertificationAdapter
 import com.aoztg.greengrim.presentation.ui.nft.NftFragment
 import com.aoztg.greengrim.presentation.ui.nft.adapter.NftItemAdapter
 import com.aoztg.greengrim.presentation.ui.toCertificationDetail
+import com.aoztg.greengrim.presentation.ui.toChallengeCategory
 import com.aoztg.greengrim.presentation.ui.toChallengeDetail
 import com.aoztg.greengrim.presentation.ui.toNftDetail
 import com.kizitonwose.calendar.core.yearMonth
@@ -34,8 +35,8 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(R.layout.fragme
         const val NEXT_PAGE = 1
     }
 
-    private val parentViewModel : MainViewModel by activityViewModels()
-    private val viewModel : MyProfileViewModel by viewModels()
+    private val parentViewModel: MainViewModel by activityViewModels()
+    private val viewModel: MyProfileViewModel by viewModels()
 
     private lateinit var customCalendar: CustomCalendar
 
@@ -57,12 +58,12 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(R.layout.fragme
         viewModel.getMyChallenge(NEXT_PAGE)
     }
 
-    private fun setBtnClickListener(){
-        binding.btnNextMonth.setOnClickListener{
+    private fun setBtnClickListener() {
+        binding.btnNextMonth.setOnClickListener {
             customCalendar.goToNextMonth()
         }
 
-        binding.btnPreviousMonth.setOnClickListener{
+        binding.btnPreviousMonth.setOnClickListener {
             customCalendar.goToPreviousMonth()
         }
     }
@@ -73,9 +74,9 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(R.layout.fragme
 
             if (scrollY > binding.scrollView.getChildAt(0).measuredHeight - v.measuredHeight) {
 
-                if(bottomScrollState){
+                if (bottomScrollState) {
                     bottomScrollState = false
-                    when(viewModel.uiState.value.curFilter){
+                    when (viewModel.uiState.value.curFilter) {
                         ProfileFilter.CHALLENGE -> {
                             viewModel.getMyChallenge(NEXT_PAGE)
                         }
@@ -95,19 +96,29 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(R.layout.fragme
         }
     }
 
-    private fun initEventObserve(){
+    private fun initEventObserve() {
         repeatOnStarted {
-            viewModel.event.collect{
-                when(it){
+            viewModel.event.collect {
+                when (it) {
                     is MyProfileEvent.ShowChallengeFilterBottomSheet -> showChallengeFilterBottomSheet()
                     is MyProfileEvent.ShowNftFilterBottomSheet -> showNftFilterBottomSheet()
 
-                    is MyProfileEvent.NavigateToChallengeDetail -> findNavController().toChallengeDetail(it.id)
+                    is MyProfileEvent.NavigateToChallengeDetail -> findNavController().toChallengeDetail(
+                        it.id
+                    )
+
                     is MyProfileEvent.NavigateToCertificationDetail -> {
                         MyProfileTempDate.setTempDate(customCalendar.selectedDate)
                         findNavController().toCertificationDetail(it.certificationId)
                     }
+
                     is MyProfileEvent.NavigateToNftDetail -> findNavController().toNftDetail(it.id)
+
+                    is MyProfileEvent.NavigateToNft -> findNavController().toNftList()
+
+                    is MyProfileEvent.NavigateToChallengeCategory -> findNavController().toChallengeCategory()
+
+                    is MyProfileEvent.NavigateToChatList -> findNavController().toChatList()
 
                     is MyProfileEvent.ShowCalendar -> {
                         customCalendar.setDateWithDataList(
@@ -123,9 +134,11 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(R.layout.fragme
                             ::yearMonthDatePickerConfirmListener
                         )
                     }
+
                     is MyProfileEvent.InitCalendar -> {
                         // 캘린더 초기화 작업
                     }
+
                     is MyProfileEvent.ShowSnackMessage -> showCustomSnack(binding.ivProfile, it.msg)
                     is MyProfileEvent.ShowToastMessage -> showCustomToast(it.msg)
                     is MyProfileEvent.NavigateToEditProfile -> findNavController().toEditProfile()
@@ -135,7 +148,7 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(R.layout.fragme
         }
     }
 
-    private fun initCustomCalendar(){
+    private fun initCustomCalendar() {
         val tempDate = MyProfileTempDate.getTempDate()
         customCalendar = CustomCalendar(
             binding.calendarView,
@@ -147,7 +160,10 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(R.layout.fragme
     }
 
     private fun showChallengeFilterBottomSheet() {
-        ChallengeFilterBottomSheet(requireContext(), viewModel.uiState.value.challengeSortType) { type ->
+        ChallengeFilterBottomSheet(
+            requireContext(),
+            viewModel.uiState.value.challengeSortType
+        ) { type ->
             viewModel.setChallengeSortType(type)
         }.show()
     }
@@ -158,20 +174,30 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(R.layout.fragme
         }.show()
     }
 
-    private fun monthScrollListener(data: YearMonth){
+    private fun monthScrollListener(data: YearMonth) {
         viewModel.scrollMonth(data)
     }
 
-    private fun dateSelectListener(data: LocalDate){
+    private fun dateSelectListener(data: LocalDate) {
         viewModel.selectDate(data)
     }
 
-    private fun yearMonthDatePickerConfirmListener(year:Int, month:Int){
+    private fun yearMonthDatePickerConfirmListener(year: Int, month: Int) {
         customCalendar.yearMonthDatePickerConfirmListener(year, month)
     }
 
-    private fun NavController.toEditProfile(){
+    private fun NavController.toEditProfile() {
         val action = MyProfileFragmentDirections.actionMyProfileFragmentToEditProfileFragment()
+        navigate(action)
+    }
+
+    private fun NavController.toChatList() {
+        val action = MyProfileFragmentDirections.actionMyProfileFragmentToChatListFragment()
+        navigate(action)
+    }
+
+    private fun NavController.toNftList() {
+        val action = MyProfileFragmentDirections.actionMyProfileFragmentToNftFragment()
         navigate(action)
     }
 
