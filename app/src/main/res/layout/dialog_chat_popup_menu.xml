@@ -9,7 +9,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="220dp"
-        android:layout_height="168dp"
+        android:layout_height="212dp"
         android:background="@drawable/shape_darkgreyfill_nostroke_radius10">
 
         <TextView
@@ -63,7 +63,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginEnd="16dp"
-            android:src="@drawable/icon_morelist"
+            android:src="@drawable/icon_hamburger"
             app:layout_constraintBottom_toBottomOf="@id/tv_certification_list"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="parent"
@@ -78,6 +78,40 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_certification_list" />
 
+
+        <TextView
+            android:id="@+id/tv_block"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="10dp"
+            android:text="차단하기"
+            android:textColor="@color/white"
+            android:textSize="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/divider2"/>
+
+        <ImageView
+            android:id="@+id/iv_block"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginEnd="16dp"
+            android:src="@drawable/icon_block"
+            app:layout_constraintBottom_toBottomOf="@id/tv_block"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_block" />
+
+        <com.google.android.material.divider.MaterialDivider
+            android:id="@+id/divider3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_block" />
+
         <TextView
             android:id="@+id/tv_accusation"
             android:layout_width="0dp"
@@ -89,7 +123,7 @@
             android:textSize="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/divider2" />
+            app:layout_constraintTop_toBottomOf="@id/divider3" />
 
         <ImageView
             android:id="@+id/iv_accusation"
@@ -103,7 +137,7 @@
             app:layout_constraintTop_toTopOf="@id/tv_accusation" />
 
         <com.google.android.material.divider.MaterialDivider
-            android:id="@+id/divider3"
+            android:id="@+id/divider4"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -122,7 +156,7 @@
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/divider3" />
+            app:layout_constraintTop_toBottomOf="@id/divider4" />
 
         <ImageView
             android:id="@+id/iv_exit"

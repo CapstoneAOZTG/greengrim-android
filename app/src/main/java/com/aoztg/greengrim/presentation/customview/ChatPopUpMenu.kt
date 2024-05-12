@@ -13,6 +13,7 @@ class ChatPopUpMenu(
     private val context: Context,
     private val onClickChallengeInfo: () -> Unit,
     private val onClickCertificationList: () -> Unit,
+    private val onClickBlock: () -> Unit,
     private val onClickAccusation: () -> Unit,
     private val onClickExit: () -> Unit
 ) {
@@ -20,7 +21,7 @@ class ChatPopUpMenu(
         PopupWindow(
             binding.root,
             Constants.POPUP_WIDTH_DP.toPx(context.resources),
-            Constants.FOUR_POPUP_HEIGHT_DP.toPx(context.resources)
+            Constants.FIVE_POPUP_HEIGHT_DP.toPx(context.resources)
         ).apply {
             elevation = 10f
         }
@@ -36,6 +37,10 @@ class ChatPopUpMenu(
                 tvCertificationList.setOnClickListener {
                     dismiss()
                     onClickCertificationList()
+                }
+                tvBlock.setOnClickListener {
+                    dismiss()
+                    onClickBlock()
                 }
                 tvAccusation.setOnClickListener {
                     dismiss()

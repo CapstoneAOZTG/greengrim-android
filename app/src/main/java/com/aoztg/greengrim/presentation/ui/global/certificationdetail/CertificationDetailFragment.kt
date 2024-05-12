@@ -67,7 +67,7 @@ class CertificationDetailFragment :
         val top = popupLocation[1] + moreBtn.bottom.toFloat()
 
         if (viewModel.uiState.value.uiCertificationDetail.mine) {
-            showMyChallengeNftPopUp(
+            showEditDeletePopUp(
                 requireContext(),
                 { viewModel.editCertification() },
                 { viewModel.deleteCertification() },
@@ -75,7 +75,7 @@ class CertificationDetailFragment :
                 top.toInt()
             )
         } else {
-            showChallengeNftPopUp(
+            showBlockAccusationPopUp(
                 requireContext(),
                 { viewModel.blockCertification() },
                 ::showAccusation,
@@ -93,8 +93,8 @@ class CertificationDetailFragment :
 
     override fun onDestroyView() {
         super.onDestroyView()
-        dismissMyChallengeNftPopUp()
-        dismissChallengeNftPopUp()
+        dismissEditDeletePopUp()
+        dismissBlockAccusationPopUp()
     }
 }
 

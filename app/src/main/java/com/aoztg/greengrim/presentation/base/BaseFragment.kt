@@ -16,12 +16,11 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.aoztg.greengrim.presentation.customview.AccusationContentType
 import com.aoztg.greengrim.presentation.customview.AccusationDialog
-import com.aoztg.greengrim.presentation.customview.ChallengeNftPopUpMenu
+import com.aoztg.greengrim.presentation.customview.BlockAccusationPopUpMenu
 import com.aoztg.greengrim.presentation.customview.ChatPopUpMenu
 import com.aoztg.greengrim.presentation.customview.CustomSnackBar
+import com.aoztg.greengrim.presentation.customview.EditDeletePopUpMenu
 import com.aoztg.greengrim.presentation.customview.LoadingDialog
-import com.aoztg.greengrim.presentation.customview.MyChallengeNftPopUpMenu
-import com.aoztg.greengrim.presentation.customview.ProfilePopUpMenu
 import com.aoztg.greengrim.presentation.customview.TwoButtonTitleDialog
 import com.aoztg.greengrim.presentation.customview.YearMonthPickerDialog
 import com.google.android.material.snackbar.Snackbar
@@ -36,10 +35,9 @@ abstract class BaseFragment<B : ViewDataBinding>(
     protected val binding get() = _binding!!
 
     private lateinit var loadingDialog: LoadingDialog
-    private var profilePopUpMenu: ProfilePopUpMenu? = null
     private var chatPopUpMenu: ChatPopUpMenu? = null
-    private var challengeNftPopUpMenu: ChallengeNftPopUpMenu? = null
-    private var myChallengeNftPopUpMenu: MyChallengeNftPopUpMenu? = null
+    private var blockAccusationPopUpMenu: BlockAccusationPopUpMenu? = null
+    private var editDeletePopUpMenu: EditDeletePopUpMenu? = null
     private lateinit var yearMonthPickerDialog: YearMonthPickerDialog
     private var loadingState = false
     private var twoButtonTitleDialog: TwoButtonTitleDialog? = null
@@ -89,54 +87,42 @@ abstract class BaseFragment<B : ViewDataBinding>(
         accusationDialog?.dismiss()
     }
 
-    fun showChallengeNftPopUp(
+    fun showBlockAccusationPopUp(
         context: Context,
         onClickBlock: () -> Unit,
         onClickAccusation: () -> Unit,
         xPosition: Int,
         yPosition: Int
     ) {
-        challengeNftPopUpMenu = ChallengeNftPopUpMenu(context, onClickBlock, onClickAccusation)
-        challengeNftPopUpMenu?.show(xPosition, yPosition)
+        blockAccusationPopUpMenu =
+            BlockAccusationPopUpMenu(context, onClickBlock, onClickAccusation)
+        blockAccusationPopUpMenu?.show(xPosition, yPosition)
     }
 
-    fun dismissChallengeNftPopUp() {
-        challengeNftPopUpMenu?.dismiss()
+    fun dismissBlockAccusationPopUp() {
+        blockAccusationPopUpMenu?.dismiss()
     }
 
-    fun showMyChallengeNftPopUp(
+    fun showEditDeletePopUp(
         context: Context,
         onClickEdit: () -> Unit,
         onClickDelete: () -> Unit,
         xPosition: Int,
         yPosition: Int
     ) {
-        myChallengeNftPopUpMenu = MyChallengeNftPopUpMenu(context, onClickEdit, onClickDelete)
-        myChallengeNftPopUpMenu?.show(xPosition, yPosition)
+        editDeletePopUpMenu = EditDeletePopUpMenu(context, onClickEdit, onClickDelete)
+        editDeletePopUpMenu?.show(xPosition, yPosition)
     }
 
-    fun dismissMyChallengeNftPopUp() {
-        myChallengeNftPopUpMenu?.dismiss()
-    }
-
-    fun showProfilePopUp(
-        context: Context,
-        onClickListener: () -> Unit,
-        xPosition: Int,
-        yPosition: Int
-    ) {
-        profilePopUpMenu = ProfilePopUpMenu(context, onClickListener)
-        profilePopUpMenu?.show(xPosition, yPosition)
-    }
-
-    fun dismissProfilePopUp() {
-        profilePopUpMenu?.dismiss()
+    fun dismissEditDeletePopUp() {
+        editDeletePopUpMenu?.dismiss()
     }
 
     fun showChatPopUp(
         context: Context,
         onClickChallengeInfo: () -> Unit,
         onClickCertificationList: () -> Unit,
+        onClickBlock: () -> Unit,
         onClickAccusation: () -> Unit,
         onClickExit: () -> Unit,
         xPosition: Int,
@@ -146,6 +132,7 @@ abstract class BaseFragment<B : ViewDataBinding>(
             context,
             onClickChallengeInfo,
             onClickCertificationList,
+            onClickBlock,
             onClickAccusation,
             onClickExit
         )

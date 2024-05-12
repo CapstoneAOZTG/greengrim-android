@@ -50,7 +50,7 @@ class NftDetailFragment : BaseFragment<FragmentNftDetailBinding>(R.layout.fragme
         val top = popupLocation[1] + moreBtn.bottom.toFloat()
 
         if (viewModel.uiState.value.nftDetail.mine) {
-            showMyChallengeNftPopUp(
+            showEditDeletePopUp(
                 requireContext(),
                 { viewModel.editNft() },
                 { viewModel.deleteNft() },
@@ -58,7 +58,7 @@ class NftDetailFragment : BaseFragment<FragmentNftDetailBinding>(R.layout.fragme
                 top.toInt()
             )
         } else {
-            showChallengeNftPopUp(
+            showBlockAccusationPopUp(
                 requireContext(),
                 { viewModel.blockNft() },
                 ::showAccusation,
@@ -76,8 +76,8 @@ class NftDetailFragment : BaseFragment<FragmentNftDetailBinding>(R.layout.fragme
 
     override fun onDestroyView() {
         super.onDestroyView()
-        dismissMyChallengeNftPopUp()
-        dismissChallengeNftPopUp()
+        dismissEditDeletePopUp()
+        dismissBlockAccusationPopUp()
     }
 
 

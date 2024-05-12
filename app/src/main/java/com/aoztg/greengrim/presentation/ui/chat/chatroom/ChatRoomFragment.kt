@@ -137,6 +137,7 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
             requireContext(),
             ::navigateToChallengeInfo,
             ::navigateToCertificationList,
+            { viewModel.blockChat() },
             ::navigateToAccusation,
             ::exitChat,
             left.toInt(),

@@ -263,4 +263,8 @@ class ChatRoomViewModel @Inject constructor(
         }
     }
 
+    fun blockChat(){
+        // todo 채팅 차단하기
+    }
+
 }

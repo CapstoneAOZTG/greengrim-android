@@ -63,7 +63,7 @@ sealed class ProfileEvent {
     object ShowChallengeFilterBottomSheet : ProfileEvent()
     object ShowNftFilterBottomSheet : ProfileEvent()
     object ShowAccusationPopUp : ProfileEvent()
-    object DismissAccusationDialog: ProfileEvent()
+    object DismissAccusationDialog : ProfileEvent()
     data class ShowYearMonthPicker(val curYear: Int, val curMonth: Int) : ProfileEvent()
     object ShowCalendar : ProfileEvent()
     object InitCalendar : ProfileEvent()
@@ -398,4 +398,15 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
+    fun blockMember() {
+        viewModelScope.launch {
+            memberRepository.hideMember(memberId).let {
+                when (it) {
+                    is BaseState.Success -> _event.emit(ProfileEvent.ShowToastMessage("사용자 차단 완료"))
+
+                    is BaseState.Error -> _event.emit(ProfileEvent.ShowSnackMessage(it.msg))
+                }
+            }
+        }
+    }
 }

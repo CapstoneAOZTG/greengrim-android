@@ -23,7 +23,7 @@ object Constants {
     const val POPUP_WIDTH_DP = 220
     const val ONE_POPUP_HEIGHT_DP = 40
     const val TWO_POPUP_HEIGHT_DP = 90
-    const val FOUR_POPUP_HEIGHT_DP = 168
+    const val FIVE_POPUP_HEIGHT_DP = 212
 
     const val KAKAO = "kakao"
     const val NAVER = "naver"

@@ -75,7 +75,7 @@ class ChallengeDetailFragment :
         val top = popupLocation[1] + moreBtn.bottom.toFloat()
 
         if (viewModel.uiState.value.uiChallengeDetail.mine) {
-            showMyChallengeNftPopUp(
+            showEditDeletePopUp(
                 requireContext(),
                 { viewModel.editChallenge() },
                 { viewModel.deleteChallenge() },
@@ -83,7 +83,7 @@ class ChallengeDetailFragment :
                 top.toInt()
             )
         } else {
-            showChallengeNftPopUp(
+            showBlockAccusationPopUp(
                 requireContext(),
                 { viewModel.blockChallenge() },
                 ::showAccusation,
@@ -104,8 +104,8 @@ class ChallengeDetailFragment :
 
     override fun onDestroyView() {
         super.onDestroyView()
-        dismissChallengeNftPopUp()
-        dismissMyChallengeNftPopUp()
+        dismissBlockAccusationPopUp()
+        dismissEditDeletePopUp()
     }
 
     private fun showAccusation() {
