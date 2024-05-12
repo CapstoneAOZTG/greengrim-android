@@ -46,11 +46,21 @@ class ChallengeDetailFragment :
                     is ChallengeDetailEvents.NavigateBack -> findNavController().navigateUp()
                     is ChallengeDetailEvents.PopUpMenu -> showPopup()
                     is ChallengeDetailEvents.NavigateChatRoom -> {
-                        chatManager.subscribeNewChat(it.chatId, it.challengeId, it.title, it.titleImg)
+                        chatManager.subscribeNewChat(
+                            it.chatId,
+                            it.challengeId,
+                            it.title,
+                            it.titleImg
+                        )
                         findNavController().toChatRoom(it.chatId, it.challengeId)
                     }
+
                     is ChallengeDetailEvents.ShowToastMessage -> showCustomToast(it.msg)
-                    is ChallengeDetailEvents.ShowSnackMessage -> showCustomSnack(binding.tvTitle, it.msg)
+                    is ChallengeDetailEvents.ShowSnackMessage -> showCustomSnack(
+                        binding.tvTitle,
+                        it.msg
+                    )
+
                     is ChallengeDetailEvents.ShowLoading -> showLoading(requireContext())
                     is ChallengeDetailEvents.DismissLoading -> dismissLoading()
                 }
@@ -63,26 +73,45 @@ class ChallengeDetailFragment :
         moreBtn.getLocationOnScreen(popupLocation)
         val left = popupLocation[0] + moreBtn.left.toFloat()
         val top = popupLocation[1] + moreBtn.bottom.toFloat()
-        showOnePopup(
-            requireContext(),
-            ::navigateToAccusation,
-            left.toInt(),
-            top.toInt()
-        )
+
+        if (viewModel.uiState.value.uiChallengeDetail.mine) {
+            showMyChallengeNftPopUp(
+                requireContext(),
+                { viewModel.editChallenge() },
+                { viewModel.deleteChallenge() },
+                left.toInt(),
+                top.toInt()
+            )
+        } else {
+            showChallengeNftPopUp(
+                requireContext(),
+                { viewModel.blockChallenge() },
+                ::showAccusation,
+                left.toInt(),
+                top.toInt()
+            )
+        }
     }
 
     private fun NavController.toChatRoom(chatId: Long, challengeId: Long) {
-        val action = ChallengeDetailFragmentDirections.actionChallengeDetailFragmentToChatRoomFragment(chatId, challengeId)
+        val action =
+            ChallengeDetailFragmentDirections.actionChallengeDetailFragmentToChatRoomFragment(
+                chatId,
+                challengeId
+            )
         this.navigate(action)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        dismissOnePopup()
+        dismissChallengeNftPopUp()
+        dismissMyChallengeNftPopUp()
     }
 
-    private fun navigateToAccusation() {
-        showCustomToast("신고하기로 이동 구현 전")
+    private fun showAccusation() {
+        showAccusation(requireContext(), "챌린지 신고") { accType, content ->
+            viewModel.accusationChallenge(accType, content)
+        }
     }
 }
 

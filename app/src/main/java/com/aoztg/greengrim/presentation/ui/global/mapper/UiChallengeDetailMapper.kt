@@ -12,6 +12,7 @@ fun ChallengeDetailResponse.toUiChallengeDetail(): UiChallengeDetail{
         description = this.challengeInfo.description,
         keywords = this.challengeTags,
         date = this.createdAt,
-        entered = this.entered
+        entered = this.entered,
+        mine = mine 
     )
 }

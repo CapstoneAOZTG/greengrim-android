@@ -136,7 +136,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(R.layout.fragment_p
 
                     is ProfileEvent.DismissAccusationDialog -> {
                         dismissAccusation()
-                        dismissOnePopup()
+                        dismissProfilePopUp()
                     }
                     is ProfileEvent.ShowAccusationPopUp -> showPopup()
                     is ProfileEvent.InitCalendar -> {
@@ -194,7 +194,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(R.layout.fragment_p
         moreBtn.getLocationOnScreen(popupLocation)
         val left = popupLocation[0] + moreBtn.left.toFloat()
         val top = popupLocation[1] + moreBtn.bottom.toFloat()
-        showOnePopup(
+        showProfilePopUp(
             requireContext(),
             ::showAccusationDialog,
             left.toInt(),
@@ -210,7 +210,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(R.layout.fragment_p
 
     override fun onDestroyView() {
         super.onDestroyView()
-        dismissOnePopup()
+        dismissProfilePopUp()
     }
 
 }

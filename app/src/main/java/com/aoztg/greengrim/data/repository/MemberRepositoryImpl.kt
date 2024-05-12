@@ -77,4 +77,7 @@ class MemberRepositoryImpl @Inject constructor(private val api: MemberAPI) : Mem
     override suspend fun accusation(type: String, body: AccusationRequest): BaseState<Unit> =
         runRemote { api.accusation(type, body) }
 
+    override suspend fun hideMember(id: Long): BaseState<Unit> = runRemote {
+        api.hideMember(id)
+    }
 }

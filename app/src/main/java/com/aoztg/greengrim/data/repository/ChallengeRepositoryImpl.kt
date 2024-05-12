@@ -94,4 +94,8 @@ class ChallengeRepositoryImpl @Inject constructor(private val api: ChallengeAPI)
         api.getMyChallengeList(page, size, sort)
     }
 
+    override suspend fun hideChallenge(id: Long): BaseState<Unit> = runRemote {
+        api.hideChallenge(id)
+    }
+
 }

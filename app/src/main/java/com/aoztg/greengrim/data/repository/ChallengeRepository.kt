@@ -71,4 +71,8 @@ interface ChallengeRepository {
         sort : String
     ): BaseState<ChallengeListResponse>
 
+    suspend fun hideChallenge(
+        id : Long
+    ): BaseState<Unit>
+
 }

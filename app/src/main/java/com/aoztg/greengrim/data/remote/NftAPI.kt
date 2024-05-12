@@ -89,4 +89,9 @@ interface NftAPI {
     @GET("/home/hot-nfts")
     suspend fun getHotNft():Response<HotNftResponse>
 
+    @POST("/visitor/hiding/nft")
+    suspend fun hideNft(
+        @Query("id") id : Long
+    ): Response<Unit>
+
 }

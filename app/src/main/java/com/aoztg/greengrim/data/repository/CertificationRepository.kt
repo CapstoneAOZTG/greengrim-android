@@ -54,4 +54,8 @@ interface CertificationRepository {
     suspend fun deleteCertification(
         id: Long
     ): BaseState<Unit>
+
+    suspend fun hideCertification(
+        id: Long
+    ): BaseState<Unit>
 }

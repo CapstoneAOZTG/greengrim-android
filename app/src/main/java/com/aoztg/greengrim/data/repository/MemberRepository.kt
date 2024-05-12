@@ -80,4 +80,8 @@ interface MemberRepository {
         body: AccusationRequest
     ): BaseState<Unit>
 
+    suspend fun hideMember(
+        id: Long
+    ): BaseState<Unit>
+
 }

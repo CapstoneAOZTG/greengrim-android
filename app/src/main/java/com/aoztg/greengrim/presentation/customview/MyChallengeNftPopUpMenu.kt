@@ -5,25 +5,32 @@ import android.content.res.Resources
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.widget.PopupWindow
-import com.aoztg.greengrim.databinding.DialogProfilePopupMenuBinding
+import com.aoztg.greengrim.databinding.DialogMyChallengeNftPopupMenuBinding
 import com.aoztg.greengrim.presentation.util.Constants
 import kotlin.math.roundToInt
 
-class ProfilePopUpMenu(
+class MyChallengeNftPopUpMenu(
     private val context: Context,
-    private inline val onClickAccusation: () -> Unit,
+    private inline val onClickEdit: () -> Unit,
+    private inline val onClickDelete: () -> Unit,
 ) {
     private val popUp by lazy {
-        PopupWindow(binding.root, Constants.POPUP_WIDTH_DP.toPx(context.resources), Constants.ONE_POPUP_HEIGHT_DP.toPx(context.resources)).apply {
+        PopupWindow(binding.root, Constants.POPUP_WIDTH_DP.toPx(context.resources), Constants.TWO_POPUP_HEIGHT_DP.toPx(context.resources)).apply {
             elevation = 10f
         }
     }
 
     private val binding by lazy {
-        DialogProfilePopupMenuBinding.inflate(LayoutInflater.from(context)).apply {
+        DialogMyChallengeNftPopupMenuBinding.inflate(LayoutInflater.from(context)).apply {
             with(this) {
-                root.setOnClickListener {
-                    onClickAccusation()
+
+                tvEdit.setOnClickListener {
+                    onClickEdit()
+                    dismiss()
+                }
+
+                tvDelete.setOnClickListener {
+                    onClickDelete()
                     dismiss()
                 }
             }

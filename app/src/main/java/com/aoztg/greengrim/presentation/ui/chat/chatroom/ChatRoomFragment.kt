@@ -133,7 +133,7 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
         moreBtn.getLocationOnScreen(popupLocation)
         val left = popupLocation[0] + moreBtn.left.toFloat()
         val top = popupLocation[1] + moreBtn.bottom.toFloat()
-        showFourPopup(
+        showChatPopUp(
             requireContext(),
             ::navigateToChallengeInfo,
             ::navigateToCertificationList,
@@ -183,7 +183,7 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
 
     override fun onDestroyView() {
         super.onDestroyView()
-        dismissFourPopup()
+        dismissChatPopUp()
     }
 
 }

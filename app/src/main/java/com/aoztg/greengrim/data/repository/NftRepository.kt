@@ -70,4 +70,5 @@ interface NftRepository {
 
     suspend fun getHotNft(): BaseState<HotNftResponse>
 
+    suspend fun hideNft(id: Long): BaseState<Unit>
 }

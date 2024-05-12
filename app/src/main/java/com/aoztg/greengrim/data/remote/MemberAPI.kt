@@ -109,4 +109,9 @@ interface MemberAPI {
         @Body body: AccusationRequest
     ): Response<Unit>
 
+    @POST("/visitor/hiding/member")
+    suspend fun hideMember(
+        @Query("id") id : Long
+    ): Response<Unit>
+
 }

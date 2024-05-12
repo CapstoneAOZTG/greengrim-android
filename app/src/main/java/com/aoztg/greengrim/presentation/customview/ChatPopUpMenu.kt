@@ -19,7 +19,7 @@ class ChatPopUpMenu(
     private val popUp by lazy {
         PopupWindow(
             binding.root,
-            Constants.ONE_POPUP_WIDTH_DP.toPx(context.resources),
+            Constants.POPUP_WIDTH_DP.toPx(context.resources),
             Constants.FOUR_POPUP_HEIGHT_DP.toPx(context.resources)
         ).apply {
             elevation = 10f

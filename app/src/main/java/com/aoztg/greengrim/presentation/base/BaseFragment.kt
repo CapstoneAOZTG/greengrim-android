@@ -14,11 +14,13 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.aoztg.greengrim.presentation.customview.AccusationDialog
 import com.aoztg.greengrim.presentation.customview.AccusationContentType
-import com.aoztg.greengrim.presentation.customview.CustomSnackBar
+import com.aoztg.greengrim.presentation.customview.AccusationDialog
+import com.aoztg.greengrim.presentation.customview.ChallengeNftPopUpMenu
 import com.aoztg.greengrim.presentation.customview.ChatPopUpMenu
+import com.aoztg.greengrim.presentation.customview.CustomSnackBar
 import com.aoztg.greengrim.presentation.customview.LoadingDialog
+import com.aoztg.greengrim.presentation.customview.MyChallengeNftPopUpMenu
 import com.aoztg.greengrim.presentation.customview.ProfilePopUpMenu
 import com.aoztg.greengrim.presentation.customview.TwoButtonTitleDialog
 import com.aoztg.greengrim.presentation.customview.YearMonthPickerDialog
@@ -36,10 +38,11 @@ abstract class BaseFragment<B : ViewDataBinding>(
     private lateinit var loadingDialog: LoadingDialog
     private var profilePopUpMenu: ProfilePopUpMenu? = null
     private var chatPopUpMenu: ChatPopUpMenu? = null
+    private var challengeNftPopUpMenu: ChallengeNftPopUpMenu? = null
+    private var myChallengeNftPopUpMenu: MyChallengeNftPopUpMenu? = null
     private lateinit var yearMonthPickerDialog: YearMonthPickerDialog
     private var loadingState = false
     private var twoButtonTitleDialog: TwoButtonTitleDialog? = null
-
     private var accusationDialog: AccusationDialog? = null
 
     override fun onCreateView(
@@ -86,7 +89,37 @@ abstract class BaseFragment<B : ViewDataBinding>(
         accusationDialog?.dismiss()
     }
 
-    fun showOnePopup(
+    fun showChallengeNftPopUp(
+        context: Context,
+        onClickBlock: () -> Unit,
+        onClickAccusation: () -> Unit,
+        xPosition: Int,
+        yPosition: Int
+    ) {
+        challengeNftPopUpMenu = ChallengeNftPopUpMenu(context, onClickBlock, onClickAccusation)
+        challengeNftPopUpMenu?.show(xPosition, yPosition)
+    }
+
+    fun dismissChallengeNftPopUp() {
+        challengeNftPopUpMenu?.dismiss()
+    }
+
+    fun showMyChallengeNftPopUp(
+        context: Context,
+        onClickEdit: () -> Unit,
+        onClickDelete: () -> Unit,
+        xPosition: Int,
+        yPosition: Int
+    ) {
+        myChallengeNftPopUpMenu = MyChallengeNftPopUpMenu(context, onClickEdit, onClickDelete)
+        myChallengeNftPopUpMenu?.show(xPosition, yPosition)
+    }
+
+    fun dismissMyChallengeNftPopUp() {
+        myChallengeNftPopUpMenu?.dismiss()
+    }
+
+    fun showProfilePopUp(
         context: Context,
         onClickListener: () -> Unit,
         xPosition: Int,
@@ -96,11 +129,11 @@ abstract class BaseFragment<B : ViewDataBinding>(
         profilePopUpMenu?.show(xPosition, yPosition)
     }
 
-    fun dismissOnePopup() {
+    fun dismissProfilePopUp() {
         profilePopUpMenu?.dismiss()
     }
 
-    fun showFourPopup(
+    fun showChatPopUp(
         context: Context,
         onClickChallengeInfo: () -> Unit,
         onClickCertificationList: () -> Unit,
@@ -119,7 +152,7 @@ abstract class BaseFragment<B : ViewDataBinding>(
         chatPopUpMenu?.show(xPosition, yPosition)
     }
 
-    fun dismissFourPopup() {
+    fun dismissChatPopUp() {
         chatPopUpMenu?.dismiss()
     }
 

@@ -17,5 +17,6 @@ internal fun NftDetailResponse.toUiNftDetail() = UiNftDetailInfo(
     gesture = traitsInfo.gesture,
     accessory = traitsInfo.accessory,
     shoes = traitsInfo.shoes,
-    liked = liked
+    liked = liked,
+    mine = mine
 )

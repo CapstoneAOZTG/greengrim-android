@@ -10,4 +10,5 @@ data class UiChallengeDetail(
     val keywords: ChallengeDetailTags? = null,
     val date: String = "",
     val entered: Boolean = false,
+    val mine: Boolean = false
 )

@@ -85,4 +85,6 @@ class NftRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getHotNft(): BaseState<HotNftResponse> = runRemote { api.getHotNft() }
+
+    override suspend fun hideNft(id: Long): BaseState<Unit> = runRemote { api.hideNft(id) }
 }

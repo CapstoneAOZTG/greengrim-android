@@ -60,4 +60,8 @@ class CertificationRepositoryImpl @Inject constructor(private val api: Certifica
     override suspend fun deleteCertification(id: Long): BaseState<Unit> =
         runRemote { api.deleteCertification(id) }
 
+    override suspend fun hideCertification(id: Long): BaseState<Unit> =
+        runRemote { api.hideCertification(id) }
+
+
 }

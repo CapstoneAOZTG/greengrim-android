@@ -4,7 +4,8 @@ data class ChallengeDetailResponse(
     val challengeInfo: ChallengeDetailInfo,
     val challengeTags: ChallengeDetailTags,
     val createdAt: String,
-    val entered: Boolean
+    val entered: Boolean,
+    val mine: Boolean
 )
 
 data class ChallengeDetailInfo(

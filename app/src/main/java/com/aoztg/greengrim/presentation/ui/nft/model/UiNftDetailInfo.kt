@@ -15,5 +15,6 @@ data class UiNftDetailInfo(
     val accessory : String = "",
     val shoes : String = "",
     val liked : Boolean = false,
+    val mine: Boolean = false
 )
 
