@@ -36,6 +36,7 @@ sealed class HotChallengeListEvents {
     object ShowLoading : HotChallengeListEvents()
     object DismissLoading : HotChallengeListEvents()
     object ScrollToTop : HotChallengeListEvents()
+    object NavigateToBack : HotChallengeListEvents()
 }
 
 @HiltViewModel
@@ -106,6 +107,12 @@ class HotChallengeListViewModel @Inject constructor(
     fun navigateToChallengeCategory(){
         viewModelScope.launch {
             _event.emit(HotChallengeListEvents.NavigateToChallengeCategory)
+        }
+    }
+
+    fun navigateToBack(){
+        viewModelScope.launch {
+            _event.emit(HotChallengeListEvents.NavigateToBack)
         }
     }
 

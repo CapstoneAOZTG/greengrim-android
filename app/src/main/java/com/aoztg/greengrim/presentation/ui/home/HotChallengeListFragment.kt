@@ -78,6 +78,7 @@ class HotChallengeListFragment :
                         binding.cgFilter,
                         it.msg
                     )
+                    is HotChallengeListEvents.NavigateToBack -> findNavController().navigateUp()
                 }
             }
         }
