@@ -5,11 +5,11 @@ import android.content.res.Resources
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.widget.PopupWindow
-import com.aoztg.greengrim.databinding.DialogOnePopupMenuBinding
+import com.aoztg.greengrim.databinding.DialogProfilePopupMenuBinding
 import com.aoztg.greengrim.presentation.util.Constants
 import kotlin.math.roundToInt
 
-class OnePopupMenu(
+class ProfilePopUpMenu(
     private val context: Context,
     private inline val onClickAccusation: () -> Unit,
 ) {
@@ -20,7 +20,7 @@ class OnePopupMenu(
     }
 
     private val binding by lazy {
-        DialogOnePopupMenuBinding.inflate(LayoutInflater.from(context)).apply {
+        DialogProfilePopupMenuBinding.inflate(LayoutInflater.from(context)).apply {
             with(this) {
                 root.setOnClickListener {
                     onClickAccusation()

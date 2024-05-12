@@ -17,9 +17,9 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.aoztg.greengrim.presentation.customview.AccusationDialog
 import com.aoztg.greengrim.presentation.customview.AccusationContentType
 import com.aoztg.greengrim.presentation.customview.CustomSnackBar
-import com.aoztg.greengrim.presentation.customview.FourPopupMenu
+import com.aoztg.greengrim.presentation.customview.ChatPopUpMenu
 import com.aoztg.greengrim.presentation.customview.LoadingDialog
-import com.aoztg.greengrim.presentation.customview.OnePopupMenu
+import com.aoztg.greengrim.presentation.customview.ProfilePopUpMenu
 import com.aoztg.greengrim.presentation.customview.TwoButtonTitleDialog
 import com.aoztg.greengrim.presentation.customview.YearMonthPickerDialog
 import com.google.android.material.snackbar.Snackbar
@@ -34,8 +34,8 @@ abstract class BaseFragment<B : ViewDataBinding>(
     protected val binding get() = _binding!!
 
     private lateinit var loadingDialog: LoadingDialog
-    private var onePopupMenu: OnePopupMenu? = null
-    private var fourPopupMenu: FourPopupMenu? = null
+    private var profilePopUpMenu: ProfilePopUpMenu? = null
+    private var chatPopUpMenu: ChatPopUpMenu? = null
     private lateinit var yearMonthPickerDialog: YearMonthPickerDialog
     private var loadingState = false
     private var twoButtonTitleDialog: TwoButtonTitleDialog? = null
@@ -92,12 +92,12 @@ abstract class BaseFragment<B : ViewDataBinding>(
         xPosition: Int,
         yPosition: Int
     ) {
-        onePopupMenu = OnePopupMenu(context, onClickListener)
-        onePopupMenu?.show(xPosition, yPosition)
+        profilePopUpMenu = ProfilePopUpMenu(context, onClickListener)
+        profilePopUpMenu?.show(xPosition, yPosition)
     }
 
     fun dismissOnePopup() {
-        onePopupMenu?.dismiss()
+        profilePopUpMenu?.dismiss()
     }
 
     fun showFourPopup(
@@ -109,18 +109,18 @@ abstract class BaseFragment<B : ViewDataBinding>(
         xPosition: Int,
         yPosition: Int
     ) {
-        fourPopupMenu = FourPopupMenu(
+        chatPopUpMenu = ChatPopUpMenu(
             context,
             onClickChallengeInfo,
             onClickCertificationList,
             onClickAccusation,
             onClickExit
         )
-        fourPopupMenu?.show(xPosition, yPosition)
+        chatPopUpMenu?.show(xPosition, yPosition)
     }
 
     fun dismissFourPopup() {
-        fourPopupMenu?.dismiss()
+        chatPopUpMenu?.dismiss()
     }
 
     fun showYearMonthDialog(
