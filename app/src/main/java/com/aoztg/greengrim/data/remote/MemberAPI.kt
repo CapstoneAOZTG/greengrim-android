@@ -1,5 +1,6 @@
 package com.aoztg.greengrim.data.remote
 
+import com.aoztg.greengrim.data.model.request.AccusationRequest
 import com.aoztg.greengrim.data.model.request.CheckNickRequest
 import com.aoztg.greengrim.data.model.request.LoginRequest
 import com.aoztg.greengrim.data.model.request.PatchProfileRequest
@@ -101,5 +102,11 @@ interface MemberAPI {
 
     @GET("/visitor/home")
     suspend fun getHomeMyInfo(): Response<HomeMyInfoResponse>
+
+    @POST("/visitor/reports")
+    suspend fun accusation(
+        @Query("type") type: String,
+        @Body body: AccusationRequest
+    ): Response<Unit>
 
 }

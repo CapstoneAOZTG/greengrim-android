@@ -3,10 +3,13 @@ package com.aoztg.greengrim.presentation.ui.global.profile
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.data.model.BaseState
+import com.aoztg.greengrim.data.model.request.AccusationRequest
 import com.aoztg.greengrim.data.repository.CertificationRepository
 import com.aoztg.greengrim.data.repository.ChallengeRepository
 import com.aoztg.greengrim.data.repository.MemberRepository
 import com.aoztg.greengrim.data.repository.NftRepository
+import com.aoztg.greengrim.presentation.customview.AccusationContentType
+import com.aoztg.greengrim.presentation.customview.AccusationType
 import com.aoztg.greengrim.presentation.customview.ChallengeSortType
 import com.aoztg.greengrim.presentation.customview.NftSortType
 import com.aoztg.greengrim.presentation.ui.challenge.list.ChallengeListViewModel
@@ -60,6 +63,7 @@ sealed class ProfileEvent {
     object ShowChallengeFilterBottomSheet : ProfileEvent()
     object ShowNftFilterBottomSheet : ProfileEvent()
     object ShowAccusationPopUp : ProfileEvent()
+    object DismissAccusationDialog: ProfileEvent()
     data class ShowYearMonthPicker(val curYear: Int, val curMonth: Int) : ProfileEvent()
     object ShowCalendar : ProfileEvent()
     object InitCalendar : ProfileEvent()
@@ -349,6 +353,25 @@ class ProfileViewModel @Inject constructor(
 
     private fun clickLike(id: Long) {
 
+    }
+
+    fun accusation(type: AccusationContentType, content: String) {
+        viewModelScope.launch {
+            memberRepository.accusation(
+                AccusationType.MEMBER.text, AccusationRequest(
+                    memberId, type.text, content
+                )
+            ).let {
+                _event.emit(ProfileEvent.DismissAccusationDialog)
+                when (it) {
+                    is BaseState.Success -> {
+                        _event.emit(ProfileEvent.ShowToastMessage("신고완료"))
+                    }
+
+                    is BaseState.Error -> _event.emit(ProfileEvent.ShowSnackMessage(it.msg))
+                }
+            }
+        }
     }
 
     fun showNftFilterBottomSheet() {

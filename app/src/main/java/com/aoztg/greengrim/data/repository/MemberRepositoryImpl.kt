@@ -1,6 +1,7 @@
 package com.aoztg.greengrim.data.repository
 
 import com.aoztg.greengrim.data.model.BaseState
+import com.aoztg.greengrim.data.model.request.AccusationRequest
 import com.aoztg.greengrim.data.model.request.CheckNickRequest
 import com.aoztg.greengrim.data.model.request.LoginRequest
 import com.aoztg.greengrim.data.model.request.PatchProfileRequest
@@ -72,5 +73,8 @@ class MemberRepositoryImpl @Inject constructor(private val api: MemberAPI) : Mem
 
     override suspend fun refreshToken(refreshToken: String): BaseState<LoginResponse> =
         runRemote { api.refreshToken(refreshToken) }
+
+    override suspend fun accusation(type: String, body: AccusationRequest): BaseState<Unit> =
+        runRemote { api.accusation(type, body) }
 
 }

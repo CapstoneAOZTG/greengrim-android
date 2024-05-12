@@ -134,6 +134,10 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(R.layout.fragment_p
                         )
                     }
 
+                    is ProfileEvent.DismissAccusationDialog -> {
+                        dismissAccusation()
+                        dismissOnePopup()
+                    }
                     is ProfileEvent.ShowAccusationPopUp -> showPopup()
                     is ProfileEvent.InitCalendar -> {
                         // 캘린더 초기화 작업
@@ -199,7 +203,14 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(R.layout.fragment_p
     }
 
     private fun showAccusationDialog() {
+        showAccusation(requireContext(), "유저 신고") { accType, content ->
+            viewModel.accusation(accType, content)
+        }
+    }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        dismissOnePopup()
     }
 
 }

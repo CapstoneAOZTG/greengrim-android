@@ -14,12 +14,13 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.aoztg.greengrim.presentation.customview.AccusationDialog
+import com.aoztg.greengrim.presentation.customview.AccusationContentType
 import com.aoztg.greengrim.presentation.customview.CustomSnackBar
 import com.aoztg.greengrim.presentation.customview.FourPopupMenu
 import com.aoztg.greengrim.presentation.customview.LoadingDialog
 import com.aoztg.greengrim.presentation.customview.OnePopupMenu
 import com.aoztg.greengrim.presentation.customview.TwoButtonTitleDialog
-import com.aoztg.greengrim.presentation.customview.VerifySnackBar
 import com.aoztg.greengrim.presentation.customview.YearMonthPickerDialog
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.CoroutineScope
@@ -37,7 +38,9 @@ abstract class BaseFragment<B : ViewDataBinding>(
     private var fourPopupMenu: FourPopupMenu? = null
     private lateinit var yearMonthPickerDialog: YearMonthPickerDialog
     private var loadingState = false
-    private var twoButtonTitleDialog : TwoButtonTitleDialog? = null
+    private var twoButtonTitleDialog: TwoButtonTitleDialog? = null
+
+    private var accusationDialog: AccusationDialog? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -68,6 +71,19 @@ abstract class BaseFragment<B : ViewDataBinding>(
             loadingDialog.dismiss()
             loadingState = false
         }
+    }
+
+    fun showAccusation(
+        context: Context,
+        title: String,
+        accusationClickListener: (AccusationContentType, String) -> Unit
+    ) {
+        accusationDialog = AccusationDialog(context, title, accusationClickListener)
+        accusationDialog?.show()
+    }
+
+    fun dismissAccusation() {
+        accusationDialog?.dismiss()
     }
 
     fun showOnePopup(
@@ -126,18 +142,19 @@ abstract class BaseFragment<B : ViewDataBinding>(
 
     fun showTwoButtonTitleDialog(
         context: Context,
-        title : String,
-        oneBtnText : String,
+        title: String,
+        oneBtnText: String,
         twoBtnText: String,
-        confirmListener : () -> Unit
-    ){
-        twoButtonTitleDialog = TwoButtonTitleDialog(context, title, oneBtnText, twoBtnText, confirmListener)
+        confirmListener: () -> Unit
+    ) {
+        twoButtonTitleDialog =
+            TwoButtonTitleDialog(context, title, oneBtnText, twoBtnText, confirmListener)
         twoButtonTitleDialog?.show()
     }
 
-    fun dismissTwoButtonTitleDialog(){
-        twoButtonTitleDialog?.let{
-            if(it.isShowing){
+    fun dismissTwoButtonTitleDialog() {
+        twoButtonTitleDialog?.let {
+            if (it.isShowing) {
                 it.dismiss()
             }
         }

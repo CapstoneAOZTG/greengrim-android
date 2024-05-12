@@ -1,6 +1,7 @@
 package com.aoztg.greengrim.data.repository
 
 import com.aoztg.greengrim.data.model.BaseState
+import com.aoztg.greengrim.data.model.request.AccusationRequest
 import com.aoztg.greengrim.data.model.request.CheckNickRequest
 import com.aoztg.greengrim.data.model.request.LoginRequest
 import com.aoztg.greengrim.data.model.request.PatchProfileRequest
@@ -73,5 +74,10 @@ interface MemberRepository {
     suspend fun refreshToken(
         refreshToken: String
     ): BaseState<LoginResponse>
+
+    suspend fun accusation(
+        type: String,
+        body: AccusationRequest
+    ): BaseState<Unit>
 
 }
