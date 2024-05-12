@@ -57,32 +57,32 @@ class ChallengeListViewModel @Inject constructor(
 
     fun getChallengeList(option: Int) {
 
-        if (_uiState.value.hasNext) {
+        if (uiState.value.hasNext) {
             viewModelScope.launch {
-                _events.emit(ChallengeListEvents.ShowLoading)
 
                 challengeRepository.getChallengeList(
                     category,
-                    _uiState.value.page,
+                    uiState.value.page,
                     20,
-                    _uiState.value.challengeSortType.value
+                    uiState.value.challengeSortType.value
                 ).let {
                     when (it) {
                         is BaseState.Success -> {
                             val uiData = it.body.toUiChallengeList(::navigateToChallengeDetail)
                             _uiState.update { state ->
                                 state.copy(
-                                    uiChallengeRoom = if (option == ORIGINAL) _uiState.value.uiChallengeRoom + uiData.result else uiData.result,
+                                    uiChallengeRoom = if (option == ORIGINAL) uiState.value.uiChallengeRoom + uiData.result else uiData.result,
                                     hasNext = uiData.hasNext,
                                     page = uiData.page + 1,
                                 )
                             }
+
+                            delay(100)
+                            _events.emit(ChallengeListEvents.ScrollToTop)
                         }
 
-                        is BaseState.Error ->  _events.emit(ChallengeListEvents.ShowSnackMessage(it.msg))
+                        is BaseState.Error -> _events.emit(ChallengeListEvents.ShowSnackMessage(it.msg))
                     }
-                    delay(500)
-                    _events.emit(ChallengeListEvents.DismissLoading)
                 }
             }
         }
@@ -100,7 +100,7 @@ class ChallengeListViewModel @Inject constructor(
         }
     }
 
-    fun navigateToSearchChallenge(){
+    fun navigateToSearchChallenge() {
         viewModelScope.launch {
             _events.emit(ChallengeListEvents.NavigateToSearchChallenge)
         }

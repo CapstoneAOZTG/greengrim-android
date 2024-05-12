@@ -28,3 +28,8 @@ internal fun NavController.toWebView(url: String){
     val action = MainNavDirections.actionGlobalToWebviewFragment(url)
     navigate(action)
 }
+
+internal fun NavController.toChallengeCategory(){
+    val action = MainNavDirections.actionGlobalToChallengeCategoryFragment()
+    navigate(action)
+}

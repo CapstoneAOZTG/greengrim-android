@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <import type="com.aoztg.greengrim.presentation.ui.home.HotChallengeSortType" />
 
         <variable
@@ -108,6 +110,40 @@
                 android:textColor="@{vm.uiState.curFilter == HotChallengeSortType.MOST_RECENT ? @color/gg_skyblue2 : @color/gg_grey2}" />
 
         </com.google.android.material.chip.ChipGroup>
+
+        <TextView
+            android:id="@+id/tv_no_hot_challenge"
+            style="@style/TextGgMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="아직 핫 챌린지가 없어요"
+            android:textColor="@color/gg_grey5"
+            android:visibility="@{vm.uiState.uiChallengeRoom.empty ? View.VISIBLE : View.INVISIBLE}"
+            app:layout_constraintBottom_toTopOf="@id/btn_navigate_to_challenge"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_navigate_to_challenge"
+            style="@style/TextGgSmallBold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/shape_darkgreyfill_nostroke_radius10"
+            android:minHeight="0dp"
+            android:onClick="@{() -> vm.navigateToChallengeCategory()}"
+            android:paddingHorizontal="40dp"
+            android:paddingVertical="10dp"
+            android:text="챌린지 보러가기"
+            android:textColor="@color/gg_green"
+            android:textSize="14dp"
+            android:visibility="@{vm.uiState.uiChallengeRoom.empty ? View.VISIBLE : View.INVISIBLE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_no_hot_challenge" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_challenge_list"

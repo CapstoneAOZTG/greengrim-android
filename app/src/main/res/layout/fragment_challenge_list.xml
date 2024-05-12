@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="vm"
             type="com.aoztg.greengrim.presentation.ui.challenge.list.ChallengeListViewModel" />
@@ -41,8 +43,8 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_marginEnd="12dp"
-                android:onClick="@{() -> vm.navigateToSearchChallenge()}"
                 android:background="@android:color/transparent"
+                android:onClick="@{() -> vm.navigateToSearchChallenge()}"
                 android:scaleType="fitCenter"
                 android:src="@drawable/icon_search"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -85,20 +87,56 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/layout_toolbar" />
 
+        <TextView
+            android:id="@+id/tv_no_challenge"
+            style="@style/TextGgMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="아직 챌린지가 없어요\n첫 챌린지를 생성해보세요!"
+            android:textAlignment="center"
+            android:textColor="@color/gg_grey5"
+            android:visibility="@{vm.uiState.uiChallengeRoom.empty ? View.VISIBLE : View.INVISIBLE}"
+            app:layout_constraintBottom_toTopOf="@id/btn_navigate_to_create_challenge"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_navigate_to_create_challenge"
+            style="@style/TextGgSmallBold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/shape_darkgreyfill_nostroke_radius10"
+            android:minHeight="0dp"
+            android:onClick="@{() -> vm.navigateToCreateChallenge()}"
+            android:paddingHorizontal="40dp"
+            android:paddingVertical="10dp"
+            android:text="챌린지 생성하기"
+            android:textColor="@color/gg_green"
+            android:textSize="14dp"
+            android:visibility="@{vm.uiState.uiChallengeRoom.empty ? View.VISIBLE : View.INVISIBLE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_no_challenge" />
+
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_challenge_list"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:clipToPadding="false"
             android:orientation="vertical"
             android:paddingHorizontal="10dp"
-            android:layout_marginTop="10dp"
+            android:paddingBottom="200dp"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_filter"
             app:list="@{vm.uiState.uiChallengeRoom}"
-            android:clipToPadding="false"
-            android:paddingBottom="200dp"
             app:spanCount="2"
             tools:listitem="@layout/item_challenge_list" />
 
