@@ -2,11 +2,12 @@ package com.aoztg.greengrim.presentation.ui.intro.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.aoztg.greengrim.BuildConfig
 import com.aoztg.greengrim.app.App
+import com.aoztg.greengrim.data.config.KeyDataStoreManager
 import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.model.request.LoginRequest
 import com.aoztg.greengrim.data.repository.MemberRepository
-import com.aoztg.greengrim.presentation.util.Constants
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -28,9 +29,10 @@ sealed class LoginState {
 }
 
 @HiltViewModel
-class LoginViewModel @Inject constructor(private val repository : MemberRepository) :
-    ViewModel() {
-
+class LoginViewModel @Inject constructor(
+    private val repository: MemberRepository,
+    private val keyDataStoreManager: KeyDataStoreManager
+) : ViewModel() {
 
     companion object {
         const val UNAVAILABLE_EMAIL = "GLOBAL_001"
@@ -46,27 +48,23 @@ class LoginViewModel @Inject constructor(private val repository : MemberReposito
 
     fun startLogin(
         email: String,
-        socialType : String
+        socialType: String
     ) {
-        App.sharedPreferences.edit()
-            .putString(Constants.SOCIAL_TYPE, socialType)
-            .apply()
-
         viewModelScope.launch {
+
+            keyDataStoreManager.putSocialType(socialType)
 
             repository.login(
                 LoginRequest(
                     email = email,
                     App.fcmToken
                 )
-            ).let{
-                when(it){
+            ).let {
+                when (it) {
                     is BaseState.Success -> {
-                        App.sharedPreferences.edit()
-                            .putString(Constants.X_ACCESS_TOKEN, it.body.accessToken)
-                            .putString(Constants.X_REFRESH_TOKEN, it.body.refreshToken)
-                            .putLong(Constants.MEMBER_ID, it.body.memberId)
-                            .apply()
+                        keyDataStoreManager.putAccessToken(it.body.accessToken)
+                        keyDataStoreManager.putRefreshToken(it.body.refreshToken)
+                        keyDataStoreManager.putMemberId(it.body.memberId)
 
                         _uiState.update { state ->
                             state.copy(
@@ -74,6 +72,7 @@ class LoginViewModel @Inject constructor(private val repository : MemberReposito
                             )
                         }
                     }
+
                     is BaseState.Error -> {
                         when (it.code) {
                             UNAVAILABLE_EMAIL -> _uiState.update { state ->
@@ -90,6 +89,18 @@ class LoginViewModel @Inject constructor(private val repository : MemberReposito
                         }
                     }
                 }
+            }
+        }
+    }
+
+    fun testerLogin() {
+        viewModelScope.launch {
+            keyDataStoreManager.putAccessToken(BuildConfig.MASTER_JWT)
+
+            _uiState.update { state ->
+                state.copy(
+                    loginState = LoginState.Success
+                )
             }
         }
     }

@@ -14,12 +14,14 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.aoztg.greengrim.presentation.customview.AccusationContentType
+import com.aoztg.greengrim.presentation.customview.AccusationDialog
+import com.aoztg.greengrim.presentation.customview.BlockAccusationPopUpMenu
+import com.aoztg.greengrim.presentation.customview.ChatPopUpMenu
 import com.aoztg.greengrim.presentation.customview.CustomSnackBar
-import com.aoztg.greengrim.presentation.customview.FourPopupMenu
+import com.aoztg.greengrim.presentation.customview.EditDeletePopUpMenu
 import com.aoztg.greengrim.presentation.customview.LoadingDialog
-import com.aoztg.greengrim.presentation.customview.OnePopupMenu
 import com.aoztg.greengrim.presentation.customview.TwoButtonTitleDialog
-import com.aoztg.greengrim.presentation.customview.VerifySnackBar
 import com.aoztg.greengrim.presentation.customview.YearMonthPickerDialog
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.CoroutineScope
@@ -33,11 +35,13 @@ abstract class BaseFragment<B : ViewDataBinding>(
     protected val binding get() = _binding!!
 
     private lateinit var loadingDialog: LoadingDialog
-    private var onePopupMenu: OnePopupMenu? = null
-    private var fourPopupMenu: FourPopupMenu? = null
+    private var chatPopUpMenu: ChatPopUpMenu? = null
+    private var blockAccusationPopUpMenu: BlockAccusationPopUpMenu? = null
+    private var editDeletePopUpMenu: EditDeletePopUpMenu? = null
     private lateinit var yearMonthPickerDialog: YearMonthPickerDialog
     private var loadingState = false
-    private var twoButtonTitleDialog : TwoButtonTitleDialog? = null
+    private var twoButtonTitleDialog: TwoButtonTitleDialog? = null
+    private var accusationDialog: AccusationDialog? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -70,41 +74,73 @@ abstract class BaseFragment<B : ViewDataBinding>(
         }
     }
 
-    fun showOnePopup(
+    fun showAccusation(
         context: Context,
-        onClickListener: () -> Unit,
+        title: String,
+        accusationClickListener: (AccusationContentType, String) -> Unit
+    ) {
+        accusationDialog = AccusationDialog(context, title, accusationClickListener)
+        accusationDialog?.show()
+    }
+
+    fun dismissAccusation() {
+        accusationDialog?.dismiss()
+    }
+
+    fun showBlockAccusationPopUp(
+        context: Context,
+        onClickBlock: () -> Unit,
+        onClickAccusation: () -> Unit,
         xPosition: Int,
         yPosition: Int
     ) {
-        onePopupMenu = OnePopupMenu(context, onClickListener)
-        onePopupMenu?.show(xPosition, yPosition)
+        blockAccusationPopUpMenu =
+            BlockAccusationPopUpMenu(context, onClickBlock, onClickAccusation)
+        blockAccusationPopUpMenu?.show(xPosition, yPosition)
     }
 
-    fun dismissOnePopup() {
-        onePopupMenu?.dismiss()
+    fun dismissBlockAccusationPopUp() {
+        blockAccusationPopUpMenu?.dismiss()
     }
 
-    fun showFourPopup(
+    fun showEditDeletePopUp(
+        context: Context,
+        onClickEdit: () -> Unit,
+        onClickDelete: () -> Unit,
+        xPosition: Int,
+        yPosition: Int
+    ) {
+        editDeletePopUpMenu = EditDeletePopUpMenu(context, onClickEdit, onClickDelete)
+        editDeletePopUpMenu?.show(xPosition, yPosition)
+    }
+
+    fun dismissEditDeletePopUp() {
+        editDeletePopUpMenu?.dismiss()
+    }
+
+    fun showChatPopUp(
         context: Context,
         onClickChallengeInfo: () -> Unit,
         onClickCertificationList: () -> Unit,
+        onClickBlock: () -> Unit,
         onClickAccusation: () -> Unit,
         onClickExit: () -> Unit,
         xPosition: Int,
         yPosition: Int
     ) {
-        fourPopupMenu = FourPopupMenu(
+        chatPopUpMenu = ChatPopUpMenu(
             context,
             onClickChallengeInfo,
             onClickCertificationList,
+            onClickBlock,
             onClickAccusation,
             onClickExit
         )
-        fourPopupMenu?.show(xPosition, yPosition)
+        chatPopUpMenu?.show(xPosition, yPosition)
     }
 
-    fun dismissFourPopup() {
-        fourPopupMenu?.dismiss()
+    fun dismissChatPopUp() {
+        chatPopUpMenu?.dismiss()
     }
 
     fun showYearMonthDialog(
@@ -126,18 +162,19 @@ abstract class BaseFragment<B : ViewDataBinding>(
 
     fun showTwoButtonTitleDialog(
         context: Context,
-        title : String,
-        oneBtnText : String,
+        title: String,
+        oneBtnText: String,
         twoBtnText: String,
-        confirmListener : () -> Unit
-    ){
-        twoButtonTitleDialog = TwoButtonTitleDialog(context, title, oneBtnText, twoBtnText, confirmListener)
+        confirmListener: () -> Unit
+    ) {
+        twoButtonTitleDialog =
+            TwoButtonTitleDialog(context, title, oneBtnText, twoBtnText, confirmListener)
         twoButtonTitleDialog?.show()
     }
 
-    fun dismissTwoButtonTitleDialog(){
-        twoButtonTitleDialog?.let{
-            if(it.isShowing){
+    fun dismissTwoButtonTitleDialog() {
+        twoButtonTitleDialog?.let {
+            if (it.isShowing) {
                 it.dismiss()
             }
         }

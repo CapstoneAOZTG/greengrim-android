@@ -2,7 +2,7 @@ package com.aoztg.greengrim.presentation.ui.chat.chatroom
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.aoztg.greengrim.app.App
+import com.aoztg.greengrim.data.config.KeyDataStoreManager
 import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.repository.ChallengeRepository
 import com.aoztg.greengrim.data.repository.ChatRepository
@@ -12,7 +12,6 @@ import com.aoztg.greengrim.presentation.ui.chat.mapper.toUiChatMessage
 import com.aoztg.greengrim.presentation.ui.chat.mapper.toUiChatMessageItem
 import com.aoztg.greengrim.presentation.ui.chat.model.UiChatInfo
 import com.aoztg.greengrim.presentation.ui.chat.model.UiChatMessage
-import com.aoztg.greengrim.presentation.util.Constants
 import com.aoztg.greengrim.presentation.util.Constants.DATE
 import com.aoztg.greengrim.presentation.util.Constants.NOTHING
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -44,6 +43,7 @@ sealed class ChatRoomEvents {
     object NavigateToCreateCertification : ChatRoomEvents()
     data class NavigateToCertificationList(val id: Long) : ChatRoomEvents()
     data class NavigateToCertificationDetail(val id: Long) : ChatRoomEvents()
+    data class NavigateToProfile(val id: Long) : ChatRoomEvents()
     data class SendMessage(val chatId: Long, val message: String) : ChatRoomEvents()
     object ScrollBottom : ChatRoomEvents()
     data class ShowToastMessage(val msg: String) : ChatRoomEvents()
@@ -55,7 +55,8 @@ sealed class ChatRoomEvents {
 @HiltViewModel
 class ChatRoomViewModel @Inject constructor(
     private val chatRepository: ChatRepository,
-    private val challengeRepository: ChallengeRepository
+    private val challengeRepository: ChallengeRepository,
+    private val keyDataStoreManager: KeyDataStoreManager
 ) : ViewModel() {
 
     var chatRoomId = -1L
@@ -83,12 +84,14 @@ class ChatRoomViewModel @Inject constructor(
     }
 
     private fun setMemberId() {
-        val memberId: Long = App.sharedPreferences.getLong(Constants.MEMBER_ID, -1L)
-        if (memberId != -1L) {
-            this.memberId = memberId
-        } else {
+        viewModelScope.launch {
+            keyDataStoreManager.getMemberId()?.let {
+                memberId = it
+            } ?: run {
 
+            }
         }
+
     }
 
     fun getChatInfo() {
@@ -145,7 +148,8 @@ class ChatRoomViewModel @Inject constructor(
                                 chatMessages = uiState.value.chatMessages + response.body.result.map {
                                     it.toUiChatMessageItem(
                                         memberId,
-                                        ::navigateToCertificationDetail
+                                        ::navigateToCertificationDetail,
+                                        ::navigateToProfile
                                     )
                                 },
                                 page = uiState.value.page + 1
@@ -166,12 +170,13 @@ class ChatRoomViewModel @Inject constructor(
         message: ChatMessage
     ) {
         val newMessages = uiState.value.chatMessages.toMutableList()
-        val newMessage = message.toUiChatMessage(memberId, ::navigateToCertificationDetail)
+        val newMessage =
+            message.toUiChatMessage(memberId, ::navigateToCertificationDetail, ::navigateToProfile)
 
         if (newMessages.size > 0 && newMessages.first().sentDate.isNotBlank()) {
 
             if (newMessages.first().sentDate != newMessage.sentDate) {
-                newMessages.add(0, UiChatMessage(type = DATE, message = newMessage.sentDate) {})
+                newMessages.add(0, UiChatMessage(type = DATE, message = newMessage.sentDate))
             }
         }
 
@@ -201,6 +206,12 @@ class ChatRoomViewModel @Inject constructor(
     private fun navigateToCertificationDetail(certId: Long) {
         viewModelScope.launch {
             _events.emit(ChatRoomEvents.NavigateToCertificationDetail(certId))
+        }
+    }
+
+    private fun navigateToProfile(id: Long) {
+        viewModelScope.launch {
+            _events.emit(ChatRoomEvents.NavigateToProfile(id))
         }
     }
 
@@ -252,6 +263,10 @@ class ChatRoomViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun blockChat() {
+        // todo 채팅 차단하기
     }
 
 }

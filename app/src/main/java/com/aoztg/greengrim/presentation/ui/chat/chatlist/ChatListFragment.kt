@@ -13,6 +13,7 @@ import com.aoztg.greengrim.presentation.chatmanager.ChatManager
 import com.aoztg.greengrim.presentation.ui.chat.adapter.ChatListAdapter
 import com.aoztg.greengrim.presentation.ui.chat.adapter.ChatRoomInterface
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
+import com.aoztg.greengrim.presentation.ui.toChallengeCategory
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -47,6 +48,8 @@ class ChatListFragment : BaseFragment<FragmentChatListBinding>(R.layout.fragment
                         binding.rvChatList,
                         it.msg
                     )
+
+                    is ChatListEvents.NavigateToChallengeCategory -> findNavController().toChallengeCategory()
                 }
             }
         }

@@ -1,5 +1,6 @@
 package com.aoztg.greengrim.data.remote
 
+import com.aoztg.greengrim.data.model.request.AccusationRequest
 import com.aoztg.greengrim.data.model.request.CheckNickRequest
 import com.aoztg.greengrim.data.model.request.LoginRequest
 import com.aoztg.greengrim.data.model.request.PatchProfileRequest
@@ -53,7 +54,7 @@ interface MemberAPI {
     ): Response<CheckNickResponse>
 
     @GET("/visitor/profile")
-    suspend fun getProfile() : Response<GetProfileResponse>
+    suspend fun getProfile(): Response<GetProfileResponse>
 
     @PATCH("/visitor/profile")
     suspend fun patchProfile(
@@ -64,31 +65,33 @@ interface MemberAPI {
     suspend fun getMyInfo(): Response<MyInfoResponse>
 
     @GET("/visitor/profile")
-    suspend fun getMemberInfo(id: Long): Response<GetProfileResponse>
+    suspend fun getMemberInfo(
+        @Query("memberId") memberId: Long
+    ): Response<GetProfileResponse>
 
     @GET("/visitor/wallets")
-    suspend fun getMyWalletInfo() : Response<WalletInfoResponse>
+    suspend fun getMyWalletInfo(): Response<WalletInfoResponse>
 
     @POST("/visitor/wallets")
     suspend fun addWallet(
-        @Body params : WalletInfoRequest
-    ) : Response<Unit>
+        @Body params: WalletInfoRequest
+    ): Response<Unit>
 
     @POST("/member/wallets")
     suspend fun editWallet(
-        @Body params : WalletInfoRequest
-    ) : Response<Unit>
+        @Body params: WalletInfoRequest
+    ): Response<Unit>
 
     @POST("/visitor/logout")
     suspend fun logout(): Response<Unit>
 
     @DELETE("/visitor/delete")
-    suspend fun withdraw() : Response<Unit>
+    suspend fun withdraw(): Response<Unit>
 
     @POST("/visitor/points")
     suspend fun getMyPoint(
-        @Query("page") page : Int,
-        @Query("size") size : Int
+        @Query("page") page: Int,
+        @Query("size") size: Int
     ): Response<MyPointResponse>
 
     @GET("/home/events")
@@ -99,5 +102,16 @@ interface MemberAPI {
 
     @GET("/visitor/home")
     suspend fun getHomeMyInfo(): Response<HomeMyInfoResponse>
+
+    @POST("/visitor/reports")
+    suspend fun accusation(
+        @Query("type") type: String,
+        @Body body: AccusationRequest
+    ): Response<Unit>
+
+    @POST("/visitor/hiding/member")
+    suspend fun hideMember(
+        @Query("id") id : Long
+    ): Response<Unit>
 
 }

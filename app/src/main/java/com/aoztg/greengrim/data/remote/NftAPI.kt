@@ -10,6 +10,7 @@ import com.aoztg.greengrim.data.model.response.NftListResponse
 import com.aoztg.greengrim.data.model.response.NftSimpleResponse
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.PATCH
 import retrofit2.http.POST
@@ -88,5 +89,15 @@ interface NftAPI {
 
     @GET("/home/hot-nfts")
     suspend fun getHotNft():Response<HotNftResponse>
+
+    @POST("/visitor/hiding/nft")
+    suspend fun hideNft(
+        @Query("id") id : Long
+    ): Response<Unit>
+
+    @DELETE("/visitor/nfts/{id}")
+    suspend fun deleteNft(
+        @Query("id") id : Long
+    ): Response<Unit>
 
 }

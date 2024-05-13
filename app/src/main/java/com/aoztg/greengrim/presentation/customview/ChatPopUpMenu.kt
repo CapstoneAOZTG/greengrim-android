@@ -2,33 +2,33 @@ package com.aoztg.greengrim.presentation.customview
 
 import android.content.Context
 import android.content.res.Resources
-import android.graphics.drawable.BitmapDrawable
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.widget.PopupWindow
-import com.aoztg.greengrim.databinding.DialogFourPopupMenuBinding
+import com.aoztg.greengrim.databinding.DialogChatPopupMenuBinding
 import com.aoztg.greengrim.presentation.util.Constants
 import kotlin.math.roundToInt
 
-class FourPopupMenu(
+class ChatPopUpMenu(
     private val context: Context,
     private val onClickChallengeInfo: () -> Unit,
     private val onClickCertificationList: () -> Unit,
+    private val onClickBlock: () -> Unit,
     private val onClickAccusation: () -> Unit,
     private val onClickExit: () -> Unit
 ) {
     private val popUp by lazy {
         PopupWindow(
             binding.root,
-            Constants.ONE_POPUP_WIDTH_DP.toPx(context.resources),
-            Constants.FOUR_POPUP_HEIGHT_DP.toPx(context.resources)
+            Constants.POPUP_WIDTH_DP.toPx(context.resources),
+            Constants.FIVE_POPUP_HEIGHT_DP.toPx(context.resources)
         ).apply {
             elevation = 10f
         }
     }
 
     private val binding by lazy {
-        DialogFourPopupMenuBinding.inflate(LayoutInflater.from(context)).apply {
+        DialogChatPopupMenuBinding.inflate(LayoutInflater.from(context)).apply {
             with(this) {
                 tvChallengeInfo.setOnClickListener {
                     dismiss()
@@ -37,6 +37,10 @@ class FourPopupMenu(
                 tvCertificationList.setOnClickListener {
                     dismiss()
                     onClickCertificationList()
+                }
+                tvBlock.setOnClickListener {
+                    dismiss()
+                    onClickBlock()
                 }
                 tvAccusation.setOnClickListener {
                     dismiss()

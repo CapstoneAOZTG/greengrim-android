@@ -66,6 +66,7 @@
                 android:layout_height="36dp"
                 android:layout_gravity="end"
                 android:background="@android:color/transparent"
+                android:onClick="@{() -> vm.showPopUp()}"
                 android:padding="4dp"
                 android:scaleType="fitCenter"
                 android:src="@drawable/icon_more"
@@ -182,131 +183,207 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/divdier" />
 
-                <TextView
-                    android:id="@+id/tv_background_label"
-                    style="@style/TextGgSmallGrey5"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:id="@+id/block_background"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:text="BACKGROUND"
-                    android:textStyle="bold"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="6dp"
+                    android:background="@drawable/shape_black4fill_nostroke_radius10"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="12dp"
+                    android:paddingVertical="12dp"
+                    app:layout_constraintEnd_toStartOf="@id/block_hair"
+                    app:layout_constraintHorizontal_chainStyle="spread_inside"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_detail_label" />
+                    app:layout_constraintTop_toBottomOf="@id/tv_detail_label">
 
-                <TextView
-                    android:id="@+id/tv_background"
-                    style="@style/TextGgSmall"
-                    android:layout_width="wrap_content"
+                    <TextView
+                        android:id="@+id/tv_background_label"
+                        style="@style/TextGgSmallGrey5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="BACKGROUND"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_background"
+                        style="@style/TextGgSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:text="@{vm.uiState.nftDetail.background}"
+                        tools:text="black" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/block_hair"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="@{vm.uiState.nftDetail.background}"
-                    app:layout_constraintBottom_toBottomOf="@id/tv_background_label"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    tools:text="black" />
+                    android:layout_marginEnd="6dp"
+                    android:background="@drawable/shape_black4fill_nostroke_radius10"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="12dp"
+                    android:paddingVertical="12dp"
+                    app:layout_constraintEnd_toStartOf="@id/block_face"
+                    app:layout_constraintStart_toEndOf="@id/block_background"
+                    app:layout_constraintTop_toTopOf="@id/block_background">
 
-                <TextView
-                    android:id="@+id/tv_hair_label"
-                    style="@style/TextGgSmallGrey5"
-                    android:layout_width="wrap_content"
+
+                    <TextView
+                        android:id="@+id/tv_hair_label"
+                        style="@style/TextGgSmallGrey5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="HAIR"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_hair"
+                        style="@style/TextGgSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:text="@{vm.uiState.nftDetail.hair}"
+                        tools:text="mandra" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/block_face"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shape_black4fill_nostroke_radius10"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="12dp"
+                    android:paddingVertical="12dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/block_hair"
+                    app:layout_constraintTop_toTopOf="@id/block_background">
+
+                    <TextView
+                        android:id="@+id/tv_face_label"
+                        style="@style/TextGgSmallGrey5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="FACE"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_face"
+                        style="@style/TextGgSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:text="@{vm.uiState.nftDetail.face}"
+                        tools:text="basic" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/block_gesture"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="HAIR"
-                    android:textStyle="bold"
+                    android:layout_marginEnd="6dp"
+                    android:background="@drawable/shape_black4fill_nostroke_radius10"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="12dp"
+                    android:paddingVertical="12dp"
+                    app:layout_constraintEnd_toStartOf="@id/block_accessory"
+                    app:layout_constraintHorizontal_chainStyle="spread_inside"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_background_label" />
+                    app:layout_constraintTop_toBottomOf="@id/block_background">
 
-                <TextView
-                    android:id="@+id/tv_hair"
-                    style="@style/TextGgSmall"
-                    android:layout_width="wrap_content"
+                    <TextView
+                        android:id="@+id/tv_gesture_label"
+                        style="@style/TextGgSmallGrey5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="GESTURE"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_gesture"
+                        style="@style/TextGgSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:text="@{vm.uiState.nftDetail.gesture}"
+                        tools:text="peace" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/block_accessory"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="@{vm.uiState.nftDetail.hair}"
-                    app:layout_constraintBottom_toBottomOf="@id/tv_hair_label"
+                    android:layout_marginEnd="6dp"
+                    android:background="@drawable/shape_black4fill_nostroke_radius10"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="12dp"
+                    android:paddingVertical="12dp"
+                    app:layout_constraintEnd_toStartOf="@id/block_shoes"
+                    app:layout_constraintStart_toEndOf="@id/block_gesture"
+                    app:layout_constraintTop_toTopOf="@id/block_gesture">
+
+                    <TextView
+                        android:id="@+id/tv_accessory_label"
+                        style="@style/TextGgSmallGrey5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="ACCESSORY"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_accessory"
+                        style="@style/TextGgSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:text="@{vm.uiState.nftDetail.accessory}"
+                        tools:text="headphone" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/block_shoes"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shape_black4fill_nostroke_radius10"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="12dp"
+                    android:paddingVertical="12dp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    tools:text="mandra" />
+                    app:layout_constraintStart_toEndOf="@id/block_accessory"
+                    app:layout_constraintTop_toTopOf="@id/block_gesture">
 
-                <TextView
-                    android:id="@+id/tv_face_label"
-                    style="@style/TextGgSmallGrey5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="FACE"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_hair_label" />
+                    <TextView
+                        android:id="@+id/tv_shoes_label"
+                        style="@style/TextGgSmallGrey5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="SHOES"
+                        android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/tv_face"
-                    style="@style/TextGgSmall"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@{vm.uiState.nftDetail.face}"
-                    app:layout_constraintBottom_toBottomOf="@id/tv_face_label"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    tools:text="basic" />
+                    <TextView
+                        android:id="@+id/tv_shoes"
+                        style="@style/TextGgSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:text="@{vm.uiState.nftDetail.shoes}"
+                        tools:text="blue" />
 
-                <TextView
-                    android:id="@+id/tv_gesture_label"
-                    style="@style/TextGgSmallGrey5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="GESTURE"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_face_label" />
+                </LinearLayout>
 
-                <TextView
-                    android:id="@+id/tv_gesture"
-                    style="@style/TextGgSmall"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@{vm.uiState.nftDetail.gesture}"
-                    app:layout_constraintBottom_toBottomOf="@id/tv_gesture_label"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    tools:text="peace" />
-
-                <TextView
-                    android:id="@+id/tv_accessory_label"
-                    style="@style/TextGgSmallGrey5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="ACCESSORY"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_gesture_label" />
-
-                <TextView
-                    android:id="@+id/tv_accessory"
-                    style="@style/TextGgSmall"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@{vm.uiState.nftDetail.accessory}"
-                    app:layout_constraintBottom_toBottomOf="@id/tv_accessory_label"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    tools:text="headphone" />
-
-                <TextView
-                    android:id="@+id/tv_shoes_label"
-                    style="@style/TextGgSmallGrey5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="SHOES"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_accessory_label" />
-
-                <TextView
-                    android:id="@+id/tv_shoes"
-                    style="@style/TextGgSmall"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@{vm.uiState.nftDetail.shoes}"
-                    app:layout_constraintBottom_toBottomOf="@id/tv_shoes_label"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    tools:text="blue" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

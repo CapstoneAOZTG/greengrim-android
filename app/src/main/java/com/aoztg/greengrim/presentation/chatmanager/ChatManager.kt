@@ -3,7 +3,7 @@ package com.aoztg.greengrim.presentation.chatmanager
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.aoztg.greengrim.app.App
+import com.aoztg.greengrim.data.config.KeyDataStoreManager
 import com.aoztg.greengrim.data.local.UnReadChatEntity
 import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.model.request.ChatListDataRequest
@@ -13,7 +13,6 @@ import com.aoztg.greengrim.presentation.chatmanager.mapper.toUiChatListItem
 import com.aoztg.greengrim.presentation.chatmanager.model.ChatMessage
 import com.aoztg.greengrim.presentation.chatmanager.model.UiChatListItem
 import com.aoztg.greengrim.presentation.ui.getCurrentTimeString
-import com.aoztg.greengrim.presentation.util.Constants
 import com.aoztg.greengrim.presentation.util.Constants.TAG
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -36,7 +35,8 @@ sealed class ChatEvent {
 @HiltViewModel
 class ChatManager @Inject constructor(
     private val chatRepository: ChatRepository,
-    private val memberRepository: MemberRepository
+    private val memberRepository: MemberRepository,
+    private val keyDataStoreManager: KeyDataStoreManager
 ) : ViewModel() {
 
     private val _events: MutableSharedFlow<ChatEvent> = MutableSharedFlow()
@@ -58,18 +58,17 @@ class ChatManager @Inject constructor(
 
     private var memberId: Long = 0
     private val chatSocket =
-        ChatSocket(::receiveMessage, ::showSocketToastMessage, ::showSocketSnackMessage)
+        ChatSocket(::receiveMessage, ::showSocketToastMessage, ::showSocketSnackMessage, keyDataStoreManager)
 
     init {
         setMemberId()
     }
 
     private fun setMemberId() {
-        val memberId: Long = App.sharedPreferences.getLong(Constants.MEMBER_ID, -1L)
-        if (memberId != -1L) {
-            this.memberId = memberId
-        } else {
-
+        viewModelScope.launch {
+            keyDataStoreManager.getMemberId()?.let {
+                memberId = it
+            }
         }
     }
 

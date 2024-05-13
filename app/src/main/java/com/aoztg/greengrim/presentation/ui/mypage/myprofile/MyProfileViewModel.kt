@@ -56,6 +56,9 @@ sealed class MyProfileEvent {
     data class NavigateToCertificationDetail(val certificationId: Long) : MyProfileEvent()
     object NavigateToEditProfile : MyProfileEvent()
     object NavigateToBack : MyProfileEvent()
+    object NavigateToChatList : MyProfileEvent()
+    object NavigateToNft : MyProfileEvent()
+    object NavigateToChallengeCategory : MyProfileEvent()
     object ShowChallengeFilterBottomSheet : MyProfileEvent()
     object ShowNftFilterBottomSheet : MyProfileEvent()
     data class ShowYearMonthPicker(val curYear: Int, val curMonth: Int) : MyProfileEvent()
@@ -365,6 +368,23 @@ class MyProfileViewModel @Inject constructor(
         }
     }
 
+    fun navigateToChatList(){
+        viewModelScope.launch {
+            _event.emit(MyProfileEvent.NavigateToChatList)
+        }
+    }
+
+    fun navigateToChallengeCategory(){
+        viewModelScope.launch {
+            _event.emit(MyProfileEvent.NavigateToChallengeCategory)
+        }
+    }
+
+    fun navigateToNft(){
+        viewModelScope.launch {
+            _event.emit(MyProfileEvent.NavigateToNft)
+        }
+    }
 }
 
 enum class ProfileFilter() {

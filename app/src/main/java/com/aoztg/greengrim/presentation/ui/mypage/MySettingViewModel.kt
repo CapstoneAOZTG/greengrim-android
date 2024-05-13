@@ -2,6 +2,7 @@ package com.aoztg.greengrim.presentation.ui.mypage
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.aoztg.greengrim.data.config.KeyDataStoreManager
 import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.repository.MemberRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,14 +17,15 @@ sealed class MySettingEvent{
     object NavigateToSetWallet : MySettingEvent()
     object NavigateToEditAlarm : MySettingEvent()
     object NavigateToBack : MySettingEvent()
-    object Logout : MySettingEvent()
-    object WithDraw : MySettingEvent()
+    data class Logout(val type: String) : MySettingEvent()
+    data class WithDraw(val type: String) : MySettingEvent()
     data class ShowSnackMessage(val msg: String) : MySettingEvent()
 }
 
 @HiltViewModel
 class MySettingViewModel @Inject constructor(
-    private val repository : MemberRepository
+    private val repository : MemberRepository,
+    private val keyDataStoreManager: KeyDataStoreManager
 ): ViewModel() {
 
     private val _event = MutableSharedFlow<MySettingEvent>()
@@ -52,7 +54,10 @@ class MySettingViewModel @Inject constructor(
         viewModelScope.launch {
             repository.logout().let{
                 when(it){
-                    is BaseState.Success -> _event.emit(MySettingEvent.Logout)
+                    is BaseState.Success -> {
+                        val type = keyDataStoreManager.getSocialType() ?: ""
+                        _event.emit(MySettingEvent.Logout(type))
+                    }
                     is BaseState.Error -> _event.emit(MySettingEvent.ShowSnackMessage(it.msg))
                 }
             }
@@ -63,7 +68,10 @@ class MySettingViewModel @Inject constructor(
         viewModelScope.launch {
             repository.withdraw().let{
                 when(it){
-                    is BaseState.Success -> _event.emit(MySettingEvent.WithDraw)
+                    is BaseState.Success -> {
+                        val type = keyDataStoreManager.getSocialType() ?: ""
+                        _event.emit(MySettingEvent.WithDraw(type))
+                    }
                     is BaseState.Error -> _event.emit(MySettingEvent.ShowSnackMessage(it.msg))
                 }
             }

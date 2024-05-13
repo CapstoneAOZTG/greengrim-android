@@ -80,4 +80,9 @@ interface ChallengeAPI {
         @Query("size") size: Int,
         @Query("sort") sort: String
     ): Response<ChallengeListResponse>
+
+    @POST("/visitor/hiding/challenge")
+    suspend fun hideChallenge(
+        @Query("id") id : Long
+    ): Response<Unit>
 }

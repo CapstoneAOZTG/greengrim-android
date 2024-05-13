@@ -11,6 +11,7 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.app.App
+import com.aoztg.greengrim.data.config.KeyDataStoreManager
 import com.aoztg.greengrim.presentation.ui.nft.exchange.detail.ExchangeState
 import com.aoztg.greengrim.presentation.ui.splash.SplashActivity
 import com.aoztg.greengrim.presentation.util.Constants
@@ -18,11 +19,20 @@ import com.aoztg.greengrim.presentation.util.PushUtils
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.scopes.ServiceScoped
+import kotlinx.coroutines.runBlocking
+import javax.inject.Inject
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
-class MyFirebaseMessagingService : FirebaseMessagingService() {
+@AndroidEntryPoint
+class MyFirebaseMessagingService: FirebaseMessagingService() {
+
+    @Inject
+    lateinit var keyDataStoreManager : KeyDataStoreManager
 
     override fun onCreate() {
         super.onCreate()
@@ -45,7 +55,9 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 val nickName = message.data["nickName"]
                 val talk = message.data["message"]
                 val senderId = message.data["senderId"]?.toLong()
-                val memberId: Long = App.sharedPreferences.getLong(Constants.MEMBER_ID, -1L)
+                val memberId: Long? = runBlocking {
+                    keyDataStoreManager.getMemberId()
+                }
                 if(senderId != memberId){
                     sendChatNotification(nickName, talk)
                 }

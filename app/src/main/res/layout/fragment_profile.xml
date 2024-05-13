@@ -77,6 +77,8 @@
             android:id="@+id/scroll_view"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:paddingBottom="150dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/layout_toolbar">
@@ -205,6 +207,31 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
+                    <ImageView
+                        android:id="@+id/iv_no_challenge"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="150dp"
+                        android:src="@drawable/icon_sad"
+                        android:visibility="@{vm.uiState.uiChallengeRoom.empty ? View.VISIBLE : View.INVISIBLE}"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_challenge_filter" />
+
+                    <TextView
+                        android:id="@+id/tv_no_challenge"
+                        style="@style/TextGgMedium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="아직 참여중인 챌린지가 없어요"
+                        android:textAlignment="center"
+                        android:textColor="@color/gg_grey5"
+                        android:visibility="@{vm.uiState.uiChallengeRoom.empty ? View.VISIBLE : View.INVISIBLE}"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/iv_no_challenge" />
+
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_challenge_list"
                         android:layout_width="0dp"
@@ -218,6 +245,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/tv_challenge_filter"
+                        app:list="@{vm.uiState.uiChallengeRoom}"
                         app:spanCount="2"
                         tools:listitem="@layout/item_challenge_list" />
 
@@ -319,6 +347,31 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/calendarView" />
 
+                    <ImageView
+                        android:id="@+id/iv_no_certification"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="100dp"
+                        android:src="@drawable/icon_sad"
+                        android:visibility="@{vm.uiState.certificationList.empty ? View.VISIBLE : View.INVISIBLE}"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/divider_calendar" />
+
+                    <TextView
+                        android:id="@+id/tv_no_certification"
+                        style="@style/TextGgMedium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="아직 인증이 없어요"
+                        android:textAlignment="center"
+                        android:textColor="@color/gg_grey5"
+                        android:visibility="@{vm.uiState.certificationList.empty ? View.VISIBLE : View.INVISIBLE}"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/iv_no_certification" />
+
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_certifications"
                         android:layout_width="0dp"
@@ -354,11 +407,36 @@
                         android:layout_marginEnd="20dp"
                         android:drawablePadding="4dp"
                         android:onClick="@{() -> vm.showNftFilterBottomSheet()}"
-                        android:text="@{vm.uiState.challengeSortType.text}"
+                        android:text="@{vm.uiState.nftSortType.text}"
                         android:textAlignment="textEnd"
                         app:drawableEndCompat="@drawable/icon_filter"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/iv_no_nft"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="150dp"
+                        android:src="@drawable/icon_sad"
+                        android:visibility="@{vm.uiState.nftList.empty ? View.VISIBLE : View.INVISIBLE}"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_nft_filter" />
+
+                    <TextView
+                        android:id="@+id/tv_no_nft"
+                        style="@style/TextGgMedium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="아직 보유 중인 NFT가 없어요"
+                        android:textAlignment="center"
+                        android:textColor="@color/gg_grey5"
+                        android:visibility="@{vm.uiState.nftList.empty ? View.VISIBLE : View.INVISIBLE}"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/iv_no_nft" />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_nft_list"
@@ -373,6 +451,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/tv_nft_filter"
+                        app:list="@{vm.uiState.nftList}"
                         app:spanCount="2"
                         tools:listitem="@layout/item_nft_list" />
 

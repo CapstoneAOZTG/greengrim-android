@@ -3,7 +3,7 @@ package com.aoztg.greengrim.presentation.ui.intro.signup
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.app.App
-import com.aoztg.greengrim.app.App.Companion.sharedPreferences
+import com.aoztg.greengrim.data.config.KeyDataStoreManager
 import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.model.request.CheckNickRequest
 import com.aoztg.greengrim.data.model.request.SignupRequest
@@ -11,9 +11,6 @@ import com.aoztg.greengrim.data.repository.ImageRepository
 import com.aoztg.greengrim.data.repository.MemberRepository
 import com.aoztg.greengrim.presentation.ui.BaseUiState
 import com.aoztg.greengrim.presentation.ui.intro.EmailData
-import com.aoztg.greengrim.presentation.util.Constants
-import com.aoztg.greengrim.presentation.util.Constants.X_ACCESS_TOKEN
-import com.aoztg.greengrim.presentation.util.Constants.X_REFRESH_TOKEN
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -49,7 +46,8 @@ sealed class SignupEvents {
 @HiltViewModel
 class SignupViewModel @Inject constructor(
     private val memberRepository: MemberRepository,
-    private val imageRepository: ImageRepository
+    private val imageRepository: ImageRepository,
+    private val keyDataStoreManager: KeyDataStoreManager
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(SignupUiState())
@@ -156,11 +154,9 @@ class SignupViewModel @Inject constructor(
                 when (it) {
                     is BaseState.Success -> {
                         _events.emit(SignupEvents.DismissLoading)
-                        sharedPreferences.edit()
-                            .putString(X_ACCESS_TOKEN, it.body.accessToken)
-                            .putString(X_REFRESH_TOKEN, it.body.refreshToken)
-                            .putLong(Constants.MEMBER_ID, it.body.memberId)
-                            .apply()
+                        keyDataStoreManager.putAccessToken(it.body.accessToken)
+                        keyDataStoreManager.putRefreshToken(it.body.refreshToken)
+                        keyDataStoreManager.putMemberId(it.body.memberId)
 
                         _events.emit(SignupEvents.ShowToastMessage("회원가입 완료!"))
                         _uiState.update { state ->

@@ -3,8 +3,12 @@ package com.aoztg.greengrim.presentation.ui.global.challengedetail
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.data.model.BaseState
+import com.aoztg.greengrim.data.model.request.AccusationRequest
 import com.aoztg.greengrim.data.repository.ChallengeRepository
 import com.aoztg.greengrim.data.repository.ChatRepository
+import com.aoztg.greengrim.data.repository.MemberRepository
+import com.aoztg.greengrim.presentation.customview.AccusationContentType
+import com.aoztg.greengrim.presentation.customview.AccusationType
 import com.aoztg.greengrim.presentation.ui.global.mapper.toUiChallengeDetail
 import com.aoztg.greengrim.presentation.ui.global.model.UiChallengeDetail
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -26,7 +30,13 @@ data class ChallengeDetailUiState(
 sealed class ChallengeDetailEvents {
     object NavigateBack : ChallengeDetailEvents()
     object PopUpMenu : ChallengeDetailEvents()
-    data class NavigateChatRoom(val chatId: Long, val challengeId: Long, val title : String, val titleImg: String) : ChallengeDetailEvents()
+    data class NavigateChatRoom(
+        val chatId: Long,
+        val challengeId: Long,
+        val title: String,
+        val titleImg: String
+    ) : ChallengeDetailEvents()
+
     data class ShowToastMessage(val msg: String) : ChallengeDetailEvents()
     data class ShowSnackMessage(val msg: String) : ChallengeDetailEvents()
     object ShowLoading : ChallengeDetailEvents()
@@ -36,7 +46,8 @@ sealed class ChallengeDetailEvents {
 @HiltViewModel
 class ChallengeDetailViewModel @Inject constructor(
     private val challengeRepository: ChallengeRepository,
-    private val chatRepository: ChatRepository
+    private val chatRepository: ChatRepository,
+    private val memberRepository: MemberRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ChallengeDetailUiState())
@@ -116,6 +127,45 @@ class ChallengeDetailViewModel @Inject constructor(
 
     fun setChallengeId(data: Long) {
         challengeId = data
+    }
+
+    fun editChallenge() {
+
+    }
+
+    fun deleteChallenge() {
+    }
+
+    fun blockChallenge() {
+        viewModelScope.launch {
+            challengeRepository.hideChallenge(challengeId).let {
+                when (it) {
+                    is BaseState.Success -> {
+                        _events.emit(ChallengeDetailEvents.ShowToastMessage("챌린지 차단 성공"))
+                    }
+
+                    is BaseState.Error -> _events.emit(ChallengeDetailEvents.ShowSnackMessage(it.msg))
+                }
+            }
+        }
+    }
+
+    fun accusationChallenge(type: AccusationContentType, content: String) {
+        viewModelScope.launch {
+            memberRepository.accusation(
+                AccusationType.CHALLENGE.text, AccusationRequest(
+                    challengeId, type.text, content
+                )
+            ).let {
+                when (it) {
+                    is BaseState.Success -> {
+                        _events.emit(ChallengeDetailEvents.ShowToastMessage("챌린지 신고 성공"))
+                    }
+
+                    is BaseState.Error -> _events.emit(ChallengeDetailEvents.ShowSnackMessage(it.msg))
+                }
+            }
+        }
     }
 
 }

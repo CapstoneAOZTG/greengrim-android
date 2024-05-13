@@ -72,10 +72,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(R.layout.fragment_login
     private fun setBtnListener(){
         with(binding){
             btnTestLogin.setOnClickListener {
-                App.sharedPreferences.edit()
-                    .putString(Constants.X_ACCESS_TOKEN, BuildConfig.MASTER_JWT)
-                    .apply()
-                parentViewModel.goToMain()
+                viewModel.testerLogin()
             }
 
             btnGoogleLogin.setOnClickListener {

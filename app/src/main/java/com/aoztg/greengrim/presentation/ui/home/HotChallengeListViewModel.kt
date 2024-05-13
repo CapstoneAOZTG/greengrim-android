@@ -32,8 +32,11 @@ data class HotChallengeListUiState(
 sealed class HotChallengeListEvents {
     data class NavigateToChallengeDetail(val id: Long) : HotChallengeListEvents()
     data class ShowSnackMessage(val msg: String) : HotChallengeListEvents()
+    object NavigateToChallengeCategory: HotChallengeListEvents()
     object ShowLoading : HotChallengeListEvents()
     object DismissLoading : HotChallengeListEvents()
+    object ScrollToTop : HotChallengeListEvents()
+    object NavigateToBack : HotChallengeListEvents()
 }
 
 @HiltViewModel
@@ -67,8 +70,6 @@ class HotChallengeListViewModel @Inject constructor(
     fun getHotChallengeList(option: Int) {
         if (uiState.value.hasNext) {
             viewModelScope.launch {
-                _event.emit(HotChallengeListEvents.ShowLoading)
-
                 challengeRepository.getMoreHotChallenges(
                     uiState.value.curFilter.value,
                     uiState.value.page,
@@ -84,12 +85,14 @@ class HotChallengeListViewModel @Inject constructor(
                                     page = uiData.page + 1
                                 )
                             }
+
+                            delay(100)
+
+                            _event.emit(HotChallengeListEvents.ScrollToTop)
                         }
 
                         is BaseState.Error -> _event.emit(HotChallengeListEvents.ShowSnackMessage(it.msg))
                     }
-                    delay(500)
-                    _event.emit(HotChallengeListEvents.DismissLoading)
                 }
             }
         }
@@ -98,6 +101,18 @@ class HotChallengeListViewModel @Inject constructor(
     private fun navigateToChallengeDetail(id: Long) {
         viewModelScope.launch {
             _event.emit(HotChallengeListEvents.NavigateToChallengeDetail(id))
+        }
+    }
+
+    fun navigateToChallengeCategory(){
+        viewModelScope.launch {
+            _event.emit(HotChallengeListEvents.NavigateToChallengeCategory)
+        }
+    }
+
+    fun navigateToBack(){
+        viewModelScope.launch {
+            _event.emit(HotChallengeListEvents.NavigateToBack)
         }
     }
 

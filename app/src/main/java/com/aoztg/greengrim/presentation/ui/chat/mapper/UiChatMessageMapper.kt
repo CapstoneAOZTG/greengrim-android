@@ -11,7 +11,8 @@ import com.aoztg.greengrim.presentation.util.Constants.OTHER_CHAT
 
 internal fun ChatMessage.toUiChatMessage(
     memberId: Long,
-    onCertClickListener: (Long) -> Unit
+    onCertClickListener: (Long) -> Unit,
+    onProfileClickListener: (Long) -> Unit
 ): UiChatMessage {
 
     fun empty(empty: Long) {}
@@ -40,13 +41,19 @@ internal fun ChatMessage.toUiChatMessage(
             ::empty
         } else {
             onCertClickListener
+        },
+        onProfileClickListener = if(senderId == -1L){
+            ::empty
+        } else {
+            onProfileClickListener
         }
     )
 }
 
 internal fun ChatMessageItem.toUiChatMessageItem(
     memberId: Long,
-    onCertClickListener: (Long) -> Unit
+    onCertClickListener: (Long) -> Unit,
+    onProfileClickListener: (Long) -> Unit
 ): UiChatMessage = UiChatMessage(
     senderId = senderId,
     type = when (type) {
@@ -69,7 +76,8 @@ internal fun ChatMessageItem.toUiChatMessageItem(
     certId = certId,
     certImg = certImg,
     createdAt = createdAt,
-    onCertClickListener = onCertClickListener
+    onCertClickListener = onCertClickListener,
+    onProfileClickListener = onProfileClickListener
 )
 
 //internal fun List<ChatMessageItem>.toUiChatMessageList(

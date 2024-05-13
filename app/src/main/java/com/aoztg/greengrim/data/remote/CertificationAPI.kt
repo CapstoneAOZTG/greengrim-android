@@ -73,4 +73,9 @@ interface CertificationAPI {
         @Path("id") id: Long
     ): Response<Unit>
 
+    @POST("/visitor/hiding/certification")
+    suspend fun hideCertification(
+        @Query("id") id : Long
+    ): Response<Unit>
+
 }

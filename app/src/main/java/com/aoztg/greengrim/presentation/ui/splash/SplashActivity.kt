@@ -8,29 +8,34 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
-import com.aoztg.greengrim.app.App
 import com.aoztg.greengrim.databinding.ActivitySplashBinding
 import com.aoztg.greengrim.presentation.base.BaseActivity
 import com.aoztg.greengrim.presentation.customview.PermissionDialog
 import com.aoztg.greengrim.presentation.ui.intro.IntroActivity
 import com.aoztg.greengrim.presentation.ui.main.MainActivity
-import com.aoztg.greengrim.presentation.util.Constants.X_ACCESS_TOKEN
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SplashActivity : BaseActivity<ActivitySplashBinding>(ActivitySplashBinding::inflate) {
 
-    private lateinit var permissionDialog : PermissionDialog
+    private val viewModel: SplashViewModel by viewModels()
+
+    private lateinit var permissionDialog: PermissionDialog
 
     private lateinit var neededPermissionList: ArrayList<String>
     private val requiredPermissionList =
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            arrayOf(  // 안드로이드 13 이상 필요한 권한들
+            arrayOf(
+                // 안드로이드 13 이상 필요한 권한들
                 Manifest.permission.READ_MEDIA_IMAGES,
                 Manifest.permission.POST_NOTIFICATIONS,
                 Manifest.permission.CAMERA,
             )
         } else {
-            arrayOf(  // 안드로이드 13 미만 필요한 권한들
+            arrayOf(
+                // 안드로이드 13 미만 필요한 권한들
                 Manifest.permission.READ_EXTERNAL_STORAGE,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 Manifest.permission.CAMERA,
@@ -40,7 +45,9 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(ActivitySplashBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        permissionDialog = PermissionDialog(this){
+        initEventObserve()
+
+        permissionDialog = PermissionDialog(this) {
             checkPermission()
         }
 
@@ -50,7 +57,25 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(ActivitySplashBinding
         }, 1500)
     }
 
-    private fun initCheckPermission(){
+    private fun initEventObserve() {
+        repeatOnStarted {
+            viewModel.event.collect {
+                when (it) {
+                    is SplashEvent.NavigateToIntroActivity -> {
+                        startActivity(Intent(this@SplashActivity, IntroActivity::class.java))
+                        finish()
+                    }
+
+                    is SplashEvent.NavigateToMainActivity -> {
+                        startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+                        finish()
+                    }
+                }
+            }
+        }
+    }
+
+    private fun initCheckPermission() {
         neededPermissionList = arrayListOf()
 
         requiredPermissionList.forEach { permission ->
@@ -68,7 +93,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(ActivitySplashBinding
         }
     }
 
-    private fun checkPermission(){
+    private fun checkPermission() {
         neededPermissionList = arrayListOf()
 
         requiredPermissionList.forEach { permission ->
@@ -102,18 +127,8 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(ActivitySplashBinding
 
     }
 
-    private fun checkJwt(){
-
-
-        val jwt: String? = App.sharedPreferences.getString(X_ACCESS_TOKEN, null)
-        jwt?.let {
-            startActivity(Intent(this, MainActivity::class.java))
-            finish()
-        } ?: run {
-            // 로컬에 저장된 토큰 없는경우
-            startActivity(Intent(this, IntroActivity::class.java))
-            finish()
-        }
+    private fun checkJwt() {
+        viewModel.checkLoginType()
         permissionDialog.dismiss()
     }
 
@@ -125,7 +140,6 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(ActivitySplashBinding
 //                View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
 //        }
 //    }
-
 
 
 }

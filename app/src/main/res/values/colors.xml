@@ -6,6 +6,7 @@
     <color name="gg_black2_transparency">#BF121212</color>
     <color name="gg_black2">#121212</color>
     <color name="gg_black3">#232323</color>
+    <color name="gg_black4">#212121</color>
     <color name="gg_chat_background">#1B1B1B</color>
 
     <color name="gg_light_black">#1C1C1E</color>
@@ -15,6 +16,7 @@
     <color name="gg_green">#8CC63E</color>
 
     <color name="gg_grey7">#646464</color>
+    <color name="gg_grey6">#A7A7A7</color>
     <color name="gg_grey5">#AEAEAE</color>
     <color name="gg_grey4">#AEAEAE</color>
     <color name="gg_grey3">#D4D3D3</color>

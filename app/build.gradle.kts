@@ -30,8 +30,8 @@ android {
         applicationId = "com.aoztg.greengrim"
         minSdk = 27
         targetSdk = 34
-        versionCode = 24
-        versionName = "1.0.11"
+        versionCode = 26
+        versionName = "1.0.13"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField("String", "NAVER_CLIENT_ID", getProperty("naverClientId"))
@@ -142,5 +142,9 @@ dependencies {
     // FCM
     implementation("com.google.firebase:firebase-messaging-ktx")
 //    apply plugin: 'com.google.gms.google-services'
+
+    // Datastore Preferences
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
+    implementation("androidx.datastore:datastore-core:1.0.0")
 
 }

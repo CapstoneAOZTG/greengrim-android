@@ -3,10 +3,13 @@ package com.aoztg.greengrim.presentation.ui.global.profile
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.data.model.BaseState
+import com.aoztg.greengrim.data.model.request.AccusationRequest
 import com.aoztg.greengrim.data.repository.CertificationRepository
 import com.aoztg.greengrim.data.repository.ChallengeRepository
 import com.aoztg.greengrim.data.repository.MemberRepository
 import com.aoztg.greengrim.data.repository.NftRepository
+import com.aoztg.greengrim.presentation.customview.AccusationContentType
+import com.aoztg.greengrim.presentation.customview.AccusationType
 import com.aoztg.greengrim.presentation.customview.ChallengeSortType
 import com.aoztg.greengrim.presentation.customview.NftSortType
 import com.aoztg.greengrim.presentation.ui.challenge.list.ChallengeListViewModel
@@ -14,10 +17,10 @@ import com.aoztg.greengrim.presentation.ui.challenge.mapper.toUiChallengeList
 import com.aoztg.greengrim.presentation.ui.challenge.model.UiChallengeRoom
 import com.aoztg.greengrim.presentation.ui.global.mapper.toUiSimpleProfile
 import com.aoztg.greengrim.presentation.ui.global.model.UiSimpleProfileData
-import com.aoztg.greengrim.presentation.ui.nft.mapper.toUiNftItem
 import com.aoztg.greengrim.presentation.ui.mypage.mapper.toUiMyCertificationList
 import com.aoztg.greengrim.presentation.ui.mypage.model.UiMyCertification
 import com.aoztg.greengrim.presentation.ui.mypage.myprofile.ProfileFilter
+import com.aoztg.greengrim.presentation.ui.nft.mapper.toUiNftItem
 import com.aoztg.greengrim.presentation.ui.nft.model.UiNftItem
 import com.aoztg.greengrim.presentation.ui.toHeaderText
 import com.aoztg.greengrim.presentation.ui.toLocalDate
@@ -60,6 +63,7 @@ sealed class ProfileEvent {
     object ShowChallengeFilterBottomSheet : ProfileEvent()
     object ShowNftFilterBottomSheet : ProfileEvent()
     object ShowAccusationPopUp : ProfileEvent()
+    object DismissAccusationDialog : ProfileEvent()
     data class ShowYearMonthPicker(val curYear: Int, val curMonth: Int) : ProfileEvent()
     object ShowCalendar : ProfileEvent()
     object InitCalendar : ProfileEvent()
@@ -97,6 +101,7 @@ class ProfileViewModel @Inject constructor(
             state.copy(
                 curFilter = filter,
                 challengeSortType = ChallengeSortType.DESC,
+                nftSortType = NftSortType.DESC,
                 page = 0,
                 hasNext = true
             )
@@ -104,7 +109,7 @@ class ProfileViewModel @Inject constructor(
 
         when (filter) {
             ProfileFilter.CHALLENGE -> {
-                getMyChallenge(NEXT_PAGE)
+                getMemberChallenge(NEW)
             }
 
             ProfileFilter.CERTIFICATION -> {
@@ -125,10 +130,10 @@ class ProfileViewModel @Inject constructor(
             page = 0
         )
 
-        getMyChallenge(NEW)
+        getMemberChallenge(NEW)
     }
 
-    fun getMyInfo() {
+    fun getMemberInfo() {
         viewModelScope.launch {
             memberRepository.getMemberInfo(memberId).let {
                 when (it) {
@@ -151,16 +156,16 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
-    fun getMyChallenge(option: Int) {
+    fun getMemberChallenge(option: Int) {
 
-        if (_uiState.value.hasNext) {
+        if (uiState.value.hasNext) {
             viewModelScope.launch {
 
                 challengeRepository.getMemberChallengeList(
                     memberId,
-                    _uiState.value.page,
+                    uiState.value.page,
                     20,
-                    _uiState.value.challengeSortType.value
+                    uiState.value.challengeSortType.value
                 ).let {
                     when (it) {
                         is BaseState.Success -> {
@@ -235,8 +240,8 @@ class ProfileViewModel @Inject constructor(
 
                 certificationRepository.getMemberCertificationList(
                     memberId,
-                    _uiState.value.curDate.toString(),
-                    _uiState.value.page,
+                    uiState.value.curDate.toString(),
+                    uiState.value.page,
                     20
                 ).let {
                     when (it) {
@@ -324,7 +329,12 @@ class ProfileViewModel @Inject constructor(
                     when (it) {
                         is BaseState.Success -> {
                             val uiData =
-                                it.body.result.map { data -> data.toUiNftItem(::navigateToNftDetail, ::clickLike) }
+                                it.body.result.map { data ->
+                                    data.toUiNftItem(
+                                        ::navigateToNftDetail,
+                                        ::clickLike
+                                    )
+                                }
                             _uiState.update { state ->
                                 state.copy(
                                     nftList = if (option == ChallengeListViewModel.ORIGINAL) uiState.value.nftList + uiData else uiData,
@@ -341,8 +351,27 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
-    private fun clickLike(id: Long){
+    private fun clickLike(id: Long) {
 
+    }
+
+    fun accusation(type: AccusationContentType, content: String) {
+        viewModelScope.launch {
+            memberRepository.accusation(
+                AccusationType.MEMBER.text, AccusationRequest(
+                    memberId, type.text, content
+                )
+            ).let {
+                _event.emit(ProfileEvent.DismissAccusationDialog)
+                when (it) {
+                    is BaseState.Success -> {
+                        _event.emit(ProfileEvent.ShowToastMessage("신고완료"))
+                    }
+
+                    is BaseState.Error -> _event.emit(ProfileEvent.ShowSnackMessage(it.msg))
+                }
+            }
+        }
     }
 
     fun showNftFilterBottomSheet() {
@@ -369,4 +398,15 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
+    fun blockMember() {
+        viewModelScope.launch {
+            memberRepository.hideMember(memberId).let {
+                when (it) {
+                    is BaseState.Success -> _event.emit(ProfileEvent.ShowToastMessage("사용자 차단 완료"))
+
+                    is BaseState.Error -> _event.emit(ProfileEvent.ShowSnackMessage(it.msg))
+                }
+            }
+        }
+    }
 }

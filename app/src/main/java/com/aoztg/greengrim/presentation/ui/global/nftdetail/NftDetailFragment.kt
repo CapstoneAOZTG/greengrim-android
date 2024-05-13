@@ -19,6 +19,7 @@ class NftDetailFragment : BaseFragment<FragmentNftDetailBinding>(R.layout.fragme
     private val viewModel: NftDetailViewModel by viewModels()
     private val args: NftDetailFragmentArgs by navArgs()
     private val nftId by lazy { args.nftId }
+    private val popupLocation = IntArray(2)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -36,9 +37,47 @@ class NftDetailFragment : BaseFragment<FragmentNftDetailBinding>(R.layout.fragme
                     is NftDetailEvents.NavigateToBack -> findNavController().navigateUp()
                     is NftDetailEvents.ShowSnackMessage -> showCustomSnack(binding.ivNft, it.msg)
                     is NftDetailEvents.ShowToastMessage -> showCustomToast(it.msg)
+                    is NftDetailEvents.ShowPopUp -> showPopup()
                 }
             }
         }
+    }
+
+    private fun showPopup() {
+        val moreBtn = binding.btnMore
+        moreBtn.getLocationOnScreen(popupLocation)
+        val left = popupLocation[0] + moreBtn.left.toFloat()
+        val top = popupLocation[1] + moreBtn.bottom.toFloat()
+
+        if (viewModel.uiState.value.nftDetail.mine) {
+            showEditDeletePopUp(
+                requireContext(),
+                { viewModel.editNft() },
+                { viewModel.deleteNft() },
+                left.toInt(),
+                top.toInt()
+            )
+        } else {
+            showBlockAccusationPopUp(
+                requireContext(),
+                { viewModel.blockNft() },
+                ::showAccusation,
+                left.toInt(),
+                top.toInt()
+            )
+        }
+    }
+
+    private fun showAccusation() {
+        showAccusation(requireContext(), "NFT 신고") { accType, content ->
+            viewModel.accusationNft(accType, content)
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        dismissEditDeletePopUp()
+        dismissBlockAccusationPopUp()
     }
 
 
