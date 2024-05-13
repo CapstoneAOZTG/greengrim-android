@@ -132,7 +132,14 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                     is MainEvent.HideBottomNav -> binding.layoutBnv.visibility = View.INVISIBLE
                     is MainEvent.ShowBottomNav -> binding.layoutBnv.visibility = View.VISIBLE
                     is MainEvent.ShowPhotoBottomSheet -> showPhotoBottomSheet()
-                    is MainEvent.Logout -> logout()
+                    is MainEvent.Logout -> {
+                        val intent = Intent(applicationContext, IntroActivity::class.java)
+                        intent.apply {
+                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            finishAffinity()
+                            startActivity(this)
+                        }
+                    }
                     is MainEvent.ShowToastMessage -> showCustomToast(it.msg)
                     is MainEvent.ShowSnackMessage -> showCustomSnack(binding.snackGuide, it.msg)
                     is MainEvent.CopyInClipBoard -> copyInClipBoard(it.link)
@@ -285,19 +292,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             } else {
                 viewModel.hideKeyboard()
             }
-        }
-    }
-
-    private fun logout() {
-        App.sharedPreferences.edit()
-            .remove(Constants.X_ACCESS_TOKEN)
-            .remove(Constants.X_REFRESH_TOKEN)
-            .apply()
-        val intent = Intent(applicationContext, IntroActivity::class.java)
-        intent.apply {
-            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            finishAffinity()
-            startActivity(this)
         }
     }
 

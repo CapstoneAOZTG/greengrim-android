@@ -3,11 +3,6 @@ package com.aoztg.greengrim.presentation.util
 object Constants {
     const val TAG = "debugging"
 
-    const val X_ACCESS_TOKEN = "X-ACCESS_TOKEN"
-    const val X_REFRESH_TOKEN = "X_REFRESH_TOKEN"
-    const val SOCIAL_TYPE = "SOCIAL_TYPE"
-    const val MEMBER_ID = "MEMBER_ID"
-
     const val ONE_KLAY = 380
 
     const val STORAGE_PERMISSION = 1000

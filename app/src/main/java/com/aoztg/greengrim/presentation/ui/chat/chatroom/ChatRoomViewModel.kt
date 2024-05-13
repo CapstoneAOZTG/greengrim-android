@@ -2,7 +2,7 @@ package com.aoztg.greengrim.presentation.ui.chat.chatroom
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.aoztg.greengrim.app.App
+import com.aoztg.greengrim.data.config.KeyDataStoreManager
 import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.repository.ChallengeRepository
 import com.aoztg.greengrim.data.repository.ChatRepository
@@ -12,7 +12,6 @@ import com.aoztg.greengrim.presentation.ui.chat.mapper.toUiChatMessage
 import com.aoztg.greengrim.presentation.ui.chat.mapper.toUiChatMessageItem
 import com.aoztg.greengrim.presentation.ui.chat.model.UiChatInfo
 import com.aoztg.greengrim.presentation.ui.chat.model.UiChatMessage
-import com.aoztg.greengrim.presentation.util.Constants
 import com.aoztg.greengrim.presentation.util.Constants.DATE
 import com.aoztg.greengrim.presentation.util.Constants.NOTHING
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -56,7 +55,8 @@ sealed class ChatRoomEvents {
 @HiltViewModel
 class ChatRoomViewModel @Inject constructor(
     private val chatRepository: ChatRepository,
-    private val challengeRepository: ChallengeRepository
+    private val challengeRepository: ChallengeRepository,
+    private val keyDataStoreManager: KeyDataStoreManager
 ) : ViewModel() {
 
     var chatRoomId = -1L
@@ -84,12 +84,14 @@ class ChatRoomViewModel @Inject constructor(
     }
 
     private fun setMemberId() {
-        val memberId: Long = App.sharedPreferences.getLong(Constants.MEMBER_ID, -1L)
-        if (memberId != -1L) {
-            this.memberId = memberId
-        } else {
+        viewModelScope.launch {
+            keyDataStoreManager.getMemberId()?.let {
+                memberId = it
+            } ?: run {
 
+            }
         }
+
     }
 
     fun getChatInfo() {
@@ -263,7 +265,7 @@ class ChatRoomViewModel @Inject constructor(
         }
     }
 
-    fun blockChat(){
+    fun blockChat() {
         // todo 채팅 차단하기
     }
 

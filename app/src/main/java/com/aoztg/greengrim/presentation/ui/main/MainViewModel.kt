@@ -3,6 +3,7 @@ package com.aoztg.greengrim.presentation.ui.main
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.aoztg.greengrim.data.config.KeyDataStoreManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -31,7 +32,9 @@ enum class KeyboardState {
 }
 
 @HiltViewModel
-class MainViewModel @Inject constructor() :
+class MainViewModel @Inject constructor(
+    private val keyDataStoreManager: KeyDataStoreManager
+) :
     ViewModel() {
 
     private val _events: MutableSharedFlow<MainEvent> = MutableSharedFlow()
@@ -79,6 +82,10 @@ class MainViewModel @Inject constructor() :
 
     fun logout() {
         viewModelScope.launch {
+            keyDataStoreManager.deleteAccessToken()
+            keyDataStoreManager.deleteRefreshToken()
+            keyDataStoreManager.deleteMemberId()
+            keyDataStoreManager.deleteSocialType()
             _events.emit(MainEvent.Logout)
         }
     }

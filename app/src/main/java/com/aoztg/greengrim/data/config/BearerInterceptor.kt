@@ -1,19 +1,15 @@
-package com.aoztg.greengrim.config
+package com.aoztg.greengrim.data.config
 
 import android.content.Intent
 import android.util.Log
 import com.aoztg.greengrim.BuildConfig
 import com.aoztg.greengrim.app.App.Companion.context
-import com.aoztg.greengrim.app.App.Companion.sharedPreferences
 import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.model.response.LoginResponse
 import com.aoztg.greengrim.data.model.runRemote
 import com.aoztg.greengrim.data.remote.MemberAPI
 import com.aoztg.greengrim.presentation.ui.intro.IntroActivity
-import com.aoztg.greengrim.presentation.util.Constants.MEMBER_ID
 import com.aoztg.greengrim.presentation.util.Constants.TAG
-import com.aoztg.greengrim.presentation.util.Constants.X_ACCESS_TOKEN
-import com.aoztg.greengrim.presentation.util.Constants.X_REFRESH_TOKEN
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -22,8 +18,10 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.IOException
+import javax.inject.Inject
 
-class BearerInterceptor : Interceptor {
+class BearerInterceptor @Inject constructor(private val keyDataStoreManager: KeyDataStoreManager) :
+    Interceptor {
 
     @Throws(IOException::class)
     override fun intercept(chain: Interceptor.Chain): Response {
@@ -33,22 +31,20 @@ class BearerInterceptor : Interceptor {
         // API 통신중 특정코드 에러 발생 (accessToken 만료)
         if (response.code == 410) {
 
+            Log.d(TAG, "갱신시작")
             var isRefreshed = false
             var accessToken = ""
 
             runBlocking {
 
                 // 로컬에 refreshToken이 있다면
-                sharedPreferences.getString(X_REFRESH_TOKEN, null)?.let { refresh ->
-
-                    when (val result = getNewAccessToken(refresh)) {
+                keyDataStoreManager.getRefreshToken()?.let {
+                    when (val result = getNewAccessToken(it)) {
                         is BaseState.Success -> {
                             // refresh 성공시 로컬에 저장
-                            sharedPreferences.edit()
-                                .putString(X_ACCESS_TOKEN, result.body.accessToken)
-                                .putString(X_REFRESH_TOKEN, result.body.refreshToken)
-                                .putLong(MEMBER_ID, result.body.memberId)
-                                .apply()
+                            keyDataStoreManager.putAccessToken(result.body.accessToken)
+                            keyDataStoreManager.putRefreshToken(result.body.refreshToken)
+                            keyDataStoreManager.putMemberId(result.body.memberId)
 
                             isRefreshed = true
                             accessToken = result.body.accessToken
@@ -58,7 +54,6 @@ class BearerInterceptor : Interceptor {
                             Log.d(TAG, result.msg)
                         }
                     }
-
                 }
             }
 
@@ -74,10 +69,12 @@ class BearerInterceptor : Interceptor {
                 return chain.proceed(newRequest)
             } else {
                 // 해당 특정 에러코드가 그대로 내려간다면, IntroActivity로 이동. 세션 만료 처리
-                sharedPreferences.edit()
-                    .remove(X_ACCESS_TOKEN)
-                    .remove(X_REFRESH_TOKEN)
-                    .apply()
+                runBlocking {
+                    keyDataStoreManager.deleteAccessToken()
+                    keyDataStoreManager.deleteRefreshToken()
+                    keyDataStoreManager.deleteMemberId()
+                    keyDataStoreManager.deleteSocialType()
+                }
 
                 val intent = Intent(context(), IntroActivity::class.java)
                     .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)

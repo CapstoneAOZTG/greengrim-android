@@ -3,15 +3,19 @@ package com.aoztg.greengrim.presentation.chatmanager
 import android.annotation.SuppressLint
 import com.aoztg.greengrim.BuildConfig
 import com.aoztg.greengrim.app.App
+import com.aoztg.greengrim.data.config.KeyDataStoreManager
 import com.aoztg.greengrim.presentation.util.Constants
+import kotlinx.coroutines.runBlocking
 import org.json.JSONObject
 import ua.naiksoftware.stomp.Stomp
 import ua.naiksoftware.stomp.dto.StompHeader
+import javax.inject.Inject
 
 class ChatSocket(
     private val acceptChat: (String) -> Unit,
     private val showToastMessage: (String) -> Unit,
-    private val showSnackMessage: (String) -> Unit
+    private val showSnackMessage: (String) -> Unit,
+    private val keyDataStoreManager: KeyDataStoreManager
 ) {
 
     private val stompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, BuildConfig.SOCKET_URL)
@@ -19,7 +23,9 @@ class ChatSocket(
     fun connectServer() {
         try{
             val headerList = arrayListOf<StompHeader>()
-            val jwt = App.sharedPreferences.getString(Constants.X_ACCESS_TOKEN, null)
+            val jwt = runBlocking {
+                keyDataStoreManager.getAccessToken()
+            }
 
             jwt?.let {
                 headerList.add(StompHeader("token", it))

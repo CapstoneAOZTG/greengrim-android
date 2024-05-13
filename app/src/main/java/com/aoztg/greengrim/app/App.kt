@@ -4,12 +4,16 @@ import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
 import com.aoztg.greengrim.BuildConfig
 import com.aoztg.greengrim.R
+import com.aoztg.greengrim.app.Constants.APP_NAME
 import com.aoztg.greengrim.presentation.util.Constants.TAG
 import com.aoztg.greengrim.service.MyFirebaseMessagingService
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -40,6 +44,7 @@ class App : Application(), LifecycleEventObserver {
         lateinit var instance: App
         lateinit var sharedPreferences: SharedPreferences
         lateinit var gso: GoogleSignInOptions
+        val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name =APP_NAME)
         var fcmToken = ""
 
         // 앱의 context 를 불러오는 함수
