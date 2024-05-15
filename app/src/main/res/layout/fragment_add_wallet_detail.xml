@@ -130,7 +130,6 @@
             android:background="@drawable/shape_lightblackfill_grey5stroke_radius10"
             android:hint="지갑 주소를 입력해주세요"
             android:inputType="text"
-            android:maxLength="8"
             android:maxLines="1"
             android:paddingHorizontal="15dp"
             android:paddingVertical="8dp"
