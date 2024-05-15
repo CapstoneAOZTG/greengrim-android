@@ -139,7 +139,7 @@
                     android:id="@+id/layout_no_wallet"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    android:background="@drawable/shape_nofill_grey2stroke_radius15"
+                    android:background="@drawable/shape_lightblackfill_nostroke_radius20"
                     android:onClick="@{() -> vm.navigateToMyWallet()}"
                     android:visibility="@{vm.uiState.uiMyInfo.hasWallet ? View.INVISIBLE : View.VISIBLE}"
                     app:layout_constraintBottom_toBottomOf="@id/layout_wallet"

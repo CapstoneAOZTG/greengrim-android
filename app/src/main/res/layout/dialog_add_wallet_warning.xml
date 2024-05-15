@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_darkgreyfill_nostroke_radius20"
+        android:paddingHorizontal="20dp"
+        android:paddingTop="30dp"
+        android:paddingBottom="20dp">
+
+        <TextView
+            android:id="@+id/tv_title"
+            style="@style/TextGgMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="전자 지갑 주소를 확인해주세요!"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_wallet_address"
+            style="@style/TextGgMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:textAlignment="textStart"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_title"
+            tools:text="0x5616d56f465df12d3f45asdfasdfasdfasdfsadf" />
+
+        <TextView
+            android:id="@+id/tv_description1"
+            style="@style/TextGgSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:textAlignment="textStart"
+            android:textColor="@color/gg_grey6"
+            app:greenHighLightText="@{`※  폴리곤 네트워크와 호환되는 전자 지갑의 주소를 입력해야 합니다. 부적합한 주소 등록으로 인한 문제는 책임지지 않습니다.`}"
+            app:greenHighLighteIndex="@{6}"
+            app:greenHighLightsIndex="@{3}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_wallet_address" />
+
+        <TextView
+            android:id="@+id/tv_description2"
+            style="@style/TextGgSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="※  등록한 전자 지갑 주소는 NFT 전송 용도로만 사용되며, 그 외 가상 자산 거래 등의 다른 용도로 사용되지 않음을 알려드립니다."
+            android:textAlignment="textStart"
+            android:textColor="@color/gg_grey6"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_description1" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_cancel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:background="@android:color/transparent"
+            android:minHeight="0dp"
+            android:text="다시 입력할게요"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="@id/guide"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_description2" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_confirm"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:background="@android:color/transparent"
+            android:minHeight="0dp"
+            android:text="네,확인했어요"
+            android:textColor="@color/gg_green"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/guide"
+            app:layout_constraintTop_toBottomOf="@id/tv_description2" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

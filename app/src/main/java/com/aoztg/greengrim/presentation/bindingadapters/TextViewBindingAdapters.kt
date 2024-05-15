@@ -2,6 +2,9 @@ package com.aoztg.greengrim.presentation.bindingadapters
 
 import android.annotation.SuppressLint
 import android.graphics.Color
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
 import android.view.View
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
@@ -115,7 +118,6 @@ fun bindBalanceTextColor(tv: TextView, balanceAfterPurchase: String) {
             tv.text = "$balanceAfterPurchase KLAY"
         }
     }
-
 }
 
 @BindingAdapter("klayToWon")
@@ -123,4 +125,19 @@ fun bindKlayToWon(tv: TextView, price: String) {
     if (price.isNotBlank()) {
         tv.text = "≈ " + (price.toDouble() * ONE_KLAY).toString() + " KRW"
     }
+}
+
+@BindingAdapter("greenHighLightText", "greenHighLightsIndex", "greenHighLighteIndex")
+fun bindGreenHighLightText(tv: TextView, text: String, sIndex: Int, eIndex: Int) {
+    val spannable =
+        SpannableString(text)
+            .apply {
+                setSpan(
+                    ForegroundColorSpan(tv.context.getColor(R.color.gg_green)),
+                    sIndex,
+                    eIndex,
+                    Spannable.SPAN_EXCLUSIVE_INCLUSIVE
+                )
+            }
+    tv.text = spannable
 }
