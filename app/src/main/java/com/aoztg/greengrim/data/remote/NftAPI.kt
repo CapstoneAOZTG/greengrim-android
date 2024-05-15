@@ -82,7 +82,7 @@ interface NftAPI {
         @Body params : EditNftRequest
     ): Response<NftDetailResponse>
 
-    @POST("/visitor/nfts/like")
+    @POST("/visitor/nft-likes")
     suspend fun nftLike(
         @Body params : NftLikeRequest
     ) : Response<Unit>

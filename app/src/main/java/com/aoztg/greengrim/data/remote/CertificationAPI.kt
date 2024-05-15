@@ -16,17 +16,17 @@ import retrofit2.http.Query
 
 interface CertificationAPI {
 
-    @GET("/certifications/{id}")
+    @GET("/visitor/certifications/{id}")
     suspend fun getCertificationDetail(
         @Path("id") id: Long
     ): Response<CertificationDetailResponse>
 
-    @GET("/certifications/month")
+    @GET("/visitor/certifications/challenges/month")
     suspend fun getCertificationDate(
         @Query("challengeId") challengeId: Long
     ): Response<CertificationDatesResponse>
 
-    @GET("/certifications/date")
+    @GET("/visitor/certifications/challenges/date")
     suspend fun getCertificationList(
         @Query("challengeId") challengeId: Long,
         @Query("date") date: String,
@@ -58,7 +58,7 @@ interface CertificationAPI {
         @Query("size") size: Int
     ): Response<MyCertificationListResponse>
 
-    @POST("/visitor/verifications")
+    @POST("/visitor/certifications/verifications")
     suspend fun verifyCertification(
         @Body params: VerificationsRequest
     ): Response<Unit>

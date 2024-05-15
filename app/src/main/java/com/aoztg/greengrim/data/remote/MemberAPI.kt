@@ -27,7 +27,7 @@ import retrofit2.http.Query
 
 interface MemberAPI {
 
-    @PATCH("/visitor/refresh")
+    @PATCH("/visitor/members/refresh")
     suspend fun refreshToken(
         @Header("refreshToken") refreshToken: String
     ): Response<LoginResponse>
@@ -53,18 +53,18 @@ interface MemberAPI {
         @Body params: CheckNickRequest
     ): Response<CheckNickResponse>
 
-    @GET("/visitor/profile")
+    @GET("/visitor/members/profile")
     suspend fun getProfile(): Response<GetProfileResponse>
 
-    @PATCH("/visitor/profile")
+    @PATCH("/visitor/members/profile")
     suspend fun patchProfile(
         @Body params: PatchProfileRequest
     ): Response<Unit>
 
-    @GET("/visitor/my")
+    @GET("/visitor/members/my")
     suspend fun getMyInfo(): Response<MyInfoResponse>
 
-    @GET("/visitor/profile")
+    @GET("/visitor/members/profile")
     suspend fun getMemberInfo(
         @Query("memberId") memberId: Long
     ): Response<GetProfileResponse>
@@ -85,7 +85,7 @@ interface MemberAPI {
     @POST("/visitor/logout")
     suspend fun logout(): Response<Unit>
 
-    @DELETE("/visitor/delete")
+    @DELETE("/visitor/members/delete")
     suspend fun withdraw(): Response<Unit>
 
     @POST("/visitor/points")
@@ -94,13 +94,13 @@ interface MemberAPI {
         @Query("size") size: Int
     ): Response<MyPointResponse>
 
-    @GET("/home/events")
+    @GET("/visitor/events/home")
     suspend fun getEvent(): Response<EventResponse>
 
     @GET("/home/issues")
     suspend fun getHomeIssues(): Response<RecentIssueResponse>
 
-    @GET("/visitor/home")
+    @GET("/visitor/members/home")
     suspend fun getHomeMyInfo(): Response<HomeMyInfoResponse>
 
     @POST("/visitor/reports")

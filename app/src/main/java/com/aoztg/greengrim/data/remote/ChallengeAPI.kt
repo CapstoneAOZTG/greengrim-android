@@ -15,7 +15,7 @@ import retrofit2.http.Query
 
 interface ChallengeAPI {
 
-    @GET("/home/challenges")
+    @GET("/visitor/challenges/home")
     suspend fun getHotChallenges(): Response<HotChallengeResponse>
 
     @GET("/hot-challenges")
@@ -30,12 +30,12 @@ interface ChallengeAPI {
         @Body params: CreateChallengeRequest
     ): Response<CreateChallengeResponse>
 
-    @GET("/challenges/{id}")
+    @GET("/visitor/challenges/chatroom-topbar/{id}")
     suspend fun getChallengeDetail(
         @Path("id") id: Long
     ): Response<ChallengeDetailResponse>
 
-    @GET("/challenges")
+    @GET("/visitor/challenges")
     suspend fun getChallengeList(
         @Query("category") category: String,
         @Query("page") page: Int,
