@@ -253,6 +253,9 @@ class ChatManager @Inject constructor(
     fun exitChat(chatId: Long) {
         viewModelScope.launch {
             chatRepository.deleteUnReadChatData(chatId)
+            _chatListData.update { it.filter { data ->
+                data.chatId != chatId
+            }}
         }
     }
 
