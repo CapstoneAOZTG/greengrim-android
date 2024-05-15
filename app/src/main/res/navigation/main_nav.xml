@@ -118,26 +118,28 @@
             android:name="challengeId"
             app:argType="long" />
         <action
-            android:id="@+id/action_chat_room_fragment_to_certification_list_fragment"
-            app:destination="@id/certification_list_fragment" />
-        <action
             android:id="@+id/action_chat_room_fragment_to_make_certification_fragment"
             app:destination="@id/create_certification_fragment" />
         <action
             android:id="@+id/action_chat_room_fragment_to_create_certification_fragment"
             app:destination="@id/create_certification_fragment" />
+        <action
+            android:id="@+id/action_chat_room_fragment_to_certificationListBottomSheetFragment"
+            app:destination="@id/certificationListBottomSheetFragment" />
     </fragment>
 
-    <fragment
-        android:id="@+id/certification_list_fragment"
-        android:name="com.aoztg.greengrim.presentation.ui.chat.certificationlist.CertificationListFragment"
-        android:label="CertificationList"
-        tools:layout="@layout/fragment_certification_list">
+    <dialog
+        android:id="@+id/certificationListBottomSheetFragment"
+        android:name="com.aoztg.greengrim.presentation.ui.chat.certificationlist.CertificationListBottomSheetFragment"
+        android:label="CertificationListBottomSheetFragment" >
 
         <argument
             android:name="challengeId"
-            app:argType="long" />
-    </fragment>
+            app:argType="long"/>
+
+    </dialog>
+
+
 
     <fragment
         android:id="@+id/create_certification_fragment"
@@ -466,6 +468,7 @@
     <action
         android:id="@+id/action_global_to_challengeCategoryFragment"
         app:destination="@id/challenge_category_fragment" />
+
 
 
 </navigation>

@@ -30,7 +30,7 @@ interface ChallengeAPI {
         @Body params: CreateChallengeRequest
     ): Response<CreateChallengeResponse>
 
-    @GET("/visitor/challenges/chatroom-topbar/{id}")
+    @GET("/visitor/challenges/{id}")
     suspend fun getChallengeDetail(
         @Path("id") id: Long
     ): Response<ChallengeDetailResponse>

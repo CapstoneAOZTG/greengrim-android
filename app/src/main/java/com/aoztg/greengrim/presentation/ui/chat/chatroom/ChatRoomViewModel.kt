@@ -265,6 +265,12 @@ class ChatRoomViewModel @Inject constructor(
         }
     }
 
+    fun navigateToCertificationList(){
+        viewModelScope.launch {
+            _events.emit(ChatRoomEvents.NavigateToCertificationList(chatRoomId))
+        }
+    }
+
     fun blockChat() {
         // todo 채팅 차단하기
     }

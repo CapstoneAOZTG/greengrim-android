@@ -1,5 +1,6 @@
 package com.aoztg.greengrim.presentation.ui.chat.chatroom
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -45,6 +46,7 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
         binding.rvChat.adapter = adapter
         binding.rvChat.itemAnimator = null
         setScrollEventListener()
+        setSwipeEventListener()
         viewModel.setIds(chatId, challengeId)
         viewModel.getChatInfo()
         setDataChangeListener()
@@ -66,6 +68,16 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
                 if (lastVisibleItemPosition == itemTotalCount) {
                     viewModel.getChatMessageData()
                 }
+            }
+        })
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private fun setSwipeEventListener(){
+        binding.layoutChatBox.setOnTouchListener(object : OnSwipeTouchListener(requireContext()){
+            override fun onSwipeTop() {
+                super.onSwipeTop()
+                navigateToCertificationList()
             }
         })
     }
@@ -152,7 +164,7 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
 
     private fun navigateToCertificationList() {
         val action =
-            ChatRoomFragmentDirections.actionChatRoomFragmentToCertificationListFragment(viewModel.chatRoomId)
+            ChatRoomFragmentDirections.actionChatRoomFragmentToCertificationListBottomSheetFragment(viewModel.chatRoomId)
         findNavController().navigate(action)
     }
 

@@ -36,7 +36,7 @@ interface ChatAPI {
         @Query("size") size: Int
     ): Response<ChatMessageResponse>
 
-    @GET("/visitor/challenges/{id}")
+    @GET("/visitor/challenges/chatroom-topbar/{id}")
     suspend fun getChatInfo(
         @Path("id") id: Long
     ): Response<ChatInfoResponse>
