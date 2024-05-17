@@ -28,10 +28,10 @@
 
         <TextView
             android:id="@+id/tv_top_label"
-            style="@style/TextGgSmall"
+            style="@style/TextGgMedium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="30dp"
             android:layout_marginTop="12dp"
             android:text="인증 모아보기"
             app:layout_constraintStart_toStartOf="parent"
@@ -161,17 +161,17 @@
                     app:list="@{vm.uiState.certificationList}"
                     tools:listitem="@layout/item_certification" />
 
-<!--                <ImageView-->
-<!--                    android:id="@+id/iv_no_certification"-->
-<!--                    android:layout_width="50dp"-->
-<!--                    android:layout_height="50dp"-->
-<!--                    android:layout_marginTop="100dp"-->
-<!--                    android:src="@drawable/icon_no_certification"-->
-<!--                    android:visibility="invisible"-->
-<!--                    app:layout_constraintEnd_toEndOf="parent"-->
-<!--                    app:layout_constraintStart_toStartOf="parent"-->
-<!--                    app:layout_constraintTop_toBottomOf="@id/divider_calendar"-->
-<!--                    app:noListState="@{vm.uiState.certificationList}" />-->
+                <!--                <ImageView-->
+                <!--                    android:id="@+id/iv_no_certification"-->
+                <!--                    android:layout_width="50dp"-->
+                <!--                    android:layout_height="50dp"-->
+                <!--                    android:layout_marginTop="100dp"-->
+                <!--                    android:src="@drawable/icon_no_certification"-->
+                <!--                    android:visibility="invisible"-->
+                <!--                    app:layout_constraintEnd_toEndOf="parent"-->
+                <!--                    app:layout_constraintStart_toStartOf="parent"-->
+                <!--                    app:layout_constraintTop_toBottomOf="@id/divider_calendar"-->
+                <!--                    app:noListState="@{vm.uiState.certificationList}" />-->
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
