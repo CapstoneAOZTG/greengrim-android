@@ -16,6 +16,7 @@ import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentChatRoomBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
 import com.aoztg.greengrim.presentation.chatmanager.ChatManager
+import com.aoztg.greengrim.presentation.customview.TodayCertificationDialog
 import com.aoztg.greengrim.presentation.ui.chat.adapter.ChatMessageAdapter
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 import com.aoztg.greengrim.presentation.ui.toCertificationDetail
@@ -90,6 +91,7 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
             viewModel.events.collect {
                 when (it) {
                     is ChatRoomEvents.ShowPopupMenu -> showPopup()
+                    is ChatRoomEvents.ShowTodayCertification -> showTodayCertificationDialog()
                     is ChatRoomEvents.NavigateBack -> findNavController().navigateUp()
                     is ChatRoomEvents.NavigateToCertificationList -> navigateToCertificationList()
                     is ChatRoomEvents.NavigateToCreateCertification -> findNavController().toCreateCertification()
@@ -155,6 +157,14 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
             left.toInt(),
             top.toInt()
         )
+    }
+
+    private fun showTodayCertificationDialog(){
+        TodayCertificationDialog(
+            requireContext()
+        ){
+            findNavController().toCreateCertification()
+        }.show()
     }
 
     private fun navigateToChallengeInfo() {

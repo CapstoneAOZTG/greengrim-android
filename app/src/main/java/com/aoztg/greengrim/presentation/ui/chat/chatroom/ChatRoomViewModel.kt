@@ -1,5 +1,6 @@
 package com.aoztg.greengrim.presentation.ui.chat.chatroom
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.data.config.KeyDataStoreManager
@@ -14,6 +15,7 @@ import com.aoztg.greengrim.presentation.ui.chat.model.UiChatInfo
 import com.aoztg.greengrim.presentation.ui.chat.model.UiChatMessage
 import com.aoztg.greengrim.presentation.util.Constants.DATE
 import com.aoztg.greengrim.presentation.util.Constants.NOTHING
+import com.aoztg.greengrim.presentation.util.Constants.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -40,6 +42,7 @@ sealed class ChatRoomEvents {
     object NavigateBack : ChatRoomEvents()
     object ExitChat : ChatRoomEvents()
     object ShowPopupMenu : ChatRoomEvents()
+    object ShowTodayCertification : ChatRoomEvents()
     object NavigateToCreateCertification : ChatRoomEvents()
     data class NavigateToCertificationList(val id: Long) : ChatRoomEvents()
     data class NavigateToCertificationDetail(val id: Long) : ChatRoomEvents()
@@ -75,6 +78,7 @@ class ChatRoomViewModel @Inject constructor(
 
     val chatMessage = MutableStateFlow("")
 
+    private var isDialogShown = true
     private var memberId: Long = 0
     private var lastDate: String = ""
 
@@ -106,6 +110,12 @@ class ChatRoomViewModel @Inject constructor(
                                     chatInfo = newData
                                 )
                             }
+                        }
+
+                        val state = ChatRoomDialogState.stateMap[chatRoomId] ?: true
+                        if(!uiState.value.chatInfo.todayCertification && state){
+                            _events.emit(ChatRoomEvents.ShowTodayCertification)
+                            ChatRoomDialogState.stateMap[chatRoomId] = false
                         }
 
                     }
