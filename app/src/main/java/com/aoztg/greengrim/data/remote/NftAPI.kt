@@ -31,7 +31,7 @@ interface NftAPI {
         @Query("sort") sort : String
     ): Response<NftListResponse>
 
-    @GET("/nfts/{id}")
+    @GET("/visitor/nfts/{id}")
     suspend fun getNftDetail(
         @Path("id") id : Long
     ): Response<NftDetailResponse>
@@ -87,7 +87,7 @@ interface NftAPI {
         @Body params : NftLikeRequest
     ) : Response<Unit>
 
-    @GET("/home/hot-nfts")
+    @GET("/visitor/nfts/home/hot-nfts")
     suspend fun getHotNft():Response<HotNftResponse>
 
     @POST("/visitor/hiding/nft")
