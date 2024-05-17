@@ -384,6 +384,39 @@
 
                 </LinearLayout>
 
+                <LinearLayout
+                    android:id="@+id/block_rarity"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/shape_black4fill_nostroke_radius10"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="12dp"
+                    android:paddingVertical="12dp"
+                    app:layout_constraintEnd_toEndOf="@id/block_gesture"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/block_gesture">
+
+                    <TextView
+                        android:id="@+id/tv_rarity_label"
+                        style="@style/TextGgSmallGrey5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="RARITY"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_rarity"
+                        style="@style/TextGgSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:text="@{vm.uiState.nftDetail.rarity}"
+                        tools:text="blue" />
+
+                </LinearLayout>
+
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

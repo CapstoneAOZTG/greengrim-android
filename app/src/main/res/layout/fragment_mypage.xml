@@ -33,7 +33,7 @@
                 style="@style/TextHeader"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="더보기"
+                android:text="마이"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/btn_setting"
                 app:layout_constraintStart_toStartOf="parent"

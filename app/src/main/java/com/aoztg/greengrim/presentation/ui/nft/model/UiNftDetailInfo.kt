@@ -8,13 +8,14 @@ data class UiNftDetailInfo(
     val profileImage: String = "",
     val nickName: String = "",
     val date: String = "",
-    val background : String = "",
-    val hair : String = "",
-    val face : String = "",
-    val gesture : String = "",
-    val accessory : String = "",
-    val shoes : String = "",
-    val liked : Boolean = false,
+    val background: String = "",
+    val hair: String = "",
+    val face: String = "",
+    val gesture: String = "",
+    val accessory: String = "",
+    val shoes: String = "",
+    val rarity: String = "basic",
+    val liked: Boolean = false,
     val mine: Boolean = false
 )
 
