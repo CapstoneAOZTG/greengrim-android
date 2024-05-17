@@ -18,7 +18,7 @@ interface ChallengeAPI {
     @GET("/visitor/challenges/home")
     suspend fun getHotChallenges(): Response<HotChallengeResponse>
 
-    @GET("/hot-challenges")
+    @GET("/visitor/challenges/hot-challenges")
     suspend fun getMoreHotChallenges(
         @Query("option") option: String,
         @Query("page") page: Int,
@@ -83,6 +83,6 @@ interface ChallengeAPI {
 
     @POST("/visitor/hiding/challenge")
     suspend fun hideChallenge(
-        @Query("id") id : Long
+        @Query("id") id: Long
     ): Response<Unit>
 }

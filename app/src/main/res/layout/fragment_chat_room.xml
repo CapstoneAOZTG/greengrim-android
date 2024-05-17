@@ -151,7 +151,7 @@
                 android:onClick="@{() -> vm.navigateToCertificationList()}"
                 android:text="📸  챌린지 인증 모아보기"
                 app:layout_constraintBottom_toTopOf="@id/layout_edit_text"
-                app:layout_constraintEnd_toStartOf="@id/iv_up_arrow"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 

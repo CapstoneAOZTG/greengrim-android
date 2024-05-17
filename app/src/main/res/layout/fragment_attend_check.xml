@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="vm"
             type="com.aoztg.greengrim.presentation.ui.global.attendcheck.AttendCheckViewModel" />
@@ -69,6 +71,7 @@
             android:layout_height="wrap_content"
             android:clipToPadding="false"
             android:paddingBottom="200dp"
+            android:visibility="@{vm.uiState.uiCertificationDetail.challengeTitle.empty ? View.INVISIBLE : View.VISIBLE}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/layout_toolbar">
@@ -91,12 +94,13 @@
 
                 <TextView
                     android:id="@+id/tv_keyword_category"
-                    style="@style/TextGgSmallBlackBold"
+                    style="@style/TextGgSmall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
-                    android:background="@drawable/shape_purplefill_nostroke_radius20"
-                    android:paddingHorizontal="8dp"
+                    android:background="@drawable/shape_nofill_whitestroke_radius15"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="4dp"
                     android:text="@{vm.uiState.uiCertificationDetail.category}"
                     app:layout_constraintBottom_toBottomOf="@id/tv_title"
                     app:layout_constraintStart_toEndOf="@id/tv_title"
@@ -105,12 +109,13 @@
 
                 <TextView
                     android:id="@+id/tv_keyword_ticket"
-                    style="@style/TextGgSmallBlackBold"
+                    style="@style/TextGgSmall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:background="@drawable/shape_greenfill_nostroke_radius20"
-                    android:paddingHorizontal="8dp"
+                    android:background="@drawable/shape_nofill_whitestroke_radius15"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="4dp"
                     android:text="@{vm.uiState.uiCertificationDetail.ticketCount}"
                     app:layout_constraintBottom_toBottomOf="@id/tv_title"
                     app:layout_constraintStart_toEndOf="@id/tv_keyword_category"
@@ -209,81 +214,90 @@
 
         </androidx.core.widget.NestedScrollView>
 
-        <ImageView
-            android:id="@+id/iv_leaf"
-            android:layout_width="16dp"
-            android:layout_height="16dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginBottom="16dp"
-            android:src="@drawable/icon_leaf"
-            app:layout_constraintBottom_toTopOf="@id/btn_false"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <TextView
-            android:id="@+id/tv_check_description"
-            style="@style/TextGgSmallBold"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:text="유저 상호 인증에 참여해주세요! 검토에 참여할 때마다 10 GP를 드려요!"
-            app:checkAnnounceViewState="@{vm.uiState.uiCertificationDetail.isVerified}"
-            app:layout_constraintBottom_toBottomOf="@id/iv_leaf"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/iv_leaf"
-            app:layout_constraintTop_toTopOf="@id/iv_leaf" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_false"
-            style="@style/TextGgSmallBlackBold"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginBottom="32dp"
-            android:background="@drawable/shape_grey2fill_nostroke_radius10"
-            android:minHeight="0dp"
-            android:onClick="@{() -> vm.verifyCertification(false)}"
-            android:paddingHorizontal="20dp"
-            android:paddingVertical="10dp"
-            android:text="올바르지 않은 사진이에요"
-            app:checkBtnState="@{vm.uiState.uiCertificationDetail.isVerified}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/btn_true"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_true"
-            style="@style/TextGgSmallBlackBold"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="20dp"
-            android:background="@drawable/shape_greenfill_nostroke_radius10"
-            android:minHeight="0dp"
-            android:onClick="@{() -> vm.verifyCertification(true)}"
-            android:paddingHorizontal="40dp"
-            android:paddingVertical="10dp"
-            android:text="올바른 사진이에요"
-            app:checkBtnState="@{vm.uiState.uiCertificationDetail.isVerified}"
-            app:layout_constraintBottom_toBottomOf="@id/btn_false"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/btn_false" />
-
-        <TextView
-            android:id="@+id/tv_certification_complete"
-            style="@style/TextGgSmallBold"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
-            android:layout_marginBottom="32dp"
-            android:background="@drawable/shape_darkgreyfill_nostroke_radius10"
-            android:minHeight="0dp"
-            android:paddingVertical="10dp"
-            android:text="참여 완료"
-            android:textAlignment="center"
-            android:visibility="invisible"
-            app:checkCompleteViewState="@{vm.uiState.uiCertificationDetail.isVerified}"
+            android:visibility="@{vm.uiState.uiCertificationDetail.isVerified().equals(`DEACTIVATION`) ? View.INVISIBLE : View.VISIBLE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent">
+
+            <ImageView
+                android:id="@+id/iv_leaf"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginBottom="16dp"
+                android:src="@drawable/icon_leaf"
+                app:layout_constraintBottom_toTopOf="@id/btn_false"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_check_description"
+                style="@style/TextGgSmallBold"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:text="유저 상호 인증에 참여해주세요! 검토에 참여할 때마다 10 GP를 드려요!"
+                app:layout_constraintBottom_toBottomOf="@id/iv_leaf"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/iv_leaf"
+                app:layout_constraintTop_toTopOf="@id/iv_leaf" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_false"
+                style="@style/TextGgSmallBlackBold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginBottom="32dp"
+                android:background="@drawable/shape_grey2fill_nostroke_radius10"
+                android:minHeight="0dp"
+                android:onClick="@{() -> vm.verifyCertification(false)}"
+                android:paddingHorizontal="20dp"
+                android:paddingVertical="10dp"
+                android:text="올바르지 않은 사진이에요"
+                app:checkBtnState="@{vm.uiState.uiCertificationDetail.isVerified}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/btn_true"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_true"
+                style="@style/TextGgSmallBlackBold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/shape_greenfill_nostroke_radius10"
+                android:minHeight="0dp"
+                android:onClick="@{() -> vm.verifyCertification(true)}"
+                android:paddingHorizontal="40dp"
+                android:paddingVertical="10dp"
+                android:text="올바른 사진이에요"
+                app:checkBtnState="@{vm.uiState.uiCertificationDetail.isVerified}"
+                app:layout_constraintBottom_toBottomOf="@id/btn_false"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/btn_false" />
+
+            <TextView
+                android:id="@+id/tv_certification_complete"
+                style="@style/TextGgSmallBold"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginBottom="32dp"
+                android:background="@drawable/shape_darkgreyfill_nostroke_radius10"
+                android:minHeight="0dp"
+                android:paddingVertical="10dp"
+                android:text="참여 완료"
+                android:textAlignment="center"
+                android:visibility="invisible"
+                app:checkCompleteViewState="@{vm.uiState.uiCertificationDetail.isVerified}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
