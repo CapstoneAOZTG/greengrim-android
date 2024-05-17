@@ -1,6 +1,5 @@
 package com.aoztg.greengrim.presentation.ui.chat.chatroom
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.data.config.KeyDataStoreManager
@@ -15,7 +14,6 @@ import com.aoztg.greengrim.presentation.ui.chat.model.UiChatInfo
 import com.aoztg.greengrim.presentation.ui.chat.model.UiChatMessage
 import com.aoztg.greengrim.presentation.util.Constants.DATE
 import com.aoztg.greengrim.presentation.util.Constants.NOTHING
-import com.aoztg.greengrim.presentation.util.Constants.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -113,7 +111,7 @@ class ChatRoomViewModel @Inject constructor(
                         }
 
                         val state = ChatRoomDialogState.stateMap[chatRoomId] ?: true
-                        if(!uiState.value.chatInfo.todayCertification && state){
+                        if (!uiState.value.chatInfo.todayCertification && state) {
                             _events.emit(ChatRoomEvents.ShowTodayCertification)
                             ChatRoomDialogState.stateMap[chatRoomId] = false
                         }
@@ -275,14 +273,10 @@ class ChatRoomViewModel @Inject constructor(
         }
     }
 
-    fun navigateToCertificationList(){
+    fun navigateToCertificationList() {
         viewModelScope.launch {
             _events.emit(ChatRoomEvents.NavigateToCertificationList(chatRoomId))
         }
-    }
-
-    fun blockChat() {
-        // todo 채팅 차단하기
     }
 
 }

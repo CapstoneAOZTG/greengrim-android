@@ -122,8 +122,6 @@ abstract class BaseFragment<B : ViewDataBinding>(
         context: Context,
         onClickChallengeInfo: () -> Unit,
         onClickCertificationList: () -> Unit,
-        onClickBlock: () -> Unit,
-        onClickAccusation: () -> Unit,
         onClickExit: () -> Unit,
         xPosition: Int,
         yPosition: Int
@@ -132,8 +130,6 @@ abstract class BaseFragment<B : ViewDataBinding>(
             context,
             onClickChallengeInfo,
             onClickCertificationList,
-            onClickBlock,
-            onClickAccusation,
             onClickExit
         )
         chatPopUpMenu?.show(xPosition, yPosition)
