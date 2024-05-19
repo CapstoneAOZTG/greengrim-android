@@ -19,6 +19,7 @@ import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentCertificationListBottomSheetBinding
 import com.aoztg.greengrim.presentation.customview.CustomCalendar
 import com.aoztg.greengrim.presentation.customview.YearMonthPickerDialog
+import com.aoztg.greengrim.presentation.ui.DataState
 import com.aoztg.greengrim.presentation.ui.chat.adapter.CertificationListAdapter
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 import com.aoztg.greengrim.presentation.ui.toCertificationDetail
@@ -117,6 +118,18 @@ class CertificationListBottomSheetFragment : BottomSheetDialogFragment() {
             viewModel.uiState.collect {
                 binding.tvDate.text = it.curDateString
                 binding.btnSelectMonth.text = it.curMonthString
+            }
+        }
+
+        repeatOnStarted {
+            viewModel.uiState.collect {
+                if (it.dataState == DataState.NO_DATA) {
+                    binding.ivNoCertification.visibility = View.VISIBLE
+                    binding.tvNoCertification.visibility = View.VISIBLE
+                } else {
+                    binding.ivNoCertification.visibility = View.INVISIBLE
+                    binding.tvNoCertification.visibility = View.INVISIBLE
+                }
             }
         }
     }

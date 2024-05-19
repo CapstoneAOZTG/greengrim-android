@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.repository.CertificationRepository
 import com.aoztg.greengrim.data.repository.ChallengeRepository
+import com.aoztg.greengrim.presentation.ui.DataState
 import com.aoztg.greengrim.presentation.ui.chat.mapper.toUiCertificationList
 import com.aoztg.greengrim.presentation.ui.chat.model.UiCertificationItem
 import com.aoztg.greengrim.presentation.ui.toHeaderText
@@ -32,6 +33,7 @@ data class CertificationListUiState(
     val certificationList: List<UiCertificationItem> = emptyList(),
     val page: Int = 0,
     val hasNext: Boolean = true,
+    val dataState: DataState = DataState.BEFORE
 )
 
 sealed class CertificationListEvents {
@@ -135,6 +137,8 @@ class CertificationListBottomSheetViewModel @Inject constructor(
                                     page = uiData.page + 1,
                                 )
                             }
+
+                            checkDataState()
                         }
 
                         is BaseState.Error -> {
@@ -142,6 +146,22 @@ class CertificationListBottomSheetViewModel @Inject constructor(
                         }
                     }
                 }
+            }
+        }
+    }
+
+    private fun checkDataState() {
+        if (uiState.value.certificationList.isEmpty()) {
+            _uiState.update { state ->
+                state.copy(
+                    dataState = DataState.NO_DATA
+                )
+            }
+        } else {
+            _uiState.update { state ->
+                state.copy(
+                    dataState = DataState.HAVE_DATA
+                )
             }
         }
     }

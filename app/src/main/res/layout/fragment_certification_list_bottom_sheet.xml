@@ -156,6 +156,29 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/calendarView" />
 
+                <ImageView
+                    android:id="@+id/iv_no_certification"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="150dp"
+                    android:src="@drawable/icon_sad"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/divider_calendar" />
+
+                <TextView
+                    android:id="@+id/tv_no_certification"
+                    style="@style/TextGgMedium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="아직 인증이 없어요"
+                    android:textAlignment="center"
+                    android:textColor="@color/gg_grey5"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/iv_no_certification" />
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_certifications"
                     android:layout_width="0dp"
@@ -171,22 +194,9 @@
                     app:list="@{vm.uiState.certificationList}"
                     tools:listitem="@layout/item_certification" />
 
-                <!--                <ImageView-->
-                <!--                    android:id="@+id/iv_no_certification"-->
-                <!--                    android:layout_width="50dp"-->
-                <!--                    android:layout_height="50dp"-->
-                <!--                    android:layout_marginTop="100dp"-->
-                <!--                    android:src="@drawable/icon_no_certification"-->
-                <!--                    android:visibility="invisible"-->
-                <!--                    app:layout_constraintEnd_toEndOf="parent"-->
-                <!--                    app:layout_constraintStart_toStartOf="parent"-->
-                <!--                    app:layout_constraintTop_toBottomOf="@id/divider_calendar"-->
-                <!--                    app:noListState="@{vm.uiState.certificationList}" />-->
-
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.core.widget.NestedScrollView>
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
