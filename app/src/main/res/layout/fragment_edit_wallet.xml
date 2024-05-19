@@ -31,8 +31,8 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_marginEnd="12dp"
-                android:onClick="@{() -> vm.navigateToBack()}"
                 android:background="@android:color/transparent"
+                android:onClick="@{() -> vm.navigateToBack()}"
                 android:scaleType="fitCenter"
                 android:src="@drawable/icon_back"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -56,10 +56,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
-                android:minWidth="0dp"
                 android:enabled="@{vm.isDataReady()}"
-                android:onClick="@{() -> vm.editWallet()}"
+                android:minWidth="0dp"
                 android:minHeight="0dp"
+                android:onClick="@{() -> vm.editWallet()}"
                 android:text="완료"
                 android:textColor="@color/selector_complete_text"
                 android:textSize="16dp"
@@ -129,7 +129,6 @@
             android:layout_marginTop="8dp"
             android:background="@drawable/shape_lightblackfill_nostroke_radius10"
             android:inputType="text"
-            android:maxLength="8"
             android:maxLines="1"
             android:paddingHorizontal="15dp"
             android:paddingVertical="8dp"
@@ -142,27 +141,19 @@
             app:layout_constraintTop_toBottomOf="@id/tv_wallet_address_label" />
 
         <TextView
-            android:id="@+id/tv_mark"
-            style="@style/TextGgSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="※"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/et_wallet_address" />
-
-        <TextView
             android:id="@+id/tv_warning"
             style="@style/TextGgSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:text="클레이튼을 지원하는 전자 지갑 주소를 입력해주시길 바랍니다. 없어도 책임 못집니당~"
+            android:layout_marginTop="20dp"
+            android:lineSpacingExtra="2dp"
             android:textStyle="bold"
+            app:greenHighLightText="@{`※  폴리곤 네트워크와 호환되는 전자 지갑의 주소를 입력해야 합니다. 부적합한 주소 등록으로 인한 문제는 책임지지 않습니다.`}"
+            app:greenHighLighteIndex="@{6}"
+            app:greenHighLightsIndex="@{3}"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/tv_mark"
-            app:layout_constraintTop_toTopOf="@id/tv_mark" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/et_wallet_address" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
