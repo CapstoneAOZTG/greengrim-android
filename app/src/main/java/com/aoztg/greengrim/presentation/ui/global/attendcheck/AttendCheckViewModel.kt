@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.model.request.VerificationsRequest
 import com.aoztg.greengrim.data.repository.AttendCheckRepository
+import com.aoztg.greengrim.presentation.ui.DataState
 import com.aoztg.greengrim.presentation.ui.global.mapper.toUiCertificationDetail
 import com.aoztg.greengrim.presentation.ui.global.model.UiCertificationDetail
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,7 +21,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 data class AttendCheckUiState(
-    val uiCertificationDetail: UiCertificationDetail = UiCertificationDetail()
+    val uiCertificationDetail: UiCertificationDetail = UiCertificationDetail(),
+    val isNoCertification: DataState = DataState.BEFORE
 )
 
 sealed class AttendCheckEvents {
@@ -32,11 +34,14 @@ sealed class AttendCheckEvents {
     data class ShowSnackMessage(val msg: String) : AttendCheckEvents()
 }
 
-
 @HiltViewModel
 class AttendCheckViewModel @Inject constructor(
     private val attendCheckRepository: AttendCheckRepository
 ) : ViewModel() {
+
+    companion object {
+        const val CERTIFICATION_002 = "CERTIFICATION_002"
+    }
 
     private val _uiState = MutableStateFlow(AttendCheckUiState())
     val uiState: StateFlow<AttendCheckUiState> = _uiState.asStateFlow()
@@ -46,26 +51,31 @@ class AttendCheckViewModel @Inject constructor(
 
     fun getCertificationForVerify() {
         viewModelScope.launch {
-            _events.emit(AttendCheckEvents.ShowLoading)
-
             attendCheckRepository.getCertificationForVerify().let {
                 when (it) {
                     is BaseState.Success -> {
                         _uiState.update { state ->
                             state.copy(
+                                isNoCertification = DataState.HAVE_DATA,
                                 uiCertificationDetail = it.body.toUiCertificationDetail()
                             )
                         }
                     }
 
                     is BaseState.Error -> {
-                        _events.emit(AttendCheckEvents.ShowSnackMessage(it.msg))
+                        if (it.code == CERTIFICATION_002) {
+                            _uiState.update { state ->
+                                state.copy(
+                                    isNoCertification = DataState.NO_DATA
+                                )
+                            }
+                        } else {
+                            _events.emit(AttendCheckEvents.ShowSnackMessage(it.msg))
+                        }
+
                     }
                 }
             }
-
-            delay(500)
-            _events.emit(AttendCheckEvents.DismissLoading)
         }
     }
 

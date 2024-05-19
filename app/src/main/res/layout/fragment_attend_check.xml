@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="com.aoztg.greengrim.presentation.ui.DataState" />
+
         <import type="android.view.View" />
 
         <variable
@@ -16,6 +18,31 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/iv_no_certification"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/icon_sad"
+            android:visibility="@{vm.uiState.isNoCertification == DataState.NO_DATA ? View.VISIBLE : View.INVISIBLE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/layout_toolbar" />
+
+        <TextView
+            android:id="@+id/tv_no_certification"
+            style="@style/TextGgMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="참여할 수 있는 상호 인증이 없어요"
+            android:textAlignment="center"
+            android:textColor="@color/gg_grey5"
+            android:visibility="@{vm.uiState.isNoCertification == DataState.NO_DATA ? View.VISIBLE : View.INVISIBLE}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_no_certification" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_toolbar"
@@ -71,7 +98,7 @@
             android:layout_height="wrap_content"
             android:clipToPadding="false"
             android:paddingBottom="200dp"
-            android:visibility="@{vm.uiState.uiCertificationDetail.challengeTitle.empty ? View.INVISIBLE : View.VISIBLE}"
+            android:visibility="@{vm.uiState.isNoCertification == DataState.HAVE_DATA ? View.VISIBLE : View.INVISIBLE}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/layout_toolbar">

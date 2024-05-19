@@ -25,3 +25,9 @@ sealed class DateState {
     object Empty : DateState()
     data class Changed(val stringDate: String, val originDate: LocalDate) : DateState()
 }
+
+enum class DataState{
+    BEFORE,
+    NO_DATA,
+    HAVE_DATA
+}
