@@ -3,8 +3,13 @@ package com.aoztg.greengrim.presentation.ui.global.attendcheck
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.data.model.BaseState
+import com.aoztg.greengrim.data.model.request.AccusationRequest
 import com.aoztg.greengrim.data.model.request.VerificationsRequest
 import com.aoztg.greengrim.data.repository.AttendCheckRepository
+import com.aoztg.greengrim.data.repository.CertificationRepository
+import com.aoztg.greengrim.data.repository.MemberRepository
+import com.aoztg.greengrim.presentation.customview.AccusationContentType
+import com.aoztg.greengrim.presentation.customview.AccusationType
 import com.aoztg.greengrim.presentation.ui.DataState
 import com.aoztg.greengrim.presentation.ui.global.mapper.toUiCertificationDetail
 import com.aoztg.greengrim.presentation.ui.global.model.UiCertificationDetail
@@ -30,12 +35,15 @@ sealed class AttendCheckEvents {
     object NavigateToBack : AttendCheckEvents()
     object ShowLoading : AttendCheckEvents()
     object DismissLoading : AttendCheckEvents()
+    object ShowPopUp : AttendCheckEvents()
     data class ShowSnackMessage(val msg: String) : AttendCheckEvents()
 }
 
 @HiltViewModel
 class AttendCheckViewModel @Inject constructor(
-    private val attendCheckRepository: AttendCheckRepository
+    private val attendCheckRepository: AttendCheckRepository,
+    private val certificationRepository: CertificationRepository,
+    private val memberRepository: MemberRepository
 ) : ViewModel() {
 
     companion object {
@@ -78,6 +86,12 @@ class AttendCheckViewModel @Inject constructor(
         }
     }
 
+    fun showPopUp(){
+        viewModelScope.launch {
+            _events.emit(AttendCheckEvents.ShowPopUp)
+        }
+    }
+
     fun verifyCertification(state: Boolean) {
         viewModelScope.launch {
 
@@ -105,6 +119,33 @@ class AttendCheckViewModel @Inject constructor(
                 }
             }
 
+        }
+    }
+
+    fun blockCertification() {
+        viewModelScope.launch {
+            certificationRepository.hideCertification(uiState.value.uiCertificationDetail.certificationId)
+                .let {
+                    when (it) {
+                        is BaseState.Success -> _events.emit(AttendCheckEvents.ShowToastMessage("인증 차단 성공"))
+                        is BaseState.Error -> _events.emit(AttendCheckEvents.ShowSnackMessage(it.msg))
+                    }
+                }
+        }
+    }
+
+    fun accusationCertification(type: AccusationContentType, content: String) {
+        viewModelScope.launch {
+            memberRepository.accusation(
+                AccusationType.CERTIFICATION.text, AccusationRequest(
+                    uiState.value.uiCertificationDetail.certificationId, type.text, content
+                )
+            ).let {
+                when (it) {
+                    is BaseState.Success -> _events.emit(AttendCheckEvents.ShowToastMessage("Nft 신고 성공"))
+                    is BaseState.Error -> _events.emit(AttendCheckEvents.ShowSnackMessage(it.msg))
+                }
+            }
         }
     }
 

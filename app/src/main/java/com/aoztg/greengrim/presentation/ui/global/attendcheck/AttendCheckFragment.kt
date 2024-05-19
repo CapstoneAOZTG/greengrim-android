@@ -19,6 +19,8 @@ class AttendCheckFragment :
     private val parentViewModel: MainViewModel by activityViewModels()
     private val viewModel: AttendCheckViewModel by viewModels()
 
+    private val popupLocation = IntArray(2)
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -44,8 +46,34 @@ class AttendCheckFragment :
                     is AttendCheckEvents.ShowSnackMessage -> parentViewModel.showSnack(it.msg)
                     is AttendCheckEvents.ShowLoading -> showLoading(requireContext())
                     is AttendCheckEvents.DismissLoading -> dismissLoading()
+                    is AttendCheckEvents.ShowPopUp -> showPopup()
                 }
             }
         }
     }
+
+    private fun showPopup() {
+        val moreBtn = binding.btnMore
+        moreBtn.getLocationOnScreen(popupLocation)
+        val left = popupLocation[0] + moreBtn.left.toFloat()
+        val top = popupLocation[1] + moreBtn.bottom.toFloat()
+
+
+        showBlockAccusationPopUp(
+            requireContext(),
+            { viewModel.blockCertification() },
+            ::showAccusation,
+            left.toInt(),
+            top.toInt()
+        )
+
+    }
+
+    private fun showAccusation() {
+        showAccusation(requireContext(), "NFT 신고") { accType, content ->
+            viewModel.accusationCertification(accType, content)
+        }
+    }
+
+
 }
