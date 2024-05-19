@@ -21,7 +21,7 @@ fun bindChallengeListChips(chipGroup: ChipGroup, chips: ChallengeSimpleTags) {
     })
 
     chipList.add(TextView(chipGroup.context).apply {
-        text = chips.ticketCount
+        text = chips.participantCount
     })
 
     chipList.add(TextView(chipGroup.context).apply {
@@ -51,37 +51,12 @@ fun bindDetailMainChips(chipGroup: ChipGroup, chips: ChallengeDetailTags?) {
         })
 
         chipList.add(TextView(chipGroup.context).apply {
-            text = chips.ticketCount
+            text = chips.participantCount
         })
-
-        chipList.forEach { chip ->
-            chip.apply {
-                setBackgroundResource(R.drawable.shape_nofill_whitestroke_radius15)
-                setTextAppearance(R.style.TextGgSmallBold)
-                setPadding(40, 16, 40, 20)
-            }
-            chipGroup.addView(chip)
-        }
-    }
-}
-
-@BindingAdapter("subChipList")
-fun bindDetailSubChips(chipGroup: ChipGroup, chips: ChallengeDetailTags?) {
-
-    if (chips != null) {
-        chipGroup.removeAllViews()
-
-        val chipList = mutableListOf<TextView>()
 
         chipList.add(TextView(chipGroup.context).apply {
             text = chips.goalCount
         })
-        chipList.add(TextView(chipGroup.context).apply {
-            text = chips.weekMinCount
-        })
-        chipList.add(TextView(chipGroup.context).apply {
-            text = chips.participantCount
-        })
 
         chipList.forEach { chip ->
             chip.apply {
@@ -93,3 +68,4 @@ fun bindDetailSubChips(chipGroup: ChipGroup, chips: ChallengeDetailTags?) {
         }
     }
 }
+

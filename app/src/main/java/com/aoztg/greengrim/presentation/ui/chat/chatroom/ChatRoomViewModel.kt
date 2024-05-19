@@ -93,7 +93,6 @@ class ChatRoomViewModel @Inject constructor(
 
             }
         }
-
     }
 
     fun getChatInfo() {

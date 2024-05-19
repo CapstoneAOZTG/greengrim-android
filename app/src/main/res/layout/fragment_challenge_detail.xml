@@ -104,18 +104,6 @@
             app:layout_constraintTop_toBottomOf="@id/tv_description"
             app:mainChipList="@{vm.uiState.uiChallengeDetail.keywords}"></com.google.android.material.chip.ChipGroup>
 
-        <com.google.android.material.chip.ChipGroup
-            android:id="@+id/chipgroup_grey"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="12dp"
-            android:layout_marginTop="4dp"
-            app:chipSpacingVertical="4dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/chipgroup_color"
-            app:subChipList="@{vm.uiState.uiChallengeDetail.keywords}"></com.google.android.material.chip.ChipGroup>
-
         <TextView
             android:id="@+id/tv_date"
             style="@style/TextGgTiny"
@@ -126,7 +114,7 @@
             android:text="@{vm.uiState.uiChallengeDetail.date}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/chipgroup_grey"
+            app:layout_constraintTop_toBottomOf="@id/chipgroup_color"
             tools:text="2023-09-26 개설" />
 
         <androidx.appcompat.widget.AppCompatButton

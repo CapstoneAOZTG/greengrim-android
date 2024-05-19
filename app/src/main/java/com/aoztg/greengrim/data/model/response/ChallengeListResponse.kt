@@ -21,5 +21,5 @@ data class ChallengeInfo(
 data class ChallengeSimpleTags(
     val category: String,
     val goalCount: String,
-    val ticketCount: String
+    val participantCount: String
 )

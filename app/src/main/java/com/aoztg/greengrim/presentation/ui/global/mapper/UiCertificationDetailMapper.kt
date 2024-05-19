@@ -10,7 +10,6 @@ internal fun CertificationDetailResponse.toUiCertificationDetail(): UiCertificat
         certificationId = certificationInfo.id,
         challengeTitle = challengeInfo.title,
         category = challengeInfo.category.toCategoryText(),
-        ticketCount = challengeInfo.ticketCount,
         challengeDescription = challengeInfo.description,
         profileUrl = memberSimpleInfo.profileImgUrl,
         nickName = memberSimpleInfo.nickName,

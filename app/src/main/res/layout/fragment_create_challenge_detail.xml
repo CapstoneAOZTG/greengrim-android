@@ -77,7 +77,9 @@
         <androidx.core.widget.NestedScrollView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:clipToPadding="false"
             android:paddingTop="16dp"
+            android:paddingBottom="200dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/layout_toolbar">
@@ -286,146 +288,6 @@
                     app:layout_constraintTop_toTopOf="@id/tv_certificate_min_count" />
 
                 <TextView
-                    android:id="@+id/tv_ticket_count_label"
-                    style="@style/TextFormLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:text="성공 티켓 개수"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_certificate_min_count" />
-
-                <TextView
-                    android:id="@+id/tv_ticket_count"
-                    style="@style/TextFormLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintBottom_toBottomOf="@id/tv_ticket_count_label"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/tv_ticket_count_label"
-                    app:progressText="@{vm.uiState.ticketProgressState}"
-                    tools:text="100 개" />
-
-                <TextView
-                    android:id="@+id/tv_ticket_count_description"
-                    style="@style/TextGgSmallGrey5"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginVertical="4dp"
-                    android:text="해당 챌린지를 성공할 수 있는 유저의 수에요!"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_ticket_count_label" />
-
-                <SeekBar
-                    android:id="@+id/seekbar_ticket_count"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:max="4"
-                    android:maxHeight="3dp"
-                    android:minHeight="3dp"
-                    android:progress="@={vm.ticketProgress}"
-                    android:progressDrawable="@color/white"
-                    android:splitTrack="false"
-                    android:thumb="@drawable/seekbar_thumb"
-                    android:tickMark="@drawable/seekbar_tickmark"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_ticket_count_description" />
-
-                <TextView
-                    android:id="@+id/tv_ticket_min_count"
-                    style="@style/TextGgSmall"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginTop="12dp"
-                    android:text="20"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/seekbar_ticket_count" />
-
-                <TextView
-                    android:id="@+id/tv_ticket_max_count"
-                    style="@style/TextGgSmall"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="12dp"
-                    android:text="100"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/tv_ticket_min_count" />
-
-                <TextView
-                    android:id="@+id/tv_min_certificate_count_label"
-                    style="@style/TextFormLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:text="최소 인증 횟수"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_ticket_min_count" />
-
-                <TextView
-                    android:id="@+id/tv_min_certificate_count"
-                    style="@style/TextFormLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintBottom_toBottomOf="@id/tv_min_certificate_count_label"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/tv_min_certificate_count_label"
-                    app:progressText="@{vm.uiState.minCertificateProgressState}"
-                    tools:text="주 3회" />
-
-                <TextView
-                    android:id="@+id/tv_min_certificate_count_description"
-                    style="@style/TextGgSmallGrey5"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginVertical="4dp"
-                    android:text="해당 챌린지에서 퇴장 당하지 않기 위해 필요한 최소 인증 횟수에요!"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_min_certificate_count_label" />
-
-                <SeekBar
-                    android:id="@+id/seekbar_min_certificate_count"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:max="4"
-                    android:maxHeight="4dp"
-                    android:minHeight="4dp"
-                    android:progress="@={vm.minCertificateProgress}"
-                    android:progressDrawable="@color/white"
-                    android:splitTrack="false"
-                    android:thumb="@drawable/seekbar_thumb"
-                    android:tickMark="@drawable/seekbar_tickmark"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_min_certificate_count_description" />
-
-                <TextView
-                    android:id="@+id/tv_min_certificate_min_count"
-                    style="@style/TextGgSmall"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginTop="12dp"
-                    android:text="2"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/seekbar_min_certificate_count" />
-
-                <TextView
-                    android:id="@+id/tv_min_certificate_max_count"
-                    style="@style/TextGgSmall"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="12dp"
-                    android:text="6"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/tv_min_certificate_min_count" />
-
-                <TextView
                     android:id="@+id/tv_last_warning"
                     style="@style/TextGgSmallGrey5"
                     android:layout_width="0dp"
@@ -436,14 +298,7 @@
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_min_certificate_max_count" />
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="200dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_last_warning" />
+                    app:layout_constraintTop_toBottomOf="@id/tv_certificate_max_count" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

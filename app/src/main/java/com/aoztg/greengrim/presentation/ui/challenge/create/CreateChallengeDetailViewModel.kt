@@ -70,14 +70,10 @@ class CreateChallengeDetailViewModel @Inject constructor(
     val description = MutableStateFlow("")
     val category = MutableStateFlow("")
     val certificateProgress = MutableStateFlow(0)
-    val ticketProgress = MutableStateFlow(0)
-    val minCertificateProgress = MutableStateFlow(0)
     private val imageSet = MutableStateFlow(false)
     private var imgFile: MultipartBody.Part? = null
 
     private var goalCount = 0
-    private var ticketTotalCount = 0
-    private var weekMinCount = 0
 
     private var imageStoreJob: Job? = null
     private var imageUrl = ""
@@ -184,28 +180,6 @@ class CreateChallengeDetailViewModel @Inject constructor(
                 )
             }
         }.launchIn(viewModelScope)
-
-        ticketProgress.onEach { progress ->
-            ticketTotalCount = 20 + progress * 20
-            _uiState.update { state ->
-                state.copy(
-                    ticketProgressState = ProgressState.Changed(
-                        ticketTotalCount.toString() + "개"
-                    ),
-                )
-            }
-        }.launchIn(viewModelScope)
-
-        minCertificateProgress.onEach { progress ->
-            weekMinCount = 2 + progress
-            _uiState.update { state ->
-                state.copy(
-                    minCertificateProgressState = ProgressState.Changed(
-                        "주 " + weekMinCount.toString() + "회"
-                    ),
-                )
-            }
-        }.launchIn(viewModelScope)
     }
 
     fun setCategory(data: String) {
@@ -232,8 +206,6 @@ class CreateChallengeDetailViewModel @Inject constructor(
                     description = description.value,
                     imgUrl = imageUrl,
                     goalCount = goalCount,
-                    ticketTotalCount = ticketTotalCount,
-                    weekMinCount = weekMinCount,
                 )
             ).let {
                 _events.emit(CreateChallengeDetailEvents.DismissLoading)

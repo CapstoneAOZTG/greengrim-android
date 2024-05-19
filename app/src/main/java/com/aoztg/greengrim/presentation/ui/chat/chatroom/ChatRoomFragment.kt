@@ -203,7 +203,7 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
             viewModel.uiState.value.chatInfo.certificationCount,
             chatName,
             viewModel.uiState.value.chatInfo.category,
-            viewModel.uiState.value.chatInfo.ticketCount,
+            viewModel.uiState.value.chatInfo.participantCount,
         )
         this.navigate(action)
     }

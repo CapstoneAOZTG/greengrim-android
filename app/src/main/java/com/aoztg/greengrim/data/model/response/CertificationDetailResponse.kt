@@ -13,7 +13,6 @@ data class ChallengeShortInfo(
     val title: String,
     val description: String,
     val category: String,
-    val ticketCount: String
 )
 
 data class CertificationInfo(

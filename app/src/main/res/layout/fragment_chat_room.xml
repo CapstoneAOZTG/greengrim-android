@@ -98,8 +98,8 @@
                 android:background="@drawable/shape_nofill_whitestroke_radius15"
                 android:paddingHorizontal="20dp"
                 android:paddingVertical="6dp"
-                android:text="@{vm.uiState.chatInfo.ticketCount}"
-                tools:text="티켓 5/30" />
+                android:text="@{vm.uiState.chatInfo.participantCount}"
+                tools:text="인원 5/30" />
 
             <TextView
                 android:id="@+id/tv_certification_count"

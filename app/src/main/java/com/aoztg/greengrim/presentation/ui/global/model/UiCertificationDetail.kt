@@ -4,7 +4,6 @@ data class UiCertificationDetail(
     val certificationId: Long = -1,
     val challengeTitle: String = "",
     val category: String = "",
-    val ticketCount: String = "",
     val challengeDescription: String = "",
     val profileUrl: String = "",
     val nickName: String = "",

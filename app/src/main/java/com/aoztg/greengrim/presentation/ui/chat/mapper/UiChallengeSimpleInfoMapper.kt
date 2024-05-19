@@ -7,6 +7,5 @@ import com.aoztg.greengrim.presentation.ui.toCategoryText
 internal fun ChallengeDetailResponse.toUiChallengeSimpleInfo() = UiChallengeSimpleInfo(
     title = challengeInfo.title,
     category = challengeTags.category.toCategoryText(),
-    ticketCount = challengeTags.ticketCount,
     description = challengeInfo.description
 )

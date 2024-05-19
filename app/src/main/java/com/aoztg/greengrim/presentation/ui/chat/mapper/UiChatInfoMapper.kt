@@ -7,7 +7,7 @@ import com.aoztg.greengrim.presentation.ui.toCategoryText
 
 internal fun ChatInfoResponse.toUiChatInfo() = UiChatInfo(
     category = category.toCategoryText(),
-    ticketCount = ticketCount,
+    participantCount = participantCount,
     goalCount = goalCount,
     certificationCount = certificationCount,
     todayCertification = todayCertification

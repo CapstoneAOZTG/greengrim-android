@@ -40,5 +40,4 @@ interface ChatAPI {
     suspend fun getChatInfo(
         @Path("id") id: Long
     ): Response<ChatInfoResponse>
-
 }

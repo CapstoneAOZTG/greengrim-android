@@ -108,21 +108,6 @@
                     tools:text="줍킹" />
 
                 <TextView
-                    android:id="@+id/tv_keyword_ticket"
-                    style="@style/TextGgSmall"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:background="@drawable/shape_nofill_whitestroke_radius15"
-                    android:paddingHorizontal="16dp"
-                    android:paddingVertical="4dp"
-                    android:text="@{vm.uiState.uiCertificationDetail.ticketCount}"
-                    app:layout_constraintBottom_toBottomOf="@id/tv_title"
-                    app:layout_constraintStart_toEndOf="@id/tv_keyword_category"
-                    app:layout_constraintTop_toTopOf="@id/tv_title"
-                    tools:text="티켓 5/30" />
-
-                <TextView
                     android:id="@+id/tv_description"
                     style="@style/TextGgSmallGrey1"
                     android:layout_width="0dp"
