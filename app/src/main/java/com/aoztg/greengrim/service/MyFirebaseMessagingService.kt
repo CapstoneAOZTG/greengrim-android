@@ -14,14 +14,11 @@ import com.aoztg.greengrim.app.App
 import com.aoztg.greengrim.data.config.KeyDataStoreManager
 import com.aoztg.greengrim.presentation.ui.nft.exchange.detail.ExchangeState
 import com.aoztg.greengrim.presentation.ui.splash.SplashActivity
-import com.aoztg.greengrim.presentation.util.Constants
 import com.aoztg.greengrim.presentation.util.PushUtils
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.scopes.ServiceScoped
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 import kotlin.coroutines.resume
@@ -29,10 +26,10 @@ import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
 @AndroidEntryPoint
-class MyFirebaseMessagingService: FirebaseMessagingService() {
+class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     @Inject
-    lateinit var keyDataStoreManager : KeyDataStoreManager
+    lateinit var keyDataStoreManager: KeyDataStoreManager
 
     override fun onCreate() {
         super.onCreate()
@@ -58,7 +55,7 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
                 val memberId: Long? = runBlocking {
                     keyDataStoreManager.getMemberId()
                 }
-                if(senderId != memberId){
+                if (senderId != memberId) {
                     sendChatNotification(nickName, talk)
                 }
             }
@@ -69,12 +66,12 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
             }
 
             "EXCHANGE_SUC" -> {
-                Log.d("fcm","exchange success")
+                Log.d("fcm", "exchange success")
                 ExchangeState.exchangeSuccess()
             }
 
             "EXCHANGE_FAIL" -> {
-                Log.d("fcm","exchange failure")
+                Log.d("fcm", "exchange failure")
                 ExchangeState.exchangeFailure()
             }
         }
@@ -101,8 +98,8 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
             setAutoCancel(true)
             color = Color.argb(1, 120, 63, 59)
             setColorized(true)
-            setLargeIcon(BitmapFactory.decodeResource(resources, R.mipmap.ic_app_logo))
-            setSmallIcon(R.mipmap.ic_app_logo)
+            setLargeIcon(BitmapFactory.decodeResource(resources, R.mipmap.ic_greengrim_logo))
+            setSmallIcon(R.mipmap.ic_greengrim_logo)
         }
 
         // Head up 알람 설정
@@ -140,8 +137,8 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
             setAutoCancel(true)
             color = Color.argb(1, 120, 63, 59)
             setColorized(true)
-            setLargeIcon(BitmapFactory.decodeResource(resources, R.mipmap.ic_app_logo))
-            setSmallIcon(R.mipmap.ic_app_logo)
+            setLargeIcon(BitmapFactory.decodeResource(resources, R.mipmap.ic_greengrim_logo))
+            setSmallIcon(R.mipmap.ic_greengrim_logo)
         }
 
         // Head up 알람 설정

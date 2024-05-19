@@ -43,24 +43,26 @@ class ExchangeNftFragment :
         }
     }
 
-    private fun initStateObserve(){
+    private fun initStateObserve() {
         repeatOnStarted {
-            viewModel.curFilter.collect{
-                when(it){
+            viewModel.curFilter.collect {
+                when (it) {
                     NftCollectionFilter.BASIC -> {
                         binding.layoutBasic.setBackgroundResource(R.drawable.shape_lightblack2fill_whitestroke_radius20)
-                        binding.layoutStandard.setBackgroundResource(R.drawable.shape_lightblack2fill_nostroke_radius20)
-                        binding.layoutPremium.setBackgroundResource(R.drawable.shape_lightblack2fill_nostroke_radius20)
+                        binding.layoutStandard.setBackgroundResource(R.drawable.shape_lightblack2fill_blackstroke_radius20)
+                        binding.layoutPremium.setBackgroundResource(R.drawable.shape_lightblack2fill_blackstroke_radius20)
                     }
+
                     NftCollectionFilter.STANDARD -> {
                         binding.layoutStandard.setBackgroundResource(R.drawable.shape_lightblack2fill_whitestroke_radius20)
-                        binding.layoutBasic.setBackgroundResource(R.drawable.shape_lightblack2fill_nostroke_radius20)
-                        binding.layoutPremium.setBackgroundResource(R.drawable.shape_lightblack2fill_nostroke_radius20)
+                        binding.layoutBasic.setBackgroundResource(R.drawable.shape_lightblack2fill_blackstroke_radius20)
+                        binding.layoutPremium.setBackgroundResource(R.drawable.shape_lightblack2fill_blackstroke_radius20)
                     }
+
                     NftCollectionFilter.PREMIUM -> {
                         binding.layoutPremium.setBackgroundResource(R.drawable.shape_lightblack2fill_whitestroke_radius20)
-                        binding.layoutBasic.setBackgroundResource(R.drawable.shape_lightblack2fill_nostroke_radius20)
-                        binding.layoutStandard.setBackgroundResource(R.drawable.shape_lightblack2fill_nostroke_radius20)
+                        binding.layoutBasic.setBackgroundResource(R.drawable.shape_lightblack2fill_blackstroke_radius20)
+                        binding.layoutStandard.setBackgroundResource(R.drawable.shape_lightblack2fill_blackstroke_radius20)
                     }
                 }
             }

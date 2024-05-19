@@ -132,7 +132,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(ActivitySplashBinding
         permissionDialog.dismiss()
     }
 
-    // 풀스크린 적용
+//     풀스크린 적용
 //    private fun setFullScreen(){
 //        window.apply {
 //            statusBarColor = Color.TRANSPARENT

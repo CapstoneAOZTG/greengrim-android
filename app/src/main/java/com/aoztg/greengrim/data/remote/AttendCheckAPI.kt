@@ -15,6 +15,6 @@ interface AttendCheckAPI {
         @Body params: VerificationsRequest
     ): Response<Unit>
 
-    @GET("/visitor/verifications")
+    @GET("/visitor/certifications/verifications")
     suspend fun getCertificationForVerify(): Response<CertificationDetailResponse>
 }

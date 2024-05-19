@@ -40,6 +40,7 @@ sealed class ChatRoomEvents {
     object NavigateBack : ChatRoomEvents()
     object ExitChat : ChatRoomEvents()
     object ShowPopupMenu : ChatRoomEvents()
+    object ShowTodayCertification : ChatRoomEvents()
     object NavigateToCreateCertification : ChatRoomEvents()
     data class NavigateToCertificationList(val id: Long) : ChatRoomEvents()
     data class NavigateToCertificationDetail(val id: Long) : ChatRoomEvents()
@@ -75,6 +76,7 @@ class ChatRoomViewModel @Inject constructor(
 
     val chatMessage = MutableStateFlow("")
 
+    private var isDialogShown = true
     private var memberId: Long = 0
     private var lastDate: String = ""
 
@@ -106,6 +108,12 @@ class ChatRoomViewModel @Inject constructor(
                                     chatInfo = newData
                                 )
                             }
+                        }
+
+                        val state = ChatRoomDialogState.stateMap[chatRoomId] ?: true
+                        if (!uiState.value.chatInfo.todayCertification && state) {
+                            _events.emit(ChatRoomEvents.ShowTodayCertification)
+                            ChatRoomDialogState.stateMap[chatRoomId] = false
                         }
 
                     }
@@ -265,8 +273,10 @@ class ChatRoomViewModel @Inject constructor(
         }
     }
 
-    fun blockChat() {
-        // todo 채팅 차단하기
+    fun navigateToCertificationList() {
+        viewModelScope.launch {
+            _events.emit(ChatRoomEvents.NavigateToCertificationList(chatRoomId))
+        }
     }
 
 }

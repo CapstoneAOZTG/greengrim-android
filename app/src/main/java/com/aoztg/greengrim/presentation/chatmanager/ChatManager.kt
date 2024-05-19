@@ -193,7 +193,7 @@ class ChatManager @Inject constructor(
                 if (data.chatId == chatMessage.roomId) {
                     data.copy(
                         recentChat = chatMessage.message,
-                        recentTime = chatMessage.sentTime,
+                        recentTime = chatMessage.sentTime.ifBlank { data.recentTime },
                         chatCount = if (onlyRecentMessage) data.chatCount else data.chatCount + 1
                     )
                 } else {
@@ -253,6 +253,9 @@ class ChatManager @Inject constructor(
     fun exitChat(chatId: Long) {
         viewModelScope.launch {
             chatRepository.deleteUnReadChatData(chatId)
+            _chatListData.update { it.filter { data ->
+                data.chatId != chatId
+            }}
         }
     }
 

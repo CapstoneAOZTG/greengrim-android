@@ -6,9 +6,7 @@ import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.repository.CertificationRepository
 import com.aoztg.greengrim.data.repository.ChallengeRepository
 import com.aoztg.greengrim.presentation.ui.chat.mapper.toUiCertificationList
-import com.aoztg.greengrim.presentation.ui.chat.mapper.toUiChallengeSimpleInfo
 import com.aoztg.greengrim.presentation.ui.chat.model.UiCertificationItem
-import com.aoztg.greengrim.presentation.ui.chat.model.UiChallengeSimpleInfo
 import com.aoztg.greengrim.presentation.ui.toHeaderText
 import com.aoztg.greengrim.presentation.ui.toLocalDate
 import com.aoztg.greengrim.presentation.ui.toText
@@ -27,7 +25,6 @@ import javax.inject.Inject
 
 
 data class CertificationListUiState(
-    val challengeInfo: UiChallengeSimpleInfo = UiChallengeSimpleInfo(),
     val curMonthString: String = YearMonth.now().toText(),
     val curDateString: String = LocalDate.now().toHeaderText(),
     val curDate: LocalDate = LocalDate.now(),
@@ -47,7 +44,7 @@ sealed class CertificationListEvents {
 }
 
 @HiltViewModel
-class CertificationListViewModel @Inject constructor(
+class CertificationListBottomSheetViewModel @Inject constructor(
     private val certificationRepository: CertificationRepository,
     private val challengeRepository: ChallengeRepository
 ) : ViewModel() {
@@ -88,28 +85,6 @@ class CertificationListViewModel @Inject constructor(
         getCertificationList(NEW_DATE)
     }
 
-    fun getChallengeInfo() {
-        viewModelScope.launch {
-            challengeRepository.getChallengeDetail(challengeId)
-                .let {
-                    when (it) {
-                        is BaseState.Success -> {
-                            _uiState.update { state ->
-                                state.copy(
-                                    challengeInfo = it.body.toUiChallengeSimpleInfo()
-                                )
-                            }
-                        }
-
-                        is BaseState.Error -> {
-                            _events.emit(CertificationListEvents.ShowSnackMessage(it.msg))
-                        }
-                    }
-                }
-        }
-    }
-
-
     fun getCertificationDate() {
         viewModelScope.launch {
             certificationRepository.getCertificationDate(challengeId)
@@ -134,7 +109,7 @@ class CertificationListViewModel @Inject constructor(
 
     fun getCertificationList(option: Int) {
 
-        if (_uiState.value.hasNext) {
+        if (uiState.value.hasNext) {
             viewModelScope.launch {
 
                 _uiState.update { state ->
@@ -145,8 +120,8 @@ class CertificationListViewModel @Inject constructor(
 
                 certificationRepository.getCertificationList(
                     challengeId,
-                    _uiState.value.curDate.toString(),
-                    _uiState.value.page,
+                    uiState.value.curDate.toString(),
+                    uiState.value.page,
                     20
                 ).let {
                     when (it) {
@@ -155,7 +130,7 @@ class CertificationListViewModel @Inject constructor(
                                 it.body.toUiCertificationList(::navigateToCertificationDetail)
                             _uiState.update { state ->
                                 state.copy(
-                                    certificationList = if (option == NEXT_PAGE) _uiState.value.certificationList + uiData.result else uiData.result,
+                                    certificationList = if (option == NEXT_PAGE) uiState.value.certificationList + uiData.result else uiData.result,
                                     hasNext = uiData.hasNext,
                                     page = uiData.page + 1,
                                 )

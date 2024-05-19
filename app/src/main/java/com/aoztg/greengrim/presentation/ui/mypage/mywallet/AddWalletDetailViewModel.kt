@@ -16,20 +16,21 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-sealed class AddWalletDetailEvent{
+sealed class AddWalletDetailEvent {
     object NavigateToBack : AddWalletDetailEvent()
     data class ShowCustomSnack(val msg: String) : AddWalletDetailEvent()
     data class ShowToastMessage(val msg: String) : AddWalletDetailEvent()
+    data class ShowWarningDialog(val address: String) : AddWalletDetailEvent()
     object NavigateToMyPage : AddWalletDetailEvent()
 }
 
 @HiltViewModel
 class AddWalletDetailViewModel @Inject constructor(
-    private val repository : MemberRepository
+    private val repository: MemberRepository
 ) : ViewModel() {
 
     private val _event = MutableSharedFlow<AddWalletDetailEvent>()
-    val event : SharedFlow<AddWalletDetailEvent> = _event.asSharedFlow()
+    val event: SharedFlow<AddWalletDetailEvent> = _event.asSharedFlow()
 
     val walletName = MutableStateFlow("")
     val walletAddress = MutableStateFlow("")
@@ -42,26 +43,32 @@ class AddWalletDetailViewModel @Inject constructor(
         false
     )
 
-    fun addWallet(){
-       viewModelScope.launch {
-           repository.addWallet(WalletInfoRequest(walletName.value, walletAddress.value)).let{
-               when(it){
-                   is BaseState.Success -> {
-                       _event.emit(AddWalletDetailEvent.ShowToastMessage("지갑 추가 완료"))
-                       _event.emit(AddWalletDetailEvent.NavigateToMyPage)
-                   }
+    fun addWallet() {
+        viewModelScope.launch {
+            repository.addWallet(WalletInfoRequest(walletName.value, walletAddress.value)).let {
+                when (it) {
+                    is BaseState.Success -> {
+                        _event.emit(AddWalletDetailEvent.ShowToastMessage("지갑 추가 완료"))
+                        _event.emit(AddWalletDetailEvent.NavigateToMyPage)
+                    }
 
-                   is BaseState.Error -> {
+                    is BaseState.Error -> {
                         _event.emit(AddWalletDetailEvent.ShowCustomSnack(it.msg))
-                   }
-               }
-           }
-       }
+                    }
+                }
+            }
+        }
     }
 
-    fun navigateToBack(){
+    fun navigateToBack() {
         viewModelScope.launch {
             _event.emit(AddWalletDetailEvent.NavigateToBack)
+        }
+    }
+
+    fun showWarningDialog() {
+        viewModelScope.launch {
+            _event.emit(AddWalletDetailEvent.ShowWarningDialog(walletAddress.value))
         }
     }
 

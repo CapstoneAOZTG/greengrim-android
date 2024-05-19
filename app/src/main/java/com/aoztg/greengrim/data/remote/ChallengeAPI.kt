@@ -15,10 +15,10 @@ import retrofit2.http.Query
 
 interface ChallengeAPI {
 
-    @GET("/home/challenges")
+    @GET("/visitor/challenges/home")
     suspend fun getHotChallenges(): Response<HotChallengeResponse>
 
-    @GET("/hot-challenges")
+    @GET("/visitor/challenges/hot-challenges")
     suspend fun getMoreHotChallenges(
         @Query("option") option: String,
         @Query("page") page: Int,
@@ -30,12 +30,12 @@ interface ChallengeAPI {
         @Body params: CreateChallengeRequest
     ): Response<CreateChallengeResponse>
 
-    @GET("/challenges/{id}")
+    @GET("/visitor/challenges/{id}")
     suspend fun getChallengeDetail(
         @Path("id") id: Long
     ): Response<ChallengeDetailResponse>
 
-    @GET("/challenges")
+    @GET("/visitor/challenges")
     suspend fun getChallengeList(
         @Query("category") category: String,
         @Query("page") page: Int,
@@ -83,6 +83,6 @@ interface ChallengeAPI {
 
     @POST("/visitor/hiding/challenge")
     suspend fun hideChallenge(
-        @Query("id") id : Long
+        @Query("id") id: Long
     ): Response<Unit>
 }

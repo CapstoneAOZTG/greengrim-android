@@ -1,5 +1,7 @@
 package com.aoztg.greengrim.data.config
 
+import android.util.Log
+import com.aoztg.greengrim.presentation.util.Constants.TAG
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import okhttp3.Request
@@ -19,6 +21,7 @@ class AccessTokenInterceptor @Inject constructor(private val keyDataStoreManager
         }
 
         accessToken?.let {
+            Log.d(TAG, it)
             builder.addHeader("Authorization", it)
         }
 

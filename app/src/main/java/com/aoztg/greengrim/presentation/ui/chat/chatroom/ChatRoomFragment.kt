@@ -1,5 +1,6 @@
 package com.aoztg.greengrim.presentation.ui.chat.chatroom
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -15,12 +16,18 @@ import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentChatRoomBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
 import com.aoztg.greengrim.presentation.chatmanager.ChatManager
+import com.aoztg.greengrim.presentation.customview.TodayCertificationDialog
 import com.aoztg.greengrim.presentation.ui.chat.adapter.ChatMessageAdapter
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 import com.aoztg.greengrim.presentation.ui.toCertificationDetail
 import com.aoztg.greengrim.presentation.ui.toProfile
 import com.aoztg.greengrim.presentation.util.Constants.TAG
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment_chat_room) {
@@ -35,6 +42,7 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
     private val chatName by lazy { args.chatName }
     private val popupLocation = IntArray(2)
     private val adapter = ChatMessageAdapter()
+    private var guideJob: Job? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -45,6 +53,8 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
         binding.rvChat.adapter = adapter
         binding.rvChat.itemAnimator = null
         setScrollEventListener()
+        setSwipeEventListener()
+        setGuideLifeCycle()
         viewModel.setIds(chatId, challengeId)
         viewModel.getChatInfo()
         setDataChangeListener()
@@ -70,6 +80,27 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
         })
     }
 
+    @SuppressLint("ClickableViewAccessibility")
+    private fun setSwipeEventListener() {
+        binding.layoutChatBox.setOnTouchListener(object : OnSwipeTouchListener(requireContext()) {
+            override fun onSwipeTop() {
+                super.onSwipeTop()
+                navigateToCertificationList()
+            }
+        })
+    }
+
+    private fun setGuideLifeCycle() {
+        guideJob = CoroutineScope(Dispatchers.Main).launch {
+            delay(3000)
+            binding.btnCertificationGuide.animate().alpha(0.0f).setDuration(1000)
+        }
+
+        binding.btnCertificationGuide.setOnClickListener {
+            binding.btnCertificationGuide.visibility = View.GONE
+        }
+    }
+
     private fun setDataChangeListener() {
     }
 
@@ -78,6 +109,7 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
             viewModel.events.collect {
                 when (it) {
                     is ChatRoomEvents.ShowPopupMenu -> showPopup()
+                    is ChatRoomEvents.ShowTodayCertification -> showTodayCertificationDialog()
                     is ChatRoomEvents.NavigateBack -> findNavController().navigateUp()
                     is ChatRoomEvents.NavigateToCertificationList -> navigateToCertificationList()
                     is ChatRoomEvents.NavigateToCreateCertification -> findNavController().toCreateCertification()
@@ -137,12 +169,18 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
             requireContext(),
             ::navigateToChallengeInfo,
             ::navigateToCertificationList,
-            { viewModel.blockChat() },
-            ::navigateToAccusation,
             ::exitChat,
             left.toInt(),
             top.toInt()
         )
+    }
+
+    private fun showTodayCertificationDialog() {
+        TodayCertificationDialog(
+            requireContext()
+        ) {
+            findNavController().toCreateCertification()
+        }.show()
     }
 
     private fun navigateToChallengeInfo() {
@@ -152,12 +190,10 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
 
     private fun navigateToCertificationList() {
         val action =
-            ChatRoomFragmentDirections.actionChatRoomFragmentToCertificationListFragment(viewModel.chatRoomId)
+            ChatRoomFragmentDirections.actionChatRoomFragmentToCertificationListBottomSheetFragment(
+                viewModel.chatRoomId
+            )
         findNavController().navigate(action)
-    }
-
-    private fun navigateToAccusation() {
-        showCustomToast("신고하기로 이동 구현전")
     }
 
     private fun exitChat() {
@@ -185,6 +221,7 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
     override fun onDestroyView() {
         super.onDestroyView()
         dismissChatPopUp()
+        guideJob?.cancel()
     }
 
 }

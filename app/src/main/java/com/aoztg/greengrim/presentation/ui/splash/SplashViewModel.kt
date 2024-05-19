@@ -2,7 +2,6 @@ package com.aoztg.greengrim.presentation.ui.splash
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.aoztg.greengrim.data.config.KeyDataStore
 import com.aoztg.greengrim.data.config.KeyDataStoreManager
 import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.repository.MemberRepository
@@ -48,7 +47,12 @@ class SplashViewModel @Inject constructor(
                         _event.emit(SplashEvent.NavigateToMainActivity)
                     }
 
-                    is BaseState.Error -> _event.emit(SplashEvent.NavigateToIntroActivity)
+                    is BaseState.Error -> {
+                        keyDataStoreManager.deleteAccessToken()
+                        keyDataStoreManager.deleteRefreshToken()
+                        keyDataStoreManager.deleteMemberId()
+                        _event.emit(SplashEvent.NavigateToIntroActivity)
+                    }
                 }
             }
         }
