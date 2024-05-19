@@ -19,6 +19,11 @@ import com.aoztg.greengrim.presentation.ui.challenge.list.ChallengeListViewModel
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 import com.aoztg.greengrim.presentation.ui.toChallengeDetail
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
@@ -32,6 +37,8 @@ class ChallengeListFragment :
     private val categoryValue by lazy { args.categoryValue }
     private var challengeSortType = ChallengeSortType.DESC
 
+    private var guideJob: Job? = null
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         parentViewModel.showBNV()
@@ -40,6 +47,7 @@ class ChallengeListFragment :
         viewModel.setCategory(categoryValue)
         binding.rvChallengeList.adapter = ChallengeRoomAdapter()
         initEventObserver()
+        setGuideView()
         setScrollEventListener()
     }
 
@@ -58,13 +66,31 @@ class ChallengeListFragment :
 
                     is ChallengeListEvents.NavigateToCreateChallenge -> findNavController().toCreateChallenge()
                     is ChallengeListEvents.ShowBottomSheet -> showBottomSheet()
-                    is ChallengeListEvents.ScrollToTop -> binding.rvChallengeList.smoothScrollToPosition(0)
+                    is ChallengeListEvents.ScrollToTop -> binding.rvChallengeList.smoothScrollToPosition(
+                        0
+                    )
+
                     is ChallengeListEvents.ShowLoading -> showLoading(requireContext())
                     is ChallengeListEvents.DismissLoading -> dismissLoading()
-                    is ChallengeListEvents.ShowSnackMessage -> showCustomSnack(binding.rvChallengeList, it.msg)
+                    is ChallengeListEvents.ShowSnackMessage -> showCustomSnack(
+                        binding.rvChallengeList,
+                        it.msg
+                    )
+
                     is ChallengeListEvents.NavigateToSearchChallenge -> findNavController().toSearchChallenge()
                 }
             }
+        }
+    }
+
+    private fun setGuideView() {
+        guideJob = CoroutineScope(Dispatchers.Main).launch {
+            delay(3000)
+            binding.ivCreateChallengeGuide.animate().alpha(0.0f).setDuration(1000)
+        }
+
+        binding.ivCreateChallengeGuide.setOnClickListener {
+            binding.ivCreateChallengeGuide.visibility = View.GONE
         }
     }
 
@@ -75,7 +101,8 @@ class ChallengeListFragment :
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
 
-                val lastVisibleItemPosition = (recyclerView.layoutManager as GridLayoutManager).findLastCompletelyVisibleItemPosition()
+                val lastVisibleItemPosition =
+                    (recyclerView.layoutManager as GridLayoutManager).findLastCompletelyVisibleItemPosition()
                 val itemTotalCount = recyclerView.adapter?.itemCount?.minus(1)
 
                 if (lastVisibleItemPosition == itemTotalCount) {
@@ -99,9 +126,17 @@ class ChallengeListFragment :
         navigate(action)
     }
 
-    private fun NavController.toSearchChallenge(){
-        val action = ChallengeListFragmentDirections.actionChallengeListFragmentToSearchChallengeFragment(categoryValue)
+    private fun NavController.toSearchChallenge() {
+        val action =
+            ChallengeListFragmentDirections.actionChallengeListFragmentToSearchChallengeFragment(
+                categoryValue
+            )
         navigate(action)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        guideJob?.cancel()
     }
 }
 

@@ -140,6 +140,15 @@
             app:spanCount="2"
             tools:listitem="@layout/item_challenge_list" />
 
+        <ImageView
+            android:id="@+id/iv_create_challenge_guide"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:src="@drawable/img_challenge_guide"
+            app:layout_constraintBottom_toTopOf="@id/btn_create_challenge"
+            app:layout_constraintEnd_toEndOf="@id/btn_create_challenge" />
+
         <ImageButton
             android:id="@+id/btn_create_challenge"
             android:layout_width="64dp"
