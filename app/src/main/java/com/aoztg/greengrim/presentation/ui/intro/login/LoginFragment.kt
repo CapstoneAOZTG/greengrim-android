@@ -9,15 +9,12 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
-import com.aoztg.greengrim.BuildConfig
 import com.aoztg.greengrim.R
-import com.aoztg.greengrim.app.App
 import com.aoztg.greengrim.app.App.Companion.gso
 import com.aoztg.greengrim.databinding.FragmentLoginBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
 import com.aoztg.greengrim.presentation.ui.intro.EmailData
 import com.aoztg.greengrim.presentation.ui.intro.IntroViewModel
-import com.aoztg.greengrim.presentation.util.Constants
 import com.aoztg.greengrim.presentation.util.Constants.GOOGLE
 import com.aoztg.greengrim.presentation.util.Constants.KAKAO
 import com.aoztg.greengrim.presentation.util.Constants.NAVER
@@ -60,7 +57,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(R.layout.fragment_login
                     }
 
                     is LoginState.Error -> {
-                        showCustomSnack(binding.ivLogo, it.loginState.msg)
+                        parentViewModel.showSnack(it.loginState.msg)
                     }
 
                     else -> {}
@@ -69,8 +66,8 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(R.layout.fragment_login
         }
     }
 
-    private fun setBtnListener(){
-        with(binding){
+    private fun setBtnListener() {
+        with(binding) {
             btnTestLogin.setOnClickListener {
                 viewModel.testerLogin()
             }

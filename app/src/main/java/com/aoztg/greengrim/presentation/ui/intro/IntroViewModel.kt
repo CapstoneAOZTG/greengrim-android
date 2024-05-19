@@ -32,6 +32,12 @@ class IntroViewModel @Inject constructor() :
     private val _imageFile = MutableSharedFlow<MultipartBody.Part>()
     val imageFile: SharedFlow<MultipartBody.Part> = _imageFile.asSharedFlow()
 
+    fun showSnack(msg: String){
+        viewModelScope.launch {
+            _events.emit(IntroEvent.ShowSnackMessage(msg))
+        }
+    }
+
     fun goToGallery() {
         viewModelScope.launch {
             _events.emit(

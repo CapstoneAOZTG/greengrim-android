@@ -67,11 +67,7 @@ class CreateChallengeDetailFragment :
                     }
 
                     is CreateChallengeDetailEvents.ShowToastMessage -> showCustomToast(it.msg)
-                    is CreateChallengeDetailEvents.ShowSnackMessage -> showCustomSnack(
-                        binding.etTitle,
-                        it.msg
-                    )
-
+                    is CreateChallengeDetailEvents.ShowSnackMessage -> parentViewModel.showSnack(it.msg)
                     is CreateChallengeDetailEvents.ShowLoading -> showLoading(requireContext())
                     is CreateChallengeDetailEvents.DismissLoading -> dismissLoading()
                 }

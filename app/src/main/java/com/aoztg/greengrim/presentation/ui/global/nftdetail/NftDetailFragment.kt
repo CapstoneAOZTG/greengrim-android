@@ -35,7 +35,7 @@ class NftDetailFragment : BaseFragment<FragmentNftDetailBinding>(R.layout.fragme
             viewModel.events.collect {
                 when (it) {
                     is NftDetailEvents.NavigateToBack -> findNavController().navigateUp()
-                    is NftDetailEvents.ShowSnackMessage -> showCustomSnack(binding.ivNft, it.msg)
+                    is NftDetailEvents.ShowSnackMessage -> parentViewModel.showSnack(it.msg)
                     is NftDetailEvents.ShowToastMessage -> showCustomToast(it.msg)
                     is NftDetailEvents.ShowPopUp -> showPopup()
                 }

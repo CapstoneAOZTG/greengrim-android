@@ -18,8 +18,8 @@ import com.aoztg.greengrim.databinding.ActivityIntroBinding
 import com.aoztg.greengrim.presentation.base.BaseActivity
 import com.aoztg.greengrim.presentation.customview.PhotoBottomSheet
 import com.aoztg.greengrim.presentation.ui.main.MainActivity
-import com.aoztg.greengrim.presentation.util.Constants
 import com.aoztg.greengrim.presentation.ui.toMultiPart
+import com.aoztg.greengrim.presentation.util.Constants
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -43,7 +43,7 @@ class IntroActivity : BaseActivity<ActivityIntroBinding>(ActivityIntroBinding::i
         }
     private val cameraPermission = Manifest.permission.CAMERA
 
-    private lateinit var tempCameraUri : Uri
+    private lateinit var tempCameraUri: Uri
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,13 +67,13 @@ class IntroActivity : BaseActivity<ActivityIntroBinding>(ActivityIntroBinding::i
 
                     is IntroEvent.ShowPhotoBottomSheet -> showPhotoBottomSheet()
                     is IntroEvent.ShowToastMessage -> showCustomToast(it.msg)
-                    is IntroEvent.ShowSnackMessage -> showCustomSnack(binding.introFrag, it.msg)
+                    is IntroEvent.ShowSnackMessage -> showCustomSnack(binding.snackGuide, it.msg)
                 }
             }
         }
     }
 
-    private fun showPhotoBottomSheet(){
+    private fun showPhotoBottomSheet() {
         PhotoBottomSheet(
             this,
             onPhotoClickListener = ::onCheckCameraPermission,
@@ -81,9 +81,14 @@ class IntroActivity : BaseActivity<ActivityIntroBinding>(ActivityIntroBinding::i
         ).show()
     }
 
-    private fun onCheckCameraPermission(){
-        if (ContextCompat.checkSelfPermission(this, cameraPermission) != PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(this, arrayOf(cameraPermission),
+    private fun onCheckCameraPermission() {
+        if (ContextCompat.checkSelfPermission(
+                this,
+                cameraPermission
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                this, arrayOf(cameraPermission),
                 Constants.CAMERA_PERMISSION
             )
         } else {
@@ -131,8 +136,12 @@ class IntroActivity : BaseActivity<ActivityIntroBinding>(ActivityIntroBinding::i
             ) {
                 openGallery()
             }
-        } else if(requestCode == Constants.CAMERA_PERMISSION){
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+        } else if (requestCode == Constants.CAMERA_PERMISSION) {
+            if (ContextCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.CAMERA
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
                 openCamera()
             }
         }
@@ -163,7 +172,7 @@ class IntroActivity : BaseActivity<ActivityIntroBinding>(ActivityIntroBinding::i
         createImageFile()?.let { uri ->
             tempCameraUri = uri
             intent.putExtra(MediaStore.EXTRA_OUTPUT, uri)
-            intent.also{
+            intent.also {
                 cameraLauncher.launch(it)
             }
         }
@@ -181,7 +190,7 @@ class IntroActivity : BaseActivity<ActivityIntroBinding>(ActivityIntroBinding::i
 
     private val cameraLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if(result.resultCode == RESULT_OK){
+            if (result.resultCode == RESULT_OK) {
                 viewModel.setImage(
                     tempCameraUri, tempCameraUri.toMultiPart(this)
                 )

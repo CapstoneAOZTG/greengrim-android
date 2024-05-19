@@ -59,10 +59,7 @@ class MySettingFragment : BaseFragment<FragmentMySettingBinding>(R.layout.fragme
                     is MySettingEvent.NavigateToEditProfile -> findNavController().toEditProfile()
                     is MySettingEvent.NavigateToEditAlarm -> findNavController().toEditAlarm()
                     is MySettingEvent.NavigateToBack -> findNavController().navigateUp()
-                    is MySettingEvent.ShowSnackMessage -> showCustomSnack(
-                        binding.tvInfoLabel,
-                        it.msg
-                    )
+                    is MySettingEvent.ShowSnackMessage -> parentViewModel.showSnack(it.msg)
                 }
             }
         }

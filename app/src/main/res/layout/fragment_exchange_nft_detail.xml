@@ -5,6 +5,10 @@
 
     <data>
 
+        <import type="android.view.View" />
+
+        <import type="com.aoztg.greengrim.presentation.ui.DataState" />
+
         <variable
             name="vm"
             type="com.aoztg.greengrim.presentation.ui.nft.exchange.detail.ExchangeNftDetailViewModel" />
@@ -14,7 +18,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingHorizontal="20dp">
+        android:paddingHorizontal="20dp"
+        android:visibility="@{vm.uiState.dataState == DataState.HAVE_DATA ? View.VISIBLE : View.INVISIBLE}">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_toolbar"

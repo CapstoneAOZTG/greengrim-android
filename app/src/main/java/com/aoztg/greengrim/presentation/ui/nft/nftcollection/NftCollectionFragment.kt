@@ -54,11 +54,7 @@ class NftCollectionFragment :
                     is NftCollectionEvent.NavigateToNftDetail -> findNavController().toNftDetail(it.id)
                     is NftCollectionEvent.ShowLoading -> showLoading(requireContext())
                     is NftCollectionEvent.DismissLoading -> dismissLoading()
-                    is NftCollectionEvent.ShowSnackMessage -> showCustomSnack(
-                        binding.layoutFilter,
-                        it.msg
-                    )
-
+                    is NftCollectionEvent.ShowSnackMessage -> parentViewModel.showSnack(it.msg)
                     is NftCollectionEvent.NavigateToBack -> findNavController().navigateUp()
                 }
             }

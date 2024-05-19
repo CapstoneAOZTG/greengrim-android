@@ -19,7 +19,7 @@ class CustomSnackBar(
     }
 
     private val context = view.context
-    private val snackbar = Snackbar.make(view, "", 5000).apply {
+    private val snackbar = Snackbar.make(view, "", 2000).apply {
         anchorView = view
     }
     private val snackbarLayout = snackbar.view as Snackbar.SnackbarLayout

@@ -99,14 +99,18 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         chatManager.disconnectChat()
     }
 
-    private fun checkNotificationPermission(){
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
+    private fun checkNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ContextCompat.checkSelfPermission(
                     this,
                     notificationPermission
                 ) != PackageManager.PERMISSION_GRANTED
             ) {
-                ActivityCompat.requestPermissions(this, arrayOf(notificationPermission), NOTIFICATION_PERMISSION)
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(notificationPermission),
+                    NOTIFICATION_PERMISSION
+                )
             }
         }
     }
@@ -140,6 +144,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                             startActivity(this)
                         }
                     }
+
                     is MainEvent.ShowToastMessage -> showCustomToast(it.msg)
                     is MainEvent.ShowSnackMessage -> showCustomSnack(binding.snackGuide, it.msg)
                     is MainEvent.CopyInClipBoard -> copyInClipBoard(it.link)

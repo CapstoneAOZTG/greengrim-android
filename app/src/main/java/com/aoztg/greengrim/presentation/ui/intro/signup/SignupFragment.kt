@@ -74,7 +74,7 @@ class SignupFragment : BaseFragment<FragmentSignupBinding>(R.layout.fragment_sig
                 when (it) {
                     is SignupEvents.ShowLoading -> showLoading(requireContext())
                     is SignupEvents.DismissLoading -> dismissLoading()
-                    is SignupEvents.ShowSnackMessage -> showCustomSnack(binding.ivProfile, it.msg)
+                    is SignupEvents.ShowSnackMessage -> parentViewModel.showSnack(it.msg)
                     is SignupEvents.ShowToastMessage -> showCustomToast(it.msg)
                 }
             }

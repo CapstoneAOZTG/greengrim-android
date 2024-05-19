@@ -14,5 +14,6 @@ data class NftTraitsInfo(
     val face: String,
     val gesture: String,
     val accessory: String,
-    val shoes: String
+    val shoes: String,
+    val rarity: String
 )

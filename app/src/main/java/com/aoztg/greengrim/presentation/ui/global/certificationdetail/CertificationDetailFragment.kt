@@ -47,11 +47,7 @@ class CertificationDetailFragment :
                     is CertificationDetailEvents.ShowVerifySnackBar -> VerifySnackBar.make(binding.tvDescription)
                         .show()
 
-                    is CertificationDetailEvents.ShowSnackMessage -> showCustomSnack(
-                        binding.tvTitle,
-                        it.msg
-                    )
-
+                    is CertificationDetailEvents.ShowSnackMessage -> parentViewModel.showSnack(it.msg)
                     is CertificationDetailEvents.ShowLoading -> showLoading(requireContext())
                     is CertificationDetailEvents.DismissLoading -> dismissLoading()
                     is CertificationDetailEvents.ShowPopUp -> showPopup()

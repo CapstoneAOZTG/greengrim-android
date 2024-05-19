@@ -137,12 +137,13 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(R.layout.fragment_p
                     is ProfileEvent.DismissAccusationDialog -> {
                         dismissAccusation()
                     }
+
                     is ProfileEvent.ShowAccusationPopUp -> showPopup()
                     is ProfileEvent.InitCalendar -> {
                         // 캘린더 초기화 작업
                     }
 
-                    is ProfileEvent.ShowSnackMessage -> showCustomSnack(binding.ivProfile, it.msg)
+                    is ProfileEvent.ShowSnackMessage -> parentViewModel.showSnack(it.msg)
                     is ProfileEvent.ShowToastMessage -> showCustomToast(it.msg)
                     is ProfileEvent.NavigateToBack -> findNavController().navigateUp()
                 }
@@ -195,7 +196,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(R.layout.fragment_p
         val top = popupLocation[1] + moreBtn.bottom.toFloat()
         showBlockAccusationPopUp(
             requireContext(),
-            { viewModel.blockMember()},
+            { viewModel.blockMember() },
             ::showAccusationDialog,
             left.toInt(),
             top.toInt()

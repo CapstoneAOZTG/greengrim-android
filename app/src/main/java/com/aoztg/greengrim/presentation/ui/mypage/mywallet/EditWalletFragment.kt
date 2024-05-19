@@ -13,11 +13,10 @@ import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class EditWalletFragment: BaseFragment<FragmentEditWalletBinding>(R.layout.fragment_edit_wallet) {
+class EditWalletFragment : BaseFragment<FragmentEditWalletBinding>(R.layout.fragment_edit_wallet) {
 
-    private val parentViewModel : MainViewModel by activityViewModels()
-    private val viewModel : EditWalletViewModel by viewModels()
-
+    private val parentViewModel: MainViewModel by activityViewModels()
+    private val viewModel: EditWalletViewModel by viewModels()
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -28,13 +27,13 @@ class EditWalletFragment: BaseFragment<FragmentEditWalletBinding>(R.layout.fragm
         initEventObserve()
     }
 
-    private fun initEventObserve(){
+    private fun initEventObserve() {
         repeatOnStarted {
-            viewModel.event.collect{
-                when(it){
+            viewModel.event.collect {
+                when (it) {
                     is EditWalletEvent.NavigateToBack -> findNavController().navigateUp()
                     is EditWalletEvent.NavigateToMyPage -> findNavController().toMyPage()
-                    is EditWalletEvent.ShowCustomSnack -> showCustomSnack(binding.tvWalletNameLabel, it.msg)
+                    is EditWalletEvent.ShowCustomSnack -> parentViewModel.showSnack(it.msg)
                     is EditWalletEvent.ShowToastMessage -> showCustomToast(it.msg)
                 }
             }

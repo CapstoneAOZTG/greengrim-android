@@ -10,5 +10,5 @@ data class UiNftSimpleInfo(
     val gesture: String = "",
     val accessory: String = "",
     val shoes: String = "",
-    val rarity: String = "basic"
+    val rarity: String = ""
 )

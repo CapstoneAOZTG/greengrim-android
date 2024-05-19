@@ -56,11 +56,7 @@ class ChallengeDetailFragment :
                     }
 
                     is ChallengeDetailEvents.ShowToastMessage -> showCustomToast(it.msg)
-                    is ChallengeDetailEvents.ShowSnackMessage -> showCustomSnack(
-                        binding.tvTitle,
-                        it.msg
-                    )
-
+                    is ChallengeDetailEvents.ShowSnackMessage -> parentViewModel.showSnack(it.msg)
                     is ChallengeDetailEvents.ShowLoading -> showLoading(requireContext())
                     is ChallengeDetailEvents.DismissLoading -> dismissLoading()
                 }

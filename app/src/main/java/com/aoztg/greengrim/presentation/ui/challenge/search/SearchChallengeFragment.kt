@@ -63,11 +63,7 @@ class SearchChallengeFragment :
                         it.id
                     )
 
-                    is SearchChallengeEvent.ShowSnackMessage -> showCustomSnack(
-                        binding.etSearch,
-                        it.msg
-                    )
-
+                    is SearchChallengeEvent.ShowSnackMessage -> parentViewModel.showSnack(it.msg)
                     is SearchChallengeEvent.NavigateToBack -> findNavController().navigateUp()
                 }
             }

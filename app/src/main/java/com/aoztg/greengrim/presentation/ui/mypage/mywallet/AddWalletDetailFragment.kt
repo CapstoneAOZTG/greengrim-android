@@ -35,11 +35,7 @@ class AddWalletDetailFragment :
         repeatOnStarted {
             viewModel.event.collect {
                 when (it) {
-                    is AddWalletDetailEvent.ShowCustomSnack -> showCustomSnack(
-                        binding.tvWalletNameLabel,
-                        it.msg
-                    )
-
+                    is AddWalletDetailEvent.ShowCustomSnack -> parentViewModel.showSnack(it.msg)
                     is AddWalletDetailEvent.NavigateToBack -> findNavController().navigateUp()
                     is AddWalletDetailEvent.NavigateToMyPage -> findNavController().toMyPage()
                     is AddWalletDetailEvent.ShowToastMessage -> showCustomToast(it.msg)

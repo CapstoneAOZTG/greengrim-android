@@ -15,7 +15,6 @@ import com.aoztg.greengrim.presentation.customview.NftFilterBottomSheet
 import com.aoztg.greengrim.presentation.ui.challenge.adapter.ChallengeRoomAdapter
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 import com.aoztg.greengrim.presentation.ui.mypage.adapter.MyCertificationAdapter
-import com.aoztg.greengrim.presentation.ui.nft.NftFragment
 import com.aoztg.greengrim.presentation.ui.nft.adapter.NftItemAdapter
 import com.aoztg.greengrim.presentation.ui.toCertificationDetail
 import com.aoztg.greengrim.presentation.ui.toChallengeCategory
@@ -139,7 +138,7 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(R.layout.fragme
                         // 캘린더 초기화 작업
                     }
 
-                    is MyProfileEvent.ShowSnackMessage -> showCustomSnack(binding.ivProfile, it.msg)
+                    is MyProfileEvent.ShowSnackMessage -> parentViewModel.showSnack(it.msg)
                     is MyProfileEvent.ShowToastMessage -> showCustomToast(it.msg)
                     is MyProfileEvent.NavigateToEditProfile -> findNavController().toEditProfile()
                     is MyProfileEvent.NavigateToBack -> findNavController().navigateUp()

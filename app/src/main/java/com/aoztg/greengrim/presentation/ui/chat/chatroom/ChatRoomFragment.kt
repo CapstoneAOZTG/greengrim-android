@@ -133,11 +133,7 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
                     }
 
                     is ChatRoomEvents.ShowToastMessage -> showCustomToast(it.msg)
-                    is ChatRoomEvents.ShowSnackMessage -> showCustomSnack(
-                        binding.layoutChatroomAnnounce,
-                        it.msg
-                    )
-
+                    is ChatRoomEvents.ShowSnackMessage -> parentViewModel.showSnack(it.msg)
                     is ChatRoomEvents.ShowLoading -> showLoading(requireContext())
                     is ChatRoomEvents.DismissLoading -> showLoading(requireContext())
                 }

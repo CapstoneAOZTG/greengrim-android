@@ -44,11 +44,7 @@ class ChatListFragment : BaseFragment<FragmentChatListBinding>(R.layout.fragment
                     is ChatListEvents.ShowLoading -> showLoading(requireContext())
                     is ChatListEvents.DismissLoading -> dismissLoading()
                     is ChatListEvents.ShowToastMessage -> showCustomToast(it.msg)
-                    is ChatListEvents.ShowSnackMessage -> showCustomSnack(
-                        binding.rvChatList,
-                        it.msg
-                    )
-
+                    is ChatListEvents.ShowSnackMessage -> parentViewModel.showSnack(it.msg)
                     is ChatListEvents.NavigateToChallengeCategory -> findNavController().toChallengeCategory()
                 }
             }

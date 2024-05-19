@@ -6,14 +6,12 @@ import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.repository.ChallengeRepository
 import com.aoztg.greengrim.data.repository.MemberRepository
 import com.aoztg.greengrim.data.repository.NftRepository
-import com.aoztg.greengrim.presentation.ui.formatNumberWithCommas
 import com.aoztg.greengrim.presentation.ui.home.mapper.toUiHotChallenge
 import com.aoztg.greengrim.presentation.ui.home.mapper.toUiHotNftItem
 import com.aoztg.greengrim.presentation.ui.home.mapper.toUiRecentIssue
 import com.aoztg.greengrim.presentation.ui.home.model.UiHotChallenge
 import com.aoztg.greengrim.presentation.ui.home.model.UiHotNftItem
 import com.aoztg.greengrim.presentation.ui.home.model.UiRecentIssues
-import com.aoztg.greengrim.presentation.ui.nft.model.UiNftItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -140,12 +138,16 @@ class HomeViewModel @Inject constructor(
 
     private fun getRecentIssues() {
         viewModelScope.launch {
-            memberRepository.getRecentIssue().let{
-                when(it){
+            memberRepository.getRecentIssue().let {
+                when (it) {
                     is BaseState.Success -> {
                         _uiState.update { state ->
                             state.copy(
-                                uiRecentIssuesList = it.body.issueInfos.map{ data -> data.toUiRecentIssue(::navigateToWebView)}
+                                uiRecentIssuesList = it.body.issueInfos.map { data ->
+                                    data.toUiRecentIssue(
+                                        ::navigateToWebView
+                                    )
+                                }
                             )
                         }
                     }

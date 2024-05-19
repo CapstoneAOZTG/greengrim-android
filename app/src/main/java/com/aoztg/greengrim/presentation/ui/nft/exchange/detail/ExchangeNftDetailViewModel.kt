@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.repository.NftRepository
+import com.aoztg.greengrim.presentation.ui.DataState
 import com.aoztg.greengrim.presentation.ui.nft.mapper.toUiNftSimpleInfo
 import com.aoztg.greengrim.presentation.ui.nft.model.UiNftSimpleInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,12 +21,13 @@ import javax.inject.Inject
 
 data class ExchangeNftDetailUiState(
     val uiNftSimpleInfo: UiNftSimpleInfo = UiNftSimpleInfo(),
-    val nftList: List<Long> = emptyList()
+    val nftList: List<Long> = emptyList(),
+    val dataState: DataState = DataState.BEFORE
 )
 
 sealed class ExchangeNftDetailEvent {
     object NavigateToBack : ExchangeNftDetailEvent()
-    data class ShowExchangeDialog(val point : Int) : ExchangeNftDetailEvent()
+    data class ShowExchangeDialog(val point: Int) : ExchangeNftDetailEvent()
     object ShowLoading : ExchangeNftDetailEvent()
     object DismissLoading : ExchangeNftDetailEvent()
     data class ShowToastMessage(val msg: String) : ExchangeNftDetailEvent()
@@ -37,6 +39,10 @@ sealed class ExchangeNftDetailEvent {
 class ExchangeNftDetailViewModel @Inject constructor(
     private val nftRepository: NftRepository
 ) : ViewModel() {
+
+    companion object {
+        const val NFT_002 = "NFT_002"
+    }
 
     private val _uiState = MutableStateFlow(ExchangeNftDetailUiState())
     val uiState: StateFlow<ExchangeNftDetailUiState> = _uiState.asStateFlow()
@@ -59,12 +65,18 @@ class ExchangeNftDetailViewModel @Inject constructor(
                         _uiState.update { state ->
                             state.copy(
                                 uiNftSimpleInfo = it.body.toUiNftSimpleInfo(),
-                                nftList = uiState.value.nftList + it.body.nftId
+                                nftList = uiState.value.nftList + it.body.nftId,
+                                dataState = DataState.HAVE_DATA
                             )
                         }
                     }
 
-                    is BaseState.Error -> _event.emit(ExchangeNftDetailEvent.ShowCustomSnack(it.msg))
+                    is BaseState.Error -> {
+                        _event.emit(ExchangeNftDetailEvent.ShowCustomSnack(it.msg))
+                        if (it.code == NFT_002) {
+                            _event.emit(ExchangeNftDetailEvent.NavigateToBack)
+                        }
+                    }
                 }
             }
         }
@@ -103,22 +115,24 @@ class ExchangeNftDetailViewModel @Inject constructor(
         }
     }
 
-    fun navigateToBack(){
+    fun navigateToBack() {
         viewModelScope.launch {
             _event.emit(ExchangeNftDetailEvent.NavigateToBack)
         }
     }
 
-    fun showExchangeDialog(){
+    fun showExchangeDialog() {
         viewModelScope.launch {
-            _event.emit(ExchangeNftDetailEvent.ShowExchangeDialog(
-                when(grade){
-                    "BASIC" -> 500
-                    "STANDARD" -> 750
-                    "PREMIUM" -> 1000
-                    else -> 500
-                }
-            ))
+            _event.emit(
+                ExchangeNftDetailEvent.ShowExchangeDialog(
+                    when (grade) {
+                        "BASIC" -> 500
+                        "STANDARD" -> 750
+                        "PREMIUM" -> 1000
+                        else -> 500
+                    }
+                )
+            )
         }
     }
 }

@@ -72,11 +72,7 @@ class ChallengeListFragment :
 
                     is ChallengeListEvents.ShowLoading -> showLoading(requireContext())
                     is ChallengeListEvents.DismissLoading -> dismissLoading()
-                    is ChallengeListEvents.ShowSnackMessage -> showCustomSnack(
-                        binding.rvChallengeList,
-                        it.msg
-                    )
-
+                    is ChallengeListEvents.ShowSnackMessage -> parentViewModel.showSnack(it.msg)
                     is ChallengeListEvents.NavigateToSearchChallenge -> findNavController().toSearchChallenge()
                 }
             }

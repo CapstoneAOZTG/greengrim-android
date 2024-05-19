@@ -18,7 +18,6 @@ import androidx.navigation.fragment.navArgs
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentCertificationListBottomSheetBinding
 import com.aoztg.greengrim.presentation.customview.CustomCalendar
-import com.aoztg.greengrim.presentation.customview.CustomSnackBar
 import com.aoztg.greengrim.presentation.customview.YearMonthPickerDialog
 import com.aoztg.greengrim.presentation.ui.chat.adapter.CertificationListAdapter
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
@@ -149,10 +148,7 @@ class CertificationListBottomSheetFragment : BottomSheetDialogFragment() {
                     )
 
                     is CertificationListEvents.NavigateToBack -> findNavController().navigateUp()
-                    is CertificationListEvents.ShowSnackMessage -> CustomSnackBar.make(
-                        binding.ivTop,
-                        it.msg
-                    ).show()
+                    is CertificationListEvents.ShowSnackMessage -> parentViewModel.showSnack(it.msg)
                 }
             }
         }

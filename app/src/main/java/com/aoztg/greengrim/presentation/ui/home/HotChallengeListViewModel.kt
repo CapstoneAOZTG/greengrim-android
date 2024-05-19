@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.repository.ChallengeRepository
 import com.aoztg.greengrim.presentation.customview.ChallengeSortType
+import com.aoztg.greengrim.presentation.ui.DataState
 import com.aoztg.greengrim.presentation.ui.challenge.list.ChallengeListEvents
 import com.aoztg.greengrim.presentation.ui.challenge.mapper.toUiChallengeList
 import com.aoztg.greengrim.presentation.ui.challenge.model.UiChallengeRoom
@@ -26,13 +27,14 @@ data class HotChallengeListUiState(
     val uiChallengeRoom: List<UiChallengeRoom> = emptyList(),
     val curFilter: HotChallengeSortType = HotChallengeSortType.MOST_CERTIFICATION,
     val page: Int = 0,
-    val hasNext: Boolean = true
+    val hasNext: Boolean = true,
+    val dataState: DataState = DataState.BEFORE
 )
 
 sealed class HotChallengeListEvents {
     data class NavigateToChallengeDetail(val id: Long) : HotChallengeListEvents()
     data class ShowSnackMessage(val msg: String) : HotChallengeListEvents()
-    object NavigateToChallengeCategory: HotChallengeListEvents()
+    object NavigateToChallengeCategory : HotChallengeListEvents()
     object ShowLoading : HotChallengeListEvents()
     object DismissLoading : HotChallengeListEvents()
     object ScrollToTop : HotChallengeListEvents()
@@ -86,6 +88,7 @@ class HotChallengeListViewModel @Inject constructor(
                                 )
                             }
 
+                            checkDataState()
                             delay(100)
 
                             _event.emit(HotChallengeListEvents.ScrollToTop)
@@ -98,19 +101,35 @@ class HotChallengeListViewModel @Inject constructor(
         }
     }
 
+    private fun checkDataState() {
+        if (uiState.value.uiChallengeRoom.isEmpty()) {
+            _uiState.update { state ->
+                state.copy(
+                    dataState = DataState.NO_DATA
+                )
+            }
+        } else {
+            _uiState.update { state ->
+                state.copy(
+                    dataState = DataState.HAVE_DATA
+                )
+            }
+        }
+    }
+
     private fun navigateToChallengeDetail(id: Long) {
         viewModelScope.launch {
             _event.emit(HotChallengeListEvents.NavigateToChallengeDetail(id))
         }
     }
 
-    fun navigateToChallengeCategory(){
+    fun navigateToChallengeCategory() {
         viewModelScope.launch {
             _event.emit(HotChallengeListEvents.NavigateToChallengeCategory)
         }
     }
 
-    fun navigateToBack(){
+    fun navigateToBack() {
         viewModelScope.launch {
             _event.emit(HotChallengeListEvents.NavigateToBack)
         }

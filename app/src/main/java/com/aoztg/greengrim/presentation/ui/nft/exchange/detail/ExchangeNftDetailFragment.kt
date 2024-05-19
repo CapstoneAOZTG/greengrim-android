@@ -2,6 +2,7 @@ package com.aoztg.greengrim.presentation.ui.nft.exchange.detail
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
@@ -10,6 +11,7 @@ import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentExchangeNftDetailBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
 import com.aoztg.greengrim.presentation.customview.ExchangeNftDialog
+import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -20,6 +22,7 @@ class ExchangeNftDetailFragment :
     private val grade by lazy { args.grade }
 
     private val viewModel: ExchangeNftDetailViewModel by viewModels()
+    private val parentViewModel: MainViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -36,11 +39,7 @@ class ExchangeNftDetailFragment :
                 when (it) {
                     is ExchangeNftDetailEvent.ShowLoading -> showLoading(requireContext())
                     is ExchangeNftDetailEvent.DismissLoading -> dismissLoading()
-                    is ExchangeNftDetailEvent.ShowCustomSnack -> showCustomSnack(
-                        binding.tvDescription,
-                        it.msg
-                    )
-
+                    is ExchangeNftDetailEvent.ShowCustomSnack -> parentViewModel.showSnack(it.msg)
                     is ExchangeNftDetailEvent.ShowToastMessage -> showCustomToast(it.msg)
                     is ExchangeNftDetailEvent.ShowExchangeDialog -> showExchangeNftDialog(it.point)
                     is ExchangeNftDetailEvent.NavigateToBack -> findNavController().navigateUp()

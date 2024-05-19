@@ -49,6 +49,11 @@ class MainViewModel @Inject constructor(
     private val _keyboardState = MutableStateFlow(KeyboardState.NONE)
     val keyboardState: StateFlow<KeyboardState> = _keyboardState.asStateFlow()
 
+    fun showSnack(msg: String){
+        viewModelScope.launch {
+            _events.emit(MainEvent.ShowSnackMessage(msg))
+        }
+    }
 
     fun goToGallery() {
         viewModelScope.launch {

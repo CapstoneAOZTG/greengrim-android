@@ -45,9 +45,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         initParentObserver()
     }
 
-
-    private fun setBtnClickListener(){
-        binding.layoutWelcomeNft.setOnClickListener{
+    private fun setBtnClickListener() {
+        binding.layoutWelcomeNft.setOnClickListener {
             findNavController().toWebView(viewModel.uiState.value.eventUrl)
         }
     }
@@ -87,7 +86,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
                     is HomeEvents.ShowToastMessage -> showCustomToast(it.msg)
                     is HomeEvents.ShowLoading -> showLoading(requireContext())
                     is HomeEvents.DismissLoading -> dismissLoading()
-                    is HomeEvents.ShowSnackMessage -> showCustomSnack(binding.root, it.msg)
+                    is HomeEvents.ShowSnackMessage -> parentViewModel.showSnack(it.msg)
                     is HomeEvents.NavigateToWebView -> findNavController().toWebView(it.link)
                     is HomeEvents.NavigateToNftDetail -> findNavController().toNftDetail(it.id)
                     is HomeEvents.NavigateToNftList -> {}

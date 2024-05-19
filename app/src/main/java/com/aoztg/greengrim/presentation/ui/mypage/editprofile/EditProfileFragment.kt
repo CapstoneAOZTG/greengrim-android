@@ -67,10 +67,7 @@ class EditProfileFragment :
                     is EditProfileEvents.ShowToastMessage -> showCustomToast(it.msg)
                     is EditProfileEvents.ShowLoading -> showLoading(requireContext())
                     is EditProfileEvents.DismissLoading -> dismissLoading()
-                    is EditProfileEvents.ShowSnackMessage -> showCustomSnack(
-                        binding.ivProfile,
-                        it.msg
-                    )
+                    is EditProfileEvents.ShowSnackMessage -> parentViewModel.showSnack(it.msg)
                     is EditProfileEvents.SetProfileUrl -> {
                         Glide.with(requireContext())
                             .load(it.profileUrl)

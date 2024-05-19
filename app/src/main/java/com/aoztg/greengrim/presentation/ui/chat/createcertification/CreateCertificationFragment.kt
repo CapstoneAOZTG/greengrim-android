@@ -66,11 +66,7 @@ class CreateCertificationFragment :
                         certImg = it.certImg
                     )
 
-                    is CreateCertificationEvents.ShowSnackMessage -> showCustomSnack(
-                        binding.tvTitle,
-                        it.msg
-                    )
-
+                    is CreateCertificationEvents.ShowSnackMessage -> parentViewModel.showSnack(it.msg)
                     is CreateCertificationEvents.ShowLoading -> showLoading(requireContext())
                     is CreateCertificationEvents.DismissLoading -> dismissLoading()
                 }

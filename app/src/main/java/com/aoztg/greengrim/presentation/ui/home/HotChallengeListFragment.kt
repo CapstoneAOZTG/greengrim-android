@@ -74,10 +74,7 @@ class HotChallengeListFragment :
                     is HotChallengeListEvents.NavigateToChallengeCategory -> findNavController().toChallengeCategory()
                     is HotChallengeListEvents.ShowLoading -> showLoading(requireContext())
                     is HotChallengeListEvents.DismissLoading -> dismissLoading()
-                    is HotChallengeListEvents.ShowSnackMessage -> showCustomSnack(
-                        binding.cgFilter,
-                        it.msg
-                    )
+                    is HotChallengeListEvents.ShowSnackMessage -> parentViewModel.showSnack(it.msg)
                     is HotChallengeListEvents.NavigateToBack -> findNavController().navigateUp()
                 }
             }

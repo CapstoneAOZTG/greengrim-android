@@ -2,6 +2,7 @@ package com.aoztg.greengrim.presentation.ui.nft.exchange.edit
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
@@ -9,7 +10,7 @@ import androidx.navigation.fragment.navArgs
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentEditExchangedNftBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
-import com.aoztg.greengrim.presentation.ui.toNftDetail
+import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -21,6 +22,7 @@ class EditExchangedNftFragment :
     private val nftId by lazy { args.nftId }
 
     private val viewModel: EditExchangedNftViewModel by viewModels()
+    private val parentViewModel: MainViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -39,10 +41,7 @@ class EditExchangedNftFragment :
                         it.id
                     )
 
-                    is EditExchangedNftEvent.ShowCustomSnack -> showCustomSnack(
-                        binding.tvTitle,
-                        it.msg
-                    )
+                    is EditExchangedNftEvent.ShowCustomSnack -> parentViewModel.showSnack(it.msg)
 
                     is EditExchangedNftEvent.ShowToastMessage -> showCustomToast(it.msg)
                 }
@@ -50,8 +49,9 @@ class EditExchangedNftFragment :
         }
     }
 
-    private fun NavController.editToNftDetail(id : Long){
-        val action = EditExchangedNftFragmentDirections.actionEditExchangedNftFragmentToNftDetailFragment(id)
+    private fun NavController.editToNftDetail(id: Long) {
+        val action =
+            EditExchangedNftFragmentDirections.actionEditExchangedNftFragmentToNftDetailFragment(id)
         navigate(action)
     }
 

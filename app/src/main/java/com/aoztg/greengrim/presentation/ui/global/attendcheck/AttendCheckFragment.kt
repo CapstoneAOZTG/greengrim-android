@@ -13,7 +13,8 @@ import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class AttendCheckFragment : BaseFragment<FragmentAttendCheckBinding>(R.layout.fragment_attend_check) {
+class AttendCheckFragment :
+    BaseFragment<FragmentAttendCheckBinding>(R.layout.fragment_attend_check) {
 
     private val parentViewModel: MainViewModel by activityViewModels()
     private val viewModel: AttendCheckViewModel by viewModels()
@@ -31,14 +32,16 @@ class AttendCheckFragment : BaseFragment<FragmentAttendCheckBinding>(R.layout.fr
         viewModel.getCertificationForVerify()
     }
 
-    private fun initEventObserver(){
+    private fun initEventObserver() {
         repeatOnStarted {
-            viewModel.events.collect{
-                when(it){
+            viewModel.events.collect {
+                when (it) {
                     is AttendCheckEvents.ShowToastMessage -> showCustomToast(it.msg)
                     is AttendCheckEvents.NavigateToBack -> findNavController().navigateUp()
-                    is AttendCheckEvents.ShowVerifySnackBar -> VerifySnackBar.make(binding.tvDescription).show()
-                    is AttendCheckEvents.ShowSnackMessage -> showCustomSnack(binding.tvTitle, it.msg)
+                    is AttendCheckEvents.ShowVerifySnackBar -> VerifySnackBar.make(binding.tvDescription)
+                        .show()
+
+                    is AttendCheckEvents.ShowSnackMessage -> parentViewModel.showSnack(it.msg)
                     is AttendCheckEvents.ShowLoading -> showLoading(requireContext())
                     is AttendCheckEvents.DismissLoading -> dismissLoading()
                 }

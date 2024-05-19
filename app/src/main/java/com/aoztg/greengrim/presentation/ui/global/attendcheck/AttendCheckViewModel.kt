@@ -9,7 +9,6 @@ import com.aoztg.greengrim.presentation.ui.DataState
 import com.aoztg.greengrim.presentation.ui.global.mapper.toUiCertificationDetail
 import com.aoztg.greengrim.presentation.ui.global.model.UiCertificationDetail
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -22,7 +21,7 @@ import javax.inject.Inject
 
 data class AttendCheckUiState(
     val uiCertificationDetail: UiCertificationDetail = UiCertificationDetail(),
-    val isNoCertification: DataState = DataState.BEFORE
+    val dataState: DataState = DataState.BEFORE
 )
 
 sealed class AttendCheckEvents {
@@ -56,7 +55,7 @@ class AttendCheckViewModel @Inject constructor(
                     is BaseState.Success -> {
                         _uiState.update { state ->
                             state.copy(
-                                isNoCertification = DataState.HAVE_DATA,
+                                dataState = DataState.HAVE_DATA,
                                 uiCertificationDetail = it.body.toUiCertificationDetail()
                             )
                         }
@@ -66,7 +65,7 @@ class AttendCheckViewModel @Inject constructor(
                         if (it.code == CERTIFICATION_002) {
                             _uiState.update { state ->
                                 state.copy(
-                                    isNoCertification = DataState.NO_DATA
+                                    dataState = DataState.NO_DATA
                                 )
                             }
                         } else {

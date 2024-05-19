@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="com.aoztg.greengrim.presentation.ui.DataState" />
+
         <import type="android.view.View" />
 
         <import type="com.aoztg.greengrim.presentation.ui.home.HotChallengeSortType" />
@@ -119,7 +121,7 @@
             android:layout_height="wrap_content"
             android:text="아직 핫 챌린지가 없어요"
             android:textColor="@color/gg_grey5"
-            android:visibility="@{vm.uiState.uiChallengeRoom.empty ? View.VISIBLE : View.INVISIBLE}"
+            android:visibility="@{vm.uiState.dataState == DataState.NO_DATA ? View.VISIBLE : View.INVISIBLE}"
             app:layout_constraintBottom_toTopOf="@id/btn_navigate_to_challenge"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -140,7 +142,7 @@
             android:text="챌린지 보러가기"
             android:textColor="@color/gg_green"
             android:textSize="14dp"
-            android:visibility="@{vm.uiState.uiChallengeRoom.empty ? View.VISIBLE : View.INVISIBLE}"
+            android:visibility="@{vm.uiState.dataState == DataState.NO_DATA ? View.VISIBLE : View.INVISIBLE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
