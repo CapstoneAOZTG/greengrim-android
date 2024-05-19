@@ -12,7 +12,7 @@ fun NftSimpleResponse.toUiNftSimpleInfo(): UiNftSimpleInfo = UiNftSimpleInfo(
     hair = traitsInfo.hair,
     face = traitsInfo.face,
     gesture = traitsInfo.gesture,
-    accessory = traitsInfo.gesture,
+    accessory = traitsInfo.accessory,
     shoes = traitsInfo.shoes,
     rarity = traitsInfo.rarity
 )
