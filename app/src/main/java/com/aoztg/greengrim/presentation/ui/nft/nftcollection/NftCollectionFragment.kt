@@ -31,6 +31,7 @@ class NftCollectionFragment :
     private var sortType = NftSortType.DESC
 
     private val args: NftCollectionFragmentArgs by navArgs()
+    private val select by lazy { args.selectRarity }
     private val basicCount by lazy { args.basicCount }
     private val standardCount by lazy { args.standardCount }
     private val premiumCount by lazy { args.premiumCount }
@@ -40,11 +41,15 @@ class NftCollectionFragment :
 
         parentViewModel.hideBNV()
         binding.vm = viewModel
-        viewModel.setCount(basicCount, standardCount, premiumCount)
+        viewModel.setInitData(
+            select.toNftCollectionFilter(),
+            basicCount,
+            standardCount,
+            premiumCount
+        )
         binding.rvNftCollectionList.adapter = NftCollectionAdapter()
         initEventObserver()
         setScrollEventListener()
-        viewModel.getNftCollectionList(NEW)
     }
 
     private fun initEventObserver() {
@@ -78,4 +83,12 @@ class NftCollectionFragment :
             }
         })
     }
+
+    fun String.toNftCollectionFilter() = when (this) {
+        NftCollectionFilter.BASIC.text -> NftCollectionFilter.BASIC
+        NftCollectionFilter.STANDARD.text -> NftCollectionFilter.STANDARD
+        NftCollectionFilter.PREMIUM.text -> NftCollectionFilter.PREMIUM
+        else -> NftCollectionFilter.BASIC
+    }
+
 }

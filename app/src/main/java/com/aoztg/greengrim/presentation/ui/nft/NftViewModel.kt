@@ -35,7 +35,7 @@ sealed class NftEvent {
     data class ShowSnackMessage(val msg: String) : NftEvent()
     object ShowLoading : NftEvent()
     object DismissLoading : NftEvent()
-    object NavigateToNftCollectionList : NftEvent()
+    data class NavigateToNftCollectionList(val select: String) : NftEvent()
     object NavigateToExchangeNft : NftEvent()
 }
 
@@ -70,17 +70,20 @@ class NftViewModel @Inject constructor(
                                     UiNftCategory(
                                         img = R.drawable.icon_nft_basic,
                                         categoryName = "BASIC",
-                                        count = it.body.basic
+                                        count = it.body.basic,
+                                        ::navigateToNftCollectionList
                                     ),
                                     UiNftCategory(
                                         img = R.drawable.icon_nft_standard,
                                         categoryName = "STANDARD",
-                                        count = it.body.standard
+                                        count = it.body.standard,
+                                        ::navigateToNftCollectionList
                                     ),
                                     UiNftCategory(
                                         img = R.drawable.icon_nft_premium,
                                         categoryName = "PREMIUM",
-                                        count = it.body.premium
+                                        count = it.body.premium,
+                                        ::navigateToNftCollectionList
                                     )
                                 )
                             )
@@ -160,9 +163,9 @@ class NftViewModel @Inject constructor(
 
     }
 
-    fun navigateToNftCollectionList() {
+    fun navigateToNftCollectionList(select: String) {
         viewModelScope.launch {
-            _events.emit(NftEvent.NavigateToNftCollectionList)
+            _events.emit(NftEvent.NavigateToNftCollectionList(select))
         }
     }
 

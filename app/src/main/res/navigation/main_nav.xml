@@ -242,6 +242,10 @@
         tools:layout="@layout/fragment_nft_collection">
 
         <argument
+            android:name="selectRarity"
+            app:argType="string"/>
+
+        <argument
             android:name="basicCount"
             app:argType="integer" />
 

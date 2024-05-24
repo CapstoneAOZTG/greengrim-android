@@ -27,5 +27,10 @@ class HotChallengeViewHolder(private val binding: ItemHomeHotChallengeBinding) :
 
     fun bind(item: UiHotChallenge) {
         binding.item = item
+        if (item.title.length >= 15) {
+            binding.tvTitle.text = item.title.substring(0..15)
+        } else {
+            binding.tvTitle.text = item.title
+        }
     }
 }

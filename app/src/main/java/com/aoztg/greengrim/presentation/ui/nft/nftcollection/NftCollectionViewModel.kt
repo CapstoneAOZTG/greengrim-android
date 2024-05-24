@@ -55,10 +55,17 @@ class NftCollectionViewModel @Inject constructor(
     private var standardCount = 0
     private var premiumCount = 0
 
-    fun setCount(basic: Int, standard: Int, premium: Int) {
+    fun setInitData(select: NftCollectionFilter, basic: Int, standard: Int, premium: Int) {
+        _uiState.update { state ->
+            state.copy(
+                curFilter = select
+            )
+        }
         basicCount = basic
         standardCount = standard
         premiumCount = premium
+
+        getNftCollectionList(NEW)
     }
 
     fun changeFilter(filter: NftCollectionFilter) {
