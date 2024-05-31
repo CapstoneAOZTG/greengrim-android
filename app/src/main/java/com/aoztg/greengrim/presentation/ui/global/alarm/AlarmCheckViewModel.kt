@@ -24,7 +24,7 @@ data class AlarmCheckUiState(
 )
 
 sealed class AlarmCheckEvent {
-
+    object NavigateToBack: AlarmCheckEvent()
 }
 
 @HiltViewModel
@@ -61,6 +61,12 @@ class AlarmCheckViewModel @Inject constructor(
                     }
                 }
             }
+        }
+    }
+
+    fun navigateToBack(){
+        viewModelScope.launch {
+            _event.emit(AlarmCheckEvent.NavigateToBack)
         }
     }
 
