@@ -6,6 +6,7 @@ import com.aoztg.greengrim.data.model.request.LoginRequest
 import com.aoztg.greengrim.data.model.request.PatchProfileRequest
 import com.aoztg.greengrim.data.model.request.SignupRequest
 import com.aoztg.greengrim.data.model.request.WalletInfoRequest
+import com.aoztg.greengrim.data.model.response.AlarmListResponse
 import com.aoztg.greengrim.data.model.response.CheckNickResponse
 import com.aoztg.greengrim.data.model.response.EventResponse
 import com.aoztg.greengrim.data.model.response.GetProfileResponse
@@ -111,7 +112,13 @@ interface MemberAPI {
 
     @POST("/visitor/hiding/member")
     suspend fun hideMember(
-        @Query("id") id : Long
+        @Query("id") id: Long
     ): Response<Unit>
+
+    @GET("/visitor/alarms")
+    suspend fun getAlarmList(
+        @Query("page") page: Int,
+        @Query("size") size: Int
+    ): Response<AlarmListResponse>
 
 }

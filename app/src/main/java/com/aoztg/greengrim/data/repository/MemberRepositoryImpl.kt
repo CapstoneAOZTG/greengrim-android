@@ -7,6 +7,7 @@ import com.aoztg.greengrim.data.model.request.LoginRequest
 import com.aoztg.greengrim.data.model.request.PatchProfileRequest
 import com.aoztg.greengrim.data.model.request.SignupRequest
 import com.aoztg.greengrim.data.model.request.WalletInfoRequest
+import com.aoztg.greengrim.data.model.response.AlarmListResponse
 import com.aoztg.greengrim.data.model.response.CheckNickResponse
 import com.aoztg.greengrim.data.model.response.EventResponse
 import com.aoztg.greengrim.data.model.response.GetProfileResponse
@@ -80,4 +81,10 @@ class MemberRepositoryImpl @Inject constructor(private val api: MemberAPI) : Mem
     override suspend fun hideMember(id: Long): BaseState<Unit> = runRemote {
         api.hideMember(id)
     }
+
+    override suspend fun getAlarmCheck(page: Int, size: Int): BaseState<AlarmListResponse> =
+        runRemote {
+            api.getAlarmList(page, size)
+        }
+
 }

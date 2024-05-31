@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="item"
+            type="com.aoztg.greengrim.presentation.ui.global.model.UiAlarmData" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iv_title_img"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="20dp"
+            android:scaleType="centerCrop"
+            app:imgUrl="@{item.imgUrl}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/All28RadiusImageView" />
+
+        <TextView
+            android:id="@+id/tv_category"
+            style="@style/TextGgSmallBold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:text="@{item.category}"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/tv_description"
+            app:layout_constraintStart_toEndOf="@id/iv_title_img"
+            app:layout_constraintTop_toTopOf="@id/iv_title_img"
+            app:layout_constraintVertical_chainStyle="spread"
+            tools:text="포인트" />
+
+        <TextView
+            android:id="@+id/tv_time"
+            style="@style/TextGgSmallBold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:text="@{item.createdAt}"
+            android:textSize="10dp"
+            app:layout_constraintBottom_toBottomOf="@id/tv_category"
+            app:layout_constraintStart_toEndOf="@id/tv_category"
+            app:layout_constraintTop_toTopOf="@id/tv_category"
+            tools:text="4시간 전" />
+
+        <TextView
+            android:id="@+id/tv_bold_description"
+            style="@style/TextGgMedium"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@{item.boldDescription}"
+            android:textSize="14dp"
+            app:layout_constraintBottom_toBottomOf="@id/iv_title_img"
+            app:layout_constraintStart_toStartOf="@id/tv_category"
+            app:layout_constraintTop_toBottomOf="@id/tv_category"
+            tools:text="포인트를 획득했어요!" />
+
+        <TextView
+            android:id="@+id/tv_description"
+            style="@style/TextGgMedium"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@{item.description]"
+            android:textSize="14dp"
+            android:textStyle="normal"
+            app:layout_constraintBottom_toBottomOf="@id/tv_bold_description"
+            app:layout_constraintEnd_toStartOf="@id/iv_checked"
+            app:layout_constraintStart_toEndOf="@id/tv_bold_description"
+            tools:text="포인트를 획득했어요!" />
+
+        <ImageView
+            android:id="@+id/iv_checked"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/icon_red_spot"
+            android:visibility="@{item.checked ? View.INVISIBLE : View.VISIBLE}"
+            app:layout_constraintBottom_toBottomOf="@id/iv_title_img"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/iv_title_img" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
