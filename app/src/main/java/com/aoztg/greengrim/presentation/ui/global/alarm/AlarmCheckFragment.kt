@@ -8,10 +8,15 @@ import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentAlarmCheckBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
 import com.aoztg.greengrim.presentation.ui.global.adapter.AlarmAdapter
+import com.aoztg.greengrim.presentation.ui.global.adapter.AlarmClickListener
+import com.aoztg.greengrim.presentation.ui.toCertificationDetail
+import com.aoztg.greengrim.presentation.ui.toChallengeDetail
+import com.aoztg.greengrim.presentation.ui.toNftDetail
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class AlarmCheckFragment : BaseFragment<FragmentAlarmCheckBinding>(R.layout.fragment_alarm_check) {
+class AlarmCheckFragment : BaseFragment<FragmentAlarmCheckBinding>(R.layout.fragment_alarm_check),
+    AlarmClickListener {
 
 
     private val viewModel: AlarmCheckViewModel by viewModels()
@@ -35,5 +40,20 @@ class AlarmCheckFragment : BaseFragment<FragmentAlarmCheckBinding>(R.layout.frag
         }
     }
 
+    override fun navigateToCertificationDetail(id: Long) {
+        findNavController().toCertificationDetail(id)
+    }
+
+    override fun navigateToChallengeDetail(id: Long) {
+        findNavController().toChallengeDetail(id)
+    }
+
+    override fun navigateToIssueDetail(id: Long) {
+        // todo issue detail 로 이동
+    }
+
+    override fun navigateToNftDetail(id: Long) {
+        findNavController().toNftDetail(id)
+    }
 
 }
