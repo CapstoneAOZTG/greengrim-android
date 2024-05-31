@@ -38,3 +38,8 @@ internal fun NavController.toChallengeCategory(){
     val action = MainNavDirections.actionGlobalToChallengeCategoryFragment()
     navigate(action)
 }
+
+internal fun NavController.toAlarmCheck(){
+    val action = MainNavDirections.actionGlobalToAlarmCheckFragment()
+    navigate(action)
+}

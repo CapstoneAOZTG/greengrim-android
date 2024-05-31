@@ -50,6 +50,7 @@
                     android:layout_height="24dp"
                     android:layout_gravity="end"
                     android:background="@android:color/transparent"
+                    android:onClick="@{() -> vm.navigateToAlarmCheck()}"
                     android:scaleType="fitCenter"
                     android:src="@drawable/icon_alarm"
                     app:layout_constraintBottom_toBottomOf="parent"

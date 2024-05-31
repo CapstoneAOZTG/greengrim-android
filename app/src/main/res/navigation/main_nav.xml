@@ -445,6 +445,11 @@
         android:label="EditAlarmFragment"
         tools:layout="@layout/fragment_edit_alarm" />
 
+    <fragment
+        android:id="@+id/alarmCheckFragment"
+        android:name="com.aoztg.greengrim.presentation.ui.global.alarm.AlarmCheckFragment"
+        android:label="AlarmCheckFragment" />
+
     <action
         android:id="@+id/action_global_to_attendCheckFragment"
         app:destination="@id/attend_check_fragment" />
@@ -473,6 +478,9 @@
         android:id="@+id/action_global_to_challengeCategoryFragment"
         app:destination="@id/challenge_category_fragment" />
 
+    <action
+        android:id="@+id/action_global_to_alarmCheckFragment"
+        app:destination="@id/alarmCheckFragment"/>
 
 
 </navigation>

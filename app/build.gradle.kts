@@ -30,8 +30,8 @@ android {
         applicationId = "com.aoztg.greengrim"
         minSdk = 27
         targetSdk = 34
-        versionCode = 30
-        versionName = "1.0.17"
+        versionCode = 31
+        versionName = "1.0.18"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField("String", "NAVER_CLIENT_ID", getProperty("naverClientId"))

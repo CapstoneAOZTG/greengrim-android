@@ -16,6 +16,7 @@ import com.aoztg.greengrim.presentation.ui.challenge.model.CategoryName
 import com.aoztg.greengrim.presentation.ui.challenge.search.SearchChallengeFragment
 import com.aoztg.greengrim.presentation.ui.challenge.search.SearchChallengeFragmentDirections
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
+import com.aoztg.greengrim.presentation.ui.toAlarmCheck
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -47,6 +48,7 @@ class ChallengeCategoryFragment :
                 when (it) {
                     is ChallengeCategoryEvents.NavigateToCreateChallenge -> findNavController().toCreateChallenge()
                     is ChallengeCategoryEvents.NavigateToSearchChallenge -> findNavController().toSearchChallenge()
+                    is ChallengeCategoryEvents.NavigateToAlarmCheck -> findNavController().toAlarmCheck()
                 }
             }
         }

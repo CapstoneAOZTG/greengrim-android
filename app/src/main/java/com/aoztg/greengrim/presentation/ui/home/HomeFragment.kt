@@ -16,6 +16,7 @@ import com.aoztg.greengrim.presentation.ui.home.adapter.HotChallengeAdapter
 import com.aoztg.greengrim.presentation.ui.home.adapter.HotNftAdapter
 import com.aoztg.greengrim.presentation.ui.home.adapter.RecentIssuesAdapter
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
+import com.aoztg.greengrim.presentation.ui.toAlarmCheck
 import com.aoztg.greengrim.presentation.ui.toChallengeDetail
 import com.aoztg.greengrim.presentation.ui.toNftDetail
 import com.aoztg.greengrim.presentation.ui.toWebView
@@ -91,6 +92,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
                     is HomeEvents.NavigateToNftDetail -> findNavController().toNftDetail(it.id)
                     is HomeEvents.NavigateToNftList -> {}
                     is HomeEvents.NavigateToHotChallengeList -> findNavController().toHotChallengeList()
+                    is HomeEvents.NavigateToAlarmCheck -> findNavController().toAlarmCheck()
                 }
             }
         }

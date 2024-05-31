@@ -13,6 +13,7 @@ import com.aoztg.greengrim.presentation.chatmanager.ChatManager
 import com.aoztg.greengrim.presentation.ui.chat.adapter.ChatListAdapter
 import com.aoztg.greengrim.presentation.ui.chat.adapter.ChatRoomInterface
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
+import com.aoztg.greengrim.presentation.ui.toAlarmCheck
 import com.aoztg.greengrim.presentation.ui.toChallengeCategory
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -46,6 +47,7 @@ class ChatListFragment : BaseFragment<FragmentChatListBinding>(R.layout.fragment
                     is ChatListEvents.ShowToastMessage -> showCustomToast(it.msg)
                     is ChatListEvents.ShowSnackMessage -> parentViewModel.showSnack(it.msg)
                     is ChatListEvents.NavigateToChallengeCategory -> findNavController().toChallengeCategory()
+                    is ChatListEvents.NavigateToAlarmCheck -> findNavController().toAlarmCheck()
                 }
             }
         }

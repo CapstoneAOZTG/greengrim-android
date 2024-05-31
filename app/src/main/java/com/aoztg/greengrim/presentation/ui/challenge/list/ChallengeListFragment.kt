@@ -17,6 +17,7 @@ import com.aoztg.greengrim.presentation.customview.ChallengeSortType
 import com.aoztg.greengrim.presentation.ui.challenge.adapter.ChallengeRoomAdapter
 import com.aoztg.greengrim.presentation.ui.challenge.list.ChallengeListViewModel.Companion.ORIGINAL
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
+import com.aoztg.greengrim.presentation.ui.toAlarmCheck
 import com.aoztg.greengrim.presentation.ui.toChallengeDetail
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -74,6 +75,7 @@ class ChallengeListFragment :
                     is ChallengeListEvents.DismissLoading -> dismissLoading()
                     is ChallengeListEvents.ShowSnackMessage -> parentViewModel.showSnack(it.msg)
                     is ChallengeListEvents.NavigateToSearchChallenge -> findNavController().toSearchChallenge()
+                    is ChallengeListEvents.NavigateToAlarmCheck -> findNavController().toAlarmCheck()
                 }
             }
         }

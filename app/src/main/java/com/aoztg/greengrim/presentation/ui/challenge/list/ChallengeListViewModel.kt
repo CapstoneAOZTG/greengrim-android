@@ -35,6 +35,7 @@ sealed class ChallengeListEvents {
     data class ShowSnackMessage(val msg: String) : ChallengeListEvents()
     object ShowLoading : ChallengeListEvents()
     object DismissLoading : ChallengeListEvents()
+    object NavigateToAlarmCheck: ChallengeListEvents()
 }
 
 @HiltViewModel
@@ -103,6 +104,12 @@ class ChallengeListViewModel @Inject constructor(
     fun navigateToSearchChallenge() {
         viewModelScope.launch {
             _events.emit(ChallengeListEvents.NavigateToSearchChallenge)
+        }
+    }
+
+    fun navigateToAlarmCheck(){
+        viewModelScope.launch {
+            _events.emit(ChallengeListEvents.NavigateToAlarmCheck)
         }
     }
 

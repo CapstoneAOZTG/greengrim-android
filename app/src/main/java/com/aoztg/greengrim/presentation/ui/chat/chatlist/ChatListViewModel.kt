@@ -18,6 +18,7 @@ sealed class ChatListEvents {
     data class ShowSnackMessage(val msg: String) : ChatListEvents()
     object ShowLoading : ChatListEvents()
     object DismissLoading : ChatListEvents()
+    object NavigateToAlarmCheck: ChatListEvents()
 }
 
 
@@ -33,6 +34,12 @@ class ChatListViewModel @Inject constructor(
     fun navigateToChallengeCategory() {
         viewModelScope.launch {
             _events.emit(ChatListEvents.NavigateToChallengeCategory)
+        }
+    }
+
+    fun navigateToAlarmCheck(){
+        viewModelScope.launch {
+            _events.emit(ChatListEvents.NavigateToAlarmCheck)
         }
     }
 
