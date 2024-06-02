@@ -500,4 +500,8 @@
         android:id="@+id/action_global_to_nftCollectionDetailFragment"
         app:destination="@id/nftCollectionDetailFragment"/>
 
+    <action
+        android:id="@+id/action_global_to_nftFragment"
+        app:destination="@id/nft_fragment"/>
+
 </navigation>

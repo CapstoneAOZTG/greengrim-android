@@ -38,6 +38,7 @@ class NftFragment : BaseFragment<FragmentNftBinding>(R.layout.fragment_nft) {
         binding.vm = viewModel
         binding.rvGreenNftList.adapter = NftItemAdapter()
         binding.rvNftCategory.adapter = NftCategoryAdapter()
+        binding.rvGreenNftList.itemAnimator = null
         initEventObserver()
         setScrollEventListener()
         viewModel.getMyWalletInfo()

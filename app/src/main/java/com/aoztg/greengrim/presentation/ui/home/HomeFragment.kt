@@ -19,6 +19,7 @@ import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 import com.aoztg.greengrim.presentation.ui.toAlarmCheck
 import com.aoztg.greengrim.presentation.ui.toChallengeDetail
 import com.aoztg.greengrim.presentation.ui.toNftDetail
+import com.aoztg.greengrim.presentation.ui.toNftFragment
 import com.aoztg.greengrim.presentation.ui.toWebView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -90,7 +91,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
                     is HomeEvents.ShowSnackMessage -> parentViewModel.showSnack(it.msg)
                     is HomeEvents.NavigateToWebView -> findNavController().toWebView(it.link)
                     is HomeEvents.NavigateToNftDetail -> findNavController().toNftDetail(it.id)
-                    is HomeEvents.NavigateToNftList -> {}
+                    is HomeEvents.NavigateToNftList -> findNavController().toNftFragment()
                     is HomeEvents.NavigateToHotChallengeList -> findNavController().toHotChallengeList()
                     is HomeEvents.NavigateToAlarmCheck -> findNavController().toAlarmCheck()
                 }

@@ -48,3 +48,8 @@ internal fun NavController.toNftCollectionDetail(id: Long){
     val action = MainNavDirections.actionGlobalToNftCollectionDetailFragment(id)
     navigate(action)
 }
+
+internal fun NavController.toNftFragment(){
+    val action = MainNavDirections.actionGlobalToNftFragment()
+    navigate(action)
+}
