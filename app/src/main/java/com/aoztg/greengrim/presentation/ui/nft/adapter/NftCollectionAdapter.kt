@@ -32,5 +32,8 @@ class NftCollectionViewHolder(private val binding: ItemNftCollectionListBinding)
 
     fun bind(item: UiNftCollectionItem) {
         binding.item = item
+        binding.root.setOnClickListener {
+            item.navigateToDetail(item.id)
+        }
     }
 }

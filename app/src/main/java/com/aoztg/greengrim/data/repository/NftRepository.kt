@@ -5,6 +5,7 @@ import com.aoztg.greengrim.data.model.request.EditNftRequest
 import com.aoztg.greengrim.data.model.request.NftLikeRequest
 import com.aoztg.greengrim.data.model.response.HotNftResponse
 import com.aoztg.greengrim.data.model.response.NftCollectionCountResponse
+import com.aoztg.greengrim.data.model.response.NftCollectionDetailResponse
 import com.aoztg.greengrim.data.model.response.NftCollectionResponse
 import com.aoztg.greengrim.data.model.response.NftDetailResponse
 import com.aoztg.greengrim.data.model.response.NftListResponse
@@ -73,4 +74,6 @@ interface NftRepository {
     suspend fun hideNft(id: Long): BaseState<Unit>
 
     suspend fun deleteNft(id: Long): BaseState<Unit>
+
+    suspend fun getNftCollectionDetail(id : Long): BaseState<NftCollectionDetailResponse>
 }

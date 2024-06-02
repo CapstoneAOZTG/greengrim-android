@@ -14,6 +14,7 @@ import com.aoztg.greengrim.presentation.base.BaseFragment
 import com.aoztg.greengrim.presentation.customview.NftSortType
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 import com.aoztg.greengrim.presentation.ui.nft.adapter.NftCollectionAdapter
+import com.aoztg.greengrim.presentation.ui.toNftCollectionDetail
 import com.aoztg.greengrim.presentation.ui.toNftDetail
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -56,7 +57,10 @@ class NftCollectionFragment :
         repeatOnStarted {
             viewModel.events.collect {
                 when (it) {
-                    is NftCollectionEvent.NavigateToNftDetail -> findNavController().toNftDetail(it.id)
+                    is NftCollectionEvent.NavigateToNftDetail -> findNavController().toNftCollectionDetail(
+                        it.id
+                    )
+
                     is NftCollectionEvent.ShowLoading -> showLoading(requireContext())
                     is NftCollectionEvent.DismissLoading -> dismissLoading()
                     is NftCollectionEvent.ShowSnackMessage -> parentViewModel.showSnack(it.msg)
@@ -90,5 +94,6 @@ class NftCollectionFragment :
         NftCollectionFilter.PREMIUM.text -> NftCollectionFilter.PREMIUM
         else -> NftCollectionFilter.BASIC
     }
+
 
 }

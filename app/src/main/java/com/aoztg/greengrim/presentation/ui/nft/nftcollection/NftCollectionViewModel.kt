@@ -58,14 +58,17 @@ class NftCollectionViewModel @Inject constructor(
     fun setInitData(select: NftCollectionFilter, basic: Int, standard: Int, premium: Int) {
         _uiState.update { state ->
             state.copy(
-                curFilter = select
+                curFilter = select,
             )
         }
         basicCount = basic
         standardCount = standard
         premiumCount = premium
 
-        getNftCollectionList(NEW)
+        if(uiState.value.page == 0){
+            getNftCollectionList(NEW)
+        }
+
     }
 
     fun changeFilter(filter: NftCollectionFilter) {
@@ -92,7 +95,7 @@ class NftCollectionViewModel @Inject constructor(
                     when (it) {
                         is BaseState.Success -> {
                             val newList =
-                                it.body.result.map { data -> data.toUiNftCollectionItem() }
+                                it.body.result.map { data -> data.toUiNftCollectionItem(::navigateToDetail) }
                             _uiState.update { state ->
                                 state.copy(
                                     nftCollectionList = if (option == NEXT_PAGE) uiState.value.nftCollectionList + newList
@@ -112,6 +115,12 @@ class NftCollectionViewModel @Inject constructor(
                     }
                 }
             }
+        }
+    }
+
+    private fun navigateToDetail(id : Long){
+        viewModelScope.launch {
+            _events.emit(NftCollectionEvent.NavigateToNftDetail(id))
         }
     }
 

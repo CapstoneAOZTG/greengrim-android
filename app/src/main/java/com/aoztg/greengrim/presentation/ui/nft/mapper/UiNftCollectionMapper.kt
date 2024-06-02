@@ -4,9 +4,12 @@ import com.aoztg.greengrim.data.model.response.NftCollectionItem
 import com.aoztg.greengrim.presentation.ui.nft.model.UiNftCollectionItem
 
 
-fun NftCollectionItem.toUiNftCollectionItem() : UiNftCollectionItem = UiNftCollectionItem(
+fun NftCollectionItem.toUiNftCollectionItem(
+    navigateToDetail : (Long) -> Unit
+) : UiNftCollectionItem = UiNftCollectionItem(
     id = id,
     image = imgUrl,
     title = title,
-    number = tokenId
+    number = tokenId,
+    navigateToDetail = navigateToDetail
 )

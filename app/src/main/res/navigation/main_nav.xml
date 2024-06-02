@@ -453,6 +453,17 @@
         android:name="com.aoztg.greengrim.presentation.ui.global.alarm.AlarmCheckFragment"
         android:label="AlarmCheckFragment" />
 
+    <fragment
+        android:id="@+id/nftCollectionDetailFragment"
+        android:name="com.aoztg.greengrim.presentation.ui.global.nftdetail.NftCollectionDetailFragment"
+        android:label="NftCollectionDetailFragment" >
+
+        <argument
+            android:name="id"
+            app:argType="long"/>
+
+    </fragment>
+
     <action
         android:id="@+id/action_global_to_attendCheckFragment"
         app:destination="@id/attend_check_fragment" />
@@ -485,5 +496,8 @@
         android:id="@+id/action_global_to_alarmCheckFragment"
         app:destination="@id/alarmCheckFragment"/>
 
+    <action
+        android:id="@+id/action_global_to_nftCollectionDetailFragment"
+        app:destination="@id/nftCollectionDetailFragment"/>
 
 </navigation>

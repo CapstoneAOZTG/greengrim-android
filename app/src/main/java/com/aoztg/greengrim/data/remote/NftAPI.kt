@@ -4,6 +4,7 @@ import com.aoztg.greengrim.data.model.request.EditNftRequest
 import com.aoztg.greengrim.data.model.request.NftLikeRequest
 import com.aoztg.greengrim.data.model.response.HotNftResponse
 import com.aoztg.greengrim.data.model.response.NftCollectionCountResponse
+import com.aoztg.greengrim.data.model.response.NftCollectionDetailResponse
 import com.aoztg.greengrim.data.model.response.NftCollectionResponse
 import com.aoztg.greengrim.data.model.response.NftDetailResponse
 import com.aoztg.greengrim.data.model.response.NftListResponse
@@ -35,6 +36,11 @@ interface NftAPI {
     suspend fun getNftDetail(
         @Path("id") id : Long
     ): Response<NftDetailResponse>
+
+    @GET("/visitor/nfts/stock/{id}")
+    suspend fun getNftCollectionDetail(
+        @Path("id") id: Long
+    ): Response<NftCollectionDetailResponse>
 
     @GET("/visitor/nfts/profile")
     suspend fun getMyNftList(

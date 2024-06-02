@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.aoztg.greengrim.presentation.ui.global.nftdetail.NftCollectionDetailViewModel" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingHorizontal="20dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="@dimen/padding_middle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_scrollFlags="scroll|enterAlways">
+
+            <ImageButton
+                android:id="@+id/btn_back"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:background="@android:color/transparent"
+                android:scaleType="fitCenter"
+                android:onClick="@{() -> vm.navigateToBack()}"
+                android:src="@drawable/icon_back"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_header"
+                style="@style/TextHeader"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="NFT 미리보기"
+                android:textAlignment="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:paddingBottom="200dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/layout_toolbar">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/iv_nft"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="16dp"
+                    android:scaleType="centerCrop"
+                    app:imgUrl="@{vm.uiState.uiNftCollectionDetailInfo.nftImage}"
+                    app:layout_constraintDimensionRatio="8:7"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:shapeAppearanceOverlay="@style/All28RadiusImageView"
+                    tools:src="@drawable/test" />
+
+                <TextView
+                    android:id="@+id/tv_title"
+                    style="@style/TextHeader"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@{vm.uiState.uiNftCollectionDetailInfo.title}"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/iv_nft"
+                    tools:text="떠도는 풀쑾" />
+
+
+                <com.google.android.material.divider.MaterialDivider
+                    android:id="@+id/divdier"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:orientation="horizontal"
+                    app:dividerColor="@color/gg_grey1"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_title" />
+
+                <TextView
+                    android:id="@+id/tv_detail_label"
+                    style="@style/TextGgMedium"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="상세 정보"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/divdier" />
+
+                <LinearLayout
+                    android:id="@+id/block_background"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="6dp"
+                    android:background="@drawable/shape_black4fill_nostroke_radius10"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="12dp"
+                    android:paddingVertical="12dp"
+                    app:layout_constraintEnd_toStartOf="@id/block_hair"
+                    app:layout_constraintHorizontal_chainStyle="spread_inside"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_detail_label">
+
+                    <TextView
+                        android:id="@+id/tv_background_label"
+                        style="@style/TextGgSmallGrey5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="BACKGROUND"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_background"
+                        style="@style/TextGgSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:text="@{vm.uiState.uiNftCollectionDetailInfo.background}"
+                        tools:text="black" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/block_hair"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="6dp"
+                    android:background="@drawable/shape_black4fill_nostroke_radius10"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="12dp"
+                    android:paddingVertical="12dp"
+                    app:layout_constraintEnd_toStartOf="@id/block_face"
+                    app:layout_constraintStart_toEndOf="@id/block_background"
+                    app:layout_constraintTop_toTopOf="@id/block_background">
+
+
+                    <TextView
+                        android:id="@+id/tv_hair_label"
+                        style="@style/TextGgSmallGrey5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="HAIR"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_hair"
+                        style="@style/TextGgSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:text="@{vm.uiState.uiNftCollectionDetailInfo.hair}"
+                        tools:text="mandra" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/block_face"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shape_black4fill_nostroke_radius10"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="12dp"
+                    android:paddingVertical="12dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/block_hair"
+                    app:layout_constraintTop_toTopOf="@id/block_background">
+
+                    <TextView
+                        android:id="@+id/tv_face_label"
+                        style="@style/TextGgSmallGrey5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="FACE"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_face"
+                        style="@style/TextGgSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:text="@{vm.uiState.uiNftCollectionDetailInfo.face}"
+                        tools:text="basic" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/block_gesture"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="6dp"
+                    android:background="@drawable/shape_black4fill_nostroke_radius10"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="12dp"
+                    android:paddingVertical="12dp"
+                    app:layout_constraintEnd_toStartOf="@id/block_accessory"
+                    app:layout_constraintHorizontal_chainStyle="spread_inside"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/block_background">
+
+                    <TextView
+                        android:id="@+id/tv_gesture_label"
+                        style="@style/TextGgSmallGrey5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="GESTURE"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_gesture"
+                        style="@style/TextGgSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:text="@{vm.uiState.uiNftCollectionDetailInfo.gesture}"
+                        tools:text="peace" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/block_accessory"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="6dp"
+                    android:background="@drawable/shape_black4fill_nostroke_radius10"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="12dp"
+                    android:paddingVertical="12dp"
+                    app:layout_constraintEnd_toStartOf="@id/block_shoes"
+                    app:layout_constraintStart_toEndOf="@id/block_gesture"
+                    app:layout_constraintTop_toTopOf="@id/block_gesture">
+
+                    <TextView
+                        android:id="@+id/tv_accessory_label"
+                        style="@style/TextGgSmallGrey5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="ACCESSORY"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_accessory"
+                        style="@style/TextGgSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:text="@{vm.uiState.uiNftCollectionDetailInfo.accessory}"
+                        tools:text="headphone" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/block_shoes"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shape_black4fill_nostroke_radius10"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="12dp"
+                    android:paddingVertical="12dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/block_accessory"
+                    app:layout_constraintTop_toTopOf="@id/block_gesture">
+
+                    <TextView
+                        android:id="@+id/tv_shoes_label"
+                        style="@style/TextGgSmallGrey5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="SHOES"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_shoes"
+                        style="@style/TextGgSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:text="@{vm.uiState.uiNftCollectionDetailInfo.shoes}"
+                        tools:text="blue" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/block_rarity"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/shape_black4fill_nostroke_radius10"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="12dp"
+                    android:paddingVertical="12dp"
+                    app:layout_constraintEnd_toEndOf="@id/block_gesture"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/block_gesture">
+
+                    <TextView
+                        android:id="@+id/tv_rarity_label"
+                        style="@style/TextGgSmallGrey5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="RARITY"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_rarity"
+                        style="@style/TextGgSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:text="@{vm.uiState.uiNftCollectionDetailInfo.rarity}"
+                        tools:text="blue" />
+
+                </LinearLayout>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

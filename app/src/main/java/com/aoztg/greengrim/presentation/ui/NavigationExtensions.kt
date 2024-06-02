@@ -43,3 +43,8 @@ internal fun NavController.toAlarmCheck(){
     val action = MainNavDirections.actionGlobalToAlarmCheckFragment()
     navigate(action)
 }
+
+internal fun NavController.toNftCollectionDetail(id: Long){
+    val action = MainNavDirections.actionGlobalToNftCollectionDetailFragment(id)
+    navigate(action)
+}
