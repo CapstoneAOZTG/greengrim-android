@@ -187,6 +187,9 @@
         <action
             android:id="@+id/action_nft_fragment_to_exchangeNftFragment"
             app:destination="@id/exchangeNftFragment" />
+        <action
+            android:id="@+id/action_nft_fragment_to_addWalletFragment"
+            app:destination="@id/addWalletFragment" />
     </fragment>
 
     <fragment

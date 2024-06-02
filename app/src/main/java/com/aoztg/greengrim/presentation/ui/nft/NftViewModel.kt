@@ -5,8 +5,10 @@ import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.model.request.NftLikeRequest
+import com.aoztg.greengrim.data.repository.MemberRepository
 import com.aoztg.greengrim.data.repository.NftRepository
 import com.aoztg.greengrim.presentation.customview.NftSortType
+import com.aoztg.greengrim.presentation.ui.mypage.MyPageEvent
 import com.aoztg.greengrim.presentation.ui.nft.mapper.toUiNftItem
 import com.aoztg.greengrim.presentation.ui.nft.model.UiNftCategory
 import com.aoztg.greengrim.presentation.ui.nft.model.UiNftItem
@@ -27,6 +29,7 @@ data class NftUiState(
     val sortType: NftSortType = NftSortType.DESC,
     val page: Int = 0,
     val hasNext: Boolean = true,
+    val hasWallet: Boolean = false
 )
 
 sealed class NftEvent {
@@ -41,7 +44,8 @@ sealed class NftEvent {
 
 @HiltViewModel
 class NftViewModel @Inject constructor(
-    private val nftRepository: NftRepository
+    private val nftRepository: NftRepository,
+    private val memberRepository: MemberRepository
 ) : ViewModel() {
 
     companion object {
@@ -124,6 +128,27 @@ class NftViewModel @Inject constructor(
             }
         }
 
+    }
+
+    fun getMyWalletInfo() {
+        viewModelScope.launch {
+            memberRepository.getMyWalletInfo().let {
+                when (it) {
+                    is BaseState.Success -> {
+
+                        _uiState.update { state ->
+                            state.copy(
+                                hasWallet = it.body.existed
+                            )
+                        }
+                    }
+
+                    is BaseState.Error -> {
+                        _events.emit(NftEvent.ShowSnackMessage(it.msg))
+                    }
+                }
+            }
+        }
     }
 
     private fun navigateToNftDetail(id: Long) {

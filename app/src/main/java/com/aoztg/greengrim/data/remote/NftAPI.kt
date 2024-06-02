@@ -72,7 +72,7 @@ interface NftAPI {
         @Query("nftList") nftList : List<Long>
     ): Response<NftSimpleResponse>
 
-    @POST("/visitor/nfts/{id}")
+    @POST("/member/nfts/{id}")
     suspend fun exchangeNft(
         @Path("id") id : Long
     ): Response<Unit>

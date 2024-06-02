@@ -57,6 +57,10 @@ class MySettingViewModel @Inject constructor(
                     is BaseState.Success -> {
                         val type = keyDataStoreManager.getSocialType() ?: ""
                         _event.emit(MySettingEvent.Logout(type))
+                        keyDataStoreManager.deleteAccessToken()
+                        keyDataStoreManager.deleteRefreshToken()
+                        keyDataStoreManager.deleteSocialType()
+                        keyDataStoreManager.deleteMemberId()
                     }
                     is BaseState.Error -> _event.emit(MySettingEvent.ShowSnackMessage(it.msg))
                 }
@@ -71,6 +75,10 @@ class MySettingViewModel @Inject constructor(
                     is BaseState.Success -> {
                         val type = keyDataStoreManager.getSocialType() ?: ""
                         _event.emit(MySettingEvent.WithDraw(type))
+                        keyDataStoreManager.deleteAccessToken()
+                        keyDataStoreManager.deleteRefreshToken()
+                        keyDataStoreManager.deleteSocialType()
+                        keyDataStoreManager.deleteMemberId()
                     }
                     is BaseState.Error -> _event.emit(MySettingEvent.ShowSnackMessage(it.msg))
                 }

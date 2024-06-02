@@ -148,7 +148,7 @@ class MyPageViewModel @Inject constructor(
 
     fun navigateToPrivacyPolicy() {
         viewModelScope.launch {
-            _events.emit(MyPageEvent.NavigateToWebView(""))
+            _events.emit(MyPageEvent.NavigateToWebView("https://green-grim.store/privacy-policy"))
         }
     }
 

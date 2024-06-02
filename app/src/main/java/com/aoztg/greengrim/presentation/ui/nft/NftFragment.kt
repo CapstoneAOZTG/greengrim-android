@@ -40,6 +40,7 @@ class NftFragment : BaseFragment<FragmentNftBinding>(R.layout.fragment_nft) {
         binding.rvNftCategory.adapter = NftCategoryAdapter()
         initEventObserver()
         setScrollEventListener()
+        viewModel.getMyWalletInfo()
         viewModel.setSortType(NftSortType.DESC)
     }
 
@@ -48,12 +49,30 @@ class NftFragment : BaseFragment<FragmentNftBinding>(R.layout.fragment_nft) {
             viewModel.events.collect {
                 when (it) {
                     is NftEvent.NavigateToNftDetail -> findNavController().toNftDetail(it.id)
-                    is NftEvent.NavigateToNftCollectionList -> findNavController().toNftCollectionList(it.select)
+                    is NftEvent.NavigateToNftCollectionList -> findNavController().toNftCollectionList(
+                        it.select
+                    )
+
                     is NftEvent.ShowBottomSheet -> showBottomSheet()
                     is NftEvent.ShowLoading -> showLoading(requireContext())
                     is NftEvent.DismissLoading -> dismissLoading()
                     is NftEvent.ShowSnackMessage -> parentViewModel.showSnack(it.msg)
-                    is NftEvent.NavigateToExchangeNft -> findNavController().toExchangeNft()
+                    is NftEvent.NavigateToExchangeNft -> {
+                        if (viewModel.uiState.value.hasWallet) {
+                            findNavController().toExchangeNft()
+                        } else {
+                            showTwoButtonTitleDialog(
+                                requireContext(),
+                                "지갑을 먼저 생성해주세요",
+                                "취소",
+                                "생성"
+                            ) {
+                                findNavController().toCreateWallet()
+                            }
+
+                        }
+
+                    }
                 }
             }
         }
@@ -94,6 +113,11 @@ class NftFragment : BaseFragment<FragmentNftBinding>(R.layout.fragment_nft) {
 
     private fun NavController.toExchangeNft() {
         val action = NftFragmentDirections.actionNftFragmentToExchangeNftFragment()
+        navigate(action)
+    }
+
+    private fun NavController.toCreateWallet() {
+        val action = NftFragmentDirections.actionNftFragmentToAddWalletFragment()
         navigate(action)
     }
 

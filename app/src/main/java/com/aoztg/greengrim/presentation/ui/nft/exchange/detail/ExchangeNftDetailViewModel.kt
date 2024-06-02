@@ -103,10 +103,12 @@ class ExchangeNftDetailViewModel @Inject constructor(
 
     fun exchangeNft() {
         viewModelScope.launch {
+            _event.emit(ExchangeNftDetailEvent.ShowLoading)
             nftRepository.exchangeNft(uiState.value.uiNftSimpleInfo.nftId).let {
+
+                _event.emit(ExchangeNftDetailEvent.DismissLoading)
                 when (it) {
                     is BaseState.Success -> {
-                        _event.emit(ExchangeNftDetailEvent.ShowLoading)
                     }
 
                     is BaseState.Error -> _event.emit(ExchangeNftDetailEvent.ShowCustomSnack(it.msg))
