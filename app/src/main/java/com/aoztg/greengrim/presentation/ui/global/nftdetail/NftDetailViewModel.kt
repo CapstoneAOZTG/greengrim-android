@@ -9,7 +9,6 @@ import com.aoztg.greengrim.data.repository.MemberRepository
 import com.aoztg.greengrim.data.repository.NftRepository
 import com.aoztg.greengrim.presentation.customview.AccusationContentType
 import com.aoztg.greengrim.presentation.customview.AccusationType
-import com.aoztg.greengrim.presentation.ui.global.challengedetail.ChallengeDetailEvents
 import com.aoztg.greengrim.presentation.ui.nft.mapper.toUiNftDetail
 import com.aoztg.greengrim.presentation.ui.nft.model.UiNftDetailInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -33,6 +32,7 @@ sealed class NftDetailEvents {
     data class ShowToastMessage(val msg: String) : NftDetailEvents()
     object ShowPopUp : NftDetailEvents()
     data class NavigateToProfile(val id: Long): NftDetailEvents()
+    object ShowHeartAnim: NftDetailEvents()
 }
 
 @HiltViewModel
@@ -93,7 +93,6 @@ class NftDetailViewModel @Inject constructor(
                                 )
                             }
 
-                            _events.emit(NftDetailEvents.ShowToastMessage("좋아요를 취소했어요!"))
                         } else {
                             _uiState.update { state ->
                                 state.copy(
@@ -103,7 +102,7 @@ class NftDetailViewModel @Inject constructor(
                                 )
                             }
 
-                            _events.emit(NftDetailEvents.ShowToastMessage("좋아요를 눌렀어요!"))
+                            _events.emit(NftDetailEvents.ShowHeartAnim)
                         }
 
                     }

@@ -40,6 +40,7 @@ sealed class NftEvent {
     object DismissLoading : NftEvent()
     data class NavigateToNftCollectionList(val select: String) : NftEvent()
     object NavigateToExchangeNft : NftEvent()
+    object ShowHeartAnim: NftEvent()
 }
 
 @HiltViewModel
@@ -166,10 +167,14 @@ class NftViewModel @Inject constructor(
             ).let {
                 when (it) {
                     is BaseState.Success -> {
+                        var showAnim = false
                         _uiState.update { state ->
                             state.copy(
                                 nftList = uiState.value.nftList.map { data ->
                                     if (data.id == id) {
+                                        if(!data.isLiked){
+                                            showAnim = true
+                                        }
                                         data.copy(
                                             isLiked = !data.isLiked
                                         )
@@ -179,6 +184,11 @@ class NftViewModel @Inject constructor(
                                 }
                             )
                         }
+
+                        if(showAnim){
+                            _events.emit(NftEvent.ShowHeartAnim)
+                        }
+
                     }
 
                     is BaseState.Error -> _events.emit(NftEvent.ShowSnackMessage(it.msg))

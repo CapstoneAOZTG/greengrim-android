@@ -1,5 +1,6 @@
 package com.aoztg.greengrim.presentation.ui.nft
 
+import android.animation.Animator
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.activityViewModels
@@ -40,6 +41,7 @@ class NftFragment : BaseFragment<FragmentNftBinding>(R.layout.fragment_nft) {
         binding.rvNftCategory.adapter = NftCategoryAdapter()
         binding.rvGreenNftList.itemAnimator = null
         initEventObserver()
+        setLottieListener()
         setScrollEventListener()
         viewModel.getMyWalletInfo()
         viewModel.setSortType(NftSortType.DESC)
@@ -70,13 +72,27 @@ class NftFragment : BaseFragment<FragmentNftBinding>(R.layout.fragment_nft) {
                             ) {
                                 findNavController().toCreateWallet()
                             }
-
                         }
+                    }
 
+                    is NftEvent.ShowHeartAnim -> {
+                        binding.heartAnim.visibility = View.VISIBLE
+                        binding.heartAnim.playAnimation()
                     }
                 }
             }
         }
+    }
+
+    private fun setLottieListener(){
+        binding.heartAnim.addAnimatorListener(object : Animator.AnimatorListener {
+            override fun onAnimationStart(animation: Animator) {}
+            override fun onAnimationEnd(animation: Animator) {
+                binding.heartAnim.visibility = View.GONE
+            }
+            override fun onAnimationCancel(animation: Animator) {}
+            override fun onAnimationRepeat(animation: Animator) {}
+        })
     }
 
     private fun setScrollEventListener() {

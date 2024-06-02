@@ -1,5 +1,6 @@
 package com.aoztg.greengrim.presentation.ui.global.nftdetail
 
+import android.animation.Animator
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.activityViewModels
@@ -29,6 +30,7 @@ class NftDetailFragment : BaseFragment<FragmentNftDetailBinding>(R.layout.fragme
         binding.vm = viewModel
         viewModel.setNftId(nftId)
         initEventObserve()
+        setLottieListener()
     }
 
     private fun initEventObserve() {
@@ -40,9 +42,27 @@ class NftDetailFragment : BaseFragment<FragmentNftDetailBinding>(R.layout.fragme
                     is NftDetailEvents.ShowToastMessage -> showCustomToast(it.msg)
                     is NftDetailEvents.ShowPopUp -> showPopup()
                     is NftDetailEvents.NavigateToProfile -> findNavController().toProfile(it.id)
+                    is NftDetailEvents.ShowHeartAnim -> {
+                        with(binding.heartAnim){
+
+                            binding.heartAnim.visibility = View.VISIBLE
+                            playAnimation()
+                        }
+                    }
                 }
             }
         }
+    }
+
+    private fun setLottieListener(){
+        binding.heartAnim.addAnimatorListener(object : Animator.AnimatorListener {
+            override fun onAnimationStart(animation: Animator) {}
+            override fun onAnimationEnd(animation: Animator) {
+                binding.heartAnim.visibility = View.GONE
+            }
+            override fun onAnimationCancel(animation: Animator) {}
+            override fun onAnimationRepeat(animation: Animator) {}
+        })
     }
 
     private fun showPopup() {
