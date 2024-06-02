@@ -4,6 +4,7 @@ import com.aoztg.greengrim.data.model.response.NftDetailResponse
 import com.aoztg.greengrim.presentation.ui.nft.model.UiNftDetailInfo
 
 internal fun NftDetailResponse.toUiNftDetail() = UiNftDetailInfo(
+    memberId = memberSimpleInfo.id,
     nftId = nftInfo.id,
     nftImage = nftInfo.imgUrl,
     title = nftInfo.title,

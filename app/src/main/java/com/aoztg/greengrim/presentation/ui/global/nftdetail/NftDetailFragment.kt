@@ -10,6 +10,7 @@ import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentNftDetailBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
+import com.aoztg.greengrim.presentation.ui.toProfile
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -38,6 +39,7 @@ class NftDetailFragment : BaseFragment<FragmentNftDetailBinding>(R.layout.fragme
                     is NftDetailEvents.ShowSnackMessage -> parentViewModel.showSnack(it.msg)
                     is NftDetailEvents.ShowToastMessage -> showCustomToast(it.msg)
                     is NftDetailEvents.ShowPopUp -> showPopup()
+                    is NftDetailEvents.NavigateToProfile -> findNavController().toProfile(it.id)
                 }
             }
         }

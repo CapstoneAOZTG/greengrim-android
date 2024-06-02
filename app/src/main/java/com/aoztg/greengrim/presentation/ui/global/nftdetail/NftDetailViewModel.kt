@@ -32,6 +32,7 @@ sealed class NftDetailEvents {
     object NavigateToBack : NftDetailEvents()
     data class ShowToastMessage(val msg: String) : NftDetailEvents()
     object ShowPopUp : NftDetailEvents()
+    data class NavigateToProfile(val id: Long): NftDetailEvents()
 }
 
 @HiltViewModel
@@ -110,6 +111,12 @@ class NftDetailViewModel @Inject constructor(
                     is BaseState.Error -> _events.emit(NftDetailEvents.ShowSnackMessage(it.msg))
                 }
             }
+        }
+    }
+
+    fun navigateToProfile(){
+        viewModelScope.launch {
+            _events.emit(NftDetailEvents.NavigateToProfile(uiState.value.nftDetail.memberId))
         }
     }
 
