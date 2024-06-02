@@ -26,7 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingHorizontal="@dimen/padding_large"
-            android:paddingBottom="12dp"
+            android:paddingVertical="12dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -38,7 +38,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/my_chatting_room"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/btn_alarm"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -48,11 +47,11 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_gravity="end"
+                android:layout_marginTop="2dp"
                 android:background="@android:color/transparent"
+                android:onClick="@{() -> vm.navigateToAlarmCheck()}"
                 android:scaleType="fitCenter"
                 android:src="@drawable/icon_alarm"
-                android:onClick="@{() -> vm.navigateToAlarmCheck()}"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 

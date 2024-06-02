@@ -8,7 +8,7 @@ data class ChallengeListResponse(
 
 data class ChallengeListItem(
     val challengeInfo: ChallengeInfo,
-    val challengeSimpleTags: ChallengeSimpleTags
+    val challengeTags: ChallengeSimpleTags
 )
 
 data class ChallengeInfo(

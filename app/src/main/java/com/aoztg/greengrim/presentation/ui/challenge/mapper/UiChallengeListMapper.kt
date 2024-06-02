@@ -14,7 +14,7 @@ fun ChallengeListResponse.toUiChallengeList(onItemClicked: (Long) -> Unit): UiCh
                 id = it.challengeInfo.id,
                 imgUrl = it.challengeInfo.imgUrl,
                 title = it.challengeInfo.title,
-                keywords = it.challengeSimpleTags,
+                keywords = it.challengeTags,
                 onItemClicked = onItemClicked
             )
         }
