@@ -10,11 +10,13 @@ import android.os.Looper
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
+import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.ActivitySplashBinding
 import com.aoztg.greengrim.presentation.base.BaseActivity
 import com.aoztg.greengrim.presentation.customview.PermissionDialog
 import com.aoztg.greengrim.presentation.ui.intro.IntroActivity
 import com.aoztg.greengrim.presentation.ui.main.MainActivity
+import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -46,6 +48,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(ActivitySplashBinding
         super.onCreate(savedInstanceState)
 
         initEventObserve()
+        Glide.with(this).load(R.raw.splash).into(binding.ivSplash)
 
         permissionDialog = PermissionDialog(this) {
             checkPermission()
