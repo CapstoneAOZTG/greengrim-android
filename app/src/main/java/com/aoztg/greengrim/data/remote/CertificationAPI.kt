@@ -9,6 +9,7 @@ import com.aoztg.greengrim.data.model.response.CreateCertificationResponse
 import com.aoztg.greengrim.data.model.response.MyCertificationListResponse
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
@@ -68,7 +69,7 @@ interface CertificationAPI {
         @Body params: CreateCertificationRequest
     ): Response<CreateCertificationResponse>
 
-    @POST("/visitor/certifications/{id}")
+    @DELETE("/visitor/certifications/{id}")
     suspend fun deleteCertification(
         @Path("id") id: Long
     ): Response<Unit>

@@ -39,22 +39,26 @@ class AlarmDataViewHolder(private val binding: ItemAlarmListBinding) :
 
     fun bind(item: UiAlarmData, listener: AlarmClickListener?) {
         binding.item = item
-        when (item.type) {
-            "POINT_CERTIFICATION", "POINT_VERIFICATION" -> {
-                listener?.navigateToCertificationDetail(item.resourceId)
-            }
 
-            "CHALLENGE_SUCCESS" -> {
-                listener?.navigateToChallengeDetail(item.resourceId)
-            }
+        binding.root.setOnClickListener {
+            when (item.type) {
+                "POINT_CERTIFICATION", "POINT_VERIFICATION" -> {
+                    listener?.navigateToCertificationDetail(item.resourceId)
+                }
 
-            "NFT_LIKE", "NFT_EXCHANGE" -> {
-                listener?.navigateToNftDetail(item.resourceId)
-            }
+                "CHALLENGE_SUCCESS" -> {
+                    listener?.navigateToChallengeDetail(item.resourceId)
+                }
 
-            "NEW_ISSUE" -> {
-                listener?.navigateToIssueDetail(item.resourceId)
+                "NFT_LIKE", "NFT_EXCHANGE" -> {
+                    listener?.navigateToNftDetail(item.resourceId)
+                }
+
+                "NEW_ISSUE" -> {
+                    listener?.navigateToIssueDetail(item.resourceId)
+                }
             }
         }
+
     }
 }

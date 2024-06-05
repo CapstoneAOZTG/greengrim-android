@@ -2,13 +2,17 @@ package com.aoztg.greengrim.presentation.ui.global.alarm
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentAlarmCheckBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
 import com.aoztg.greengrim.presentation.ui.global.adapter.AlarmAdapter
 import com.aoztg.greengrim.presentation.ui.global.adapter.AlarmClickListener
+import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 import com.aoztg.greengrim.presentation.ui.toCertificationDetail
 import com.aoztg.greengrim.presentation.ui.toChallengeDetail
 import com.aoztg.greengrim.presentation.ui.toNftDetail
@@ -20,14 +24,20 @@ class AlarmCheckFragment : BaseFragment<FragmentAlarmCheckBinding>(R.layout.frag
 
 
     private val viewModel: AlarmCheckViewModel by viewModels()
+    private val parentViewModel: MainViewModel by activityViewModels()
+    private var adapter: AlarmAdapter? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        parentViewModel.hideBNV()
+        adapter = AlarmAdapter()
+        adapter?.setOnItemClickListener(this)
         binding.rvAlarmList.adapter = AlarmAdapter()
         binding.vm = viewModel
         viewModel.getAlarmList()
         initEventObserve()
+        recyclerListener()
     }
 
     private fun initEventObserve() {
@@ -38,6 +48,23 @@ class AlarmCheckFragment : BaseFragment<FragmentAlarmCheckBinding>(R.layout.frag
                 }
             }
         }
+    }
+
+    private fun recyclerListener() {
+        binding.rvAlarmList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                val lastVisibleItemPosition =
+                    (recyclerView.layoutManager as LinearLayoutManager).findLastCompletelyVisibleItemPosition()
+                val itemTotalCount = recyclerView.adapter?.itemCount?.minus(1)
+
+                if (lastVisibleItemPosition == itemTotalCount) {
+                    viewModel.getAlarmList()
+                }
+            }
+        })
     }
 
     override fun navigateToCertificationDetail(id: Long) {

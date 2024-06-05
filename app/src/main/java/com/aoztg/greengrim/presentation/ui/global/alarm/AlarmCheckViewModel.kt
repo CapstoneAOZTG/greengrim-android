@@ -46,7 +46,7 @@ class AlarmCheckViewModel @Inject constructor(
                         is BaseState.Success -> {
                             _uiState.update { state ->
                                 state.copy(
-                                    uiAlarmData = it.body.result.map { data ->
+                                    uiAlarmData = uiState.value.uiAlarmData + it.body.result.map { data ->
                                         data.toUiAlarmData()
                                     },
                                     hasNext = it.body.hasNext,

@@ -146,7 +146,7 @@ class ChatRoomViewModel @Inject constructor(
         if (uiState.value.hasNext) {
             viewModelScope.launch {
                 when (val response =
-                    chatRepository.getChatMessage(chatRoomId, uiState.value.page, 20)) {
+                    chatRepository.getChatMessage(chatRoomId, uiState.value.page, 40)) {
                     is BaseState.Success -> {
 
                         _uiState.update { state ->
@@ -184,6 +184,13 @@ class ChatRoomViewModel @Inject constructor(
 
             if (newMessages.first().sentDate != newMessage.sentDate) {
                 newMessages.add(0, UiChatMessage(type = DATE, message = newMessage.sentDate))
+            }
+        }
+
+        if (newMessages.size > 0 && newMessages.first().sentTime.isNotBlank()) {
+
+            if (newMessages.first().senderId == newMessage.senderId && newMessages.first().sentTime == newMessage.sentTime) {
+                newMessages.first().sentTime = ""
             }
         }
 

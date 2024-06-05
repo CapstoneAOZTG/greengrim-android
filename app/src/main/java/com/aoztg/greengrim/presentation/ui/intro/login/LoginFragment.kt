@@ -68,10 +68,6 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(R.layout.fragment_login
 
     private fun setBtnListener() {
         with(binding) {
-            btnTestLogin.setOnClickListener {
-                viewModel.testerLogin()
-            }
-
             btnGoogleLogin.setOnClickListener {
                 googleLogin()
             }
@@ -191,7 +187,6 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(R.layout.fragment_login
     // 네이버 유저정보 콜백
     private val profileCallback = object : NidProfileCallback<NidProfileResponse> {
         override fun onSuccess(result: NidProfileResponse) {
-            Log.d(TAG, result.profile.toString())
 
             EmailData.email = result.profile?.email.toString()
             viewModel.startLogin(result.profile?.email.toString(), NAVER)
