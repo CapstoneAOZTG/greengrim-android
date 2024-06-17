@@ -5,7 +5,7 @@ data class RecentIssueResponse(
 )
 
 data class IssueItem(
+    val id: Long,
     val title: String,
-    val imgUrl: String,
-    val url: String
+    val iconImgUrl: String
 )

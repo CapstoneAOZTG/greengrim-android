@@ -333,6 +333,16 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/indicator_hot_nft" />
 
+                <ImageButton
+                    android:id="@+id/btn_see_more_issues"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:onClick="@{() -> vm.navigateToIssueList()}"
+                    android:src="@drawable/icon_see_more"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_detail_recent_issue"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
                 <TextView
                     android:id="@+id/tv_detail_recent_issue"
                     style="@style/TextGgSmallGrey1"

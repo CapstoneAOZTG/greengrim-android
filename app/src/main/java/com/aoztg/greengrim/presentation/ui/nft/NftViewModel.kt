@@ -1,6 +1,5 @@
 package com.aoztg.greengrim.presentation.ui.nft
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.R
@@ -9,11 +8,9 @@ import com.aoztg.greengrim.data.model.request.NftLikeRequest
 import com.aoztg.greengrim.data.repository.MemberRepository
 import com.aoztg.greengrim.data.repository.NftRepository
 import com.aoztg.greengrim.presentation.customview.NftSortType
-import com.aoztg.greengrim.presentation.ui.mypage.MyPageEvent
 import com.aoztg.greengrim.presentation.ui.nft.mapper.toUiNftItem
 import com.aoztg.greengrim.presentation.ui.nft.model.UiNftCategory
 import com.aoztg.greengrim.presentation.ui.nft.model.UiNftItem
-import com.aoztg.greengrim.presentation.util.Constants.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -29,7 +26,7 @@ data class NftUiState(
     val nftCategory: List<UiNftCategory> = emptyList(),
     val nftList: List<UiNftItem> = emptyList(),
     val sortType: NftSortType = NftSortType.DESC,
-    val page: Int = 0,
+    val page: Int = -1,
     val hasNext: Boolean = true,
     val hasWallet: Boolean = false
 )
@@ -42,7 +39,7 @@ sealed class NftEvent {
     object DismissLoading : NftEvent()
     data class NavigateToNftCollectionList(val select: String) : NftEvent()
     object NavigateToExchangeNft : NftEvent()
-    object ShowHeartAnim: NftEvent()
+    object ShowHeartAnim : NftEvent()
 }
 
 @HiltViewModel
@@ -106,6 +103,13 @@ class NftViewModel @Inject constructor(
     fun getNftList(option: Int) {
         if (uiState.value.hasNext) {
             viewModelScope.launch {
+
+                _uiState.update { state ->
+                    state.copy(
+                        page = uiState.value.page + 1
+                    )
+                }
+
                 nftRepository.getExchangedNftList(
                     uiState.value.page,
                     10,
@@ -120,7 +124,6 @@ class NftViewModel @Inject constructor(
                                 state.copy(
                                     nftList = if (option == NEXT_PAGE) uiState.value.nftList + newList else newList,
                                     hasNext = it.body.hasNext,
-                                    page = it.body.page + 1
                                 )
                             }
                         }
@@ -174,7 +177,7 @@ class NftViewModel @Inject constructor(
                             state.copy(
                                 nftList = uiState.value.nftList.map { data ->
                                     if (data.id == id) {
-                                        if(!data.isLiked){
+                                        if (!data.isLiked) {
                                             showAnim = true
                                         }
                                         data.copy(
@@ -187,7 +190,7 @@ class NftViewModel @Inject constructor(
                             )
                         }
 
-                        if(showAnim){
+                        if (showAnim) {
                             _events.emit(NftEvent.ShowHeartAnim)
                         }
 
@@ -222,7 +225,7 @@ class NftViewModel @Inject constructor(
         _uiState.value = _uiState.value.copy(
             hasNext = true,
             sortType = type,
-            page = 0
+            page = -1
         )
 
         getNftList(NEW)

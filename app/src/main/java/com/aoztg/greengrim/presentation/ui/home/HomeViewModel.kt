@@ -39,13 +39,14 @@ sealed class HomeEvents {
     data class NavigateToChallengeDetail(val id: Long) : HomeEvents()
     data class ShowToastMessage(val msg: String) : HomeEvents()
     data class ShowSnackMessage(val msg: String) : HomeEvents()
-    data class NavigateToWebView(val link: String) : HomeEvents()
+    data class NavigateToIssueDetail(val id: Long) : HomeEvents()
     object ShowLoading : HomeEvents()
     object DismissLoading : HomeEvents()
     data class NavigateToNftDetail(val id: Long) : HomeEvents()
     object NavigateToNftList : HomeEvents()
     object NavigateToHotChallengeList : HomeEvents()
-    object NavigateToAlarmCheck: HomeEvents()
+    object NavigateToAlarmCheck : HomeEvents()
+    object NavigateToIssueList: HomeEvents()
 }
 
 @HiltViewModel
@@ -139,14 +140,14 @@ class HomeViewModel @Inject constructor(
 
     private fun getRecentIssues() {
         viewModelScope.launch {
-            memberRepository.getRecentIssue().let {
+            memberRepository.getHomeIssues().let {
                 when (it) {
                     is BaseState.Success -> {
                         _uiState.update { state ->
                             state.copy(
                                 uiRecentIssuesList = it.body.issueInfos.map { data ->
                                     data.toUiRecentIssue(
-                                        ::navigateToWebView
+                                        ::navigateToIssueDetail
                                     )
                                 }
                             )
@@ -180,9 +181,9 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun navigateToWebView(link: String) {
+    private fun navigateToIssueDetail(id: Long) {
         viewModelScope.launch {
-            _events.emit(HomeEvents.NavigateToWebView(link))
+            _events.emit(HomeEvents.NavigateToIssueDetail(id))
         }
     }
 
@@ -204,7 +205,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun navigateToAlarmCheck(){
+    fun navigateToAlarmCheck() {
         viewModelScope.launch {
             _events.emit(HomeEvents.NavigateToAlarmCheck)
         }
@@ -213,6 +214,12 @@ class HomeViewModel @Inject constructor(
     fun navigateToHotChallengeList() {
         viewModelScope.launch {
             _events.emit(HomeEvents.NavigateToHotChallengeList)
+        }
+    }
+
+    fun navigateToIssueList(){
+        viewModelScope.launch {
+            _events.emit(HomeEvents.NavigateToIssueList)
         }
     }
 

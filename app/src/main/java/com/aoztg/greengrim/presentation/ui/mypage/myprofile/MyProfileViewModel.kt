@@ -9,6 +9,7 @@ import com.aoztg.greengrim.data.repository.MemberRepository
 import com.aoztg.greengrim.data.repository.NftRepository
 import com.aoztg.greengrim.presentation.customview.ChallengeSortType
 import com.aoztg.greengrim.presentation.customview.NftSortType
+import com.aoztg.greengrim.presentation.ui.DataState
 import com.aoztg.greengrim.presentation.ui.challenge.list.ChallengeListViewModel
 import com.aoztg.greengrim.presentation.ui.challenge.mapper.toUiChallengeList
 import com.aoztg.greengrim.presentation.ui.challenge.model.UiChallengeRoom
@@ -48,6 +49,9 @@ data class MyProfileUiState(
     val certificationDateList: List<LocalDate> = emptyList(),
     val certificationList: List<UiMyCertification> = emptyList(),
     val nftList: List<UiNftItem> = emptyList(),
+    val challengeDataState: DataState = DataState.BEFORE,
+    val nftDataState: DataState = DataState.BEFORE,
+    val certificationDataState: DataState = DataState.BEFORE
 )
 
 sealed class MyProfileEvent {
@@ -130,12 +134,12 @@ class MyProfileViewModel @Inject constructor(
                 when (it) {
                     is BaseState.Success -> {
                         val newBody = it.body.toUiMyInfo()
-                        if(!newBody.compareInfo(uiState.value.uiMyInfo)){
+                        if (!newBody.compareInfo(uiState.value.uiMyInfo)) {
                             _uiState.update { state ->
                                 state.copy(
                                     uiMyInfo = uiState.value.uiMyInfo.copy(
                                         id = newBody.id,
-                                        nickName =  newBody.nickName,
+                                        nickName = newBody.nickName,
                                         profileImgUrl = newBody.profileImgUrl,
                                         introduction = newBody.introduction,
                                         myPoint = newBody.myPoint,
@@ -171,6 +175,12 @@ class MyProfileViewModel @Inject constructor(
                                     uiChallengeRoom = if (option == NEXT_PAGE) _uiState.value.uiChallengeRoom + uiData.result else uiData.result,
                                     hasNext = uiData.hasNext,
                                     page = uiData.page + 1,
+                                )
+                            }
+
+                            _uiState.update { state ->
+                                state.copy(
+                                    challengeDataState = if (uiState.value.uiChallengeRoom.isNotEmpty()) DataState.HAVE_DATA else DataState.NO_DATA
                                 )
                             }
                         }
@@ -250,6 +260,12 @@ class MyProfileViewModel @Inject constructor(
                                     page = uiData.page + 1,
                                 )
                             }
+
+                            _uiState.update { state ->
+                                state.copy(
+                                    certificationDataState = if (uiState.value.certificationList.isNotEmpty()) DataState.HAVE_DATA else DataState.NO_DATA
+                                )
+                            }
                         }
 
                         is BaseState.Error -> {
@@ -323,12 +339,23 @@ class MyProfileViewModel @Inject constructor(
                     when (it) {
                         is BaseState.Success -> {
                             val uiData =
-                                it.body.result.map { data -> data.toUiNftItem(::navigateToNftDetail, ::clickLike) }
+                                it.body.result.map { data ->
+                                    data.toUiNftItem(
+                                        ::navigateToNftDetail,
+                                        ::clickLike
+                                    )
+                                }
                             _uiState.update { state ->
                                 state.copy(
                                     nftList = if (option == ChallengeListViewModel.ORIGINAL) uiState.value.nftList + uiData else uiData,
                                     hasNext = it.body.hasNext,
                                     page = it.body.page + 1,
+                                )
+                            }
+
+                            _uiState.update { state ->
+                                state.copy(
+                                    nftDataState = if (uiState.value.nftList.isNotEmpty()) DataState.HAVE_DATA else DataState.NO_DATA
                                 )
                             }
                         }
@@ -340,7 +367,7 @@ class MyProfileViewModel @Inject constructor(
         }
     }
 
-    private fun clickLike(id: Long){
+    private fun clickLike(id: Long) {
 
     }
 
@@ -356,31 +383,31 @@ class MyProfileViewModel @Inject constructor(
         }
     }
 
-    fun navigateToBack(){
+    fun navigateToBack() {
         viewModelScope.launch {
             _event.emit(MyProfileEvent.NavigateToBack)
         }
     }
 
-    fun navigateToEditProfile(){
+    fun navigateToEditProfile() {
         viewModelScope.launch {
             _event.emit(MyProfileEvent.NavigateToEditProfile)
         }
     }
 
-    fun navigateToChatList(){
+    fun navigateToChatList() {
         viewModelScope.launch {
             _event.emit(MyProfileEvent.NavigateToChatList)
         }
     }
 
-    fun navigateToChallengeCategory(){
+    fun navigateToChallengeCategory() {
         viewModelScope.launch {
             _event.emit(MyProfileEvent.NavigateToChallengeCategory)
         }
     }
 
-    fun navigateToNft(){
+    fun navigateToNft() {
         viewModelScope.launch {
             _event.emit(MyProfileEvent.NavigateToNft)
         }

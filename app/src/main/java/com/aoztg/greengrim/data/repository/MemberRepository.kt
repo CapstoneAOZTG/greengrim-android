@@ -15,9 +15,15 @@ import com.aoztg.greengrim.data.model.response.GetProfileResponse
 import com.aoztg.greengrim.data.model.response.HomeMyInfoResponse
 import com.aoztg.greengrim.data.model.response.MyInfoResponse
 import com.aoztg.greengrim.data.model.response.MyPointResponse
+import com.aoztg.greengrim.data.model.response.RecentIssueDetailResponse
+import com.aoztg.greengrim.data.model.response.RecentIssueLIstResponse
 import com.aoztg.greengrim.data.model.response.RecentIssueResponse
 import com.aoztg.greengrim.data.model.response.TokenData
 import com.aoztg.greengrim.data.model.response.WalletInfoResponse
+import retrofit2.Response
+import retrofit2.http.GET
+import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface MemberRepository {
 
@@ -70,7 +76,16 @@ interface MemberRepository {
 
     suspend fun getHomeMyInfo(): BaseState<HomeMyInfoResponse>
 
-    suspend fun getRecentIssue(): BaseState<RecentIssueResponse>
+    suspend fun getHomeIssues(): BaseState<RecentIssueResponse>
+
+    suspend fun getIssueList(
+        page: Int,
+        size: Int
+    ): BaseState<RecentIssueLIstResponse>
+
+    suspend fun getIssueDetail(
+        id: Long,
+    ): BaseState<RecentIssueDetailResponse>
 
     suspend fun refreshToken(
         refreshToken: String

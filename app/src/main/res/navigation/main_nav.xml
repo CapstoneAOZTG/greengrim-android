@@ -13,6 +13,12 @@
         <action
             android:id="@+id/action_home_fragment_to_hotChallengeListFragment"
             app:destination="@id/hotChallengeListFragment" />
+        <action
+            android:id="@+id/action_home_fragment_to_recentIssueDetailFragment"
+            app:destination="@id/recentIssueDetailFragment" />
+        <action
+            android:id="@+id/action_home_fragment_to_recentIssueListFragment"
+            app:destination="@id/recentIssueListFragment" />
     </fragment>
 
     <fragment
@@ -464,6 +470,23 @@
 
     </fragment>
 
+    <fragment
+        android:id="@+id/recentIssueDetailFragment"
+        android:name="com.aoztg.greengrim.presentation.ui.home.issue.RecentIssueDetailFragment"
+        android:label="RecentIssueDetailFragment" >
+
+        <argument
+            app:argType="long"
+            android:name="id"/>
+
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/recentIssueListFragment"
+        android:name="com.aoztg.greengrim.presentation.ui.home.issue.RecentIssueListFragment"
+        android:label="RecentIssueListFragment" />
+
     <action
         android:id="@+id/action_global_to_attendCheckFragment"
         app:destination="@id/attend_check_fragment" />
@@ -503,5 +526,7 @@
     <action
         android:id="@+id/action_global_to_nftFragment"
         app:destination="@id/nft_fragment"/>
+
+
 
 </navigation>

@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.repository.ChallengeRepository
 import com.aoztg.greengrim.presentation.customview.ChallengeSortType
+import com.aoztg.greengrim.presentation.ui.DataState
 import com.aoztg.greengrim.presentation.ui.challenge.mapper.toUiChallengeList
 import com.aoztg.greengrim.presentation.ui.challenge.model.UiChallengeRoom
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,6 +25,7 @@ data class ChallengeListUiState(
     val challengeSortType: ChallengeSortType = ChallengeSortType.DESC,
     val page: Int = 0,
     val hasNext: Boolean = true,
+    val challengeDataState : DataState = DataState.BEFORE
 )
 
 sealed class ChallengeListEvents {
@@ -75,6 +77,12 @@ class ChallengeListViewModel @Inject constructor(
                                     uiChallengeRoom = if (option == ORIGINAL) uiState.value.uiChallengeRoom + uiData.result else uiData.result,
                                     hasNext = uiData.hasNext,
                                     page = uiData.page + 1,
+                                )
+                            }
+
+                            _uiState.update { state ->
+                                state.copy(
+                                    challengeDataState = if(uiState.value.uiChallengeRoom.isEmpty()) DataState.NO_DATA else DataState.HAVE_DATA
                                 )
                             }
 

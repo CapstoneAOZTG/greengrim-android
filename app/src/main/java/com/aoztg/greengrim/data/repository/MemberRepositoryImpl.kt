@@ -15,6 +15,8 @@ import com.aoztg.greengrim.data.model.response.GetProfileResponse
 import com.aoztg.greengrim.data.model.response.HomeMyInfoResponse
 import com.aoztg.greengrim.data.model.response.MyInfoResponse
 import com.aoztg.greengrim.data.model.response.MyPointResponse
+import com.aoztg.greengrim.data.model.response.RecentIssueDetailResponse
+import com.aoztg.greengrim.data.model.response.RecentIssueLIstResponse
 import com.aoztg.greengrim.data.model.response.RecentIssueResponse
 import com.aoztg.greengrim.data.model.response.TokenData
 import com.aoztg.greengrim.data.model.response.WalletInfoResponse
@@ -69,8 +71,14 @@ class MemberRepositoryImpl @Inject constructor(private val api: MemberAPI) : Mem
     override suspend fun getHomeMyInfo(): BaseState<HomeMyInfoResponse> =
         runRemote { api.getHomeMyInfo() }
 
-    override suspend fun getRecentIssue(): BaseState<RecentIssueResponse> =
+    override suspend fun getHomeIssues(): BaseState<RecentIssueResponse> =
         runRemote { api.getHomeIssues() }
+
+    override suspend fun getIssueDetail(id: Long): BaseState<RecentIssueDetailResponse> =
+        runRemote { api.getIssueDetail(id) }
+
+    override suspend fun getIssueList(page: Int, size: Int): BaseState<RecentIssueLIstResponse> =
+        runRemote { api.getIssueList(page, size) }
 
     override suspend fun refreshToken(refreshToken: String): BaseState<TokenData> =
         runRemote { api.refreshToken(refreshToken) }

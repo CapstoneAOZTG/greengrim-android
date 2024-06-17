@@ -7,6 +7,8 @@
 
         <import type="android.view.View" />
 
+        <import type="com.aoztg.greengrim.presentation.ui.DataState" />
+
         <variable
             name="vm"
             type="com.aoztg.greengrim.presentation.ui.challenge.list.ChallengeListViewModel" />
@@ -47,10 +49,9 @@
                 android:onClick="@{() -> vm.navigateToSearchChallenge()}"
                 android:scaleType="fitCenter"
                 android:src="@drawable/icon_search"
-                app:layout_constraintEnd_toStartOf="@id/btn_alarm"
-                app:layout_constraintTop_toTopOf="@id/btn_alarm"
                 app:layout_constraintBottom_toBottomOf="@id/btn_alarm"
-                />
+                app:layout_constraintEnd_toStartOf="@id/btn_alarm"
+                app:layout_constraintTop_toTopOf="@id/btn_alarm" />
 
             <ImageButton
                 android:id="@+id/btn_alarm"
@@ -97,7 +98,7 @@
             android:text="아직 챌린지가 없어요\n첫 챌린지를 생성해보세요!"
             android:textAlignment="center"
             android:textColor="@color/gg_grey5"
-            android:visibility="@{vm.uiState.uiChallengeRoom.empty ? View.VISIBLE : View.INVISIBLE}"
+            android:visibility="@{vm.uiState.challengeDataState == DataState.NO_DATA ? View.VISIBLE : View.INVISIBLE}"
             app:layout_constraintBottom_toTopOf="@id/btn_navigate_to_create_challenge"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -118,7 +119,7 @@
             android:text="챌린지 생성하기"
             android:textColor="@color/gg_green"
             android:textSize="14dp"
-            android:visibility="@{vm.uiState.uiChallengeRoom.empty ? View.VISIBLE : View.INVISIBLE}"
+            android:visibility="@{vm.uiState.challengeDataState == DataState.NO_DATA ? View.VISIBLE : View.INVISIBLE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

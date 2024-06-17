@@ -9,6 +9,8 @@
 
         <import type="com.aoztg.greengrim.presentation.ui.mypage.myprofile.ProfileFilter" />
 
+        <import type="com.aoztg.greengrim.presentation.ui.DataState" />
+
         <import type="androidx.core.content.ContextCompat" />
 
         <import type="com.aoztg.greengrim.R" />
@@ -213,7 +215,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="150dp"
                         android:src="@drawable/icon_sad"
-                        android:visibility="@{vm.uiState.uiChallengeRoom.empty ? View.VISIBLE : View.INVISIBLE}"
+                        android:visibility="@{vm.uiState.challengeDataState == DataState.NO_DATA ? View.VISIBLE : View.INVISIBLE}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/tv_challenge_filter" />
@@ -227,7 +229,7 @@
                         android:text="아직 참여중인 챌린지가 없어요"
                         android:textAlignment="center"
                         android:textColor="@color/gg_grey5"
-                        android:visibility="@{vm.uiState.uiChallengeRoom.empty ? View.VISIBLE : View.INVISIBLE}"
+                        android:visibility="@{vm.uiState.challengeDataState == DataState.NO_DATA ? View.VISIBLE : View.INVISIBLE}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/iv_no_challenge" />
@@ -353,7 +355,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="100dp"
                         android:src="@drawable/icon_sad"
-                        android:visibility="@{vm.uiState.certificationList.empty ? View.VISIBLE : View.INVISIBLE}"
+                        android:visibility="@{vm.uiState.certificationDataState == DataState.NO_DATA ? View.VISIBLE : View.INVISIBLE}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/divider_calendar" />
@@ -367,7 +369,7 @@
                         android:text="아직 인증이 없어요"
                         android:textAlignment="center"
                         android:textColor="@color/gg_grey5"
-                        android:visibility="@{vm.uiState.certificationList.empty ? View.VISIBLE : View.INVISIBLE}"
+                        android:visibility="@{vm.uiState.certificationDataState == DataState.NO_DATA ? View.VISIBLE : View.INVISIBLE}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/iv_no_certification" />
@@ -419,7 +421,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="150dp"
                         android:src="@drawable/icon_sad"
-                        android:visibility="@{vm.uiState.nftList.empty ? View.VISIBLE : View.INVISIBLE}"
+                        android:visibility="@{vm.uiState.nftDataState == DataState.NO_DATA ? View.VISIBLE : View.INVISIBLE}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/tv_nft_filter" />
@@ -433,7 +435,7 @@
                         android:text="아직 보유 중인 NFT가 없어요"
                         android:textAlignment="center"
                         android:textColor="@color/gg_grey5"
-                        android:visibility="@{vm.uiState.nftList.empty ? View.VISIBLE : View.INVISIBLE}"
+                        android:visibility="@{vm.uiState.nftDataState == DataState.NO_DATA ? View.VISIBLE : View.INVISIBLE}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/iv_no_nft" />

@@ -12,6 +12,7 @@ import com.aoztg.greengrim.presentation.customview.AccusationContentType
 import com.aoztg.greengrim.presentation.customview.AccusationType
 import com.aoztg.greengrim.presentation.customview.ChallengeSortType
 import com.aoztg.greengrim.presentation.customview.NftSortType
+import com.aoztg.greengrim.presentation.ui.DataState
 import com.aoztg.greengrim.presentation.ui.challenge.list.ChallengeListViewModel
 import com.aoztg.greengrim.presentation.ui.challenge.mapper.toUiChallengeList
 import com.aoztg.greengrim.presentation.ui.challenge.model.UiChallengeRoom
@@ -53,6 +54,9 @@ data class ProfileUiState(
     val certificationDateList: List<LocalDate> = emptyList(),
     val certificationList: List<UiMyCertification> = emptyList(),
     val nftList: List<UiNftItem> = emptyList(),
+    val challengeDataState: DataState = DataState.BEFORE,
+    val nftDataState: DataState = DataState.BEFORE,
+    val certificationDataState: DataState = DataState.BEFORE
 )
 
 sealed class ProfileEvent {
@@ -177,6 +181,12 @@ class ProfileViewModel @Inject constructor(
                                     page = uiData.page + 1,
                                 )
                             }
+
+                            _uiState.update { state ->
+                                state.copy(
+                                    challengeDataState = if (uiState.value.uiChallengeRoom.isNotEmpty()) DataState.HAVE_DATA else DataState.NO_DATA
+                                )
+                            }
                         }
 
                         is BaseState.Error -> {
@@ -253,6 +263,12 @@ class ProfileViewModel @Inject constructor(
                                     certificationList = if (option == NEXT_PAGE) _uiState.value.certificationList + uiData.result else uiData.result,
                                     hasNext = uiData.hasNext,
                                     page = uiData.page + 1,
+                                )
+                            }
+
+                            _uiState.update { state ->
+                                state.copy(
+                                    certificationDataState = if (uiState.value.certificationList.isNotEmpty()) DataState.HAVE_DATA else DataState.NO_DATA
                                 )
                             }
                         }
@@ -340,6 +356,12 @@ class ProfileViewModel @Inject constructor(
                                     nftList = if (option == ChallengeListViewModel.ORIGINAL) uiState.value.nftList + uiData else uiData,
                                     hasNext = it.body.hasNext,
                                     page = it.body.page + 1,
+                                )
+                            }
+
+                            _uiState.update { state ->
+                                state.copy(
+                                    nftDataState = if (uiState.value.nftList.isNotEmpty()) DataState.HAVE_DATA else DataState.NO_DATA
                                 )
                             }
                         }

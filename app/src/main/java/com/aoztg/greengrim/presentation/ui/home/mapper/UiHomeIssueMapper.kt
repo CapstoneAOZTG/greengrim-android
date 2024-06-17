@@ -5,10 +5,10 @@ import com.aoztg.greengrim.presentation.ui.home.model.UiRecentIssues
 
 
 fun IssueItem.toUiRecentIssue(
-    onItemClickListener: (String) -> Unit
+    onItemClickListener: (Long) -> Unit
 ): UiRecentIssues = UiRecentIssues(
-    iconImg = imgUrl,
+    id = id,
+    iconImg = iconImgUrl,
     title = title,
-    url = url,
     itemClickListener = onItemClickListener
 )

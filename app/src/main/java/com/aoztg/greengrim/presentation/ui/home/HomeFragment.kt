@@ -89,11 +89,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
                     is HomeEvents.ShowLoading -> showLoading(requireContext())
                     is HomeEvents.DismissLoading -> dismissLoading()
                     is HomeEvents.ShowSnackMessage -> parentViewModel.showSnack(it.msg)
-                    is HomeEvents.NavigateToWebView -> findNavController().toWebView(it.link)
+                    is HomeEvents.NavigateToIssueDetail -> findNavController().toIssueDetail(it.id)
                     is HomeEvents.NavigateToNftDetail -> findNavController().toNftDetail(it.id)
                     is HomeEvents.NavigateToNftList -> findNavController().toNftFragment()
                     is HomeEvents.NavigateToHotChallengeList -> findNavController().toHotChallengeList()
                     is HomeEvents.NavigateToAlarmCheck -> findNavController().toAlarmCheck()
+                    is HomeEvents.NavigateToIssueList -> findNavController().toIssueList()
                 }
             }
         }
@@ -120,6 +121,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
     private fun NavController.toHotChallengeList() {
         val action = HomeFragmentDirections.actionHomeFragmentToHotChallengeListFragment()
+        navigate(action)
+    }
+
+    private fun NavController.toIssueDetail(id: Long) {
+        val action = HomeFragmentDirections.actionHomeFragmentToRecentIssueDetailFragment(id)
+        navigate(action)
+    }
+
+    private fun NavController.toIssueList() {
+        val action = HomeFragmentDirections.actionHomeFragmentToRecentIssueListFragment()
         navigate(action)
     }
 
