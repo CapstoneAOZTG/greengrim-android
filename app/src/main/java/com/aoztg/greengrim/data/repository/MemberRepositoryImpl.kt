@@ -8,15 +8,15 @@ import com.aoztg.greengrim.data.model.request.PatchProfileRequest
 import com.aoztg.greengrim.data.model.request.SignupRequest
 import com.aoztg.greengrim.data.model.request.WalletInfoRequest
 import com.aoztg.greengrim.data.model.response.AlarmListResponse
+import com.aoztg.greengrim.data.model.response.AuthData
 import com.aoztg.greengrim.data.model.response.CheckNickResponse
 import com.aoztg.greengrim.data.model.response.EventResponse
 import com.aoztg.greengrim.data.model.response.GetProfileResponse
 import com.aoztg.greengrim.data.model.response.HomeMyInfoResponse
-import com.aoztg.greengrim.data.model.response.LoginResponse
 import com.aoztg.greengrim.data.model.response.MyInfoResponse
 import com.aoztg.greengrim.data.model.response.MyPointResponse
 import com.aoztg.greengrim.data.model.response.RecentIssueResponse
-import com.aoztg.greengrim.data.model.response.SignupResponse
+import com.aoztg.greengrim.data.model.response.TokenData
 import com.aoztg.greengrim.data.model.response.WalletInfoResponse
 import com.aoztg.greengrim.data.model.runRemote
 import com.aoztg.greengrim.data.remote.MemberAPI
@@ -48,10 +48,10 @@ class MemberRepositoryImpl @Inject constructor(private val api: MemberAPI) : Mem
     override suspend fun editWallet(body: WalletInfoRequest): BaseState<Unit> =
         runRemote { api.editWallet(body) }
 
-    override suspend fun signup(data: SignupRequest): BaseState<SignupResponse> =
+    override suspend fun signup(data: SignupRequest): BaseState<AuthData> =
         runRemote { api.signup(data) }
 
-    override suspend fun login(data: LoginRequest): BaseState<LoginResponse> =
+    override suspend fun login(data: LoginRequest): BaseState<AuthData> =
         runRemote { api.login(data) }
 
     override suspend fun checkNick(data: CheckNickRequest): BaseState<CheckNickResponse> =
@@ -72,7 +72,7 @@ class MemberRepositoryImpl @Inject constructor(private val api: MemberAPI) : Mem
     override suspend fun getRecentIssue(): BaseState<RecentIssueResponse> =
         runRemote { api.getHomeIssues() }
 
-    override suspend fun refreshToken(refreshToken: String): BaseState<LoginResponse> =
+    override suspend fun refreshToken(refreshToken: String): BaseState<TokenData> =
         runRemote { api.refreshToken(refreshToken) }
 
     override suspend fun accusation(type: String, body: AccusationRequest): BaseState<Unit> =

@@ -114,7 +114,6 @@ class ChatRoomViewModel @Inject constructor(
                             _events.emit(ChatRoomEvents.ShowTodayCertification)
                             ChatRoomDialogState.stateMap[chatRoomId] = false
                         }
-
                     }
 
                     is BaseState.Error -> _events.emit(ChatRoomEvents.ShowSnackMessage(it.msg))
@@ -177,8 +176,7 @@ class ChatRoomViewModel @Inject constructor(
         message: ChatMessage
     ) {
         val newMessages = uiState.value.chatMessages.toMutableList()
-        val newMessage =
-            message.toUiChatMessage(memberId, ::navigateToCertificationDetail, ::navigateToProfile)
+        val newMessage = message.toUiChatMessage(memberId, ::navigateToCertificationDetail, ::navigateToProfile)
 
         if (newMessages.size > 0 && newMessages.first().sentDate.isNotBlank()) {
 

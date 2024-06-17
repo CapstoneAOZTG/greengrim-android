@@ -7,15 +7,15 @@ import com.aoztg.greengrim.data.model.request.PatchProfileRequest
 import com.aoztg.greengrim.data.model.request.SignupRequest
 import com.aoztg.greengrim.data.model.request.WalletInfoRequest
 import com.aoztg.greengrim.data.model.response.AlarmListResponse
+import com.aoztg.greengrim.data.model.response.AuthData
 import com.aoztg.greengrim.data.model.response.CheckNickResponse
 import com.aoztg.greengrim.data.model.response.EventResponse
 import com.aoztg.greengrim.data.model.response.GetProfileResponse
 import com.aoztg.greengrim.data.model.response.HomeMyInfoResponse
-import com.aoztg.greengrim.data.model.response.LoginResponse
 import com.aoztg.greengrim.data.model.response.MyInfoResponse
 import com.aoztg.greengrim.data.model.response.MyPointResponse
 import com.aoztg.greengrim.data.model.response.RecentIssueResponse
-import com.aoztg.greengrim.data.model.response.SignupResponse
+import com.aoztg.greengrim.data.model.response.TokenData
 import com.aoztg.greengrim.data.model.response.WalletInfoResponse
 import retrofit2.Response
 import retrofit2.http.Body
@@ -31,7 +31,7 @@ interface MemberAPI {
     @PATCH("/visitor/members/refresh")
     suspend fun refreshToken(
         @Header("refreshToken") refreshToken: String
-    ): Response<LoginResponse>
+    ): Response<TokenData>
 
     @GET("/visitor/fcm/subscribe")
     suspend fun subscribeFcm(): Response<Unit>
@@ -42,12 +42,12 @@ interface MemberAPI {
     @POST("/sign-up")
     suspend fun signup(
         @Body params: SignupRequest
-    ): Response<SignupResponse>
+    ): Response<AuthData>
 
     @POST("/login")
     suspend fun login(
         @Body params: LoginRequest
-    ): Response<LoginResponse>
+    ): Response<AuthData>
 
     @POST("/nick-name")
     suspend fun checkNick(

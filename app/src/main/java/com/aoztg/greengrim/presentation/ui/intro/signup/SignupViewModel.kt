@@ -154,9 +154,9 @@ class SignupViewModel @Inject constructor(
                 when (it) {
                     is BaseState.Success -> {
                         _events.emit(SignupEvents.DismissLoading)
-                        keyDataStoreManager.putAccessToken(it.body.accessToken)
-                        keyDataStoreManager.putRefreshToken(it.body.refreshToken)
-                        keyDataStoreManager.putMemberId(it.body.memberId)
+                        keyDataStoreManager.putAccessToken(it.body.tokenInfo.accessToken)
+                        keyDataStoreManager.putRefreshToken(it.body.tokenInfo.refreshToken)
+                        keyDataStoreManager.putMemberId(it.body.tokenInfo.memberId)
 
                         _events.emit(SignupEvents.ShowToastMessage("회원가입 완료!"))
                         _uiState.update { state ->

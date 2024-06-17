@@ -2,7 +2,6 @@ package com.aoztg.greengrim.presentation.ui.intro.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.aoztg.greengrim.BuildConfig
 import com.aoztg.greengrim.app.App
 import com.aoztg.greengrim.data.config.KeyDataStoreManager
 import com.aoztg.greengrim.data.model.BaseState
@@ -62,9 +61,9 @@ class LoginViewModel @Inject constructor(
             ).let {
                 when (it) {
                     is BaseState.Success -> {
-                        keyDataStoreManager.putAccessToken(it.body.accessToken)
-                        keyDataStoreManager.putRefreshToken(it.body.refreshToken)
-                        keyDataStoreManager.putMemberId(it.body.memberId)
+                        keyDataStoreManager.putAccessToken(it.body.tokenInfo.accessToken)
+                        keyDataStoreManager.putRefreshToken(it.body.tokenInfo.refreshToken)
+                        keyDataStoreManager.putMemberId(it.body.tokenInfo.memberId)
 
                         _uiState.update { state ->
                             state.copy(
@@ -89,18 +88,6 @@ class LoginViewModel @Inject constructor(
                         }
                     }
                 }
-            }
-        }
-    }
-
-    fun testerLogin() {
-        viewModelScope.launch {
-            keyDataStoreManager.putAccessToken(BuildConfig.MASTER_JWT)
-
-            _uiState.update { state ->
-                state.copy(
-                    loginState = LoginState.Success
-                )
             }
         }
     }

@@ -1,5 +1,6 @@
 package com.aoztg.greengrim.presentation.ui.nft
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.R
@@ -12,6 +13,7 @@ import com.aoztg.greengrim.presentation.ui.mypage.MyPageEvent
 import com.aoztg.greengrim.presentation.ui.nft.mapper.toUiNftItem
 import com.aoztg.greengrim.presentation.ui.nft.model.UiNftCategory
 import com.aoztg.greengrim.presentation.ui.nft.model.UiNftItem
+import com.aoztg.greengrim.presentation.util.Constants.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow

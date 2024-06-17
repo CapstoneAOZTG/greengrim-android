@@ -1,5 +1,6 @@
 package com.aoztg.greengrim.presentation.ui.global.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.AdapterView.OnItemClickListener
@@ -7,6 +8,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.aoztg.greengrim.databinding.ItemAlarmListBinding
 import com.aoztg.greengrim.presentation.ui.global.model.UiAlarmData
+import com.aoztg.greengrim.presentation.util.Constants.TAG
 import com.aoztg.greengrim.presentation.util.DefaultDiffUtil
 
 class AlarmAdapter :

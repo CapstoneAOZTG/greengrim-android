@@ -33,7 +33,7 @@ class AlarmCheckFragment : BaseFragment<FragmentAlarmCheckBinding>(R.layout.frag
         parentViewModel.hideBNV()
         adapter = AlarmAdapter()
         adapter?.setOnItemClickListener(this)
-        binding.rvAlarmList.adapter = AlarmAdapter()
+        binding.rvAlarmList.adapter = adapter
         binding.vm = viewModel
         viewModel.getAlarmList()
         initEventObserve()

@@ -5,7 +5,7 @@ import android.util.Log
 import com.aoztg.greengrim.BuildConfig
 import com.aoztg.greengrim.app.App.Companion.context
 import com.aoztg.greengrim.data.model.BaseState
-import com.aoztg.greengrim.data.model.response.LoginResponse
+import com.aoztg.greengrim.data.model.response.TokenData
 import com.aoztg.greengrim.data.model.runRemote
 import com.aoztg.greengrim.data.remote.MemberAPI
 import com.aoztg.greengrim.presentation.ui.intro.IntroActivity
@@ -86,7 +86,7 @@ class BearerInterceptor @Inject constructor(private val keyDataStoreManager: Key
         return response
     }
 
-    private suspend fun getNewAccessToken(refreshToken: String): BaseState<LoginResponse> {
+    private suspend fun getNewAccessToken(refreshToken: String): BaseState<TokenData> {
         val loggingInterceptor = HttpLoggingInterceptor()
         loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
         val okHttpClient = OkHttpClient.Builder().addInterceptor(loggingInterceptor).build()
