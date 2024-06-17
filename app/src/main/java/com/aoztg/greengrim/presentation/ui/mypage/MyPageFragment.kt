@@ -42,7 +42,7 @@ class MyPageFragment : BaseFragment<FragmentMypageBinding>(R.layout.fragment_myp
                         it.name,
                         it.totalPoint
                     )
-
+                    is MyPageEvent.NavigateToAnnounceList -> findNavController().toAnnounceList()
                     is MyPageEvent.NavigateToWebView -> findNavController().toWebView(it.url)
                     is MyPageEvent.NavigateToMyProfile -> findNavController().toMyProfile()
                     is MyPageEvent.NavigateToMySetting -> findNavController().toMySetting(it.hasWallet)
@@ -76,6 +76,11 @@ class MyPageFragment : BaseFragment<FragmentMypageBinding>(R.layout.fragment_myp
 
     private fun NavController.toMySetting(hasWallet: Boolean) {
         val action = MyPageFragmentDirections.actionMyPageFragmentToMySettingFragment(hasWallet)
+        navigate(action)
+    }
+
+    private fun NavController.toAnnounceList(){
+        val action = MyPageFragmentDirections.actionMyPageFragmentToAnnounceListFragment()
         navigate(action)
     }
 }

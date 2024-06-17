@@ -8,6 +8,8 @@ import com.aoztg.greengrim.data.model.request.PatchProfileRequest
 import com.aoztg.greengrim.data.model.request.SignupRequest
 import com.aoztg.greengrim.data.model.request.WalletInfoRequest
 import com.aoztg.greengrim.data.model.response.AlarmListResponse
+import com.aoztg.greengrim.data.model.response.AnnounceDetailResponse
+import com.aoztg.greengrim.data.model.response.AnnounceListItem
 import com.aoztg.greengrim.data.model.response.AuthData
 import com.aoztg.greengrim.data.model.response.CheckNickResponse
 import com.aoztg.greengrim.data.model.response.EventResponse
@@ -16,8 +18,8 @@ import com.aoztg.greengrim.data.model.response.HomeMyInfoResponse
 import com.aoztg.greengrim.data.model.response.MyInfoResponse
 import com.aoztg.greengrim.data.model.response.MyPointResponse
 import com.aoztg.greengrim.data.model.response.RecentIssueDetailResponse
-import com.aoztg.greengrim.data.model.response.RecentIssueLIstResponse
-import com.aoztg.greengrim.data.model.response.RecentIssueResponse
+import com.aoztg.greengrim.data.model.response.RecentIssueListResponse
+import com.aoztg.greengrim.data.model.response.HomeRecentIssueResponse
 import com.aoztg.greengrim.data.model.response.TokenData
 import com.aoztg.greengrim.data.model.response.WalletInfoResponse
 import com.aoztg.greengrim.data.model.runRemote
@@ -71,13 +73,13 @@ class MemberRepositoryImpl @Inject constructor(private val api: MemberAPI) : Mem
     override suspend fun getHomeMyInfo(): BaseState<HomeMyInfoResponse> =
         runRemote { api.getHomeMyInfo() }
 
-    override suspend fun getHomeIssues(): BaseState<RecentIssueResponse> =
+    override suspend fun getHomeIssues(): BaseState<HomeRecentIssueResponse> =
         runRemote { api.getHomeIssues() }
 
     override suspend fun getIssueDetail(id: Long): BaseState<RecentIssueDetailResponse> =
         runRemote { api.getIssueDetail(id) }
 
-    override suspend fun getIssueList(page: Int, size: Int): BaseState<RecentIssueLIstResponse> =
+    override suspend fun getIssueList(page: Int, size: Int): BaseState<RecentIssueListResponse> =
         runRemote { api.getIssueList(page, size) }
 
     override suspend fun refreshToken(refreshToken: String): BaseState<TokenData> =
@@ -95,4 +97,12 @@ class MemberRepositoryImpl @Inject constructor(private val api: MemberAPI) : Mem
             api.getAlarmList(page, size)
         }
 
+    override suspend fun getAnnounceDetail(id: Long): BaseState<AnnounceDetailResponse> =
+        runRemote {
+            api.getAnnounceDetail(id)
+        }
+
+    override suspend fun getAnnounceList(): BaseState<List<AnnounceListItem>> = runRemote {
+        api.getAnnounceList()
+    }
 }

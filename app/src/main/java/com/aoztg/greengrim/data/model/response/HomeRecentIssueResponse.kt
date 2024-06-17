@@ -1,6 +1,6 @@
 package com.aoztg.greengrim.data.model.response
 
-data class RecentIssueResponse(
+data class HomeRecentIssueResponse(
     val issueInfos: List<IssueItem>
 )
 

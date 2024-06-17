@@ -8,22 +8,20 @@ import com.aoztg.greengrim.data.model.request.PatchProfileRequest
 import com.aoztg.greengrim.data.model.request.SignupRequest
 import com.aoztg.greengrim.data.model.request.WalletInfoRequest
 import com.aoztg.greengrim.data.model.response.AlarmListResponse
+import com.aoztg.greengrim.data.model.response.AnnounceDetailResponse
+import com.aoztg.greengrim.data.model.response.AnnounceListItem
 import com.aoztg.greengrim.data.model.response.AuthData
 import com.aoztg.greengrim.data.model.response.CheckNickResponse
 import com.aoztg.greengrim.data.model.response.EventResponse
 import com.aoztg.greengrim.data.model.response.GetProfileResponse
 import com.aoztg.greengrim.data.model.response.HomeMyInfoResponse
+import com.aoztg.greengrim.data.model.response.HomeRecentIssueResponse
 import com.aoztg.greengrim.data.model.response.MyInfoResponse
 import com.aoztg.greengrim.data.model.response.MyPointResponse
 import com.aoztg.greengrim.data.model.response.RecentIssueDetailResponse
-import com.aoztg.greengrim.data.model.response.RecentIssueLIstResponse
-import com.aoztg.greengrim.data.model.response.RecentIssueResponse
+import com.aoztg.greengrim.data.model.response.RecentIssueListResponse
 import com.aoztg.greengrim.data.model.response.TokenData
 import com.aoztg.greengrim.data.model.response.WalletInfoResponse
-import retrofit2.Response
-import retrofit2.http.GET
-import retrofit2.http.Path
-import retrofit2.http.Query
 
 interface MemberRepository {
 
@@ -76,12 +74,12 @@ interface MemberRepository {
 
     suspend fun getHomeMyInfo(): BaseState<HomeMyInfoResponse>
 
-    suspend fun getHomeIssues(): BaseState<RecentIssueResponse>
+    suspend fun getHomeIssues(): BaseState<HomeRecentIssueResponse>
 
     suspend fun getIssueList(
         page: Int,
         size: Int
-    ): BaseState<RecentIssueLIstResponse>
+    ): BaseState<RecentIssueListResponse>
 
     suspend fun getIssueDetail(
         id: Long,
@@ -104,5 +102,12 @@ interface MemberRepository {
         page: Int,
         size: Int
     ): BaseState<AlarmListResponse>
+
+
+    suspend fun getAnnounceList(): BaseState<List<AnnounceListItem>>
+
+    suspend fun getAnnounceDetail(
+        id: Long
+    ): BaseState<AnnounceDetailResponse>
 
 }

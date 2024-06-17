@@ -11,7 +11,7 @@ import com.aoztg.greengrim.presentation.ui.home.mapper.toUiHotNftItem
 import com.aoztg.greengrim.presentation.ui.home.mapper.toUiRecentIssue
 import com.aoztg.greengrim.presentation.ui.home.model.UiHotChallenge
 import com.aoztg.greengrim.presentation.ui.home.model.UiHotNftItem
-import com.aoztg.greengrim.presentation.ui.home.model.UiRecentIssues
+import com.aoztg.greengrim.presentation.ui.home.model.UiHomeRecentIssue
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,7 +25,7 @@ import javax.inject.Inject
 
 data class HomeUiState(
     val uiHotChallengeList: List<UiHotChallenge> = emptyList(),
-    val uiRecentIssuesList: List<UiRecentIssues> = emptyList(),
+    val uiHomeRecentIssueList: List<UiHomeRecentIssue> = emptyList(),
     val uiHotNftList: List<UiHotNftItem> = emptyList(),
     val nickName: String = "",
     val carbonReduction: String = "",
@@ -145,7 +145,7 @@ class HomeViewModel @Inject constructor(
                     is BaseState.Success -> {
                         _uiState.update { state ->
                             state.copy(
-                                uiRecentIssuesList = it.body.issueInfos.map { data ->
+                                uiHomeRecentIssueList = it.body.issueInfos.map { data ->
                                     data.toUiRecentIssue(
                                         ::navigateToIssueDetail
                                     )

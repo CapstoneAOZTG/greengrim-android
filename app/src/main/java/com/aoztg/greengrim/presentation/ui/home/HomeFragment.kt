@@ -14,7 +14,7 @@ import com.aoztg.greengrim.presentation.base.BaseFragment
 import com.aoztg.greengrim.presentation.chatmanager.ChatManager
 import com.aoztg.greengrim.presentation.ui.home.adapter.HotChallengeAdapter
 import com.aoztg.greengrim.presentation.ui.home.adapter.HotNftAdapter
-import com.aoztg.greengrim.presentation.ui.home.adapter.RecentIssuesAdapter
+import com.aoztg.greengrim.presentation.ui.home.adapter.HomeRecentIssueAdapter
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 import com.aoztg.greengrim.presentation.ui.toAlarmCheck
 import com.aoztg.greengrim.presentation.ui.toChallengeDetail
@@ -62,8 +62,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
                     isHotChallengeSet = true
                 }
 
-                if (it.uiRecentIssuesList.isNotEmpty() && !isRecentIssueSet) {
-                    binding.rvRecentIssues.adapter = RecentIssuesAdapter(it.uiRecentIssuesList)
+                if (it.uiHomeRecentIssueList.isNotEmpty() && !isRecentIssueSet) {
+                    binding.rvRecentIssues.adapter = HomeRecentIssueAdapter(it.uiHomeRecentIssueList)
                     recyclerToViewPager(binding.rvRecentIssues, binding.indicatorRecentIssue)
                     isRecentIssueSet = true
                 }

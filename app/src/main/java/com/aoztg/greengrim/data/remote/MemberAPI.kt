@@ -7,16 +7,18 @@ import com.aoztg.greengrim.data.model.request.PatchProfileRequest
 import com.aoztg.greengrim.data.model.request.SignupRequest
 import com.aoztg.greengrim.data.model.request.WalletInfoRequest
 import com.aoztg.greengrim.data.model.response.AlarmListResponse
+import com.aoztg.greengrim.data.model.response.AnnounceDetailResponse
+import com.aoztg.greengrim.data.model.response.AnnounceListItem
 import com.aoztg.greengrim.data.model.response.AuthData
 import com.aoztg.greengrim.data.model.response.CheckNickResponse
 import com.aoztg.greengrim.data.model.response.EventResponse
 import com.aoztg.greengrim.data.model.response.GetProfileResponse
 import com.aoztg.greengrim.data.model.response.HomeMyInfoResponse
+import com.aoztg.greengrim.data.model.response.HomeRecentIssueResponse
 import com.aoztg.greengrim.data.model.response.MyInfoResponse
 import com.aoztg.greengrim.data.model.response.MyPointResponse
 import com.aoztg.greengrim.data.model.response.RecentIssueDetailResponse
-import com.aoztg.greengrim.data.model.response.RecentIssueLIstResponse
-import com.aoztg.greengrim.data.model.response.RecentIssueResponse
+import com.aoztg.greengrim.data.model.response.RecentIssueListResponse
 import com.aoztg.greengrim.data.model.response.TokenData
 import com.aoztg.greengrim.data.model.response.WalletInfoResponse
 import retrofit2.Response
@@ -102,17 +104,17 @@ interface MemberAPI {
     suspend fun getEvent(): Response<EventResponse>
 
     @GET("/visitor/issues/home")
-    suspend fun getHomeIssues(): Response<RecentIssueResponse>
+    suspend fun getHomeIssues(): Response<HomeRecentIssueResponse>
 
     @GET("/visitor/issues")
     suspend fun getIssueList(
         @Query("page") page: Int,
         @Query("size") size: Int
-    ): Response<RecentIssueLIstResponse>
+    ): Response<RecentIssueListResponse>
 
     @GET("/visitor/issues/{id}")
     suspend fun getIssueDetail(
-        @Path("id") id : Long,
+        @Path("id") id: Long,
     ): Response<RecentIssueDetailResponse>
 
     @GET("/visitor/members/home")
@@ -134,5 +136,13 @@ interface MemberAPI {
         @Query("page") page: Int,
         @Query("size") size: Int
     ): Response<AlarmListResponse>
+
+    @GET("/visitor/notices")
+    suspend fun getAnnounceList(): Response<List<AnnounceListItem>>
+
+    @GET("/visitor/notices/{id}")
+    suspend fun getAnnounceDetail(
+        @Path("id") id: Long
+    ): Response<AnnounceDetailResponse>
 
 }

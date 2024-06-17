@@ -7,7 +7,7 @@
 
         <variable
             name="vm"
-            type="com.aoztg.greengrim.presentation.ui.home.issue.RecentIssueListViewModel" />
+            type="com.aoztg.greengrim.presentation.ui.mypage.announce.AnnounceListViewModel" />
 
     </data>
 
@@ -43,7 +43,7 @@
                 style="@style/TextHeader"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="환경 이슈"
+                android:text="공지사항"
                 android:textAlignment="center"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -53,18 +53,20 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_issue_list"
+            android:id="@+id/rv_announce_list"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="12dp"
+            android:clipToPadding="false"
             android:orientation="vertical"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            android:paddingHorizontal="24dp"
+            android:paddingBottom="200dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/layout_toolbar"
-            app:list="@{vm.uiState.uiIssueList}"
-            app:spanCount="2"
-            tools:listitem="@layout/item_issue_list" />
+            app:list="@{vm.announceList}"
+            tools:listitem="@layout/item_announce" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

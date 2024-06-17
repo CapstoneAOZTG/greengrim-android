@@ -1,4 +1,4 @@
-package com.aoztg.greengrim.presentation.ui.home.issue
+package com.aoztg.greengrim.presentation.ui.mypage.announce
 
 import android.os.Bundle
 import android.view.View
@@ -7,31 +7,29 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.aoztg.greengrim.R
-import com.aoztg.greengrim.databinding.FragmentRecentIssueDetailBinding
+import com.aoztg.greengrim.databinding.FragmentAnnounceDetailBinding
 import com.aoztg.greengrim.presentation.base.BaseFragment
-import com.aoztg.greengrim.presentation.ui.home.adapter.RecentIssueImageAdapter
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class RecentIssueDetailFragment: BaseFragment<FragmentRecentIssueDetailBinding>(R.layout.fragment_recent_issue_detail) {
+class AnnounceDetailFragment :
+    BaseFragment<FragmentAnnounceDetailBinding>(R.layout.fragment_announce_detail) {
 
     private val parentViewModel: MainViewModel by activityViewModels()
-    private val viewModel : RecentIssueDetailViewModel by viewModels()
-    private val args: RecentIssueDetailFragmentArgs by navArgs()
-    private val id by lazy{args.id}
+    private val viewModel: AnnounceDetailViewModel by viewModels()
+    private val args: AnnounceDetailFragmentArgs by navArgs()
+    private val id by lazy { args.id }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         parentViewModel.hideBNV()
         binding.vm = viewModel
-        binding.rvIssueImgs.adapter = RecentIssueImageAdapter()
-        viewModel.getIssueDetail(id)
+        viewModel.getAnnounceDetail(id)
         binding.btnBack.setOnClickListener {
             findNavController().navigateUp()
         }
     }
-
 
 }

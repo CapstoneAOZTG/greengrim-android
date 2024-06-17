@@ -7,7 +7,7 @@
 
         <variable
             name="vm"
-            type="com.aoztg.greengrim.presentation.ui.home.issue.RecentIssueListViewModel" />
+            type="com.aoztg.greengrim.presentation.ui.mypage.announce.AnnounceDetailViewModel" />
 
     </data>
 
@@ -31,7 +31,6 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:background="@android:color/transparent"
-                android:onClick="@{() -> vm.navigateToBack()}"
                 android:scaleType="fitCenter"
                 android:src="@drawable/icon_back"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -43,7 +42,7 @@
                 style="@style/TextHeader"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="환경 이슈"
+                android:text="공지사항"
                 android:textAlignment="center"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -52,19 +51,44 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_issue_list"
+        <TextView
+            android:id="@+id/tv_title"
+            style="@style/TextGgMedium"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:orientation="vertical"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            android:layout_marginHorizontal="24dp"
+            android:layout_marginTop="16dp"
+            android:text="@{vm.uiState.data.title}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/layout_toolbar"
-            app:list="@{vm.uiState.uiIssueList}"
-            app:spanCount="2"
-            tools:listitem="@layout/item_issue_list" />
+            tools:text="[긴급 점검] 긴급 점검 안내" />
+
+        <TextView
+            android:id="@+id/tv_description"
+            style="@style/TextGgSmall"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="24dp"
+            android:layout_marginTop="8dp"
+            android:text="@{vm.uiState.data.content}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_title"
+            tools:text="asdfasdfasdfasdfasdfasdfasdf" />
+
+        <TextView
+            android:id="@+id/tv_created_at"
+            style="@style/TextGgSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="24dp"
+            android:layout_marginTop="16dp"
+            android:text="@{vm.uiState.data.createdAt}"
+            android:textColor="@color/gg_grey2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_description"
+            tools:text="2024-02-05" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

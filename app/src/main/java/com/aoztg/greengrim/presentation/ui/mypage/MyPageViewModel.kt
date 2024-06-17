@@ -27,6 +27,7 @@ sealed class MyPageEvent {
     object NavigateToAddWallet : MyPageEvent()
     object NavigateToEditWallet : MyPageEvent()
     object NavigateToMyProfile : MyPageEvent()
+    object NavigateToAnnounceList : MyPageEvent()
     data class NavigateToMyPoint(val name: String, val totalPoint: String) : MyPageEvent()
     data class NavigateToMySetting(val hasWallet: Boolean) : MyPageEvent()
     data class NavigateToWebView(val url: String) : MyPageEvent()
@@ -142,7 +143,7 @@ class MyPageViewModel @Inject constructor(
 
     fun navigateToAnnounce() {
         viewModelScope.launch {
-            _events.emit(MyPageEvent.NavigateToWebView(""))
+            _events.emit(MyPageEvent.NavigateToAnnounceList)
         }
     }
 

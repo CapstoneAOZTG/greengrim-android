@@ -137,14 +137,13 @@
     <dialog
         android:id="@+id/certificationListBottomSheetFragment"
         android:name="com.aoztg.greengrim.presentation.ui.chat.certificationlist.CertificationListBottomSheetFragment"
-        android:label="CertificationListBottomSheetFragment" >
+        android:label="CertificationListBottomSheetFragment">
 
         <argument
             android:name="challengeId"
-            app:argType="long"/>
+            app:argType="long" />
 
     </dialog>
-
 
 
     <fragment
@@ -218,6 +217,9 @@
         <action
             android:id="@+id/action_myPageFragment_to_editWalletFragment"
             app:destination="@id/editWalletFragment" />
+        <action
+            android:id="@+id/action_myPageFragment_to_announceListFragment"
+            app:destination="@id/announceListFragment" />
     </fragment>
 
     <fragment
@@ -252,7 +254,7 @@
 
         <argument
             android:name="selectRarity"
-            app:argType="string"/>
+            app:argType="string" />
 
         <argument
             android:name="basicCount"
@@ -462,22 +464,22 @@
     <fragment
         android:id="@+id/nftCollectionDetailFragment"
         android:name="com.aoztg.greengrim.presentation.ui.global.nftdetail.NftCollectionDetailFragment"
-        android:label="NftCollectionDetailFragment" >
+        android:label="NftCollectionDetailFragment">
 
         <argument
             android:name="id"
-            app:argType="long"/>
+            app:argType="long" />
 
     </fragment>
 
     <fragment
         android:id="@+id/recentIssueDetailFragment"
         android:name="com.aoztg.greengrim.presentation.ui.home.issue.RecentIssueDetailFragment"
-        android:label="RecentIssueDetailFragment" >
+        android:label="RecentIssueDetailFragment">
 
         <argument
-            app:argType="long"
-            android:name="id"/>
+            android:name="id"
+            app:argType="long" />
 
     </fragment>
 
@@ -485,7 +487,30 @@
     <fragment
         android:id="@+id/recentIssueListFragment"
         android:name="com.aoztg.greengrim.presentation.ui.home.issue.RecentIssueListFragment"
-        android:label="RecentIssueListFragment" />
+        android:label="RecentIssueListFragment">
+        <action
+            android:id="@+id/action_recentIssueListFragment_to_recentIssueDetailFragment"
+            app:destination="@id/recentIssueDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/announceDetailFragment"
+        android:name="com.aoztg.greengrim.presentation.ui.mypage.announce.AnnounceDetailFragment"
+        android:label="AnnounceDetailFragment">
+
+        <argument
+            android:name="id"
+            app:argType="long" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/announceListFragment"
+        android:name="com.aoztg.greengrim.presentation.ui.mypage.announce.AnnounceListFragment"
+        android:label="AnnounceListFragment">
+        <action
+            android:id="@+id/action_announceListFragment_to_announceDetailFragment"
+            app:destination="@id/announceDetailFragment" />
+    </fragment>
 
     <action
         android:id="@+id/action_global_to_attendCheckFragment"
@@ -517,16 +542,15 @@
 
     <action
         android:id="@+id/action_global_to_alarmCheckFragment"
-        app:destination="@id/alarmCheckFragment"/>
+        app:destination="@id/alarmCheckFragment" />
 
     <action
         android:id="@+id/action_global_to_nftCollectionDetailFragment"
-        app:destination="@id/nftCollectionDetailFragment"/>
+        app:destination="@id/nftCollectionDetailFragment" />
 
     <action
         android:id="@+id/action_global_to_nftFragment"
-        app:destination="@id/nft_fragment"/>
-
+        app:destination="@id/nft_fragment" />
 
 
 </navigation>
