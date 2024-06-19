@@ -47,6 +47,8 @@ class ChatSocket(
                 }
             }
         }
+        stompClient.withServerHeartbeat(30000)
+        stompClient.withClientHeartbeat(30000)
     }
 
     fun connectServer(){
