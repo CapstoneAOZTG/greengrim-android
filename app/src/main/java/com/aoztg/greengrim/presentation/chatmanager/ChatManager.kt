@@ -39,6 +39,11 @@ class ChatManager @Inject constructor(
     private val keyDataStoreManager: KeyDataStoreManager
 ) : ViewModel() {
 
+    companion object{
+        const val FOREGROUND = 0
+        const val BACKGROUND = 1
+    }
+
     private val _events: MutableSharedFlow<ChatEvent> = MutableSharedFlow()
     val event: SharedFlow<ChatEvent> = _events
 
@@ -58,10 +63,14 @@ class ChatManager @Inject constructor(
 
     private var memberId: Long = 0
     private val chatSocket =
-        ChatSocket(::receiveMessage, ::showSocketToastMessage, ::showSocketSnackMessage, keyDataStoreManager)
+        ChatSocket(::receiveMessage, ::showSocketToastMessage, ::showSocketSnackMessage, keyDataStoreManager, ::reConnect)
 
     init {
         setMemberId()
+    }
+
+    fun setApplicationState(state: Int){
+        chatSocket.setApplicationState(state)
     }
 
     private fun setMemberId() {
@@ -69,6 +78,13 @@ class ChatManager @Inject constructor(
             keyDataStoreManager.getMemberId()?.let {
                 memberId = it
             }
+        }
+    }
+
+    private fun reConnect(){
+        chatSocket.connectServer()
+        chatListData.value.forEach { data ->
+            chatSocket.subscribeChat(data.chatId)
         }
     }
 
@@ -143,11 +159,12 @@ class ChatManager @Inject constructor(
         storeRecentReadTime(chatId)
     }
 
-    fun sendMessage(chatId: Long, message: String) {
+    fun sendMessage(chatId: Long, message: String, isChild: Boolean) {
         chatSocket.sendMessage(
             memberId,
             chatId,
-            message
+            message,
+            isChild
         )
     }
 

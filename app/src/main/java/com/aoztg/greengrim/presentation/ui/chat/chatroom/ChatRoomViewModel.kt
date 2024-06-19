@@ -1,5 +1,6 @@
 package com.aoztg.greengrim.presentation.ui.chat.chatroom
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.data.config.KeyDataStoreManager
@@ -10,10 +11,13 @@ import com.aoztg.greengrim.presentation.chatmanager.model.ChatMessage
 import com.aoztg.greengrim.presentation.ui.chat.mapper.toUiChatInfo
 import com.aoztg.greengrim.presentation.ui.chat.mapper.toUiChatMessage
 import com.aoztg.greengrim.presentation.ui.chat.mapper.toUiChatMessageItem
+import com.aoztg.greengrim.presentation.ui.chat.mapper.toUiChatMessageList
 import com.aoztg.greengrim.presentation.ui.chat.model.UiChatInfo
 import com.aoztg.greengrim.presentation.ui.chat.model.UiChatMessage
+import com.aoztg.greengrim.presentation.ui.getCurrentTimeString
 import com.aoztg.greengrim.presentation.util.Constants.DATE
 import com.aoztg.greengrim.presentation.util.Constants.NOTHING
+import com.aoztg.greengrim.presentation.util.Constants.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -28,11 +32,11 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+
 data class ChatRoomUiState(
     val editTextState: Boolean = false,
     val chatMessages: List<UiChatMessage> = emptyList(),
-    val page: Int = 0,
-    val hasNext: Boolean = true,
+    val nextCreatedAt: String = "0",
     val chatInfo: UiChatInfo = UiChatInfo()
 )
 
@@ -45,7 +49,9 @@ sealed class ChatRoomEvents {
     data class NavigateToCertificationList(val id: Long) : ChatRoomEvents()
     data class NavigateToCertificationDetail(val id: Long) : ChatRoomEvents()
     data class NavigateToProfile(val id: Long) : ChatRoomEvents()
-    data class SendMessage(val chatId: Long, val message: String) : ChatRoomEvents()
+    data class SendMessage(val chatId: Long, val message: String, val isChild: Boolean) :
+        ChatRoomEvents()
+
     object ScrollBottom : ChatRoomEvents()
     data class ShowToastMessage(val msg: String) : ChatRoomEvents()
     data class ShowSnackMessage(val msg: String) : ChatRoomEvents()
@@ -142,31 +148,25 @@ class ChatRoomViewModel @Inject constructor(
 
 
     fun getChatMessageData() {
-        if (uiState.value.hasNext) {
-            viewModelScope.launch {
-                when (val response =
-                    chatRepository.getChatMessage(chatRoomId, uiState.value.page, 40)) {
-                    is BaseState.Success -> {
+        viewModelScope.launch {
+            when (val response =
+                chatRepository.getChatMessage(chatRoomId, uiState.value.nextCreatedAt)) {
+                is BaseState.Success -> {
 
-                        _uiState.update { state ->
-                            state.copy(
-                                hasNext = response.body.hasNext,
-                                chatMessages = uiState.value.chatMessages + response.body.result.map {
-                                    it.toUiChatMessageItem(
-                                        memberId,
-                                        ::navigateToCertificationDetail,
-                                        ::navigateToProfile
-                                    )
-                                },
-                                page = uiState.value.page + 1
-                            )
-                        }
-
+                    _uiState.update { state ->
+                        state.copy(
+                            chatMessages = uiState.value.chatMessages + response.body.toUiChatMessageList(
+                                memberId,
+                                ::navigateToCertificationDetail,
+                                ::navigateToProfile
+                            ),
+                            nextCreatedAt = response.body.last().createdAt
+                        )
                     }
+                }
 
-                    is BaseState.Error -> {
-                        _events.emit(ChatRoomEvents.ShowSnackMessage(response.msg))
-                    }
+                is BaseState.Error -> {
+                    _events.emit(ChatRoomEvents.ShowSnackMessage(response.msg))
                 }
             }
         }
@@ -178,29 +178,40 @@ class ChatRoomViewModel @Inject constructor(
         val newMessages = uiState.value.chatMessages.toMutableList()
         val newMessage = message.toUiChatMessage(memberId, ::navigateToCertificationDetail, ::navigateToProfile)
 
-        if (newMessages.size > 0 && newMessages.first().sentDate.isNotBlank()) {
+        if(newMessages.size > 0){
+            val lastMessage = uiState.value.chatMessages.first()
 
-            if (newMessages.first().sentDate != newMessage.sentDate) {
+            if(lastMessage.sentDate.isNotBlank() && (lastMessage.sentDate != newMessage.sentDate)){
                 newMessages.add(0, UiChatMessage(type = DATE, message = newMessage.sentDate))
+            } else {
+                if(lastMessage.sentTime.isNotBlank() && (lastMessage.senderId == newMessage.senderId && lastMessage.sentTime == newMessage.sentTime)){
+                    _uiState.update { state ->
+                        state.copy(
+                            chatMessages = uiState.value.chatMessages.mapIndexed { index, uiChatMessage ->
+                                if(index == 0){
+                                    uiChatMessage.copy(
+                                        sentTime = ""
+                                    )
+                                }else {
+                                    uiChatMessage.copy()
+                                }
+                            }
+                        )
+                    }
+                    newMessages.first().sentTime = ""
+                    newMessage.profileImg = ""
+                }
             }
         }
 
-        if (newMessages.size > 0 && newMessages.first().sentTime.isNotBlank()) {
-
-            if (newMessages.first().senderId == newMessage.senderId && newMessages.first().sentTime == newMessage.sentTime) {
-                newMessages.first().sentTime = ""
-            }
+        newMessages.add(0, newMessage)
+        _uiState.update { state ->
+            state.copy(
+                chatMessages = newMessages
+            )
         }
 
-        if (newMessage.type != NOTHING) {
-            newMessages.add(0, newMessage)
-            _uiState.update { state ->
-                state.copy(
-                    chatMessages = newMessages
-                )
-            }
-            scrollBottom()
-        }
+        scrollBottom()
     }
 
     fun navigateBack() {
@@ -248,14 +259,19 @@ class ChatRoomViewModel @Inject constructor(
 
     fun sendMessage() {
         viewModelScope.launch {
+            val lastChat = uiState.value.chatMessages.first()
             _events.emit(
                 ChatRoomEvents.SendMessage(
                     chatRoomId,
                     chatMessage.value,
+                    lastChat.senderId == memberId && lastChat.createdAt.substring(0..11) == getCurrentTimeString().substring(
+                        0..11
+                    )
                 )
             )
             chatMessage.emit("")
         }
+
     }
 
     fun exitChallenge() {
@@ -277,10 +293,8 @@ class ChatRoomViewModel @Inject constructor(
         }
     }
 
-    fun navigateToCertificationList() {
-        viewModelScope.launch {
-            _events.emit(ChatRoomEvents.NavigateToCertificationList(chatRoomId))
-        }
+    fun clear(){
+        _uiState.value = ChatRoomUiState()
     }
 
 }

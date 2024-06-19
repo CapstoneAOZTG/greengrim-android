@@ -1,11 +1,14 @@
 package com.aoztg.greengrim.presentation.ui.chat.certificationlist
 
+import android.annotation.SuppressLint
 import android.app.Dialog
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.widget.doOnTextChanged
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -21,14 +24,20 @@ import com.aoztg.greengrim.presentation.customview.CustomCalendar
 import com.aoztg.greengrim.presentation.customview.YearMonthPickerDialog
 import com.aoztg.greengrim.presentation.ui.DataState
 import com.aoztg.greengrim.presentation.ui.chat.adapter.CertificationListAdapter
+import com.aoztg.greengrim.presentation.ui.chat.chatroom.ChatRoomViewModel
+import com.aoztg.greengrim.presentation.ui.chat.chatroom.OnSwipeTouchListener
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 import com.aoztg.greengrim.presentation.ui.toCertificationDetail
+import com.aoztg.greengrim.presentation.util.Constants.TAG
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.kizitonwose.calendar.core.yearMonth
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.YearMonth
@@ -46,11 +55,10 @@ class CertificationListBottomSheetFragment : BottomSheetDialogFragment() {
 
     private val parentViewModel: MainViewModel by activityViewModels()
     private val viewModel: CertificationListBottomSheetViewModel by viewModels()
-
-    private val args: CertificationListBottomSheetFragmentArgs by navArgs()
-    private val challengeId by lazy { args.challengeId }
+    private val chatRoomViewModel: ChatRoomViewModel by activityViewModels()
 
     private var adapter: CertificationListAdapter? = null
+    private var guideJob: Job? = null
 
     private lateinit var customCalendar: CustomCalendar
 
@@ -74,30 +82,16 @@ class CertificationListBottomSheetFragment : BottomSheetDialogFragment() {
         return binding.root
     }
 
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val dialog = super.onCreateDialog(savedInstanceState)
-        dialog.setOnShowListener { dialogInterface ->
-            val bottomSheetDialog = dialogInterface as BottomSheetDialog
-            setupRatio(bottomSheetDialog)
-        }
-        return dialog
-    }
-
-    private fun setupRatio(bottomSheetDialog: BottomSheetDialog) {
-        val bottomSheet =
-            bottomSheetDialog.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet) as View
-        BottomSheetBehavior.from(bottomSheet).state = BottomSheetBehavior.STATE_EXPANDED
-    }
-
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         parentViewModel.hideBNV()
         binding.vm = viewModel
+        setBottomSheetState()
         adapter = CertificationListAdapter()
-        viewModel.setChallengeId(challengeId)
+        viewModel.setChallengeId(chatRoomViewModel.challengeId)
         binding.rvCertifications.adapter = adapter
+        setGuideLifeCycle()
         initStateObserve()
         initEventsObserver()
         setScrollEventListener()
@@ -105,6 +99,40 @@ class CertificationListBottomSheetFragment : BottomSheetDialogFragment() {
         setBtnClickListener()
         viewModel.getCertificationList(NEW_DATE)
         viewModel.getCertificationDate()
+    }
+
+    private fun setGuideLifeCycle() {
+        guideJob = CoroutineScope(Dispatchers.Main).launch {
+            delay(3000)
+            binding.btnCertificationGuide.animate().alpha(0.0f).setDuration(1000)
+        }
+
+        binding.btnCertificationGuide.setOnClickListener {
+            binding.btnCertificationGuide.visibility = View.GONE
+        }
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private fun setBottomSheetState() {
+        val behavior = BottomSheetBehavior.from(binding.certificationBottomSheet)
+        behavior.state = BottomSheetBehavior.STATE_COLLAPSED
+        binding.layoutCertification.visibility = View.INVISIBLE
+
+        behavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
+                    binding.layoutChatBox.visibility = View.VISIBLE
+                    binding.layoutCertification.visibility = View.INVISIBLE
+                } else {
+                    binding.layoutChatBox.visibility = View.INVISIBLE
+                    binding.layoutCertification.visibility = View.VISIBLE
+                }
+            }
+
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+
+            }
+        })
     }
 
     private fun initStateObserve() {
@@ -131,6 +159,43 @@ class CertificationListBottomSheetFragment : BottomSheetDialogFragment() {
                     binding.tvNoCertification.visibility = View.INVISIBLE
                 }
             }
+        }
+
+        repeatOnStarted {
+            chatRoomViewModel.uiState.collect{
+                if(it.chatInfo.todayCertification){
+                    binding.btnCreateCertification.setImageResource(R.drawable.icon_create_certification_off)
+                    binding.btnCreateCertification.isClickable = false
+                } else {
+                    binding.btnCreateCertification.setImageResource(R.drawable.icon_create_certification_on)
+                    binding.btnCreateCertification.isClickable = true
+                    binding.btnCreateCertification.setOnClickListener {
+                        chatRoomViewModel.navigateToCreateCertification()
+                    }
+                }
+            }
+        }
+
+        repeatOnStarted {
+            chatRoomViewModel.uiState.collect{
+                binding.btnSendMessage.isEnabled = it.editTextState
+            }
+        }
+
+        repeatOnStarted {
+            chatRoomViewModel.chatMessage.collect{
+                if(it.isBlank()){
+                    binding.etChat.setText("")
+                }
+            }
+        }
+
+        binding.etChat.doOnTextChanged { text, _, _, _ ->
+            chatRoomViewModel.chatMessage.value = text.toString()
+        }
+
+        binding.btnSendMessage.setOnClickListener {
+            chatRoomViewModel.sendMessage()
         }
     }
 

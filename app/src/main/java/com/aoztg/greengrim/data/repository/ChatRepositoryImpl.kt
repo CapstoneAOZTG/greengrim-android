@@ -7,7 +7,7 @@ import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.model.request.ChatListDataRequest
 import com.aoztg.greengrim.data.model.response.ChatInfoResponse
 import com.aoztg.greengrim.data.model.response.ChatListDataResponse
-import com.aoztg.greengrim.data.model.response.ChatMessageResponse
+import com.aoztg.greengrim.data.model.response.ChatMessageItem
 import com.aoztg.greengrim.data.model.response.EnterChatResponse
 import com.aoztg.greengrim.data.model.runRemote
 import com.aoztg.greengrim.data.remote.ChatAPI
@@ -39,7 +39,7 @@ class ChatRepositoryImpl @Inject constructor(
 
             BaseState.Success(response)
         } catch (e: Exception) {
-            Log.d(TAG,e.message.toString())
+            Log.d(TAG, e.message.toString())
             BaseState.Error("데이터 저장 실패", "FAIL")
         }
     }
@@ -52,7 +52,7 @@ class ChatRepositoryImpl @Inject constructor(
 
             BaseState.Success(response)
         } catch (e: Exception) {
-            Log.d(TAG,e.message.toString())
+            Log.d(TAG, e.message.toString())
             BaseState.Error("데이터 삭제 실패", "FAIL")
         }
     }
@@ -65,17 +65,16 @@ class ChatRepositoryImpl @Inject constructor(
 
             BaseState.Success(response)
         } catch (e: Exception) {
-            Log.d(TAG,e.message.toString())
+            Log.d(TAG, e.message.toString())
             BaseState.Error("데이터 불러오기 실패", "FAIL")
         }
     }
 
     override suspend fun getChatMessage(
         roomId: Long,
-        page: Int,
-        size: Int
-    ): BaseState<ChatMessageResponse> =
-        runRemote { api.getChatMessage(roomId, page, size) }
+        createdAt: String
+    ): BaseState<List<ChatMessageItem>> =
+        runRemote { api.getChatMessage(roomId, createdAt) }
 
     override suspend fun getChatInfo(id: Long): BaseState<ChatInfoResponse> =
         runRemote { api.getChatInfo(id) }

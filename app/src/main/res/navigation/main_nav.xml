@@ -129,21 +129,7 @@
         <action
             android:id="@+id/action_chat_room_fragment_to_create_certification_fragment"
             app:destination="@id/create_certification_fragment" />
-        <action
-            android:id="@+id/action_chat_room_fragment_to_certificationListBottomSheetFragment"
-            app:destination="@id/certificationListBottomSheetFragment" />
     </fragment>
-
-    <dialog
-        android:id="@+id/certificationListBottomSheetFragment"
-        android:name="com.aoztg.greengrim.presentation.ui.chat.certificationlist.CertificationListBottomSheetFragment"
-        android:label="CertificationListBottomSheetFragment">
-
-        <argument
-            android:name="challengeId"
-            app:argType="long" />
-
-    </dialog>
 
 
     <fragment

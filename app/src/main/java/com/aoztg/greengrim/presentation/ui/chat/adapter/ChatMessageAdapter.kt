@@ -1,22 +1,44 @@
 package com.aoztg.greengrim.presentation.ui.chat.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.aoztg.greengrim.databinding.ItemChatBinding
 import com.aoztg.greengrim.databinding.ItemChatDateBinding
 import com.aoztg.greengrim.databinding.ItemChatEnterExitBinding
 import com.aoztg.greengrim.databinding.ItemChatMyBinding
+import com.aoztg.greengrim.presentation.chatmanager.model.UiChatListItem
 import com.aoztg.greengrim.presentation.ui.chat.model.UiChatMessage
 import com.aoztg.greengrim.presentation.util.Constants.DATE
 import com.aoztg.greengrim.presentation.util.Constants.ENTER_AND_EXIT
 import com.aoztg.greengrim.presentation.util.Constants.MY_CHAT
 import com.aoztg.greengrim.presentation.util.Constants.OTHER_CHAT
+import com.aoztg.greengrim.presentation.util.Constants.TAG
 import com.aoztg.greengrim.presentation.util.DefaultDiffUtil
 
 class ChatMessageAdapter :
-    ListAdapter<UiChatMessage, RecyclerView.ViewHolder>(DefaultDiffUtil<UiChatMessage>()) {
+    ListAdapter<UiChatMessage, RecyclerView.ViewHolder>(diffCallback) {
+
+    companion object {
+        val diffCallback = object : DiffUtil.ItemCallback<UiChatMessage>() {
+            override fun areItemsTheSame(
+                oldItem: UiChatMessage,
+                newItem: UiChatMessage
+            ): Boolean {
+                return oldItem.createdAt == newItem.createdAt
+            }
+
+            override fun areContentsTheSame(
+                oldItem: UiChatMessage,
+                newItem: UiChatMessage
+            ): Boolean {
+                return oldItem == newItem
+            }
+        }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 

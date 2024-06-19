@@ -5,7 +5,7 @@ import com.aoztg.greengrim.data.model.BaseState
 import com.aoztg.greengrim.data.model.request.ChatListDataRequest
 import com.aoztg.greengrim.data.model.response.ChatInfoResponse
 import com.aoztg.greengrim.data.model.response.ChatListDataResponse
-import com.aoztg.greengrim.data.model.response.ChatMessageResponse
+import com.aoztg.greengrim.data.model.response.ChatMessageItem
 import com.aoztg.greengrim.data.model.response.EnterChatResponse
 
 interface ChatRepository {
@@ -28,9 +28,8 @@ interface ChatRepository {
 
     suspend fun getChatMessage(
         roomId: Long,
-        page: Int,
-        size: Int
-    ): BaseState<ChatMessageResponse>
+        createdAt: String
+    ): BaseState<List<ChatMessageItem>>
 
     suspend fun getChatInfo(
         id : Long

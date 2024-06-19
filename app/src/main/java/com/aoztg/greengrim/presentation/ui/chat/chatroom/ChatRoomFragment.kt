@@ -1,11 +1,8 @@
 package com.aoztg.greengrim.presentation.ui.chat.chatroom
 
-import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -18,23 +15,21 @@ import com.aoztg.greengrim.presentation.base.BaseFragment
 import com.aoztg.greengrim.presentation.chatmanager.ChatManager
 import com.aoztg.greengrim.presentation.customview.TodayCertificationDialog
 import com.aoztg.greengrim.presentation.ui.chat.adapter.ChatMessageAdapter
+import com.aoztg.greengrim.presentation.ui.chat.certificationlist.CertificationListBottomSheetFragment
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 import com.aoztg.greengrim.presentation.ui.toCertificationDetail
 import com.aoztg.greengrim.presentation.ui.toProfile
-import com.aoztg.greengrim.presentation.util.Constants.TAG
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment_chat_room) {
 
     private val parentViewModel: MainViewModel by activityViewModels()
     private val chatManager: ChatManager by activityViewModels()
-    private val viewModel: ChatRoomViewModel by viewModels()
+    private val viewModel: ChatRoomViewModel by activityViewModels()
+
+    private var certificationBottomSheetFragment: CertificationListBottomSheetFragment? = null
 
     private val args: ChatRoomFragmentArgs by navArgs()
     private val chatId by lazy { args.chatId }
@@ -47,19 +42,28 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         chatManager.inChat(chatId)
+        initBottomSheet()
         binding.vm = viewModel
         binding.tvHeader.text = chatName
         parentViewModel.hideBNV()
         binding.rvChat.adapter = adapter
         binding.rvChat.itemAnimator = null
         setScrollEventListener()
-        setSwipeEventListener()
-        setGuideLifeCycle()
         viewModel.setIds(chatId, challengeId)
         viewModel.getChatInfo()
         setDataChangeListener()
         initEventsObserver()
         initChatMessageObserver()
+    }
+
+    private fun initBottomSheet() {
+        if (childFragmentManager.findFragmentById(R.id.certification_bottom_sheet) == null) {
+            certificationBottomSheetFragment = CertificationListBottomSheetFragment()
+            childFragmentManager.beginTransaction().add(
+                R.id.certification_bottom_sheet,
+                certificationBottomSheetFragment!!
+            ).commit()
+        }
     }
 
     private fun setScrollEventListener() {
@@ -78,27 +82,6 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
                 }
             }
         })
-    }
-
-    @SuppressLint("ClickableViewAccessibility")
-    private fun setSwipeEventListener() {
-        binding.layoutChatBox.setOnTouchListener(object : OnSwipeTouchListener(requireContext()) {
-            override fun onSwipeTop() {
-                super.onSwipeTop()
-                navigateToCertificationList()
-            }
-        })
-    }
-
-    private fun setGuideLifeCycle() {
-        guideJob = CoroutineScope(Dispatchers.Main).launch {
-            delay(3000)
-            binding.btnCertificationGuide.animate().alpha(0.0f).setDuration(1000)
-        }
-
-        binding.btnCertificationGuide.setOnClickListener {
-            binding.btnCertificationGuide.visibility = View.GONE
-        }
     }
 
     private fun setDataChangeListener() {
@@ -122,6 +105,7 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
                     is ChatRoomEvents.SendMessage -> chatManager.sendMessage(
                         it.chatId,
                         it.message,
+                        it.isChild
                     )
 
                     is ChatRoomEvents.ScrollBottom -> scrollRecyclerViewBottom()
@@ -145,7 +129,6 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
         repeatOnStarted {
             chatManager.newChat.collect {
                 if (it.roomId == chatId) {
-                    Log.d(TAG, it.message)
                     viewModel.newChatMessage(it)
                 }
             }
@@ -185,11 +168,6 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
     }
 
     private fun navigateToCertificationList() {
-        val action =
-            ChatRoomFragmentDirections.actionChatRoomFragmentToCertificationListBottomSheetFragment(
-                viewModel.chatRoomId
-            )
-        findNavController().navigate(action)
     }
 
     private fun exitChat() {
@@ -216,6 +194,7 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
 
     override fun onDestroyView() {
         super.onDestroyView()
+        viewModel.clear()
         dismissChatPopUp()
         guideJob?.cancel()
     }

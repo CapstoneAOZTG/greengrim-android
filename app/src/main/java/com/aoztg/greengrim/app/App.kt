@@ -31,8 +31,6 @@ import kotlinx.coroutines.launch
 @HiltAndroidApp
 class App : Application(), LifecycleEventObserver {
 
-    var isForeground = false
-
     private val lifecycle by lazy { ProcessLifecycleOwner.get().lifecycle }
 
     //  앱의 context 를 instance 변수에 저장
@@ -46,6 +44,7 @@ class App : Application(), LifecycleEventObserver {
         lateinit var gso: GoogleSignInOptions
         val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name =APP_NAME)
         var fcmToken = ""
+        var isForeground = false
 
         // 앱의 context 를 불러오는 함수
         fun context(): Context {

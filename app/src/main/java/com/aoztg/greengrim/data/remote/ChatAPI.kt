@@ -3,7 +3,7 @@ package com.aoztg.greengrim.data.remote
 import com.aoztg.greengrim.data.model.request.ChatListDataRequest
 import com.aoztg.greengrim.data.model.response.ChatInfoResponse
 import com.aoztg.greengrim.data.model.response.ChatListDataResponse
-import com.aoztg.greengrim.data.model.response.ChatMessageResponse
+import com.aoztg.greengrim.data.model.response.ChatMessageItem
 import com.aoztg.greengrim.data.model.response.EnterChatResponse
 import retrofit2.Response
 import retrofit2.http.Body
@@ -32,9 +32,8 @@ interface ChatAPI {
     @GET("/chat/message")
     suspend fun getChatMessage(
         @Query("roomId") roomId: Long,
-        @Query("page") page: Int,
-        @Query("size") size: Int
-    ): Response<ChatMessageResponse>
+        @Query("createdAt") createdAt: String
+    ): Response<List<ChatMessageItem>>
 
     @GET("/visitor/challenges/chatroom-topbar/{id}")
     suspend fun getChatInfo(

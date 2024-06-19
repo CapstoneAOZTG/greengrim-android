@@ -46,6 +46,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     private val viewModel: MainViewModel by viewModels()
     private val chatManager: ChatManager by viewModels()
 
+    companion object{
+        const val FOREGROUND = 0
+        const val BACKGROUND = 1
+    }
+
     private lateinit var neededPermissionList: MutableList<String>
     private val storagePermissionList =
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -61,6 +66,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     private val cameraPermission = Manifest.permission.CAMERA
     private val notificationPermission = Manifest.permission.POST_NOTIFICATIONS
     private lateinit var tempCameraUri: Uri
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val navHostFragment =
@@ -91,11 +97,13 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
     override fun onStart() {
         super.onStart()
+        chatManager.setApplicationState(FOREGROUND)
         chatManager.getMyChatIds()
     }
 
     override fun onStop() {
         super.onStop()
+        chatManager.setApplicationState(BACKGROUND)
         chatManager.disconnectChat()
     }
 

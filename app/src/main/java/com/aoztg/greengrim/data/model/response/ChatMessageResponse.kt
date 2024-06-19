@@ -1,10 +1,5 @@
 package com.aoztg.greengrim.data.model.response
 
-data class ChatMessageResponse(
-    val hasNext: Boolean,
-    val page: Int,
-    val result: List<ChatMessageItem>
-)
 
 data class ChatMessageItem(
     val certId: Long,
@@ -17,5 +12,6 @@ data class ChatMessageItem(
     val senderId: Long,
     val sentDate: String,
     val sentTime: String,
-    val type: String
+    val type: String,
+    val child: Boolean
 )

@@ -119,115 +119,26 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="100dp"
             android:clipToPadding="false"
             android:orientation="vertical"
             android:paddingBottom="10dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintBottom_toTopOf="@id/layout_chat_box"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/layout_chatroom_announce"
             app:list="@{vm.uiState.chatMessages}"
             app:reverseLayout="true" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/layout_chat_box"
+        <FrameLayout
+            android:id="@+id/certification_bottom_sheet"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/shape_black2fill_nostroke_radiustop20"
-            android:paddingHorizontal="12dp"
-            android:paddingVertical="20dp"
+            android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
-
-            <TextView
-                android:id="@+id/tv_show_challenge"
-                style="@style/TextGgSmall"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginBottom="16dp"
-                android:onClick="@{() -> vm.navigateToCertificationList()}"
-                android:text="📸  챌린지 인증 모아보기"
-                app:layout_constraintBottom_toTopOf="@id/layout_edit_text"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageView
-                android:id="@+id/iv_up_arrow"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:onClick="@{() -> vm.navigateToCertificationList()}"
-                android:src="@drawable/icon_up_arrow"
-                app:layout_constraintBottom_toBottomOf="@id/tv_show_challenge"
-                app:layout_constraintEnd_toEndOf="parent" />
-
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/layout_edit_text"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:background="@drawable/shape_darkgreyfill_nostroke_radius15"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent">
-
-                <EditText
-                    android:id="@+id/et_chat"
-                    style="@style/TextGgSmall"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:backgroundTint="@android:color/transparent"
-                    android:hint="메세지를 입력하세요"
-                    android:text="@={vm.chatMessage}"
-                    android:textColorHint="@color/gg_grey4"
-                    android:textSize="14dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/btn_send_message"
-                    app:layout_constraintStart_toEndOf="@id/btn_create_certification"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageView
-                    android:id="@+id/btn_create_certification"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:clickable="@{!vm.uiState.chatInfo.todayCertification}"
-                    android:onClick="@{() -> vm.navigateToCreateCertification()}"
-                    android:scaleType="fitCenter"
-                    android:src="@{vm.uiState.chatInfo.todayCertification ? @drawable/icon_create_certification_off : @drawable/icon_create_certification_on  }"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageView
-                    android:id="@+id/btn_send_message"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="6dp"
-                    android:enabled="@{vm.uiState.editTextState}"
-                    android:onClick="@{() -> vm.sendMessage()}"
-                    android:src="@drawable/icon_message_send"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <ImageView
-                android:id="@+id/btn_certification_guide"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/img_certification_guide"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/layout_toolbar" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
