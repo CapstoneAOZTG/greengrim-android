@@ -3,15 +3,14 @@ package com.aoztg.greengrim.presentation.chatmanager
 import android.annotation.SuppressLint
 import android.util.Log
 import com.aoztg.greengrim.BuildConfig
-import com.aoztg.greengrim.app.App
 import com.aoztg.greengrim.data.config.KeyDataStoreManager
-import com.aoztg.greengrim.presentation.util.Constants.TAG
 import kotlinx.coroutines.runBlocking
 import org.json.JSONObject
 import ua.naiksoftware.stomp.Stomp
 import ua.naiksoftware.stomp.dto.LifecycleEvent
 import ua.naiksoftware.stomp.dto.StompHeader
 
+@SuppressLint("CheckResult")
 class ChatSocket(
     private val acceptChat: (String) -> Unit,
     private val showToastMessage: (String) -> Unit,
@@ -19,7 +18,7 @@ class ChatSocket(
     private val keyDataStoreManager: KeyDataStoreManager,
     private val reConnect: () -> Unit
 ) {
-    companion object {
+    companion object{
         const val FOREGROUND = 0
         const val BACKGROUND = 1
     }
@@ -27,8 +26,30 @@ class ChatSocket(
     private val stompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, BuildConfig.SOCKET_URL)
     private var applicationState = FOREGROUND
 
-    @SuppressLint("CheckResult")
-    fun connectServer() {
+    init{
+        stompClient.lifecycle().subscribe { lifecycleEvent ->
+            when (lifecycleEvent.type) {
+                LifecycleEvent.Type.OPENED -> {
+                    Log.i("OPEND", "!!")
+                }
+                LifecycleEvent.Type.CLOSED -> {
+                    Log.i("CLOSED", "!!")
+                    if(applicationState == FOREGROUND){
+                        reConnect()
+                    }
+                }
+                LifecycleEvent.Type.ERROR -> {
+                    Log.i("ERROR", "!!")
+                    Log.e("CONNECT ERROR", lifecycleEvent.exception.toString())
+                }
+                else ->{
+                    Log.i("ELSE", lifecycleEvent.message)
+                }
+            }
+        }
+    }
+
+    fun connectServer(){
         try {
             val headerList = arrayListOf<StompHeader>()
             val jwt = runBlocking {
@@ -43,17 +64,6 @@ class ChatSocket(
 
             stompClient.connect(headerList)
 
-            stompClient.lifecycle().subscribe { lifecycleEvent ->
-                when (lifecycleEvent.type) {
-                    LifecycleEvent.Type.CLOSED -> {
-                        if (applicationState == FOREGROUND) {
-                            reConnect()
-                        }
-                    }
-
-                    else -> {}
-                }
-            }
         } catch (e: Exception) {
             showSnackMessage(e.message.toString())
         }
@@ -63,7 +73,7 @@ class ChatSocket(
         stompClient.disconnect()
     }
 
-    fun setApplicationState(state: Int) {
+    fun setApplicationState(state : Int){
         applicationState = state
     }
 
@@ -73,15 +83,6 @@ class ChatSocket(
             stompClient.topic("/sub/chat/room/$chatId").subscribe { topicMessage ->
                 acceptChat(topicMessage.payload)
             }
-        } catch (e: Exception) {
-            showSnackMessage(e.message.toString())
-        }
-    }
-
-    @SuppressLint("CheckResult")
-    fun subscribeNewChat(chatId: Long) {
-        try {
-            stompClient.topic("/sub/chat/room/$chatId").subscribe { topicMessage -> }
         } catch (e: Exception) {
             showSnackMessage(e.message.toString())
         }

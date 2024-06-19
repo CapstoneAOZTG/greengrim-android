@@ -8,6 +8,7 @@ import com.aoztg.greengrim.data.model.request.ChatListDataRequest
 import com.aoztg.greengrim.data.model.response.ChatInfoResponse
 import com.aoztg.greengrim.data.model.response.ChatListDataResponse
 import com.aoztg.greengrim.data.model.response.ChatMessageItem
+import com.aoztg.greengrim.data.model.response.ChatMessageResponse
 import com.aoztg.greengrim.data.model.response.EnterChatResponse
 import com.aoztg.greengrim.data.model.runRemote
 import com.aoztg.greengrim.data.remote.ChatAPI
@@ -73,7 +74,7 @@ class ChatRepositoryImpl @Inject constructor(
     override suspend fun getChatMessage(
         roomId: Long,
         createdAt: String
-    ): BaseState<List<ChatMessageItem>> =
+    ): BaseState<ChatMessageResponse> =
         runRemote { api.getChatMessage(roomId, createdAt) }
 
     override suspend fun getChatInfo(id: Long): BaseState<ChatInfoResponse> =

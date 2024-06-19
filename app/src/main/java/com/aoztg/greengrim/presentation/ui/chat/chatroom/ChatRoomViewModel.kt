@@ -1,6 +1,5 @@
 package com.aoztg.greengrim.presentation.ui.chat.chatroom
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.data.config.KeyDataStoreManager
@@ -10,14 +9,11 @@ import com.aoztg.greengrim.data.repository.ChatRepository
 import com.aoztg.greengrim.presentation.chatmanager.model.ChatMessage
 import com.aoztg.greengrim.presentation.ui.chat.mapper.toUiChatInfo
 import com.aoztg.greengrim.presentation.ui.chat.mapper.toUiChatMessage
-import com.aoztg.greengrim.presentation.ui.chat.mapper.toUiChatMessageItem
 import com.aoztg.greengrim.presentation.ui.chat.mapper.toUiChatMessageList
 import com.aoztg.greengrim.presentation.ui.chat.model.UiChatInfo
 import com.aoztg.greengrim.presentation.ui.chat.model.UiChatMessage
 import com.aoztg.greengrim.presentation.ui.getCurrentTimeString
 import com.aoztg.greengrim.presentation.util.Constants.DATE
-import com.aoztg.greengrim.presentation.util.Constants.NOTHING
-import com.aoztg.greengrim.presentation.util.Constants.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -37,6 +33,7 @@ data class ChatRoomUiState(
     val editTextState: Boolean = false,
     val chatMessages: List<UiChatMessage> = emptyList(),
     val nextCreatedAt: String = "0",
+    val hasNext: Boolean = true,
     val chatInfo: UiChatInfo = UiChatInfo()
 )
 
@@ -149,24 +146,27 @@ class ChatRoomViewModel @Inject constructor(
 
     fun getChatMessageData() {
         viewModelScope.launch {
-            when (val response =
-                chatRepository.getChatMessage(chatRoomId, uiState.value.nextCreatedAt)) {
-                is BaseState.Success -> {
+            if (uiState.value.hasNext) {
+                when (val response =
+                    chatRepository.getChatMessage(chatRoomId, uiState.value.nextCreatedAt)) {
+                    is BaseState.Success -> {
 
-                    _uiState.update { state ->
-                        state.copy(
-                            chatMessages = uiState.value.chatMessages + response.body.toUiChatMessageList(
-                                memberId,
-                                ::navigateToCertificationDetail,
-                                ::navigateToProfile
-                            ),
-                            nextCreatedAt = response.body.last().createdAt
-                        )
+                        _uiState.update { state ->
+                            state.copy(
+                                chatMessages = uiState.value.chatMessages + response.body.messages.toUiChatMessageList(
+                                    memberId,
+                                    ::navigateToCertificationDetail,
+                                    ::navigateToProfile
+                                ),
+                                nextCreatedAt = if (response.body.messages.isNotEmpty()) response.body.messages.last().createdAt else uiState.value.nextCreatedAt,
+                                hasNext = response.body.hasNext
+                            )
+                        }
                     }
-                }
 
-                is BaseState.Error -> {
-                    _events.emit(ChatRoomEvents.ShowSnackMessage(response.msg))
+                    is BaseState.Error -> {
+                        _events.emit(ChatRoomEvents.ShowSnackMessage(response.msg))
+                    }
                 }
             }
         }
@@ -176,23 +176,24 @@ class ChatRoomViewModel @Inject constructor(
         message: ChatMessage
     ) {
         val newMessages = uiState.value.chatMessages.toMutableList()
-        val newMessage = message.toUiChatMessage(memberId, ::navigateToCertificationDetail, ::navigateToProfile)
+        val newMessage =
+            message.toUiChatMessage(memberId, ::navigateToCertificationDetail, ::navigateToProfile)
 
-        if(newMessages.size > 0){
+        if (newMessages.size > 0) {
             val lastMessage = uiState.value.chatMessages.first()
 
-            if(lastMessage.sentDate.isNotBlank() && (lastMessage.sentDate != newMessage.sentDate)){
+            if (lastMessage.sentDate.isNotBlank() && (lastMessage.sentDate != newMessage.sentDate)) {
                 newMessages.add(0, UiChatMessage(type = DATE, message = newMessage.sentDate))
             } else {
-                if(lastMessage.sentTime.isNotBlank() && (lastMessage.senderId == newMessage.senderId && lastMessage.sentTime == newMessage.sentTime)){
+                if (lastMessage.sentTime.isNotBlank() && (lastMessage.senderId == newMessage.senderId && lastMessage.sentTime == newMessage.sentTime)) {
                     _uiState.update { state ->
                         state.copy(
                             chatMessages = uiState.value.chatMessages.mapIndexed { index, uiChatMessage ->
-                                if(index == 0){
+                                if (index == 0) {
                                     uiChatMessage.copy(
                                         sentTime = ""
                                     )
-                                }else {
+                                } else {
                                     uiChatMessage.copy()
                                 }
                             }
@@ -293,7 +294,7 @@ class ChatRoomViewModel @Inject constructor(
         }
     }
 
-    fun clear(){
+    fun clear() {
         _uiState.value = ChatRoomUiState()
     }
 
