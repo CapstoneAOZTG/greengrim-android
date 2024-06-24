@@ -1,6 +1,7 @@
 package com.aoztg.greengrim.presentation.ui.chat.chatroom
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
@@ -19,6 +20,7 @@ import com.aoztg.greengrim.presentation.ui.chat.certificationlist.CertificationL
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 import com.aoztg.greengrim.presentation.ui.toCertificationDetail
 import com.aoztg.greengrim.presentation.ui.toProfile
+import com.aoztg.greengrim.presentation.util.Constants.TAG
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 
@@ -54,6 +56,7 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
         setDataChangeListener()
         initEventsObserver()
         initChatMessageObserver()
+        initStateObserve()
     }
 
     private fun initBottomSheet() {
@@ -72,6 +75,8 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
 
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
+
+                viewModel.setScrollState(!recyclerView.canScrollVertically(1))
 
                 val lastVisibleItemPosition =
                     (recyclerView.layoutManager as LinearLayoutManager).findLastCompletelyVisibleItemPosition()
@@ -108,7 +113,9 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
                         it.isChild
                     )
 
-                    is ChatRoomEvents.ScrollBottom -> scrollRecyclerViewBottom()
+                    is ChatRoomEvents.ScrollBottom -> {
+                        scrollRecyclerViewBottom()
+                    }
                     is ChatRoomEvents.ExitChat -> {
                         chatManager.exitChat(chatId)
                         dismissLoading()
@@ -131,6 +138,14 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
                 if (it.roomId == chatId) {
                     viewModel.newChatMessage(it)
                 }
+            }
+        }
+    }
+
+    private fun initStateObserve(){
+        repeatOnStarted {
+            viewModel.uiState.collect{
+                adapter.submitList(it.chatMessages.toMutableList())
             }
         }
     }

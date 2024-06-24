@@ -1,6 +1,5 @@
 package com.aoztg.greengrim.presentation.ui.chat.chatroom
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aoztg.greengrim.data.config.KeyDataStoreManager
@@ -15,7 +14,6 @@ import com.aoztg.greengrim.presentation.ui.chat.model.UiChatInfo
 import com.aoztg.greengrim.presentation.ui.chat.model.UiChatMessage
 import com.aoztg.greengrim.presentation.ui.getCurrentTimeString
 import com.aoztg.greengrim.presentation.util.Constants.DATE
-import com.aoztg.greengrim.presentation.util.Constants.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -36,7 +34,8 @@ data class ChatRoomUiState(
     val chatMessages: List<UiChatMessage> = emptyList(),
     val nextCreatedAt: String = "0",
     val hasNext: Boolean = true,
-    val chatInfo: UiChatInfo = UiChatInfo()
+    val chatInfo: UiChatInfo = UiChatInfo(),
+    val scrollIsBottom: Boolean = true
 )
 
 sealed class ChatRoomEvents {
@@ -97,6 +96,14 @@ class ChatRoomViewModel @Inject constructor(
             } ?: run {
 
             }
+        }
+    }
+
+    fun setScrollState(isBottom: Boolean){
+        _uiState.update { state ->
+            state.copy(
+                scrollIsBottom = isBottom
+            )
         }
     }
 
@@ -161,7 +168,7 @@ class ChatRoomViewModel @Inject constructor(
                                     ::navigateToProfile
                                 ),
                                 nextCreatedAt = if (response.body.messages.isNotEmpty()) response.body.messages.last().createdAt else uiState.value.nextCreatedAt,
-                                hasNext = response.body.hasNext
+                                hasNext = response.body.messages.isNotEmpty()
                             )
                         }
 
@@ -189,19 +196,6 @@ class ChatRoomViewModel @Inject constructor(
                 newMessages.add(0, UiChatMessage(type = DATE, message = newMessage.sentDate))
             } else {
                 if (lastMessage.sentTime.isNotBlank() && (lastMessage.senderId == newMessage.senderId && lastMessage.sentTime == newMessage.sentTime)) {
-                    _uiState.update { state ->
-                        state.copy(
-                            chatMessages = uiState.value.chatMessages.mapIndexed { index, uiChatMessage ->
-                                if (index == 0) {
-                                    uiChatMessage.copy(
-                                        sentTime = ""
-                                    )
-                                } else {
-                                    uiChatMessage.copy()
-                                }
-                            }
-                        )
-                    }
                     newMessages.first().sentTime = ""
                     newMessage.profileImg = ""
                 }
@@ -215,7 +209,10 @@ class ChatRoomViewModel @Inject constructor(
             )
         }
 
-        scrollBottom()
+        if(uiState.value.scrollIsBottom || newMessage.senderId == memberId) {
+            scrollBottom()
+        }
+
     }
 
     fun navigateBack() {
@@ -250,7 +247,7 @@ class ChatRoomViewModel @Inject constructor(
 
     private fun scrollBottom() {
         viewModelScope.launch {
-            delay(50)
+            delay(10)
             _events.emit(ChatRoomEvents.ScrollBottom)
         }
     }

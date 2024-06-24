@@ -35,7 +35,7 @@ class ChatMessageAdapter :
                 oldItem: UiChatMessage,
                 newItem: UiChatMessage
             ): Boolean {
-                return oldItem == newItem
+                return false
             }
         }
     }
