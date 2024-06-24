@@ -19,6 +19,9 @@
         <action
             android:id="@+id/action_home_fragment_to_recentIssueListFragment"
             app:destination="@id/recentIssueListFragment" />
+        <action
+            android:id="@+id/action_home_fragment_to_announceDetailFragment"
+            app:destination="@id/announceDetailFragment" />
     </fragment>
 
     <fragment

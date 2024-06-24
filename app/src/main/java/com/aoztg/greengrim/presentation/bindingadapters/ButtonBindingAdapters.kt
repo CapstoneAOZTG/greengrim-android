@@ -11,12 +11,10 @@ import com.aoztg.greengrim.presentation.ui.global.model.UiChallengeDetail
 fun bindChallengeDetailBtnText(button: Button, data: UiChallengeDetail) {
 
     if (data.entered) {
-        button.text = "이미 참여중인 챌린지 입니다"
-        button.isEnabled = false
-        button.setTextColor(Color.WHITE)
+        button.text = "채팅방으로 이동하기"
+        button.setTextColor(Color.BLACK)
     } else {
         button.text = "입장하기"
-        button.isEnabled = true
         button.setTextColor(Color.BLACK)
     }
 }

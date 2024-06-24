@@ -47,13 +47,14 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         when (message.data["type"]) {
 
             "TALK" -> {
-                if(!AppState.isForeground){
+                if (!AppState.isForeground) {
                     val nickName = message.data["nickName"]
                     val talk = message.data["message"]
                     val senderId = message.data["senderId"]?.toLong()
                     val memberId: Long? = runBlocking {
                         keyDataStoreManager.getMemberId()
                     }
+
                     if (senderId != memberId) {
                         sendChatNotification(nickName, talk)
                     }

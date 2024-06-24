@@ -9,6 +9,7 @@ data class UiChallengeDetail(
     val description: String = "",
     val keywords: ChallengeDetailTags? = null,
     val date: String = "",
+    val chatRoomId: Long = -1,
     val entered: Boolean = false,
     val mine: Boolean = false
 )

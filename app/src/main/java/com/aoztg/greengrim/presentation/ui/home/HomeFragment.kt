@@ -41,16 +41,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         super.onViewCreated(view, savedInstanceState)
         parentViewModel.showBNV()
         binding.vm = viewModel
-        setBtnClickListener()
         initRecycler()
         initEventObserver()
         initParentObserver()
-    }
-
-    private fun setBtnClickListener() {
-        binding.layoutWelcomeNft.setOnClickListener {
-            findNavController().toWebView(viewModel.uiState.value.eventUrl)
-        }
     }
 
     private fun initRecycler() {
@@ -63,7 +56,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
                 }
 
                 if (it.uiHomeRecentIssueList.isNotEmpty() && !isRecentIssueSet) {
-                    binding.rvRecentIssues.adapter = HomeRecentIssueAdapter(it.uiHomeRecentIssueList)
+                    binding.rvRecentIssues.adapter =
+                        HomeRecentIssueAdapter(it.uiHomeRecentIssueList)
                     recyclerToViewPager(binding.rvRecentIssues, binding.indicatorRecentIssue)
                     isRecentIssueSet = true
                 }
@@ -95,6 +89,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
                     is HomeEvents.NavigateToHotChallengeList -> findNavController().toHotChallengeList()
                     is HomeEvents.NavigateToAlarmCheck -> findNavController().toAlarmCheck()
                     is HomeEvents.NavigateToIssueList -> findNavController().toIssueList()
+                    is HomeEvents.NavigateToWebView -> findNavController().toWebView(viewModel.uiState.value.eventUrl)
+                    is HomeEvents.NavigateToNoticeDetail -> findNavController().toAnnounceDetail(it.id)
                 }
             }
         }
@@ -131,6 +127,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
     private fun NavController.toIssueList() {
         val action = HomeFragmentDirections.actionHomeFragmentToRecentIssueListFragment()
+        navigate(action)
+    }
+
+    private fun NavController.toAnnounceDetail(id: Long) {
+        val action = HomeFragmentDirections.actionHomeFragmentToAnnounceDetailFragment(id)
         navigate(action)
     }
 

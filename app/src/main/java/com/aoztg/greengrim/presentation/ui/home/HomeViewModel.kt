@@ -32,7 +32,9 @@ data class HomeUiState(
     val greenPoint: String = "",
     val eventName: String = "",
     val eventImg: String = "",
-    val eventUrl: String = ""
+    val eventUrl: String = "",
+    val eventIsWebView: Boolean = false,
+    val resourceId: Long = 0
 )
 
 sealed class HomeEvents {
@@ -47,6 +49,8 @@ sealed class HomeEvents {
     object NavigateToHotChallengeList : HomeEvents()
     object NavigateToAlarmCheck : HomeEvents()
     object NavigateToIssueList: HomeEvents()
+    data class NavigateToWebView(val url: String) : HomeEvents()
+    data class NavigateToNoticeDetail(val id: Long) : HomeEvents()
 }
 
 @HiltViewModel
@@ -103,7 +107,9 @@ class HomeViewModel @Inject constructor(
                             state.copy(
                                 eventImg = it.body.imgUrl,
                                 eventName = it.body.title,
-                                eventUrl = it.body.url
+                                eventUrl = it.body.url,
+                                eventIsWebView = it.body.webView,
+                                resourceId = it.body.resourceId
                             )
                         }
                     }
@@ -220,6 +226,16 @@ class HomeViewModel @Inject constructor(
     fun navigateToIssueList(){
         viewModelScope.launch {
             _events.emit(HomeEvents.NavigateToIssueList)
+        }
+    }
+
+    fun navigateToEvent(){
+        viewModelScope.launch {
+            if(uiState.value.eventIsWebView){
+                _events.emit(HomeEvents.NavigateToWebView(uiState.value.eventUrl))
+            } else {
+                _events.emit(HomeEvents.NavigateToNoticeDetail(uiState.value.resourceId))
+            }
         }
     }
 

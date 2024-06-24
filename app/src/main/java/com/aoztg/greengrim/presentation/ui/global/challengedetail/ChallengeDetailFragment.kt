@@ -32,6 +32,13 @@ class ChallengeDetailFragment :
         binding.vm = viewModel
         viewModel.setChallengeId(challengeId)
         initEventObserver()
+        binding.btnEnter.setOnClickListener {
+            if (viewModel.uiState.value.uiChallengeDetail.entered) {
+                viewModel.navigateToChatRoom()
+            } else {
+                viewModel.enterChat(challengeId)
+            }
+        }
     }
 
     override fun onResume() {

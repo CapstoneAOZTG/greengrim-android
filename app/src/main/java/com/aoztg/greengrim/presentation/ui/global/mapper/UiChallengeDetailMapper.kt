@@ -4,15 +4,16 @@ import com.aoztg.greengrim.data.model.response.ChallengeDetailResponse
 import com.aoztg.greengrim.presentation.ui.global.model.UiChallengeDetail
 
 
-fun ChallengeDetailResponse.toUiChallengeDetail(): UiChallengeDetail{
+fun ChallengeDetailResponse.toUiChallengeDetail(): UiChallengeDetail {
     return UiChallengeDetail(
-        id = this.challengeInfo.id,
-        imgUrl = this.challengeInfo.imgUrl,
-        title = this.challengeInfo.title,
-        description = this.challengeInfo.description,
-        keywords = this.challengeTags,
-        date = this.createdAt,
-        entered = this.entered,
-        mine = mine 
+        id = challengeInfo.id,
+        imgUrl = challengeInfo.imgUrl,
+        title = challengeInfo.title,
+        description = challengeInfo.description,
+        keywords = challengeTags,
+        date = createdAt,
+        chatRoomId = chatroomId,
+        entered = entered,
+        mine = mine
     )
 }

@@ -125,6 +125,19 @@ class ChallengeDetailViewModel @Inject constructor(
         }
     }
 
+    fun navigateToChatRoom() {
+        viewModelScope.launch {
+            _events.emit(
+                ChallengeDetailEvents.NavigateChatRoom(
+                    uiState.value.uiChallengeDetail.chatRoomId,
+                    uiState.value.uiChallengeDetail.id,
+                    uiState.value.uiChallengeDetail.title,
+                    uiState.value.uiChallengeDetail.imgUrl
+                )
+            )
+        }
+    }
+
     fun setChallengeId(data: Long) {
         challengeId = data
     }

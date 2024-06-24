@@ -4,6 +4,7 @@ data class ChallengeDetailResponse(
     val challengeInfo: ChallengeDetailInfo,
     val challengeTags: ChallengeDetailTags,
     val createdAt: String,
+    val chatroomId: Long,
     val entered: Boolean,
     val mine: Boolean
 )
