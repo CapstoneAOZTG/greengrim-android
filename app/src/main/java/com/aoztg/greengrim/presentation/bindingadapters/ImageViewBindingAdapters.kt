@@ -25,6 +25,7 @@ fun bindImg(imageView: ImageView, url: String) {
 fun bindProfileImg(imageView: ImageView, url: String) {
     Glide.with(imageView.context)
         .load(url)
+        .circleCrop()
         .error(R.drawable.icon_profile)
         .into(imageView)
 }

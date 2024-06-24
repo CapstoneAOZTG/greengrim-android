@@ -39,7 +39,7 @@ class ChatManager @Inject constructor(
     private val keyDataStoreManager: KeyDataStoreManager
 ) : ViewModel() {
 
-    companion object{
+    companion object {
         const val FOREGROUND = 0
         const val BACKGROUND = 1
     }
@@ -63,13 +63,19 @@ class ChatManager @Inject constructor(
 
     private var memberId: Long = 0
     private val chatSocket =
-        ChatSocket(::receiveMessage, ::showSocketToastMessage, ::showSocketSnackMessage, keyDataStoreManager, ::reConnect)
+        ChatSocket(
+            ::receiveMessage,
+            ::showSocketToastMessage,
+            ::showSocketSnackMessage,
+            keyDataStoreManager,
+            ::reConnect
+        )
 
     init {
         setMemberId()
     }
 
-    fun setApplicationState(state: Int){
+    fun setApplicationState(state: Int) {
         chatSocket.setApplicationState(state)
     }
 
@@ -81,7 +87,7 @@ class ChatManager @Inject constructor(
         }
     }
 
-    private fun reConnect(){
+    private fun reConnect() {
         chatSocket.connectServer()
         chatListData.value.forEach { data ->
             chatSocket.subscribeChat(data.chatId)
@@ -270,9 +276,11 @@ class ChatManager @Inject constructor(
     fun exitChat(chatId: Long) {
         viewModelScope.launch {
             chatRepository.deleteUnReadChatData(chatId)
-            _chatListData.update { it.filter { data ->
-                data.chatId != chatId
-            }}
+            _chatListData.update {
+                it.filter { data ->
+                    data.chatId != chatId
+                }
+            }
         }
     }
 

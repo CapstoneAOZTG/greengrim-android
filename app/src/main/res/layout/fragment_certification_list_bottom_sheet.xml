@@ -157,7 +157,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="30dp"
-                    android:onClick="@{() -> vm.navigateToBack()}"
+                    android:onClick="@{() -> vm.bottomSheetCollapse()}"
                     android:src="@drawable/icon_white_x"
                     app:layout_constraintBottom_toBottomOf="@id/tv_top_label"
                     app:layout_constraintEnd_toEndOf="parent" />

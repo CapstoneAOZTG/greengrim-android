@@ -43,6 +43,7 @@ sealed class CertificationListEvents {
     data class NavigateToCertificationDetail(val certificationId: Long) : CertificationListEvents()
     object NavigateToBack : CertificationListEvents()
     data class ShowSnackMessage(val msg: String) : CertificationListEvents()
+    object BottomSheetToCollapse: CertificationListEvents()
 }
 
 @HiltViewModel
@@ -184,6 +185,12 @@ class CertificationListBottomSheetViewModel @Inject constructor(
     fun navigateToBack() {
         viewModelScope.launch {
             _events.emit(CertificationListEvents.NavigateToBack)
+        }
+    }
+
+    fun bottomSheetCollapse(){
+        viewModelScope.launch {
+            _events.emit(CertificationListEvents.BottomSheetToCollapse)
         }
     }
 

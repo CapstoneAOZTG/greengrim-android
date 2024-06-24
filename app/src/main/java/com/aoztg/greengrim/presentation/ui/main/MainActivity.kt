@@ -31,6 +31,7 @@ import com.aoztg.greengrim.presentation.chatmanager.ChatManager
 import com.aoztg.greengrim.presentation.customview.PhotoBottomSheet
 import com.aoztg.greengrim.presentation.ui.intro.IntroActivity
 import com.aoztg.greengrim.presentation.ui.toMultiPart
+import com.aoztg.greengrim.presentation.util.AppState
 import com.aoztg.greengrim.presentation.util.Constants
 import com.aoztg.greengrim.presentation.util.Constants.CAMERA_PERMISSION
 import com.aoztg.greengrim.presentation.util.Constants.NOTIFICATION_PERMISSION
@@ -97,12 +98,14 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
     override fun onStart() {
         super.onStart()
+        AppState.isForeground = true
         chatManager.setApplicationState(FOREGROUND)
         chatManager.getMyChatIds()
     }
 
     override fun onStop() {
         super.onStop()
+        AppState.isForeground = false
         chatManager.setApplicationState(BACKGROUND)
         chatManager.disconnectChat()
     }

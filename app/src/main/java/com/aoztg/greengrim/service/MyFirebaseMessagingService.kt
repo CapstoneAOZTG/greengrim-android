@@ -14,6 +14,7 @@ import com.aoztg.greengrim.app.App
 import com.aoztg.greengrim.data.config.KeyDataStoreManager
 import com.aoztg.greengrim.presentation.ui.nft.exchange.detail.ExchangeState
 import com.aoztg.greengrim.presentation.ui.splash.SplashActivity
+import com.aoztg.greengrim.presentation.util.AppState
 import com.aoztg.greengrim.presentation.util.PushUtils
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.FirebaseMessagingService
@@ -43,20 +44,19 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     override fun onMessageReceived(message: RemoteMessage) {
         PushUtils.acquireWakeLock(App.context())
 
-        //수신한 메시지를 처리
-
-
         when (message.data["type"]) {
 
             "TALK" -> {
-                val nickName = message.data["nickName"]
-                val talk = message.data["message"]
-                val senderId = message.data["senderId"]?.toLong()
-                val memberId: Long? = runBlocking {
-                    keyDataStoreManager.getMemberId()
-                }
-                if (senderId != memberId) {
-                    sendChatNotification(nickName, talk)
+                if(!AppState.isForeground){
+                    val nickName = message.data["nickName"]
+                    val talk = message.data["message"]
+                    val senderId = message.data["senderId"]?.toLong()
+                    val memberId: Long? = runBlocking {
+                        keyDataStoreManager.getMemberId()
+                    }
+                    if (senderId != memberId) {
+                        sendChatNotification(nickName, talk)
+                    }
                 }
             }
 
@@ -75,6 +75,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 ExchangeState.exchangeFailure()
             }
         }
+
     }
 
     private fun sendChatNotification(sender: String? = "", message: String? = "") {

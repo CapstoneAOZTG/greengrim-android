@@ -1,9 +1,7 @@
 package com.aoztg.greengrim.presentation.ui.chat.certificationlist
 
 import android.annotation.SuppressLint
-import android.app.Dialog
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,7 +15,6 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.aoztg.greengrim.R
 import com.aoztg.greengrim.databinding.FragmentCertificationListBottomSheetBinding
 import com.aoztg.greengrim.presentation.customview.CustomCalendar
@@ -25,12 +22,9 @@ import com.aoztg.greengrim.presentation.customview.YearMonthPickerDialog
 import com.aoztg.greengrim.presentation.ui.DataState
 import com.aoztg.greengrim.presentation.ui.chat.adapter.CertificationListAdapter
 import com.aoztg.greengrim.presentation.ui.chat.chatroom.ChatRoomViewModel
-import com.aoztg.greengrim.presentation.ui.chat.chatroom.OnSwipeTouchListener
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 import com.aoztg.greengrim.presentation.ui.toCertificationDetail
-import com.aoztg.greengrim.presentation.util.Constants.TAG
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.kizitonwose.calendar.core.yearMonth
 import dagger.hilt.android.AndroidEntryPoint
@@ -227,6 +221,10 @@ class CertificationListBottomSheetFragment : BottomSheetDialogFragment() {
 
                     is CertificationListEvents.NavigateToBack -> findNavController().navigateUp()
                     is CertificationListEvents.ShowSnackMessage -> parentViewModel.showSnack(it.msg)
+                    is CertificationListEvents.BottomSheetToCollapse -> {
+                        val behavior = BottomSheetBehavior.from(binding.certificationBottomSheet)
+                        behavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                    }
                 }
             }
         }
