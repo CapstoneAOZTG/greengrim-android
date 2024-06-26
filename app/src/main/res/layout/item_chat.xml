@@ -44,7 +44,6 @@
             style="@style/TextGgMedium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
             android:layout_marginTop="10dp"
             android:text="@{item.nickName}"
             android:visibility="@{item.profileImg.empty ? View.GONE : View.VISIBLE}"
@@ -55,7 +54,6 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
             android:layout_marginTop="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/guide_profile"

@@ -83,7 +83,7 @@ class ChatRoomFragment : BaseFragment<FragmentChatRoomBinding>(R.layout.fragment
                 val itemTotalCount = binding.rvChat.adapter?.itemCount?.minus(1)
 
                 if (lastVisibleItemPosition == itemTotalCount) {
-                    viewModel.getChatMessageData()
+
                 }
             }
         })

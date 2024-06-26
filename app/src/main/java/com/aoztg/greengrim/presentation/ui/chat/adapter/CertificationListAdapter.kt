@@ -1,13 +1,11 @@
 package com.aoztg.greengrim.presentation.ui.chat.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.aoztg.greengrim.databinding.ItemCertificationBinding
 import com.aoztg.greengrim.presentation.ui.chat.model.UiCertificationItem
-import com.aoztg.greengrim.presentation.util.Constants.TAG
 import com.aoztg.greengrim.presentation.util.DefaultDiffUtil
 
 class CertificationListAdapter : ListAdapter<UiCertificationItem, CertificationViewHolder>(

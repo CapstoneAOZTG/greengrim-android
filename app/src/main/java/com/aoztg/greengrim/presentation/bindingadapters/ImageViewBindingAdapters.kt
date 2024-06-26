@@ -16,6 +16,8 @@ fun bindImg(imageView: ImageView, url: String) {
     if (url.isNotBlank()) {
         Glide.with(imageView.context)
             .load(url)
+            .thumbnail(Glide.with(imageView.context).load(url))
+            .dontAnimate()
             .error(R.drawable.icon_no_image)
             .into(imageView)
     }
@@ -26,6 +28,8 @@ fun bindProfileImg(imageView: ImageView, url: String) {
     Glide.with(imageView.context)
         .load(url)
         .circleCrop()
+        .thumbnail(Glide.with(imageView.context).load(url))
+        .dontAnimate()
         .error(R.drawable.icon_profile)
         .into(imageView)
 }
@@ -38,6 +42,8 @@ fun bindChatImg(imageView: ImageView, url: String?) {
         imageView.visibility = View.VISIBLE
         Glide.with(imageView.context)
             .load(url)
+            .thumbnail(Glide.with(imageView.context).load(url))
+            .dontAnimate()
             .error(R.drawable.test)
             .into(imageView)
     }

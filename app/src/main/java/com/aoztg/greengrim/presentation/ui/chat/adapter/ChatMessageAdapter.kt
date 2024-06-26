@@ -1,7 +1,7 @@
 package com.aoztg.greengrim.presentation.ui.chat.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -10,33 +10,28 @@ import com.aoztg.greengrim.databinding.ItemChatBinding
 import com.aoztg.greengrim.databinding.ItemChatDateBinding
 import com.aoztg.greengrim.databinding.ItemChatEnterExitBinding
 import com.aoztg.greengrim.databinding.ItemChatMyBinding
-import com.aoztg.greengrim.presentation.chatmanager.model.UiChatListItem
 import com.aoztg.greengrim.presentation.ui.chat.model.UiChatMessage
 import com.aoztg.greengrim.presentation.util.Constants.DATE
 import com.aoztg.greengrim.presentation.util.Constants.ENTER_AND_EXIT
 import com.aoztg.greengrim.presentation.util.Constants.MY_CHAT
 import com.aoztg.greengrim.presentation.util.Constants.OTHER_CHAT
-import com.aoztg.greengrim.presentation.util.Constants.TAG
-import com.aoztg.greengrim.presentation.util.DefaultDiffUtil
 
 class ChatMessageAdapter :
-    ListAdapter<UiChatMessage, RecyclerView.ViewHolder>(diffCallback) {
+    ListAdapter<UiChatMessage, RecyclerView.ViewHolder>(ChatMessageDiffUtil()) {
 
-    companion object {
-        val diffCallback = object : DiffUtil.ItemCallback<UiChatMessage>() {
-            override fun areItemsTheSame(
-                oldItem: UiChatMessage,
-                newItem: UiChatMessage
-            ): Boolean {
-                return oldItem.createdAt == newItem.createdAt
-            }
+    class ChatMessageDiffUtil : DiffUtil.ItemCallback<UiChatMessage>(){
+        override fun areItemsTheSame(
+            oldItem: UiChatMessage,
+            newItem: UiChatMessage
+        ): Boolean {
+            return oldItem.createdAt == newItem.createdAt
+        }
 
-            override fun areContentsTheSame(
-                oldItem: UiChatMessage,
-                newItem: UiChatMessage
-            ): Boolean {
-                return false
-            }
+        override fun areContentsTheSame(
+            oldItem: UiChatMessage,
+            newItem: UiChatMessage
+        ): Boolean {
+            return false
         }
     }
 
@@ -105,6 +100,7 @@ class ChatMessageAdapter :
 class OtherChatViewHolder(private val binding: ItemChatBinding) :
     RecyclerView.ViewHolder(binding.root) {
     fun bind(item: UiChatMessage) {
+        binding.root.visibility = View.GONE
         binding.item = item
         binding.ivImage.setOnClickListener {
             item.onCertClickListener(item.certId)
@@ -112,6 +108,8 @@ class OtherChatViewHolder(private val binding: ItemChatBinding) :
         binding.ivProfile.setOnClickListener {
             item.onProfileClickListener(item.senderId)
         }
+        binding.executePendingBindings()
+        binding.root.visibility = View.VISIBLE
     }
 
 }
@@ -119,10 +117,13 @@ class OtherChatViewHolder(private val binding: ItemChatBinding) :
 class MyChatViewHolder(private val binding: ItemChatMyBinding) :
     RecyclerView.ViewHolder(binding.root) {
     fun bind(item: UiChatMessage) {
+        binding.root.visibility = View.GONE
         binding.item = item
         binding.ivImage.setOnClickListener {
             item.onCertClickListener(item.certId)
         }
+        binding.executePendingBindings()
+        binding.root.visibility = View.VISIBLE
     }
 }
 
@@ -137,5 +138,6 @@ class ChatDateViewHolder(private val binding: ItemChatDateBinding) :
     RecyclerView.ViewHolder(binding.root) {
     fun bind(item: UiChatMessage) {
         binding.item = item
+        binding.executePendingBindings()
     }
 }

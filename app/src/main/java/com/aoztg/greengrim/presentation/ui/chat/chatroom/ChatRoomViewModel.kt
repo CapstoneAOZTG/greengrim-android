@@ -15,6 +15,7 @@ import com.aoztg.greengrim.presentation.ui.chat.model.UiChatMessage
 import com.aoztg.greengrim.presentation.ui.getCurrentTimeString
 import com.aoztg.greengrim.presentation.util.Constants.DATE
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -83,6 +84,7 @@ class ChatRoomViewModel @Inject constructor(
     private var isDialogShown = true
     private var memberId: Long = 0
     private var lastDate: String = ""
+    private var job: Job? = null
 
     init {
         setMemberId()
@@ -97,6 +99,12 @@ class ChatRoomViewModel @Inject constructor(
 
             }
         }
+    }
+
+    fun setIds(chatIdData: Long, challengeIdData: Long) {
+        chatRoomId = chatIdData
+        challengeId = challengeIdData
+        gettingChatMessage()
     }
 
     fun setScrollState(isBottom: Boolean){
@@ -152,9 +160,19 @@ class ChatRoomViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-
-    fun getChatMessageData() {
+    private fun gettingChatMessage(){
         viewModelScope.launch {
+            loop@while(true){
+                getChatMessageData()
+                job?.join()
+                if(!uiState.value.hasNext) break@loop
+            }
+        }
+    }
+
+
+    private fun getChatMessageData() {
+        job = viewModelScope.launch {
             if (uiState.value.hasNext) {
                 when (val response =
                     chatRepository.getChatMessage(chatRoomId, uiState.value.nextCreatedAt)) {
@@ -250,12 +268,6 @@ class ChatRoomViewModel @Inject constructor(
             delay(10)
             _events.emit(ChatRoomEvents.ScrollBottom)
         }
-    }
-
-    fun setIds(chatIdData: Long, challengeIdData: Long) {
-        chatRoomId = chatIdData
-        challengeId = challengeIdData
-        getChatMessageData()
     }
 
     fun sendMessage() {

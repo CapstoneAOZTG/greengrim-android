@@ -2,6 +2,7 @@ package com.aoztg.greengrim.presentation.ui.chat.certificationlist
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,6 +23,7 @@ import com.aoztg.greengrim.presentation.customview.YearMonthPickerDialog
 import com.aoztg.greengrim.presentation.ui.DataState
 import com.aoztg.greengrim.presentation.ui.chat.adapter.CertificationListAdapter
 import com.aoztg.greengrim.presentation.ui.chat.chatroom.ChatRoomViewModel
+import com.aoztg.greengrim.presentation.ui.dpToPx
 import com.aoztg.greengrim.presentation.ui.main.MainViewModel
 import com.aoztg.greengrim.presentation.ui.toCertificationDetail
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -53,6 +55,8 @@ class CertificationListBottomSheetFragment : BottomSheetDialogFragment() {
 
     private var adapter: CertificationListAdapter? = null
     private var guideJob: Job? = null
+    private var pastLineCount = 0
+    private val behavior by lazy { BottomSheetBehavior.from(binding.certificationBottomSheet) }
 
     private lateinit var customCalendar: CustomCalendar
 
@@ -156,8 +160,8 @@ class CertificationListBottomSheetFragment : BottomSheetDialogFragment() {
         }
 
         repeatOnStarted {
-            chatRoomViewModel.uiState.collect{
-                if(it.chatInfo.todayCertification){
+            chatRoomViewModel.uiState.collect {
+                if (it.chatInfo.todayCertification) {
                     binding.btnCreateCertification.setImageResource(R.drawable.icon_create_certification_off)
                     binding.btnCreateCertification.isClickable = false
                 } else {
@@ -171,21 +175,39 @@ class CertificationListBottomSheetFragment : BottomSheetDialogFragment() {
         }
 
         repeatOnStarted {
-            chatRoomViewModel.uiState.collect{
+            chatRoomViewModel.uiState.collect {
                 binding.btnSendMessage.isEnabled = it.editTextState
             }
         }
 
         repeatOnStarted {
-            chatRoomViewModel.chatMessage.collect{
-                if(it.isBlank()){
+            chatRoomViewModel.chatMessage.collect {
+                if (it.isBlank()) {
                     binding.etChat.setText("")
                 }
             }
         }
 
         binding.etChat.doOnTextChanged { text, _, _, _ ->
-            chatRoomViewModel.chatMessage.value = text.toString()
+
+            val textString = text.toString()
+            chatRoomViewModel.chatMessage.value = textString
+
+            if (textString.isBlank()) {
+                behavior.peekHeight = 110f.dpToPx(requireContext())
+                pastLineCount = 0
+            } else {
+                val newLineCount = textString.count { it == '\n' }
+
+                val diff = newLineCount - pastLineCount
+                if (diff > 0) {
+                    behavior.peekHeight += 20f.dpToPx(requireContext())
+                } else if (diff < 0) {
+                    behavior.peekHeight -= 20f.dpToPx(requireContext())
+                }
+                pastLineCount = newLineCount
+            }
+
         }
 
         binding.btnSendMessage.setOnClickListener {
@@ -222,7 +244,6 @@ class CertificationListBottomSheetFragment : BottomSheetDialogFragment() {
                     is CertificationListEvents.NavigateToBack -> findNavController().navigateUp()
                     is CertificationListEvents.ShowSnackMessage -> parentViewModel.showSnack(it.msg)
                     is CertificationListEvents.BottomSheetToCollapse -> {
-                        val behavior = BottomSheetBehavior.from(binding.certificationBottomSheet)
                         behavior.state = BottomSheetBehavior.STATE_COLLAPSED
                     }
                 }

@@ -29,8 +29,8 @@ android {
         applicationId = "com.aoztg.greengrim"
         minSdk = 27
         targetSdk = 34
-        versionCode = 35
-        versionName = "1.1.1"
+        versionCode = 36
+        versionName = "1.1.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField("String", "NAVER_CLIENT_ID", getProperty("naverClientId"))

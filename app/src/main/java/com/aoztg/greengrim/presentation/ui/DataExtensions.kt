@@ -58,9 +58,9 @@ internal fun LocalDate.toHeaderText(): String {
     return this.monthValue.toString() + "월 " + this.dayOfMonth + "일, " + dayOfWeekHash[this.dayOfWeek.toString()]
 }
 
-internal fun String.toCategoryText(): String{
+internal fun String.toCategoryText(): String {
     CategoryName.values().forEach {
-        if(it.value == this){
+        if (it.value == this) {
             return it.text
         }
     }
@@ -77,4 +77,9 @@ internal fun getCurrentTimeString(): String {
     val currentTimeMillis = System.currentTimeMillis()
     val dateFormat = SimpleDateFormat("yyyyMMddHHmmssSSS", Locale.getDefault())
     return dateFormat.format(Date(currentTimeMillis))
+}
+
+internal fun Float.dpToPx(context: Context): Int {
+    val scale = context.resources.displayMetrics.density
+    return (this * scale + 0.5f).toInt()
 }
