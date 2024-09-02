@@ -19,7 +19,7 @@ import com.aoztg.greengrim.presentation.util.Constants.OTHER_CHAT
 class ChatMessageAdapter :
     ListAdapter<UiChatMessage, RecyclerView.ViewHolder>(ChatMessageDiffUtil()) {
 
-    class ChatMessageDiffUtil : DiffUtil.ItemCallback<UiChatMessage>(){
+    class ChatMessageDiffUtil : DiffUtil.ItemCallback<UiChatMessage>() {
         override fun areItemsTheSame(
             oldItem: UiChatMessage,
             newItem: UiChatMessage
